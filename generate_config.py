@@ -1,4 +1,6 @@
-#!/usr/bin/env python3
+"""Module generate_config."""
+
+# !/usr/bin/env python3
 """Generate config.json from .env file for target-oracle-oic."""
 
 import json

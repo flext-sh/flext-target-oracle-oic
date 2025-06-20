@@ -164,7 +164,6 @@ class ProjectsSink(OICBaseSink):
         if response.status_code == 404:
             # Create new project
             self._create_project(record)
-        else:
             # Update existing project
             self._update_project(project_id, record)
 
@@ -244,7 +243,6 @@ class SchedulesSink(OICBaseSink):
         if response.status_code == 404:
             # Create new schedule
             self._create_schedule(integration_id, record)
-        else:
             # Update existing schedule
             self._update_schedule(integration_id, record)
 

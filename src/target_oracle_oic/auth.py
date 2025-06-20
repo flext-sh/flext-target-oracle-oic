@@ -12,6 +12,8 @@ Example:
 -------
     ```python
     from tap_oracle_oic.auth import OICOAuth2Authenticator
+from typing import List, Dict, Optional, Any
+from typing import List, Dict, Optional, Dict
 
     # Authentication is typically handled automatically by streams
     auth = OICOAuth2Authenticator(stream=stream_instance)
@@ -109,7 +111,6 @@ class OICOAuth2Authenticator(OAuthAuthenticator):
             resource_aud = f"{client_aud}:443urn:opc:resource:consumer::all"
             api_aud = f"{client_aud}:443/ic/api/"
             oauth_scopes = f"{resource_aud} {api_aud}"
-        else:
             # Fallback to simple scope if no audience configured
             oauth_scopes = stream.config.get(
                 "oauth_scope", "urn:opc:resource:consumer::all"
