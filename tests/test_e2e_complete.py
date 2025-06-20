@@ -1,4 +1,6 @@
-#!/usr/bin/env python3
+"""Module test_e2e_complete."""
+
+# !/usr/bin/env python3
 """Comprehensive End-to-End tests for target-oracle-oic.
 
 Tests all functionalities including:
@@ -17,7 +19,6 @@ from unittest.mock import patch
 
 import pytest
 from singer_sdk.testing import get_target_test_class
-
 from target_oracle_oic.sinks import (
     ConnectionsSink,
     IntegrationsSink,
@@ -48,7 +49,7 @@ class TestTargetOracleOICE2E:
     @pytest.fixture
     def config(self, config_path: str) -> dict[str, object]:
         """Load configuration from config.json."""
-        with open(config_path) as f:
+        with open(config_path, encoding="utf-8") as f:
             return json.load(f)
 
     @pytest.fixture
@@ -128,12 +129,15 @@ class TestTargetOracleOICE2E:
 
         # Write messages to file
         input_file = tmp_path / "input.jsonl"
-        with open(input_file, "w") as f:
+        with open(input_file, "w", encoding="utf-8") as f:
             for msg in messages:
                 f.write(json.dumps(msg) + "\n")
 
         # Process messages
-        with open(input_file) as f, patch.object(ConnectionsSink, "process_record"):
+        with (
+            open(input_file, encoding="utf-8") as f,
+            patch.object(ConnectionsSink, "process_record"),
+        ):
             # Mock the sink to avoid actual API calls
             for line in f:
                 message = json.loads(line)
@@ -187,7 +191,6 @@ class TestTargetOracleOICE2E:
         except Exception as e:
             if "401" in str(e) or "403" in str(e):
                 pytest.skip(f"Authentication failed: {e}")
-            else:
                 pytest.fail(f"Unexpected error: {e}")
 
     def test_integration_import_flow(self, target) -> None:
@@ -337,12 +340,12 @@ class TestTargetOracleOICE2E:
         ]
 
         input_file = tmp_path / "singer_input.jsonl"
-        with open(input_file, "w") as f:
+        with open(input_file, "w", encoding="utf-8") as f:
             for msg in singer_input:
                 f.write(json.dumps(msg) + "\n")
 
         # Run target via CLI
-        with open(input_file) as f:
+        with open(input_file, encoding="utf-8") as f:
             result = subprocess.run(
                 ["python", "-m", "target_oracle_oic", "--config", config_path],
                 stdin=f,
@@ -376,7 +379,7 @@ class TestTargetOracleOICE2E:
             assert config_path.exists()
 
         # Load and validate config
-        with open(config_path) as f:
+        with open(config_path, encoding="utf-8") as f:
             config = json.load(f)
 
         # Check required fields
@@ -387,7 +390,7 @@ class TestTargetOracleOICE2E:
 
         # Check target-specific fields
         assert "import_mode" in config
-        assert config["import_mode"] in ["create", "update", "create_or_update"]
+        assert config["import_mode"] in {"create", "update", "create_or_update"}
 
 
 # Additional test class using Singer SDK test framework

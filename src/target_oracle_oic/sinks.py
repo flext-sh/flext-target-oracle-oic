@@ -6,7 +6,6 @@ from typing import Any
 
 import httpx
 from singer_sdk.sinks import Sink
-
 from target_oracle_oic.auth import OICOAuth2Authenticator
 
 
@@ -54,8 +53,8 @@ class OICBaseSink(Sink):
         records = context["records"]
 
         # Group records by operation type for more efficient processing
-        create_records = []
-        update_records = []
+        create_records: list = []
+        update_records: list = []
 
         for record in records:
             if self._record_exists(record):
