@@ -130,7 +130,7 @@ class TestTargetOracleOIC:
         """Test successful target initialization."""
         # Act
         target = TargetOracleOIC(config=target_config)
-        
+
         # Assert
         assert target.config == target_config
         assert target.name == "target-oracle-oic"
@@ -144,7 +144,7 @@ class TestTargetOracleOIC:
             client_id="test_client",
             client_secret="test_secret"
         )
-        
+
         # Act & Assert
         with pytest.raises(TargetConfigurationError):
             TargetOracleOIC(config=invalid_config)
@@ -161,10 +161,10 @@ class TestTargetOracleOIC:
                 "email": {"type": "string"}
             }
         }
-        
+
         # Act
         sink = target_instance.get_sink(stream_name, schema)
-        
+
         # Assert
         assert isinstance(sink, OracleOICSink)
         assert sink.stream_name == stream_name
@@ -177,10 +177,10 @@ class TestTargetOracleOIC:
             {"name": "users", "endpoint": "/users"},
             {"name": "orders", "endpoint": "/orders"}
         ]
-        
+
         # Act
         streams = target_instance.discover_streams()
-        
+
         # Assert
         assert len(streams) == 2
         assert streams[0]["name"] == "users"
@@ -249,10 +249,10 @@ class TestOracleOICSink:
             "email": "john.doe@example.com",
             "created_at": "2025-06-19T10:00:00Z"
         }
-        
+
         # Act
         oracle_oic_sink.process_record(record)
-        
+
         # Assert
         assert len(oracle_oic_sink.records_buffer) == 1
         assert oracle_oic_sink.records_buffer[0] == record
@@ -265,7 +265,7 @@ class TestOracleOICSink:
             "name": "John Doe"
             # Missing required 'email' field
         }
-        
+
         # Act & Assert
         with pytest.raises(DataValidationError):
             oracle_oic_sink.process_record(invalid_record)
@@ -277,13 +277,13 @@ class TestOracleOICSink:
             {"id": f"user_{i:03d}", "name": f"User {i}", "email": f"user{i}@example.com"}
             for i in range(100)
         ]
-        
+
         for record in records:
             oracle_oic_sink.process_record(record)
-        
+
         # Act
         result = oracle_oic_sink.flush_records()
-        
+
         # Assert
         assert result["status"] == "success"
         assert result["records_processed"] == 100
@@ -294,7 +294,7 @@ class TestOracleOICSink:
         """Test automatic flush when batch size is reached."""
         # Arrange
         oracle_oic_sink.batch_size = 5  # Small batch size for testing
-        
+
         # Act - Add records up to batch size
         for i in range(5):
             oracle_oic_sink.process_record({
@@ -302,7 +302,7 @@ class TestOracleOICSink:
                 "name": f"User {i}",
                 "email": f"user{i}@example.com"
             })
-        
+
         # Assert - Should auto-flush
         mock_oic_client.send_batch.assert_called_once()
         assert len(oracle_oic_sink.records_buffer) == 0
@@ -313,20 +313,20 @@ class TestDataTransformation:
     def test_datetime_format_transformation(self):
         """Test datetime format transformation."""
         from target_oracle_oic.transformations import format_datetime
-        
+
         # Arrange
         input_datetime = "2025-06-19T10:30:45.123Z"
-        
+
         # Act
         result = format_datetime(input_datetime)
-        
+
         # Assert
         assert result == "2025-06-19 10:30:45"
 
     def test_null_value_handling(self):
         """Test null value handling in transformations."""
         from target_oracle_oic.transformations import handle_null_values
-        
+
         # Arrange
         record_with_nulls = {
             "id": "user_001",
@@ -335,10 +335,10 @@ class TestDataTransformation:
             "phone": "",
             "address": "123 Main St"
         }
-        
+
         # Act
         result = handle_null_values(record_with_nulls)
-        
+
         # Assert
         assert result["id"] == "user_001"
         assert result["name"] == "John Doe"
@@ -349,7 +349,7 @@ class TestDataTransformation:
     def test_data_type_conversion(self):
         """Test data type conversion for OIC compatibility."""
         from target_oracle_oic.transformations import convert_data_types
-        
+
         # Arrange
         input_record = {
             "id": 12345,  # Should convert to string
@@ -357,7 +357,7 @@ class TestDataTransformation:
             "is_active": "true",  # Should convert to boolean
             "count": "42"  # Should convert to integer
         }
-        
+
         schema = {
             "properties": {
                 "id": {"type": "string"},
@@ -366,10 +366,10 @@ class TestDataTransformation:
                 "count": {"type": "integer"}
             }
         }
-        
+
         # Act
         result = convert_data_types(input_record, schema)
-        
+
         # Assert
         assert isinstance(result["id"], str)
         assert result["id"] == "12345"
@@ -463,7 +463,7 @@ class TestOICAuthenticator:
         # Act & Assert
         with pytest.raises(AuthenticationError) as exc_info:
             authenticator.get_access_token()
-        
+
         assert "Invalid client credentials" in str(exc_info.value)
 
     def test_jwt_token_validation(self, authenticator):
@@ -476,7 +476,7 @@ class TestOICAuthenticator:
             "exp": datetime.utcnow() + timedelta(hours=1),
             "iat": datetime.utcnow()
         }
-        
+
         # Create valid JWT token
         token = jwt.encode(payload, "secret_key", algorithm="HS256")
 
@@ -488,7 +488,7 @@ class TestOICAuthenticator:
         # Assert
         assert result is True
         mock_decode.assert_called_once_with(
-            token, 
+            token,
             options={"verify_signature": False}
         )
 
@@ -499,13 +499,13 @@ class TestOICAuthenticator:
             "sub": "test_user",
             "exp": datetime.utcnow() - timedelta(hours=1)  # Expired
         }
-        
+
         expired_token = jwt.encode(expired_payload, "secret_key", algorithm="HS256")
 
         # Act & Assert
         with patch('target_oracle_oic.auth.jwt.decode') as mock_decode:
             mock_decode.side_effect = jwt.ExpiredSignatureError("Token expired")
-            
+
             with pytest.raises(TokenExpiredError):
                 authenticator.validate_token(expired_token)
 
@@ -542,7 +542,7 @@ class TestOAuth2TokenManager:
             "access_token": "expired_token",
             "expires_at": datetime.utcnow() - timedelta(minutes=5)
         }
-        
+
         valid_token = {
             "access_token": "valid_token",
             "expires_at": datetime.utcnow() + timedelta(hours=1)
@@ -563,7 +563,7 @@ class TestOAuth2TokenManager:
             "refresh_token": "refresh_token_123",
             "expires_at": datetime.utcnow() - timedelta(minutes=5)
         }
-        
+
         new_token_response = {
             "access_token": "new_access_token",
             "refresh_token": "new_refresh_token",
@@ -620,12 +620,12 @@ class TestOICIntegration:
     async def target_with_auth(self, integration_config):
         """Target instance with authenticated OIC client."""
         target = TargetOracleOIC(config=integration_config)
-        
+
         # Mock successful authentication
         with patch.object(target.oic_client, 'authenticate') as mock_auth:
             mock_auth.return_value = True
             await target.oic_client.authenticate()
-            
+
         return target
 
     @pytest.mark.asyncio
@@ -641,7 +641,7 @@ class TestOICIntegration:
                 "created_at": "2025-06-19T10:00:00Z"
             },
             {
-                "id": "user_002", 
+                "id": "user_002",
                 "name": "Jane Smith",
                 "email": "jane.smith@example.com",
                 "department": "Marketing",
@@ -653,7 +653,7 @@ class TestOICIntegration:
             "type": "object",
             "properties": {
                 "id": {"type": "string"},
-                "name": {"type": "string"}, 
+                "name": {"type": "string"},
                 "email": {"type": "string"},
                 "department": {"type": "string"},
                 "created_at": {"type": "string", "format": "date-time"}
@@ -670,10 +670,10 @@ class TestOICIntegration:
 
             # Act
             sink = target_with_auth.get_sink("users", schema)
-            
+
             for record in test_records:
                 sink.process_record(record)
-            
+
             result = sink.flush_records()
 
             # Assert
@@ -717,12 +717,12 @@ class TestOICIntegration:
             # Act
             import time
             start_time = time.time()
-            
+
             sink = target_with_auth.get_sink("performance_test", schema)
-            
+
             for record in test_records:
                 sink.process_record(record)
-            
+
             result = sink.flush_records()
             end_time = time.time()
 
@@ -731,7 +731,7 @@ class TestOICIntegration:
             assert result["status"] == "success"
             assert result["records_processed"] == batch_size
             assert processing_time < 5.0  # Should process 1000 records in under 5 seconds
-            
+
             # Verify batch was sent to OIC
             mock_send.assert_called_once()
             call_args = mock_send.call_args[0][0]
@@ -747,7 +747,7 @@ class TestOICIntegration:
         ]
 
         schema = {
-            "type": "object", 
+            "type": "object",
             "properties": {
                 "id": {"type": "string"},
                 "name": {"type": "string"}
@@ -768,10 +768,10 @@ class TestOICIntegration:
 
             # Act
             sink = target_with_auth.get_sink("error_recovery_test", schema)
-            
+
             for record in test_records:
                 sink.process_record(record)
-            
+
             # Should retry and succeed
             result = sink.flush_records()
 
@@ -804,7 +804,7 @@ class TestOICIntegration:
                 }
             },
             "orders": {
-                "type": "object", 
+                "type": "object",
                 "properties": {
                     "id": {"type": "string"},
                     "amount": {"type": "number"}
@@ -831,7 +831,7 @@ class TestOICIntegration:
                     for record in stream_records:
                         sink.process_record(record)
                     return sink.flush_records()
-                
+
                 tasks.append(process_stream(sinks[stream_name], records))
 
             results = await asyncio.gather(*tasks)
@@ -841,7 +841,7 @@ class TestOICIntegration:
             for result in results:
                 assert result["status"] == "success"
                 assert result["records_processed"] == 2
-            
+
             # Verify both streams were processed
             assert mock_send.call_count == 2
 ```
@@ -914,7 +914,7 @@ def sample_user_records():
         },
         {
             "id": "user_002",
-            "name": "Jane Smith", 
+            "name": "Jane Smith",
             "email": "jane.smith@example.com",
             "department": "Marketing",
             "created_at": "2025-06-19T10:05:00Z"

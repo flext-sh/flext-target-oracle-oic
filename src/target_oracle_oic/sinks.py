@@ -6,6 +6,7 @@ from typing import Any
 
 import httpx
 from singer_sdk.sinks import Sink
+
 from target_oracle_oic.auth import OICOAuth2Authenticator
 
 
@@ -53,8 +54,8 @@ class OICBaseSink(Sink):
         records = context["records"]
 
         # Group records by operation type for more efficient processing
-        create_records: list = []
-        update_records: list = []
+        create_records: list[dict[str, Any]] = []
+        update_records: list[dict[str, Any]] = []
 
         for record in records:
             if self._record_exists(record):
@@ -231,11 +232,16 @@ class PackagesSink(OICBaseSink):
 
     def process_record(self, record: dict[str, Any], _context: dict[str, Any]) -> None:
         """Process a single package record."""
-        record.get("id") or ""
+        package_id = record.get("id") or ""
+
+        # Log the package being processed
+        self.logger.info(f"Processing package: {package_id}")
 
         # Import package if archive content is provided
         if "archive_content" in record:
             self._import_package(record)
+        else:
+            self.logger.warning(f"No archive content provided for package {package_id}")
 
     def _import_package(self, record: dict[str, Any]) -> None:
         """Import a package from archive."""
