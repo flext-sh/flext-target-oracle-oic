@@ -99,7 +99,7 @@ docs/
 
 #### **Target Specification Compliance**
 
-```markdown
+````markdown
 # Singer Target Specification Compliance
 
 ## Singer Target Interface
@@ -107,6 +107,7 @@ docs/
 The Target Oracle OIC implements the Singer Target specification with full compliance:
 
 ### Required Methods
+
 - `handle_record()`: Process individual records
 - `handle_schema()`: Handle schema messages
 - `handle_state()`: Process state bookmarks
@@ -119,39 +120,40 @@ from target_oracle_oic.target import TargetOracleOIC
 
 class TargetOracleOIC(Target):
     """Singer Target for Oracle Integration Cloud."""
-    
+
     name = "target-oracle-oic"
     config_jsonschema = CONFIG_SCHEMA
-    
+
     def __init__(self, config: Dict[str, Any]):
         super().__init__(config)
         self.oic_client = OICClient(config)
         self.record_buffer = []
         self.batch_size = config.get('batch_size', 1000)
-    
+
     def handle_record(self, record: Dict[str, Any], schema: Dict[str, Any]) -> None:
         """Process individual record."""
         transformed_record = self.transform_record(record, schema)
         self.record_buffer.append(transformed_record)
-        
+
         if len(self.record_buffer) >= self.batch_size:
             self.flush_buffer()
-    
+
     def handle_schema(self, schema: Dict[str, Any]) -> None:
         """Handle schema message."""
         self.validate_schema_compatibility(schema)
         self.prepare_oic_integration(schema)
-    
+
     def handle_state(self, state: Dict[str, Any]) -> None:
         """Handle state bookmark."""
         self.emit_state(state)
-    
+
     def flush_buffer(self) -> None:
         """Flush buffered records to OIC."""
         if self.record_buffer:
             self.oic_client.send_batch(self.record_buffer)
             self.record_buffer.clear()
 ```
+````
 
 ### Configuration Schema
 
@@ -185,7 +187,8 @@ class TargetOracleOIC(Target):
   "required": ["oic_base_url", "client_id", "client_secret", "integration_flow"]
 }
 ```
-```
+
+````
 
 #### **Record Processing Patterns**
 
@@ -201,23 +204,24 @@ def handle_record(self, record: Dict[str, Any], schema: Dict[str, Any]) -> None:
     try:
         # Validate record against schema
         self.validate_record(record, schema)
-        
+
         # Transform record for OIC
         transformed = self.transform_record(record, schema)
-        
+
         # Add to buffer
         self.buffer_record(transformed)
-        
+
     except Exception as e:
         self.handle_record_error(record, e)
-```
+````
 
 ### 2. Record Transformation
+
 ```python
 def transform_record(self, record: Dict[str, Any], schema: Dict[str, Any]) -> Dict[str, Any]:
     """Transform record for OIC integration."""
     transformed = {}
-    
+
     # Apply field mappings
     for source_field, target_field in self.field_mappings.items():
         if source_field in record:
@@ -225,35 +229,37 @@ def transform_record(self, record: Dict[str, Any], schema: Dict[str, Any]) -> Di
                 record[source_field],
                 schema['properties'].get(source_field, {})
             )
-    
+
     # Add metadata
     transformed['_metadata'] = {
         'source_timestamp': record.get('_sdc_extracted_at'),
         'target_timestamp': datetime.utcnow().isoformat(),
         'record_id': str(uuid.uuid4())
     }
-    
+
     return transformed
 ```
 
 ### 3. Batch Processing
+
 ```python
 def process_batch(self, records: List[Dict[str, Any]]) -> None:
     """Process batch of records."""
     try:
         # Prepare OIC payload
         payload = self.prepare_oic_payload(records)
-        
+
         # Send to OIC
         response = self.oic_client.send_integration_data(payload)
-        
+
         # Handle response
         self.handle_batch_response(response, records)
-        
+
     except Exception as e:
         self.handle_batch_error(records, e)
 ```
-```
+
+````
 
 ### **2. OIC Integration Documentation**
 
@@ -268,7 +274,7 @@ def process_batch(self, records: List[Dict[str, Any]]) -> None:
 ```python
 class OICClient:
     """Oracle Integration Cloud REST API client."""
-    
+
     def __init__(self, config: Dict[str, Any]):
         self.base_url = config['oic_base_url']
         self.client_id = config['client_id']
@@ -276,51 +282,52 @@ class OICClient:
         self.integration_flow = config['integration_flow']
         self.session = requests.Session()
         self.access_token = None
-        
+
     def authenticate(self) -> str:
         """Obtain access token using OAuth2 client credentials flow."""
         auth_url = f"{self.base_url}/oauth2/v1/token"
-        
+
         payload = {
             'grant_type': 'client_credentials',
             'scope': 'integration'
         }
-        
+
         response = requests.post(
             auth_url,
             data=payload,
             auth=(self.client_id, self.client_secret)
         )
-        
+
         if response.status_code == 200:
             token_data = response.json()
             self.access_token = token_data['access_token']
             return self.access_token
         else:
             raise AuthenticationError(f"Authentication failed: {response.text}")
-```
+````
 
 ### Integration Flow Triggering
+
 ```python
 def trigger_integration_flow(self, payload: Dict[str, Any]) -> Dict[str, Any]:
     """Trigger OIC integration flow with data payload."""
     if not self.access_token:
         self.authenticate()
-    
+
     flow_url = f"{self.base_url}/ic/api/integration/v1/flows/{self.integration_flow}/trigger"
-    
+
     headers = {
         'Authorization': f'Bearer {self.access_token}',
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     }
-    
+
     response = self.session.post(
         flow_url,
         json=payload,
         headers=headers
     )
-    
+
     if response.status_code == 202:
         return response.json()
     else:
@@ -328,6 +335,7 @@ def trigger_integration_flow(self, payload: Dict[str, Any]) -> Dict[str, Any]:
 ```
 
 ### Batch Data Processing
+
 ```python
 def send_batch_data(self, records: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     """Send batch of records to OIC."""
@@ -337,23 +345,24 @@ def send_batch_data(self, records: List[Dict[str, Any]]) -> List[Dict[str, Any]]
         'record_count': len(records),
         'records': records
     }
-    
+
     try:
         # Trigger integration flow
         response = self.trigger_integration_flow(batch_payload)
-        
+
         # Track processing status
         tracking_id = response.get('tracking_id')
         if tracking_id:
             return self.monitor_batch_processing(tracking_id)
-        
+
         return [{'status': 'accepted', 'tracking_id': tracking_id}]
-        
+
     except Exception as e:
         logger.error(f"Batch processing failed: {e}")
         return [{'status': 'failed', 'error': str(e)} for _ in records]
 ```
-```
+
+````
 
 ### **3. Configuration Documentation**
 
@@ -396,29 +405,30 @@ def send_batch_data(self, records: List[Dict[str, Any]]) -> List[Dict[str, Any]]
     "performance_tracking": true
   }
 }
-```
+````
 
 ## Configuration Parameters
 
 ### Required Parameters
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `oic_base_url` | string | OIC instance base URL |
-| `client_id` | string | OAuth2 client identifier |
-| `client_secret` | string | OAuth2 client secret |
-| `integration_flow` | string | OIC integration flow ID |
+| Parameter          | Type   | Description              |
+| ------------------ | ------ | ------------------------ |
+| `oic_base_url`     | string | OIC instance base URL    |
+| `client_id`        | string | OAuth2 client identifier |
+| `client_secret`    | string | OAuth2 client secret     |
+| `integration_flow` | string | OIC integration flow ID  |
 
 ### Optional Parameters
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `batch_size` | integer | 1000 | Records per batch |
-| `flush_timeout` | integer | 300 | Batch flush timeout (seconds) |
-| `retry_attempts` | integer | 3 | Number of retry attempts |
-| `retry_delay` | integer | 5 | Delay between retries (seconds) |
+| Parameter        | Type    | Default | Description                     |
+| ---------------- | ------- | ------- | ------------------------------- |
+| `batch_size`     | integer | 1000    | Records per batch               |
+| `flush_timeout`  | integer | 300     | Batch flush timeout (seconds)   |
+| `retry_attempts` | integer | 3       | Number of retry attempts        |
+| `retry_delay`    | integer | 5       | Delay between retries (seconds) |
 
 ### Field Mapping Configuration
+
 ```json
 {
   "field_mappings": {
@@ -430,6 +440,7 @@ def send_batch_data(self, records: List[Dict[str, Any]]) -> List[Dict[str, Any]]
 ```
 
 ### Data Transformation Configuration
+
 ```json
 {
   "data_transformations": {
@@ -440,7 +451,8 @@ def send_batch_data(self, records: List[Dict[str, Any]]) -> List[Dict[str, Any]]
   }
 }
 ```
-```
+
+````
 
 ---
 
@@ -461,7 +473,7 @@ EOF
 
 # Run target with Singer tap
 tap-postgres | target-oracle-oic --config config.json
-```
+````
 
 ### **Advanced Configuration**
 

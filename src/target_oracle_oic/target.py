@@ -2,11 +2,10 @@
 
 from __future__ import annotations
 
-from typing import Any
-from collections.abc import Sequence
+from typing import TYPE_CHECKING, Any
 
 from singer_sdk import Target
-from singer_sdk.sinks import Sink
+
 from target_oracle_oic.config import TargetOracleOICConfig
 from target_oracle_oic.sinks import (
     ConnectionsSink,
@@ -25,6 +24,11 @@ from target_oracle_oic.sinks_extended import (
     ProjectsSink,
     SchedulesSink,
 )
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
+    from singer_sdk.sinks import Sink
 
 
 class TargetOracleOIC(Target):

@@ -19,6 +19,7 @@ from unittest.mock import patch
 
 import pytest
 from singer_sdk.testing import get_target_test_class
+
 from target_oracle_oic.sinks import (
     ConnectionsSink,
     IntegrationsSink,
