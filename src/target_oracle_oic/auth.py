@@ -114,14 +114,14 @@ class OICOAuth2Authenticator(OAuthAuthenticator):
         else:
             # Fallback to simple scope if no audience configured
             oauth_scopes = stream.config.get(
-                "oauth_scope", "urn:opc:resource:consumer::all"
+                "oauth_scope", "urn:opc:resource:consumer::all",
             )
 
         # Store reference to stream for access to config during token refresh
         self._stream = stream
 
         super().__init__(
-            stream=stream, auth_endpoint=auth_endpoint, oauth_scopes=oauth_scopes
+            stream=stream, auth_endpoint=auth_endpoint, oauth_scopes=oauth_scopes,
         )
 
     @property

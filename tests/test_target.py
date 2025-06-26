@@ -23,7 +23,7 @@ class TestTargetOracleOIC:
         }
 
     def test_target_initialization_with_valid_config(
-        self, valid_config: dict[str, str]
+        self, valid_config: dict[str, str],
     ) -> None:
         """Test target can be initialized with proper enterprise config."""
         target = TargetOracleOIC(config=valid_config)

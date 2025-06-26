@@ -40,7 +40,7 @@ class OICBaseSink(Sink):
         return self._client
 
     def preprocess_record(
-        self, record: dict[str, Any], _context: dict[str, Any] | None
+        self, record: dict[str, Any], _context: dict[str, Any] | None,
     ) -> dict[str, Any]:
         """Process the record before sending it to Oracle Integration Cloud."""
         return record
@@ -81,7 +81,7 @@ class OICBaseSink(Sink):
         return False
 
     def _process_create_batch(
-        self, records: list[dict[str, Any]], context: dict[str, Any]
+        self, records: list[dict[str, Any]], context: dict[str, Any],
     ) -> None:
         """Process a batch of create operations."""
         # Default implementation processes records individually
@@ -90,7 +90,7 @@ class OICBaseSink(Sink):
             self.process_record(record, context)
 
     def _process_update_batch(
-        self, records: list[dict[str, Any]], context: dict[str, Any]
+        self, records: list[dict[str, Any]], context: dict[str, Any],
     ) -> None:
         """Process a batch of update operations."""
         # Default implementation processes records individually
@@ -110,7 +110,7 @@ class ConnectionsSink(OICBaseSink):
 
         # Check if connection exists
         response = self.client.get(
-            f"/ic/api/integration/v1/connections/{connection_id}"
+            f"/ic/api/integration/v1/connections/{connection_id}",
         )
 
         if response.status_code == 404:
@@ -129,7 +129,7 @@ class ConnectionsSink(OICBaseSink):
                 "description": record.get("description", ""),
                 "adapterType": record["adapter_type"],
                 "connectionProperties": record.get("properties", {}),
-            }
+            },
         }
 
         response = self.client.post(
@@ -144,7 +144,7 @@ class ConnectionsSink(OICBaseSink):
             "connectionProperties": {
                 "description": record.get("description", ""),
                 "connectionProperties": record.get("properties", {}),
-            }
+            },
         }
 
         response = self.client.put(
@@ -166,7 +166,7 @@ class IntegrationsSink(OICBaseSink):
 
         # Check if integration exists
         response = self.client.get(
-            f"/ic/api/integration/v1/integrations/{integration_id}|{version}"
+            f"/ic/api/integration/v1/integrations/{integration_id}|{version}",
         )
 
         if response.status_code == 404:
@@ -201,7 +201,7 @@ class IntegrationsSink(OICBaseSink):
             archive_content = archive_content.encode()
 
         files = {
-            "file": (f"{record['id']}.iar", archive_content, "application/octet-stream")
+            "file": (f"{record['id']}.iar", archive_content, "application/octet-stream"),
         }
 
         response = self.client.post(
@@ -211,7 +211,7 @@ class IntegrationsSink(OICBaseSink):
         response.raise_for_status()
 
     def _update_integration(
-        self, integration_id: str, version: str, record: dict[str, Any]
+        self, integration_id: str, version: str, record: dict[str, Any],
     ) -> None:
         """Update an existing integration."""
         payload = {
@@ -250,7 +250,7 @@ class PackagesSink(OICBaseSink):
             archive_content = archive_content.encode()
 
         files = {
-            "file": (f"{record['id']}.par", archive_content, "application/octet-stream")
+            "file": (f"{record['id']}.par", archive_content, "application/octet-stream"),
         }
 
         response = self.client.post(
