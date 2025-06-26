@@ -84,7 +84,7 @@ flx-oracle-oic = "flx_oracle_oic.main:main"
 
 [tool.ruff.lint]
 ignore = [ "N818", "S310", "S603", "COM812", "ISC001",]
-select = [ "A", "ANN", "ARG", "ASYNC", "B", "C4", "COM", "D", "DTZ", "E", "EM", "ERA", "F", "FBT", "G", "I", "ICN", "INP", "ISC", "N", "PERF", "PGH", "PIE", "PT", "PTH", "Q", "RET", "RSE", "RUF", "S", "SIM", "T10", "T20", "TC", "TID", "UP", "W", "YTT",]
+select = [ "A", "ANN", "ARG", "ASYNC", "B", "C4", "COM", "D", "DTZ", "E", "EM", "ERA", "F", "FBT", "G", "I", "ICN", "INP", "ISC", "N", "PERF", "PGH", "PIE", "PT", "PTH", "Q", "RET", "RSE", "RUF", "S", "SIM", "T10", "T20", "TID", "UP", "W", "YTT",]
 unfixable = [ "ERA001",]
 
 [tool.ruff.format]

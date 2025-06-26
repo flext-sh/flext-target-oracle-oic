@@ -58,7 +58,7 @@ class LibrariesSink(OICBaseSink):
             archive_content = archive_content.encode()
 
         files = {
-            "file": (f"{record['id']}.jar", archive_content, "application/octet-stream")
+            "file": (f"{record['id']}.jar", archive_content, "application/octet-stream"),
         }
 
         response = self.client.post(
@@ -106,7 +106,7 @@ class CertificatesSink(OICBaseSink):
         cert_content = record.get("certificate_content")
         if not cert_content:
             self.logger.warning(
-                "No certificate content provided for %s", record.get("alias")
+                "No certificate content provided for %s", record.get("alias"),
             )
             return
 
@@ -118,7 +118,7 @@ class CertificatesSink(OICBaseSink):
                 f"{record['alias']}.cer",
                 cert_content,
                 "application/x-x509-ca-cert",
-            )
+            ),
         }
 
         data = {
@@ -141,7 +141,7 @@ class CertificatesSink(OICBaseSink):
         if "certificate_content" in record:
             # Delete existing
             response = self.client.delete(
-                f"/ic/api/integration/v1/certificates/{cert_alias}"
+                f"/ic/api/integration/v1/certificates/{cert_alias}",
             )
             response.raise_for_status()
 
@@ -231,13 +231,13 @@ class SchedulesSink(OICBaseSink):
 
         if not integration_id:
             self.logger.warning(
-                "No integration ID provided for schedule %s", schedule_id
+                "No integration ID provided for schedule %s", schedule_id,
             )
             return
 
         # Check if schedule exists
         response = self.client.get(
-            f"/ic/api/integration/v1/integrations/{integration_id}/schedule"
+            f"/ic/api/integration/v1/integrations/{integration_id}/schedule",
         )
 
         if response.status_code == 404:
@@ -282,7 +282,7 @@ class SchedulesSink(OICBaseSink):
                     "interval": record.get("interval", 1),
                     "startTime": record.get("startTime"),
                     "endTime": record.get("endTime"),
-                }
+                },
             )
 
         # Cron schedule
@@ -296,7 +296,7 @@ class SchedulesSink(OICBaseSink):
                     "calendarId": record.get("calendarId"),
                     "includeHolidays": record.get("includeHolidays", False),
                     "includeWeekends": record.get("includeWeekends", True),
-                }
+                },
             )
 
         # Execution windows
@@ -311,7 +311,7 @@ class SchedulesSink(OICBaseSink):
                 "retryOnFailure": record.get("retryOnFailure", False),
                 "retryCount": record.get("retryCount", 3),
                 "retryInterval": record.get("retryInterval", 5),
-            }
+            },
         )
 
         return payload
@@ -439,7 +439,7 @@ class IntegrationActionsSink(OICBaseSink):
             self._clone_integration(integration_id, version, record)
 
     def _activate_integration(
-        self, integration_id: str, version: str, record: dict[str, Any]
+        self, integration_id: str, version: str, record: dict[str, Any],
     ) -> None:
         """Activate an integration."""
         payload = {
@@ -456,12 +456,12 @@ class IntegrationActionsSink(OICBaseSink):
     def _deactivate_integration(self, integration_id: str, version: str) -> None:
         """Deactivate an integration."""
         response = self.client.post(
-            f"/ic/api/integration/v1/integrations/{integration_id}|{version}/deactivate"
+            f"/ic/api/integration/v1/integrations/{integration_id}|{version}/deactivate",
         )
         response.raise_for_status()
 
     def _test_integration(
-        self, integration_id: str, version: str, record: dict[str, Any]
+        self, integration_id: str, version: str, record: dict[str, Any],
     ) -> None:
         """Test an integration."""
         test_payload = record.get("testPayload", {})
@@ -473,7 +473,7 @@ class IntegrationActionsSink(OICBaseSink):
         response.raise_for_status()
 
     def _clone_integration(
-        self, integration_id: str, version: str, record: dict[str, Any]
+        self, integration_id: str, version: str, record: dict[str, Any],
     ) -> None:
         """Clone an integration."""
         payload = {
@@ -512,7 +512,7 @@ class ConnectionActionsSink(OICBaseSink):
     def _test_connection(self, connection_id: str) -> None:
         """Test a connection."""
         response = self.client.post(
-            f"/ic/api/integration/v1/connections/{connection_id}/test"
+            f"/ic/api/integration/v1/connections/{connection_id}/test",
         )
         response.raise_for_status()
 
@@ -528,6 +528,6 @@ class ConnectionActionsSink(OICBaseSink):
     def _refresh_metadata(self, connection_id: str) -> None:
         """Refresh connection metadata."""
         response = self.client.post(
-            f"/ic/api/integration/v1/connections/{connection_id}/refreshMetadata"
+            f"/ic/api/integration/v1/connections/{connection_id}/refreshMetadata",
         )
         response.raise_for_status()

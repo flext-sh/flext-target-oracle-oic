@@ -122,8 +122,8 @@ class TestTargetOracleOICE2E:
                 "type": "STATE",
                 "value": {
                     "bookmarks": {
-                        "connections": {"replication_key_value": "2024-01-01T00:00:00Z"}
-                    }
+                        "connections": {"replication_key_value": "2024-01-01T00:00:00Z"},
+                    },
                 },
             },
         ]
@@ -173,7 +173,7 @@ class TestTargetOracleOICE2E:
                     "id": {"type": "string"},
                     "name": {"type": "string"},
                     "type": {"type": "string"},
-                }
+                },
             },
             key_properties=["id"],
         )
@@ -204,7 +204,7 @@ class TestTargetOracleOICE2E:
                     "id": {"type": "string"},
                     "name": {"type": "string"},
                     "archive_content": {"type": "string"},
-                }
+                },
             },
             key_properties=["id"],
         )
@@ -264,7 +264,7 @@ class TestTargetOracleOICE2E:
             target=target,
             stream_name="packages",
             schema={
-                "properties": {"id": {"type": "string"}, "name": {"type": "string"}}
+                "properties": {"id": {"type": "string"}, "name": {"type": "string"}},
             },
             key_properties=["id"],
         )
@@ -294,7 +294,7 @@ class TestTargetOracleOICE2E:
                     "id": {"type": "string"},
                     "name": {"type": "string"},
                     "version": {"type": "string"},
-                }
+                },
             },
             key_properties=["id"],
         )

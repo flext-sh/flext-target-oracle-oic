@@ -24,6 +24,7 @@ Example:
     # Run with Singer data
     cat data.jsonl | target-oracle-oic --config config.json
     ```
+
 """
 
 from __future__ import annotations
