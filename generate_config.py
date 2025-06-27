@@ -33,7 +33,8 @@ def generate_config() -> dict[str, Any]:
         "overwrite_existing": os.getenv("OIC_OVERWRITE_EXISTING", "false").lower()
         == "true",
         "validate_before_import": os.getenv(
-            "OIC_VALIDATE_BEFORE_IMPORT", "true",
+            "OIC_VALIDATE_BEFORE_IMPORT",
+            "true",
         ).lower()
         == "true",
     }

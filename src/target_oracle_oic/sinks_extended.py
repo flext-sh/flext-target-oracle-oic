@@ -58,7 +58,11 @@ class LibrariesSink(OICBaseSink):
             archive_content = archive_content.encode()
 
         files = {
-            "file": (f"{record['id']}.jar", archive_content, "application/octet-stream"),
+            "file": (
+                f"{record['id']}.jar",
+                archive_content,
+                "application/octet-stream",
+            ),
         }
 
         response = self.client.post(
@@ -106,7 +110,8 @@ class CertificatesSink(OICBaseSink):
         cert_content = record.get("certificate_content")
         if not cert_content:
             self.logger.warning(
-                "No certificate content provided for %s", record.get("alias"),
+                "No certificate content provided for %s",
+                record.get("alias"),
             )
             return
 
@@ -231,7 +236,8 @@ class SchedulesSink(OICBaseSink):
 
         if not integration_id:
             self.logger.warning(
-                "No integration ID provided for schedule %s", schedule_id,
+                "No integration ID provided for schedule %s",
+                schedule_id,
             )
             return
 
@@ -439,7 +445,10 @@ class IntegrationActionsSink(OICBaseSink):
             self._clone_integration(integration_id, version, record)
 
     def _activate_integration(
-        self, integration_id: str, version: str, record: dict[str, Any],
+        self,
+        integration_id: str,
+        version: str,
+        record: dict[str, Any],
     ) -> None:
         """Activate an integration."""
         payload = {
@@ -461,7 +470,10 @@ class IntegrationActionsSink(OICBaseSink):
         response.raise_for_status()
 
     def _test_integration(
-        self, integration_id: str, version: str, record: dict[str, Any],
+        self,
+        integration_id: str,
+        version: str,
+        record: dict[str, Any],
     ) -> None:
         """Test an integration."""
         test_payload = record.get("testPayload", {})
@@ -473,7 +485,10 @@ class IntegrationActionsSink(OICBaseSink):
         response.raise_for_status()
 
     def _clone_integration(
-        self, integration_id: str, version: str, record: dict[str, Any],
+        self,
+        integration_id: str,
+        version: str,
+        record: dict[str, Any],
     ) -> None:
         """Clone an integration."""
         payload = {
