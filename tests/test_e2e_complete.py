@@ -123,7 +123,7 @@ class TestTargetOracleOICE2E:
                 "value": {
                     "bookmarks": {
                         "connections": {
-                            "replication_key_value": "2024-01-01T00:00:00Z"
+                            "replication_key_value": "2024-01-01T00:00:00Z",
                         },
                     },
                 },
