@@ -133,8 +133,7 @@ class TestTargetOracleOICE2E:
         # Write messages to file
         input_file = tmp_path / "input.jsonl"
         with open(input_file, "w", encoding="utf-8") as f:
-            for msg in messages:
-                f.write(json.dumps(msg) + "\n")
+            f.writelines(json.dumps(msg) + "\n" for msg in messages)
 
         # Process messages
         with (
@@ -344,8 +343,7 @@ class TestTargetOracleOICE2E:
 
         input_file = tmp_path / "singer_input.jsonl"
         with open(input_file, "w", encoding="utf-8") as f:
-            for msg in singer_input:
-                f.write(json.dumps(msg) + "\n")
+            f.writelines(json.dumps(msg) + "\n" for msg in singer_input)
 
         # Run target via CLI
         with open(input_file, encoding="utf-8") as f:
