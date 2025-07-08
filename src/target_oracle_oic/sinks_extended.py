@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from .sinks import OICBaseSink
+from target_oracle_oic.sinks import OICBaseSink
 
 
 class LibrariesSink(OICBaseSink):

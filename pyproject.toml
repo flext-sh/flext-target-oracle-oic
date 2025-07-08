@@ -4,12 +4,12 @@ build-backend = "poetry.core.masonry.api"
 
 [project]
 name = "flext-target-oracle-oic"
-version = "0.2.0"
+version = "0.6.0"
 description = "FLEXT Target Oracle OIC - Singer Target for Oracle Integration Cloud Data Loading"
 authors = [{name = "FLEXT Team", email = "team@flext.sh"}]
 license = {text = "MIT"}
 readme = "README.md"
-requires-python = ">=3.12,<4.0"
+requires-python = ">=3.13,<3.14"
 keywords = ["flext", "singer", "target", "oracle", "oic", "integration-cloud", "etl", "enterprise"]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -17,16 +17,15 @@ classifiers = [
     "Intended Audience :: System Administrators",
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3 :: Only",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Topic :: Database",
     "Topic :: Office/Business :: Financial :: Accounting",
     "Topic :: System :: Systems Administration",
     "Typing :: Typed",
 ]
-
 dependencies = [
-    "singer-python>=6.0.0",
     "singer-sdk>=0.44.0",
     "oracledb>=2.4.0",
     "requests>=2.32.0",
@@ -59,31 +58,31 @@ Changelog = "https://github.com/flext-sh/flext-target-oracle-oic/blob/main/CHANG
 packages = [{ include = "target_oracle_oic", from = "src" }]
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.3.0"
+pytest = "^8.4.0"
 pytest-asyncio = "^0.24.0"
-pytest-cov = "^6.0.0"
-pytest-xdist = "^3.6.0"
+pytest-cov = "^6.2.0"
+pytest-xdist = "^3.8.0"
 pytest-mock = "^3.14.0"
-pytest-timeout = "^2.3.0"
-ruff = "^0.8.4"
-mypy = "^1.13.0"
-black = "^24.10.0"
-isort = "^5.13.0"
-types-requests = "^2.32.0"
-types-setuptools = "^75.6.0"
+pytest-timeout = "^2.4.0"
+ruff = "^0.12.2"
+mypy = "^1.16.1"
+black = "^25.1.0"
+isort = "^6.0.1"
+types-requests = "^2.32.4"
+types-setuptools = "^75.8.2"
 types-python-dateutil = "^2.9.0"
-pre-commit = "^4.0.0"
-mkdocs = "^1.6.0"
-mkdocs-material = "^9.5.0"
-ipython = "^8.29.0"
+pre-commit = "^4.2.0"
+mkdocs = "^1.6.1"
+mkdocs-material = "^9.6.15"
+ipython = "^8.37.0"
 
 [tool.poetry.group.security.dependencies]
-bandit = { extras = ["toml"], version = "^1.7.0" }
+bandit = {extras = ["toml"], version = "^1.8.0"}
 safety = "^3.2.0"
 
 [tool.poetry.group.build.dependencies]
-build = "^1.2.0"
-twine = "^6.0.0"
+build = "^1.2.2"
+twine = "^6.1.0"
 
 [tool.poetry.group.test.dependencies]
 pytest-benchmark = "^4.0.0"
@@ -91,28 +90,9 @@ faker = "^30.8.0"
 factory-boy = "^3.3.0"
 testcontainers = "^4.8.0"
 
-[tool.mypy]
-python_version = "3.12"
-strict = true
-warn_return_any = true
-warn_unused_configs = true
-disallow_untyped_defs = true
-disallow_incomplete_defs = true
-check_untyped_defs = true
-no_implicit_optional = true
-warn_redundant_casts = true
-warn_unused_ignores = true
-warn_no_return = true
-warn_unreachable = true
-strict_equality = true
-
-[[tool.mypy.overrides]]
-module = ["oracledb.*", "singer.*", "testcontainers.*", "sqlalchemy.*", "oauthlib.*"]
-ignore_missing_imports = true
-
 [tool.ruff]
 line-length = 88
-target-version = "py312"
+target-version = "py313"
 fix = true
 
 [tool.ruff.lint]
@@ -127,7 +107,7 @@ ignore = [
     # FOCUS: Only critical errors for now - ignore non-critical temporarily
     "E501",    # line-too-long (formatting)
     "D100", "D101", "D102", "D103", "D105", "D107", "D205", "D401", "D417",  # docstring issues
-    "ANN001", "ANN101", "ANN102", "ANN201", "ANN202", "ANN204", "ANN401", "ANN003", "ANN002",  # type annotations
+    "ANN001", "ANN102", "ANN201", "ANN202", "ANN204", "ANN401", "ANN003", "ANN002",  # type annotations
     "PLR0911", "PLR0912", "PLR0913", "PLR0915", "C901",  # complexity
     "E402",    # import-not-at-top (legacy)
     "S110", "S112", "S105", "S106", "S108", "S314", "S603", "S607", "S101", "S102",  # security (non-critical)
@@ -177,47 +157,30 @@ line-ending = "lf"
 
 [tool.black]
 line-length = 88
-target-version = ["py312"]
+target-version = ["py313"]
 
 [tool.isort]
 profile = "black"
 line_length = 88
 
-[tool.coverage.run]
-branch = true
-source = ["src"]
-omit = [
-    "*/tests/*",
-    "*/test_*",
-    "*/*_test.py",
-    "*/conftest.py",
-    "*/__pycache__/*",
-    "*/site-packages/*",
-    "*/.venv/*",
-    "*/venv/*",
-    "*/build/*",
-    "*/dist/*",
-    "*/.eggs/*",
-]
+[tool.mypy]
+python_version = "3.13"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+warn_unreachable = true
+strict_equality = true
 
-[tool.coverage.report]
-skip_empty = true
-skip_covered = false
-show_missing = true
-sort = "Cover"
-exclude_lines = [
-    "pragma: no cover",
-    "def __repr__",
-    "if self.debug:",
-    "if settings.DEBUG",
-    "raise AssertionError",
-    "raise NotImplementedError",
-    "if 0:",
-    "if __name__ == .__main__.:",
-    "class .*\\bProtocol\\):",
-    "@(abc\\.)?abstractmethod",
-    "TYPE_CHECKING",
-]
+[[tool.mypy.overrides]]
+module = ["oracledb.*", "singer.*", "testcontainers.*", "sqlalchemy.*", "oauthlib.*"]
+ignore_missing_imports = true
 
 [tool.pytest.ini_options]
 minversion = "8.0"
@@ -259,6 +222,42 @@ filterwarnings = [
 ]
 asyncio_mode = "auto"
 
+[tool.coverage.run]
+branch = true
+source = ["src"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "*/*_test.py",
+    "*/conftest.py",
+    "*/__pycache__/*",
+    "*/site-packages/*",
+    "*/.venv/*",
+    "*/venv/*",
+    "*/build/*",
+    "*/dist/*",
+    "*/.eggs/*",
+]
+
+[tool.coverage.report]
+skip_empty = true
+skip_covered = false
+show_missing = true
+sort = "Cover"
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\\bProtocol\\):",
+    "@(abc\\.)?abstractmethod",
+    "TYPE_CHECKING",
+]
+
 [tool.bandit]
 targets = ["src"]
 exclude_dirs = ["tests", "build", "dist"]
@@ -266,3 +265,36 @@ skips = ["B101", "B601"]
 
 [tool.bandit.assert_used]
 skips = ["*/tests/*", "*/test_*.py"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.lint.flake8-type-checking]
+strict = true
+
+[tool.ruff.lint.pylint]
+max-args = 10
+max-branches = 15
+max-returns = 8
+max-statements = 60
+
+[tool.vulture]
+min_confidence = 100
+paths = ["src"]
+exclude = ["tests/"]
+ignore_decorators = ["@app.route", "@router.get", "@router.post"]
+ignore_names = ["_*"]
+make_whitelist = true
+sort_by_size = true
+
+[tool.radon]
+exclude = ["tests/*", "*/tests/*"]
+ignore = ["F401"]  # Unused imports
+total_average = true
+show_complexity = true
+average = true
+order = "SCORE"
+min_confidence = 100
