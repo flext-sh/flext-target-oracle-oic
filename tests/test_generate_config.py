@@ -8,7 +8,7 @@ def test_module_imports():
     try:
         import flext_ldap
 
-        assert True
+        assert flext_ldap is not None
     except ImportError:
         pytest.skip("Module flext_ldap not importable")
 
