@@ -17,7 +17,7 @@ class LibrariesSink(OICBaseSink):
 
     def process_record(self, record: dict[str, Any], _context: dict[str, Any]) -> None:
         """Process a library record.
-        
+
         Args:
             record: Library record to process.
             _context: Record context (unused).
@@ -88,7 +88,7 @@ class CertificatesSink(OICBaseSink):
 
     def process_record(self, record: dict[str, Any], _context: dict[str, Any]) -> None:
         """Process a certificate record.
-        
+
         Args:
             record: Certificate record to process.
             _context: Record context (unused).
@@ -156,7 +156,7 @@ class ProjectsSink(OICBaseSink):
 
     def process_record(self, record: dict[str, Any], _context: dict[str, Any]) -> None:
         """Process a project record.
-        
+
         Args:
             record: Project record to process.
             _context: Record context (unused).
@@ -223,7 +223,7 @@ class SchedulesSink(OICBaseSink):
 
     def process_record(self, record: dict[str, Any], _context: dict[str, Any]) -> None:
         """Process a schedule record.
-        
+
         Args:
             record: Schedule record to process.
             _context: Record context (unused).
@@ -314,7 +314,7 @@ class BusinessEventsSink(OICBaseSink):
 
     def process_record(self, record: dict[str, Any], _context: dict[str, Any]) -> None:
         """Process a business event record.
-        
+
         Args:
             record: Business event record to process.
             _context: Record context (unused).
@@ -322,6 +322,7 @@ class BusinessEventsSink(OICBaseSink):
         """
         # Business events are typically published, not created
         self._publish_event(record)
+
     def _publish_event(self, record: dict[str, Any]) -> None:
         event_type = record.get("eventType") or ""
 
@@ -351,7 +352,7 @@ class MonitoringConfigSink(OICBaseSink):
 
     def process_record(self, record: dict[str, Any], _context: dict[str, Any]) -> None:
         """Process a monitoring configuration record.
-        
+
         Args:
             record: Monitoring config record to process.
             _context: Record context (unused).
@@ -410,7 +411,7 @@ class IntegrationActionsSink(OICBaseSink):
 
     def process_record(self, record: dict[str, Any], _context: dict[str, Any]) -> None:
         """Process an integration action record.
-        
+
         Args:
             record: Integration action record to process.
             _context: Record context (unused).
@@ -476,7 +477,7 @@ class ConnectionActionsSink(OICBaseSink):
 
     def process_record(self, record: dict[str, Any], _context: dict[str, Any]) -> None:
         """Process a connection action record.
-        
+
         Args:
             record: Connection action record to process.
             _context: Record context (unused).
