@@ -1,10 +1,10 @@
-"""Module test_e2e_complete."""
+"""Module test_e2e_complete.
 
 # !/usr/bin/env python3
 """Comprehensive End-to-End tests for target-oracle-oic.
 
 Tests all functionalities including:
-- Target initialization
+            - Target initialization
 - Sink operations
 - Data loading
 - Authentication
@@ -19,7 +19,6 @@ from unittest.mock import patch
 
 import pytest
 from singer_sdk.testing import get_target_test_class
-
 from target_oracle_oic.sinks import (
     ConnectionsSink,
     IntegrationsSink,
@@ -30,15 +29,14 @@ from target_oracle_oic.target import TargetOracleOIC
 
 
 class TestTargetOracleOICE2E:
-    """End-to-end tests for target-oracle-oic."""
+         End-to-end tests for target-oracle-oic."""
 
     @pytest.fixture
     def config_path(self) -> str:
-        """Return path to config.json."""
-        config_file = Path(__file__).parent.parent / "config.json"
+            config_file = Path(__file__).parent.parent / "config.json"
         if not config_file.exists():
-            # Generate config if it doesn't exist
-            import subprocess
+            # Generate config if it doesn't exist:
+            import subprocess  # TODO: Move import to module level
 
             subprocess.run(
                 ["python", "generate_config.py"],
@@ -48,24 +46,22 @@ class TestTargetOracleOICE2E:
         return str(config_file)
 
     @pytest.fixture
-    def config(self, config_path: str) -> dict[str, object]:
-        """Load configuration from config.json."""
+    def config(self, config_path:
+        str) -> dict[str, object]:
         with open(config_path, encoding="utf-8") as f:
             return json.load(f)
 
     @pytest.fixture
-    def target(self, config: dict[str, object]) -> object:
-        """Create target instance."""
+    def target(self, config:
+        dict[str, object]) -> object:
         return TargetOracleOIC(config=config)
 
     def test_target_initialization(self, target, config) -> None:
-        """Test target can be initialized with config."""
         assert target.name == "target-oracle-oic"
         assert target.config == config
         assert target.config["base_url"] == config["base_url"]
 
     def test_sink_discovery(self, target) -> None:
-        """Test sink discovery for different stream types."""
         # Test known sinks
         assert target._get_sink_class("connections") == ConnectionsSink
         assert target._get_sink_class("integrations") == IntegrationsSink
@@ -77,7 +73,6 @@ class TestTargetOracleOICE2E:
         assert default_sink == target.default_sink_class
 
     def test_sink_initialization(self, target) -> None:
-        """Test that sinks can be initialized properly."""
         # Test each sink type
         sinks_to_test = [
             ("connections", ConnectionsSink),
@@ -98,7 +93,6 @@ class TestTargetOracleOICE2E:
             assert sink.config == target.config
 
     def test_process_singer_messages(self, target, tmp_path) -> None:
-        """Test processing of Singer protocol messages."""
         # Create test Singer messages
         messages = [
             {
@@ -136,17 +130,16 @@ class TestTargetOracleOICE2E:
             f.writelines(json.dumps(msg) + "\n" for msg in messages)
 
         # Process messages
-        with (
+        with (:
             open(input_file, encoding="utf-8") as f,
             patch.object(ConnectionsSink, "process_record"),
         ):
             # Mock the sink to avoid actual API calls
             for line in f:
-                message = json.loads(line)
+            message = json.loads(line)
                 target._process_message(message)
 
     def test_authentication_handling(self, target) -> None:
-        """Test OAuth2 authentication handling."""
         # Get a sink instance
         sink = ConnectionsSink(
             target=target,
@@ -165,7 +158,6 @@ class TestTargetOracleOICE2E:
         reason="Skipping live API tests",
     )
     def test_live_connection_create(self, target) -> None:
-        """Test creating a connection in OIC."""
         sink = ConnectionsSink(
             target=target,
             stream_name="connections",
@@ -192,11 +184,10 @@ class TestTargetOracleOICE2E:
             assert True
         except Exception as e:
             if "401" in str(e) or "403" in str(e):
-                pytest.skip(f"Authentication failed: {e}")
+            pytest.skip(f"Authentication failed: {e}")
                 pytest.fail(f"Unexpected error: {e}")
 
     def test_integration_import_flow(self, target) -> None:
-        """Test integration import with archive content."""
         sink = IntegrationsSink(
             target=target,
             stream_name="integrations",
@@ -230,7 +221,6 @@ class TestTargetOracleOICE2E:
             mock_client.post.assert_called()
 
     def test_error_handling(self, target) -> None:
-        """Test error handling for various scenarios."""
         sink = ConnectionsSink(
             target=target,
             stream_name="connections",
@@ -243,10 +233,9 @@ class TestTargetOracleOICE2E:
             sink.process_record({}, {})
 
     def test_config_validation(self) -> None:
-        """Test config validation."""
         # Test missing required fields
         with pytest.raises((ValueError, KeyError, TypeError)):
-            TargetOracleOIC(config={})
+            TargetOracleOIC(config= {}
 
         # Test with minimal valid config
         minimal_config = {
@@ -260,7 +249,6 @@ class TestTargetOracleOICE2E:
         assert target.config == minimal_config
 
     def test_batch_processing(self, target) -> None:
-        """Test batch processing of records."""
         sink = PackagesSink(
             target=target,
             stream_name="packages",
@@ -280,13 +268,12 @@ class TestTargetOracleOICE2E:
 
             # Process all records
             for record in records:
-                sink.process_record(record, {})
+            sink.process_record(record, {})
 
             # Verify all records were processed
             assert mock_client.post.call_count >= len(records)
 
     def test_update_vs_create_logic(self, target) -> None:
-        """Test update vs create decision logic."""
         sink = LookupsSink(
             target=target,
             stream_name="lookups",
@@ -323,8 +310,7 @@ class TestTargetOracleOICE2E:
             mock_client.put.assert_called()
 
     def test_cli_execution(self, config_path, tmp_path) -> None:
-        """Test CLI execution with Singer input."""
-        import subprocess
+        import subprocess  # TODO: Move import to module level
 
         # Create test Singer input
         singer_input = [
@@ -361,12 +347,11 @@ class TestTargetOracleOICE2E:
         assert "target-oracle-oic" in result.stderr or result.returncode == 0
 
     def test_conditional_config_generation(self) -> None:
-        """Test conditional config.json generation."""
         config_path = Path(__file__).parent.parent / "config.json"
 
         # If config doesn't exist, it should be generated
         if not config_path.exists():
-            import subprocess
+            import subprocess  # TODO: Move import to module level
 
             result = subprocess.run(
                 ["python", "generate_config.py"],
@@ -380,8 +365,7 @@ class TestTargetOracleOICE2E:
             assert config_path.exists()
 
         # Load and validate config
-        with open(config_path, encoding="utf-8") as f:
-            config = json.load(f)
+        with open(config_path, encoding="utf-8") as f: config = json.load(f)
 
         # Check required fields
         assert "base_url" in config
@@ -398,7 +382,8 @@ class TestTargetOracleOICE2E:
 TargetOICTestClass = get_target_test_class(
     target_class=TargetOracleOIC,
     config={
-        "base_url": "https://test.integration.ocp.oraclecloud.com",
+        "base_url":
+         "https://test.integration.ocp.oraclecloud.com",
         "oauth_client_id": "test_client",
         "oauth_client_secret": "test_secret",
         "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
@@ -407,4 +392,4 @@ TargetOICTestClass = get_target_test_class(
 
 
 class TestTargetOICSingerSDK(TargetOICTestClass):
-    """Singer SDK standard tests for target-oracle-oic."""
+         """Singer SDK standard tests for target-oracle-oic."""

@@ -11,7 +11,7 @@ This target provides:
 - Archive-based integration deployment
 
 Example:
-    ```bash
+            ```bash
     # Install the target
     pip install target-oracle-oic
 
@@ -29,16 +29,15 @@ Example:
 
 from __future__ import annotations
 
-from target_oracle_oic.__version__ import __version__
-from target_oracle_oic.target import TargetOracleOIC
+from flext_target_oracle_oic.__version__ import __version__
+from flext_target_oracle_oic.target import TargetOracleOIC
 
 __all__ = ["TargetOracleOIC", "__version__", "main"]
 
 
 def main() -> None:
-    """Main entry point for the target-oracle-oic package."""
-    TargetOracleOIC.cli()
+        TargetOracleOIC.cli()
 
 
 if __name__ == "__main__":
-    main()
+            main()
