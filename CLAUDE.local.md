@@ -273,7 +273,7 @@ class OICTargetSingerPatterns:
 - **tap-oracle-oic**: Perfect companion for OIC metadata extraction and deployment
 - **flx-oracle-oic**: Unified FLX adapter with Singer target integration
 - **oracle-oic-ext**: Meltano extension for deployment lifecycle management
-- **client-b-poc-oic-wms**: POC deployment reference implementation
+- **client-b-meltane-native**: POC deployment reference implementation
 
 ### **Oracle Cloud Deployment Integration**
 

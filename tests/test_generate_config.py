@@ -1,36 +1,33 @@
-"""Basic tests for flext_ldap"""
+"""Basic tests for flext_ldap."""
 
 import pytest
 
 
-def test_module_imports():
-    """Test that module can be imported."""
-    try:
-        import flext_ldap
+def test_module_imports() -> None:
+            try:
+            import flext_ldap  # TODO: Move import to module level
 
         assert flext_ldap is not None
     except ImportError:
-        pytest.skip("Module flext_ldap not importable")
+            pytest.skip("Module flext_ldap not importable")
 
 
-def test_basic_functionality():
-    """Test basic functionality exists."""
-    try:
-        import flext_ldap
+def test_basic_functionality() -> None:
+        try:
+            import flext_ldap  # TODO: Move import to module level
 
         # Basic smoke test
         assert hasattr(flext_ldap, "__file__")
     except (ImportError, AttributeError):
-        pytest.skip("Module not testable")
+            pytest.skip("Module not testable")
 
 
 class TestBasicCoverage:
-    """Basic coverage tests."""
+         """Basic coverage tests."""
 
-    def test_module_attributes(self):
-        """Test module has expected attributes."""
+    def test_module_attributes(self) -> None:
         try:
-            import flext_ldap
+            import flext_ldap  # TODO: Move import to module level
 
             assert flext_ldap
         except ImportError:

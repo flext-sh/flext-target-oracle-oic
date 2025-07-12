@@ -7,14 +7,16 @@ from typing import Any
 import httpx
 from singer_sdk.sinks import Sink
 
-from target_oracle_oic.auth import OICOAuth2Authenticator
+from flext_observability.logging import get_logger
+from flext_target_oracle_oic.auth import OICOAuth2Authenticator
+
+logger = get_logger(__name__)
 
 
 class OICBaseSink(Sink):
     """Base sink for Oracle Integration Cloud."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
-        """Initialize the sink."""
         super().__init__(*args, **kwargs)
         # CRITICAL: Set tap_name for Singer SDK auth compatibility
         self.tap_name = "target-oracle-oic"  # Required by Singer SDK authenticators
@@ -23,14 +25,24 @@ class OICBaseSink(Sink):
 
     @property
     def authenticator(self) -> OICOAuth2Authenticator:
-        """Get or create the authenticator."""
+        """Get or create OAuth2 authenticator instance.
+
+        Returns:
+            OICOAuth2Authenticator for API authentication.
+
+        """
         if not self._authenticator:
             self._authenticator = OICOAuth2Authenticator(self)
         return self._authenticator
 
     @property
     def client(self) -> httpx.Client:
-        """Get or create the HTTP client."""
+        """Get or create HTTP client with authentication headers.
+
+        Returns:
+            Configured httpx.Client for OIC API requests.
+
+        """
         if not self._client:
             self._client = httpx.Client(
                 base_url=self.config["base_url"],
@@ -39,16 +51,29 @@ class OICBaseSink(Sink):
             )
         return self._client
 
-    def preprocess_record(
-        self,
-        record: dict[str, Any],
-        _context: dict[str, Any] | None,
-    ) -> dict[str, Any]:
-        """Process the record before sending it to Oracle Integration Cloud."""
+    def preprocess_record(self, record: dict[str, Any], _context: dict[str, Any] | None) -> dict[str, Any]:
+        """Preprocess record before batch processing.
+
+        Args:
+            record: Raw record data to preprocess.
+            _context: Optional context information (unused).
+
+        Returns:
+            Preprocessed record ready for API submission.
+
+        """
         return record
 
     def process_batch(self, context: dict[str, Any]) -> None:
-        """Process batch efficiently using Oracle OIC batch API endpoints."""
+        """Process batch of records to OIC API.
+
+        Groups records by operation type and submits in batches
+        respecting OIC API batch size limits.
+
+        Args:
+            context: Batch context containing records and metadata.
+
+        """
         if not context.get("records"):
             return
 
@@ -78,27 +103,16 @@ class OICBaseSink(Sink):
                 self._process_update_batch(batch, context)
 
     def _record_exists(self, _record: dict[str, Any]) -> bool:
-        """Check if a record already exists in OIC."""
         # Default implementation - subclasses should override
         return False
 
-    def _process_create_batch(
-        self,
-        records: list[dict[str, Any]],
-        context: dict[str, Any],
-    ) -> None:
-        """Process a batch of create operations."""
+    def _process_create_batch(self, records: list[dict[str, Any]], context: dict[str, Any]) -> None:
         # Default implementation processes records individually
         # Subclasses should override for true batch operations
         for record in records:
             self.process_record(record, context)
 
-    def _process_update_batch(
-        self,
-        records: list[dict[str, Any]],
-        context: dict[str, Any],
-    ) -> None:
-        """Process a batch of update operations."""
+    def _process_update_batch(self, records: list[dict[str, Any]], context: dict[str, Any]) -> None:
         # Default implementation processes records individually
         # Subclasses should override for true batch operations
         for record in records:
@@ -111,10 +125,18 @@ class ConnectionsSink(OICBaseSink):
     name = "connections"
 
     def process_record(self, record: dict[str, Any], _context: dict[str, Any]) -> None:
-        """Process a single connection record."""
+        """Process a connection record.
+
+        Creates new connections or updates existing ones based on record ID.
+
+        Args:
+            record: Connection record data containing id and configuration.
+            _context: Processing context (unused).
+
+        """
         connection_id = record.get("id") or ""
 
-        # Check if connection exists
+        # Check if connection exists:
         response = self.client.get(
             f"/ic/api/integration/v1/connections/{connection_id}",
         )
@@ -127,7 +149,6 @@ class ConnectionsSink(OICBaseSink):
             self._update_connection(connection_id, record)
 
     def _create_connection(self, record: dict[str, Any]) -> None:
-        """Create a new connection."""
         payload = {
             "connectionProperties": {
                 "name": record["name"],
@@ -145,7 +166,6 @@ class ConnectionsSink(OICBaseSink):
         response.raise_for_status()
 
     def _update_connection(self, connection_id: str, record: dict[str, Any]) -> None:
-        """Update an existing connection."""
         payload = {
             "connectionProperties": {
                 "description": record.get("description", ""),
@@ -166,17 +186,25 @@ class IntegrationsSink(OICBaseSink):
     name = "integrations"
 
     def process_record(self, record: dict[str, Any], _context: dict[str, Any]) -> None:
-        """Process a single integration record."""
+        """Process an integration record.
+
+        Imports integrations to OIC with version management.
+
+        Args:
+            record: Integration record containing id, version, and integration archive.
+            _context: Processing context (unused).
+
+        """
         integration_id = record.get("id") or ""
         version = record.get("version", "01.00.0000")
 
-        # Check if integration exists
+        # Check if integration exists:
         response = self.client.get(
             f"/ic/api/integration/v1/integrations/{integration_id}|{version}",
         )
 
         if response.status_code == 404:
-            # Create new integration from archive if provided
+            # Create new integration from archive if provided:
             if "archive_content" in record:
                 self._import_integration(record)
             else:
@@ -186,7 +214,6 @@ class IntegrationsSink(OICBaseSink):
             self._update_integration(integration_id, version, record)
 
     def _create_integration(self, record: dict[str, Any]) -> None:
-        """Create a new integration."""
         payload = {
             "name": record["name"],
             "identifier": record["id"],
@@ -201,7 +228,6 @@ class IntegrationsSink(OICBaseSink):
         response.raise_for_status()
 
     def _import_integration(self, record: dict[str, Any]) -> None:
-        """Import an integration from archive."""
         archive_content = record.get("archive_content")
         if isinstance(archive_content, str):
             archive_content = archive_content.encode()
@@ -220,13 +246,7 @@ class IntegrationsSink(OICBaseSink):
         )
         response.raise_for_status()
 
-    def _update_integration(
-        self,
-        integration_id: str,
-        version: str,
-        record: dict[str, Any],
-    ) -> None:
-        """Update an existing integration."""
+    def _update_integration(self, integration_id: str, version: str, record: dict[str, Any]) -> None:
         payload = {
             "description": record.get("description", ""),
         }
@@ -244,20 +264,27 @@ class PackagesSink(OICBaseSink):
     name = "packages"
 
     def process_record(self, record: dict[str, Any], _context: dict[str, Any]) -> None:
-        """Process a single package record."""
+        """Process a package record.
+
+        Imports package archives to OIC if archive content is provided.
+
+        Args:
+            record: Package record containing id and optional archive_content.
+            _context: Processing context (unused).
+
+        """
         package_id = record.get("id") or ""
 
         # Log the package being processed
         self.logger.info(f"Processing package: {package_id}")
 
-        # Import package if archive content is provided
+        # Import package if archive content is provided:
         if "archive_content" in record:
             self._import_package(record)
         else:
             self.logger.warning(f"No archive content provided for package {package_id}")
 
     def _import_package(self, record: dict[str, Any]) -> None:
-        """Import a package from archive."""
         archive_content = record.get("archive_content")
         if isinstance(archive_content, str):
             archive_content = archive_content.encode()
@@ -283,10 +310,18 @@ class LookupsSink(OICBaseSink):
     name = "lookups"
 
     def process_record(self, record: dict[str, Any], _context: dict[str, Any]) -> None:
-        """Process a single lookup record."""
+        """Process a lookup record.
+
+        Creates new lookups or updates existing ones based on lookup name.
+
+        Args:
+            record: Lookup record containing name and lookup definitions.
+            _context: Processing context (unused).
+
+        """
         lookup_name = record.get("name") or ""
 
-        # Check if lookup exists
+        # Check if lookup exists:
         response = self.client.get(f"/ic/api/integration/v1/lookups/{lookup_name}")
 
         if response.status_code == 404:
@@ -297,7 +332,6 @@ class LookupsSink(OICBaseSink):
             self._update_lookup(lookup_name, record)
 
     def _create_lookup(self, record: dict[str, Any]) -> None:
-        """Create a new lookup."""
         payload = {
             "name": record["name"],
             "description": record.get("description", ""),
@@ -312,7 +346,6 @@ class LookupsSink(OICBaseSink):
         response.raise_for_status()
 
     def _update_lookup(self, lookup_name: str, record: dict[str, Any]) -> None:
-        """Update an existing lookup."""
         payload = {
             "description": record.get("description", ""),
             "rows": record.get("rows", []),
