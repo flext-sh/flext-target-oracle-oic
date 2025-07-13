@@ -19,20 +19,20 @@ class OICAuthConfig(DomainValueObject):
     """OIC authentication configuration value object using flext-core patterns."""
 
     oauth_client_id: str = Field(
-        ...,
+        default="",
         description="OAuth2 client ID from IDCS application",
     )
     oauth_client_secret: str = Field(
-        ...,
+        default="",
         description="OAuth2 client secret from IDCS application",
         json_schema_extra={"secret": True},
     )
     oauth_token_url: str = Field(
-        ...,
+        default="",
         description="IDCS token endpoint URL",
     )
     oauth_client_aud: str | None = Field(
-        None,
+        default=None,
         description="IDCS client audience URL for scope building",
     )
 
@@ -61,29 +61,29 @@ class OICConnectionConfig(DomainValueObject):
     """OIC connection configuration value object using flext-core patterns."""
 
     base_url: str = Field(
-        ...,
+        default="",
         description="OIC instance base URL (e.g., https://myinstance-region.integration.ocp.oraclecloud.com)",
     )
     timeout: int = Field(
-        30,
+        default=30,
         description="Request timeout in seconds",
         gt=0,
         le=300,
     )
     max_retries: int = Field(
-        3,
+        default=3,
         description="Maximum number of retry attempts",
         ge=0,
         le=10,
     )
     retry_delay: float = Field(
-        1.0,
+        default=1.0,
         description="Delay between retries in seconds",
         gt=0.0,
         le=60.0,
     )
     max_concurrent_requests: int = Field(
-        5,
+        default=5,
         description="Maximum concurrent requests",
         gt=0,
         le=20,
@@ -233,15 +233,36 @@ class TargetOracleOICConfig(BaseSettings):
         description="Connection configuration",
     )
     deployment: OICDeploymentConfig = Field(
-        default_factory=OICDeploymentConfig,
+        default_factory=lambda: OICDeploymentConfig(
+            import_mode="create_or_update",
+            activate_integrations=False,
+            validate_connections=True,
+            archive_directory=None,
+            rollback_on_failure=True,
+            enable_versioning=True,
+            audit_trail=True,
+        ),
         description="Deployment configuration",
     )
     processing: OICProcessingConfig = Field(
-        default_factory=OICProcessingConfig,
+        default_factory=lambda: OICProcessingConfig(
+            batch_size=100,
+            enable_validation=True,
+            validation_strict_mode=False,
+            skip_missing_connections=False,
+            max_errors=10,
+            ignore_transformation_errors=True,
+            dry_run_mode=False,
+        ),
         description="Processing configuration",
     )
     entities: OICEntityConfig = Field(
-        default_factory=OICEntityConfig,
+        default_factory=lambda: OICEntityConfig(
+            integration_identifier_field="code",
+            connection_identifier_field="code",
+            lookup_identifier_field="name",
+            identifier_fields={},
+        ),
         description="Entity configuration",
     )
 
@@ -296,18 +317,40 @@ class TargetOracleOICConfig(BaseSettings):
                 oauth_client_id="your-client-id",
                 oauth_client_secret="your-client-secret",
                 oauth_token_url="https://idcs-url/oauth2/v1/token",
+                oauth_client_aud=None,
             ),
             "connection": OICConnectionConfig(
                 base_url="https://your-instance.integration.ocp.oraclecloud.com",
             ),
-            "deployment": OICDeploymentConfig(),
-            "processing": OICProcessingConfig(),
-            "entities": OICEntityConfig(),
+            "deployment": OICDeploymentConfig(
+                import_mode="create_or_update",
+                activate_integrations=False,
+                validate_connections=True,
+                archive_directory=None,
+                rollback_on_failure=True,
+                enable_versioning=True,
+                audit_trail=True,
+            ),
+            "processing": OICProcessingConfig(
+                batch_size=100,
+                enable_validation=True,
+                validation_strict_mode=False,
+                skip_missing_connections=False,
+                max_errors=10,
+                ignore_transformation_errors=True,
+                dry_run_mode=False,
+            ),
+            "entities": OICEntityConfig(
+                integration_identifier_field="code",
+                connection_identifier_field="code",
+                lookup_identifier_field="name",
+                identifier_fields={},
+            ),
             "project_name": "flext-target-oracle-oic",
             "project_version": "0.7.0",
         }
         defaults.update(overrides)
-        return cls(**defaults)
+        return cls.model_validate(defaults)
 
 
 # Export main configuration classes
