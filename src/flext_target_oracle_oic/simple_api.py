@@ -20,7 +20,9 @@ from flext_target_oracle_oic.config import (
 )
 
 
-def setup_oic_target(config: TargetOracleOICConfig | None = None) -> ServiceResult[TargetOracleOICConfig]:
+def setup_oic_target(
+    config: TargetOracleOICConfig | None = None,
+) -> ServiceResult[TargetOracleOICConfig]:
     """Setup Oracle Integration Cloud target with configuration.
 
     Args:
@@ -73,6 +75,9 @@ def create_development_oic_target_config(**overrides: Any) -> TargetOracleOICCon
         activate_integrations=False,
         validate_connections=True,
         rollback_on_failure=True,
+        archive_directory=None,
+        enable_versioning=True,
+        audit_trail=True,
     )
 
     processing_config = OICProcessingConfig(
@@ -80,6 +85,7 @@ def create_development_oic_target_config(**overrides: Any) -> TargetOracleOICCon
         enable_validation=True,
         validation_strict_mode=False,
         dry_run_mode=True,
+        skip_missing_connections=False,
         max_errors=50,
         ignore_transformation_errors=True,
     )
@@ -89,7 +95,12 @@ def create_development_oic_target_config(**overrides: Any) -> TargetOracleOICCon
         connection=connection_config,
         deployment=deployment_config,
         processing=processing_config,
-        entities=OICEntityConfig(),
+        entities=OICEntityConfig(
+            integration_identifier_field="code",
+            connection_identifier_field="code",
+            lookup_identifier_field="name",
+            identifier_fields={},
+        ),
         project_name="flext-target-oracle-oic-dev",
         project_version="0.7.0",
     )
@@ -132,6 +143,7 @@ def create_production_oic_target_config(**overrides: Any) -> TargetOracleOICConf
         activate_integrations=True,
         validate_connections=True,
         rollback_on_failure=True,
+        archive_directory=None,
         enable_versioning=True,
         audit_trail=True,
     )
@@ -141,6 +153,7 @@ def create_production_oic_target_config(**overrides: Any) -> TargetOracleOICConf
         enable_validation=True,
         validation_strict_mode=True,
         dry_run_mode=False,
+        skip_missing_connections=False,
         max_errors=10,
         ignore_transformation_errors=False,
     )
@@ -150,7 +163,12 @@ def create_production_oic_target_config(**overrides: Any) -> TargetOracleOICConf
         connection=connection_config,
         deployment=deployment_config,
         processing=processing_config,
-        entities=OICEntityConfig(),
+        entities=OICEntityConfig(
+            integration_identifier_field="code",
+            connection_identifier_field="code",
+            lookup_identifier_field="name",
+            identifier_fields={},
+        ),
         project_name="flext-target-oracle-oic",
         project_version="0.7.0",
     )
@@ -193,6 +211,7 @@ def create_migration_oic_target_config(**overrides: Any) -> TargetOracleOICConfi
         activate_integrations=False,
         validate_connections=True,
         rollback_on_failure=False,  # Continue processing on errors during migration
+        archive_directory=None,
         enable_versioning=True,
         audit_trail=True,
     )
@@ -202,6 +221,7 @@ def create_migration_oic_target_config(**overrides: Any) -> TargetOracleOICConfi
         enable_validation=True,
         validation_strict_mode=False,
         dry_run_mode=False,
+        skip_missing_connections=False,
         max_errors=1000,  # Higher tolerance for migrations
         ignore_transformation_errors=True,
     )
@@ -211,7 +231,12 @@ def create_migration_oic_target_config(**overrides: Any) -> TargetOracleOICConfi
         connection=connection_config,
         deployment=deployment_config,
         processing=processing_config,
-        entities=OICEntityConfig(),
+        entities=OICEntityConfig(
+            integration_identifier_field="code",
+            connection_identifier_field="code",
+            lookup_identifier_field="name",
+            identifier_fields={},
+        ),
         project_name="flext-target-oracle-oic-migration",
         project_version="0.7.0",
     )
@@ -285,16 +310,32 @@ def create_test_connection_config(**overrides: Any) -> TargetOracleOICConfig:
     processing_config = OICProcessingConfig(
         batch_size=1,
         enable_validation=False,
+        validation_strict_mode=False,
         dry_run_mode=True,
+        skip_missing_connections=False,
         max_errors=1,
+        ignore_transformation_errors=True,
     )
 
     config = TargetOracleOICConfig(
         auth=auth_config,
         connection=connection_config,
-        deployment=OICDeploymentConfig(),
+        deployment=OICDeploymentConfig(
+            import_mode="create_or_update",
+            activate_integrations=False,
+            validate_connections=True,
+            rollback_on_failure=True,
+            archive_directory=None,
+            enable_versioning=True,
+            audit_trail=True,
+        ),
         processing=processing_config,
-        entities=OICEntityConfig(),
+        entities=OICEntityConfig(
+            integration_identifier_field="code",
+            connection_identifier_field="code",
+            lookup_identifier_field="name",
+            identifier_fields={},
+        ),
         project_name="flext-target-oracle-oic-test",
         project_version="0.7.0",
     )
