@@ -1,4 +1,4 @@
-"""Tests for target-oracle-oic with enterprise-grade validation.
+"""Tests for target-oracle-oic with enterprise-grade validation."""
 
 from __future__ import annotations
 
