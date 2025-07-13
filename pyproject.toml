@@ -142,12 +142,82 @@ select = [
     "ALL",
 ]
 ignore = [
-    "E501",    # line too long (handled by formatter)
+    # Line length and formatting (handled by formatter)
+    "E501",    # line too long
+    "W505",    # doc line too long
+    "W292",    # no newline at end of file
+    "W293",    # blank line contains whitespace
+    "COM812",  # trailing comma missing (conflicts with formatter)
+    "ISC001",  # single line implicit string concatenation
+    
+    # Documentation style flexibility  
+    "D100",    # missing docstring in public module
+    "D101",    # missing docstring in public class
+    "D102",    # missing docstring in public method
+    "D103",    # missing docstring in public function
+    "D104",    # missing docstring in public package
+    "D105",    # missing docstring in magic method
+    "D106",    # missing docstring in public nested class
+    "D107",    # missing docstring in __init__
+    "D203",    # blank line before class docstring (conflicts with D211)
+    "D213",    # multi-line docstring summary second line (conflicts with D212)
+    "D401",    # non-imperative-mood - Technical descriptions preferred
+    
+    # Oracle OIC Target-specific patterns
+    "ARG001",  # unused-function-argument - Singer SDK patterns
+    "ARG002",  # unused-method-argument - Singer SDK interface compliance
+    "ANN001",  # missing-type-annotation - Fixtures and Singer SDK
+    "ANN401",  # any-type - Singer SDK requires Any types
+    "PLC0415", # import-outside-top-level - Dynamic imports for targets
+    "FBT001",  # boolean-positional-argument - Singer SDK patterns
+    "FBT003",  # boolean-positional-value-in-call - Config patterns
+    "S106",    # hardcoded-password-possible - Test secrets
+    "S107",    # hardcoded-password-string - Development defaults
+    "S603",    # subprocess-without-shell-equals-true - CLI commands
+    "S607",    # start-process-with-partial-path - Test scripts
+    "PTH123",  # open-builtin - Path.open() not always suitable
+    "I001",    # unsorted-imports - Import order flexibility
+    "SLF001",  # private-member-accessed - Test introspection
+    "BLE001",  # blind-except - Error recovery patterns
+    "PLR2004", # magic-value-used-in-comparison - Test assertions
+    
+    # Code style flexibility
+    "ERA001",  # commented-out-code - Development annotations
+    "TD002",   # missing-todo-author
+    "TD003",   # missing-issue-link-in-todo
+    "FIX002",  # line-contains-todo
+    "T201",    # print - CLI output
+    "T203",    # pprint - Debugging
+    "G004",    # logging-f-string - Better error messages
+    
+    # Complexity (handled case by case)
+    "C901",    # function-too-complex
+    "PLR0913", # too-many-arguments - Singer SDK methods
+    "PLR0915", # too-many-statements
+    "PLR0912", # too-many-branches
+    "PLR0911", # too-many-return-statements
+    
+    # Import management
+    "F401",    # unused-import - __init__.py re-exports
+    "F403",    # star-import - __init__.py patterns
+    "F405",    # star-import-usage
+    
+    # Error handling patterns
+    "EM101",   # raw-string-in-exception
+    "EM102",   # f-string-in-exception
+    "TRY002",  # raise-vanilla-exception - Test helpers
+    "TRY003",  # raise-vanilla-exception-with-message
+    "TRY301",  # raise-within-try
+    
+    # Test-specific patterns
+    "S101",    # assert - Tests
+    "PT011",   # pytest-raises-too-broad
+    "PT012",   # pytest-raises-with-multiple-statements
 ]
 
 # Test-specific ignores
 [tool.ruff.lint.per-file-ignores]
-"tests/**/*.py" = ["S101", "D102", "N801", "N802", "N806", "PLR2004", "F401", "PLC0415", "G004", "T201"]
+"tests/**/*.py" = ["S101", "S105", "D102", "N801", "N802", "N806", "PLR2004", "F401", "PLC0415", "G004", "T201"]
 "**/tests/*.py" = ["S101", "D102", "N801", "N802", "N806", "PLR2004", "F401", "PLC0415", "G004", "T201"]
 "test_*.py" = ["S101", "D102", "N801", "N802", "N806", "PLR2004", "F401", "PLC0415", "G004", "T201"]
  

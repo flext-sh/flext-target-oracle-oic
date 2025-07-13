@@ -1,13 +1,11 @@
-"""Module generate_config.
-
 """Generate config.json from .env file for target-oracle-oic."""
 
+import json
+import os
 from pathlib import Path
 from typing import Any
 
 from dotenv import load_dotenv
-
-# !/usr/bin/env python3
 
 
 # Load environment variables
@@ -60,17 +58,17 @@ def generate_config() -> dict[str, Any]:
     }
 
     # Remove None values
-    return {k:
-        v for k, v in config.items() if v is not None}:
+    return {k: v for k, v in config.items() if v is not None}
 
 
 def main() -> None:
-            config = generate_config()
+    config = generate_config()
 
-    # Check if config.json already exists:
+    # Check if config.json already exists
     config_path = Path("config.json")
     if config_path.exists():
-            response = input().strip().lower()
+        print("config.json already exists. Overwrite? (y/n)")
+        response = input().strip().lower()
         if response != "y":
             return
 
@@ -78,7 +76,8 @@ def main() -> None:
     config_file = Path(config_path)
     with config_file.open("w") as f:
         json.dump(config, f, indent=2)
+    print("config.json generated successfully")
 
 
 if __name__ == "__main__":
-            main()
+    main()

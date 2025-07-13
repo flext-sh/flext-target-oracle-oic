@@ -1,10 +1,7 @@
-"""Module test_e2e_complete.
-
-# !/usr/bin/env python3
 """Comprehensive End-to-End tests for target-oracle-oic.
 
 Tests all functionalities including:
-            - Target initialization
+- Target initialization
 - Sink operations
 - Data loading
 - Authentication
@@ -29,11 +26,11 @@ from target_oracle_oic.target import TargetOracleOIC
 
 
 class TestTargetOracleOICE2E:
-         End-to-end tests for target-oracle-oic."""
+    """End-to-end tests for target-oracle-oic."""
 
     @pytest.fixture
     def config_path(self) -> str:
-            config_file = Path(__file__).parent.parent / "config.json"
+        config_file = Path(__file__).parent.parent / "config.json"
         if not config_file.exists():
             # Generate config if it doesn't exist:
             import subprocess  # TODO: Move import to module level
@@ -130,13 +127,13 @@ class TestTargetOracleOICE2E:
             f.writelines(json.dumps(msg) + "\n" for msg in messages)
 
         # Process messages
-        with (:
+        with (
             open(input_file, encoding="utf-8") as f,
             patch.object(ConnectionsSink, "process_record"),
         ):
             # Mock the sink to avoid actual API calls
             for line in f:
-            message = json.loads(line)
+                message = json.loads(line)
                 target._process_message(message)
 
     def test_authentication_handling(self, target) -> None:
@@ -184,7 +181,8 @@ class TestTargetOracleOICE2E:
             assert True
         except Exception as e:
             if "401" in str(e) or "403" in str(e):
-            pytest.skip(f"Authentication failed: {e}")
+                pytest.skip(f"Authentication failed: {e}")
+            else:
                 pytest.fail(f"Unexpected error: {e}")
 
     def test_integration_import_flow(self, target) -> None:
@@ -235,7 +233,7 @@ class TestTargetOracleOICE2E:
     def test_config_validation(self) -> None:
         # Test missing required fields
         with pytest.raises((ValueError, KeyError, TypeError)):
-            TargetOracleOIC(config= {}
+            TargetOracleOIC(config={})
 
         # Test with minimal valid config
         minimal_config = {
@@ -268,7 +266,7 @@ class TestTargetOracleOICE2E:
 
             # Process all records
             for record in records:
-            sink.process_record(record, {})
+                sink.process_record(record, {})
 
             # Verify all records were processed
             assert mock_client.post.call_count >= len(records)
@@ -365,7 +363,8 @@ class TestTargetOracleOICE2E:
             assert config_path.exists()
 
         # Load and validate config
-        with open(config_path, encoding="utf-8") as f: config = json.load(f)
+        with open(config_path, encoding="utf-8") as f:
+            config = json.load(f)
 
         # Check required fields
         assert "base_url" in config
@@ -382,8 +381,7 @@ class TestTargetOracleOICE2E:
 TargetOICTestClass = get_target_test_class(
     target_class=TargetOracleOIC,
     config={
-        "base_url":
-         "https://test.integration.ocp.oraclecloud.com",
+        "base_url": "https://test.integration.ocp.oraclecloud.com",
         "oauth_client_id": "test_client",
         "oauth_client_secret": "test_secret",
         "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
@@ -392,4 +390,5 @@ TargetOICTestClass = get_target_test_class(
 
 
 class TestTargetOICSingerSDK(TargetOICTestClass):
-         """Singer SDK standard tests for target-oracle-oic."""
+    # Singer SDK standard tests for target-oracle-oic.
+    pass
