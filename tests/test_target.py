@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-from target_oracle_oic.sinks import ConnectionsSink, IntegrationsSink
-from target_oracle_oic.target import TargetOracleOIC
+from flext_target_oracle_oic.sinks import ConnectionsSink, IntegrationsSink
+from flext_target_oracle_oic.target import TargetOracleOIC
+from singer_sdk.exceptions import ConfigValidationError
 
 import pytest
 
@@ -34,7 +35,7 @@ class TestTargetOracleOIC:
             "base_url": "https://test.integration.ocp.oraclecloud.com",
             # Missing required OAuth2 credentials
         }
-        with pytest.raises((KeyError, ValueError)):
+        with pytest.raises(ConfigValidationError):
             TargetOracleOIC(config=invalid_config)
 
     def test_get_sink_mapping(self) -> None:

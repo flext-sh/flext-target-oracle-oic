@@ -118,6 +118,22 @@ class OICBaseSink(Sink):
         for record in records:
             self.process_record(record, context)
 
+    def process_record(self, record: dict[str, Any], context: dict[str, Any]) -> None:
+        """Process a single record - default implementation for base sink.
+
+        Args:
+            record: Record data to process.
+            context: Processing context.
+
+        """
+        # Default implementation: log and skip
+        # Subclasses should override this method
+        self.logger.warning(
+            "OICBaseSink.process_record called directly - "
+            "stream '%s' should use a specific sink class",
+            self.stream_name,
+        )
+
 
 class ConnectionsSink(OICBaseSink):
     """Oracle Integration Cloud target sink for connections."""
