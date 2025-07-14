@@ -36,13 +36,51 @@ class TargetOracleOIC(Target):
     """
 
     name = "target-oracle-oic"
-    # Use flext-core configuration class
-    config_class = TargetOracleOICConfig
+    # Use Singer SDK default configuration (will define custom later if needed)
     default_sink_class = OICBaseSink
+
+    config_jsonschema = {
+        "type": "object",
+        "properties": {
+            "base_url": {
+                "type": "string",
+                "description": "OIC instance base URL",
+            },
+            "oauth_client_id": {
+                "type": "string", 
+                "description": "OAuth2 client ID",
+            },
+            "oauth_client_secret": {
+                "type": "string",
+                "description": "OAuth2 client secret",
+                "secret": True,
+            },
+            "oauth_token_url": {
+                "type": "string",
+                "description": "OAuth2 token endpoint URL",
+            },
+            "oauth_client_aud": {
+                "type": ["string", "null"],
+                "description": "OAuth2 client audience",
+            },
+            "import_mode": {
+                "type": "string",
+                "enum": ["create", "update", "create_or_update"],
+                "default": "create_or_update",
+                "description": "Import mode for integrations",
+            },
+            "activate_integrations": {
+                "type": "boolean",
+                "default": False,
+                "description": "Automatically activate integrations after import",
+            },
+        },
+        "required": ["base_url", "oauth_client_id", "oauth_client_secret", "oauth_token_url"],
+    }
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
-        self.logger = logger
+        # Use the Singer SDK logger property instead of overriding
 
     def get_sink(self, stream_name: str, *, record: dict[str, Any] | None = None, schema: dict[str, Any] | None = None, key_properties: Sequence[str] | None = None) -> Sink:
         """Get appropriate sink for the given stream.

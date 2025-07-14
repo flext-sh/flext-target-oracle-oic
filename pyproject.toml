@@ -15,7 +15,7 @@ dependencies = [
     # Singer SDK and Oracle dependencies
     "singer-sdk>=0.47.0",
     "requests>=2.32.0",
-    "oracledb>=2.4.1",
+    "oracledb>=3.2.0",
     "sqlalchemy>=2.0.0",
     "python-dateutil>=2.9.0",
     "jsonschema>=4.23.0",
@@ -63,7 +63,7 @@ flext-observability = { path = "../flext-observability", develop = true }
 # Singer SDK and Oracle dependencies
 singer-sdk = ">=0.47.0"
 requests = ">=2.32.0"
-oracledb = ">=2.4.1"
+oracledb = ">=3.2.0"
 sqlalchemy = ">=2.0.0"
 python-dateutil = ">=2.9.0"
 jsonschema = ">=4.23.0"
@@ -257,11 +257,11 @@ warn_unreachable = true
 strict_equality = true
 
 # Paths to check
-files = ["src", "tests"]
+files = ["src/flext_target_oracle_oic", "tests"]
 
 # Import discovery
-namespace_packages = true
-explicit_package_bases = true
+# namespace_packages = true
+# explicit_package_bases = true
 
 # Error output
 show_error_codes = true

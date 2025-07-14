@@ -16,13 +16,13 @@ from unittest.mock import patch
 
 import pytest
 from singer_sdk.testing import get_target_test_class
-from target_oracle_oic.sinks import (
+from flext_target_oracle_oic.sinks import (
     ConnectionsSink,
     IntegrationsSink,
     LookupsSink,
     PackagesSink,
 )
-from target_oracle_oic.target import TargetOracleOIC
+from flext_target_oracle_oic.target import TargetOracleOIC
 
 
 class TestTargetOracleOICE2E:
@@ -332,7 +332,7 @@ class TestTargetOracleOICE2E:
         # Run target via CLI
         with open(input_file, encoding="utf-8") as f:
             result = subprocess.run(
-                ["python", "-m", "target_oracle_oic", "--config", config_path],
+                ["python", "-m", "flext_target_oracle_oic", "--config", config_path],
                 stdin=f,
                 capture_output=True,
                 text=True,
