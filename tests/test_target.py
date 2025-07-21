@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from flext_target_oracle_oic.sinks import ConnectionsSink, IntegrationsSink
-from flext_target_oracle_oic.target import TargetOracleOIC
+import pytest
 from singer_sdk.exceptions import ConfigValidationError
 
-import pytest
+from flext_target_oracle_oic.sinks import ConnectionsSink, IntegrationsSink
+from flext_target_oracle_oic.target import TargetOracleOIC
 
 
 class TestTargetOracleOIC:
@@ -22,9 +22,9 @@ class TestTargetOracleOIC:
             "oauth_client_aud": "https://test-idcs.identity.oraclecloud.com",
         }
 
-    def test_target_initialization_with_valid_config(self,
-        valid_config:
-        dict[str, str],
+    def test_target_initialization_with_valid_config(
+        self,
+        valid_config: dict[str, str],
     ) -> None:
         target = TargetOracleOIC(config=valid_config)
         assert target.name == "target-oracle-oic"
