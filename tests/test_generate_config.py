@@ -3,13 +3,22 @@
 from __future__ import annotations
 
 import os
+import sys
+from pathlib import Path
 from typing import TYPE_CHECKING
 from unittest.mock import patch
 
-from generate_config import generate_config, main
+# Add scripts directory to Python path for import
+scripts_path = Path(__file__).parent.parent / "scripts"
+sys.path.insert(0, str(scripts_path))
+
+# Import after path modification
+from generate_config import (  # type: ignore[import-not-found]  # noqa: E402
+    generate_config,
+    main,
+)
 
 if TYPE_CHECKING:
-    from pathlib import Path
 
     import pytest
 
