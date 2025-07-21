@@ -1,6 +1,7 @@
 """Oracle Integration Cloud Extended Sinks.
 
-Professional-grade sinks for additional OIC entities including  libraries, certificates, schedules, and projects.
+Professional-grade sinks for additional OIC entities including libraries,
+certificates, schedules, and projects.
 """
 
 from __future__ import annotations
@@ -41,14 +42,16 @@ class LibrariesSink(OICBaseSink):
             self._import_library(record)
             return
 
-        payload = {"name": record["name"],
+        payload = {
+            "name": record["name"],
             "identifier": record["id"],
             "description": record.get("description", ""),
             "type": record.get("type", "JAVASCRIPT"),
             "version": record.get("version", "1.0"),
         }
 
-        response = self.client.post("/ic/api/integration/v1/libraries",
+        response = self.client.post(
+            "/ic/api/integration/v1/libraries",
             json=payload,
         )
         response.raise_for_status()
@@ -58,24 +61,28 @@ class LibrariesSink(OICBaseSink):
         if isinstance(archive_content, str):
             archive_content = archive_content.encode()
 
-        files = {"file": (
+        files = {
+            "file": (
                 f"{record['id']}.jar",
                 archive_content,
                 "application/octet-stream",
             ),
         }
 
-        response = self.client.post("/ic/api/integration/v1/libraries/archive",
+        response = self.client.post(
+            "/ic/api/integration/v1/libraries/archive",
             files=files,  # type: ignore[arg-type]
         )
         response.raise_for_status()
 
     def _update_library(self, library_id: str, record: dict[str, Any]) -> None:
-        payload = {"description": record.get("description", ""),
+        payload = {
+            "description": record.get("description", ""),
             "version": record.get("version", "1.0"),
         }
 
-        response = self.client.put(f"/ic/api/integration/v1/libraries/{library_id}",
+        response = self.client.put(
+            f"/ic/api/integration/v1/libraries/{library_id}",
             json=payload,
         )
         response.raise_for_status()
@@ -110,7 +117,8 @@ class CertificatesSink(OICBaseSink):
         # Certificate content must be provided
         cert_content = record.get("certificate_content")
         if not cert_content:
-            self.logger.warning("No certificate content provided for %s",
+            self.logger.warning(
+                "No certificate content provided for %s",
                 record.get("alias"),
             )
             return
@@ -118,19 +126,22 @@ class CertificatesSink(OICBaseSink):
         if isinstance(cert_content, str):
             cert_content = cert_content.encode()
 
-        files = {"certificate": (
+        files = {
+            "certificate": (
                 f"{record['alias']}.cer",
                 cert_content,
                 "application/x-x509-ca-cert",
             ),
         }
 
-        data = {"alias": record["alias"],
+        data = {
+            "alias": record["alias"],
             "description": record.get("description", ""),
             "password": record.get("password", ""),  # For private key certificates
         }
 
-        response = self.client.post("/ic/api/integration/v1/certificates",
+        response = self.client.post(
+            "/ic/api/integration/v1/certificates",
             data=data,
             files=files,
         )
@@ -141,7 +152,8 @@ class CertificatesSink(OICBaseSink):
         # Delete and recreate if needed:
         if "certificate_content" in record:
             # Delete existing
-            response = self.client.delete(f"/ic/api/integration/v1/certificates/{cert_alias}",
+            response = self.client.delete(
+                f"/ic/api/integration/v1/certificates/{cert_alias}",
             )
             response.raise_for_status()
 
@@ -174,7 +186,8 @@ class ProjectsSink(OICBaseSink):
             self._update_project(project_id, record)
 
     def _create_project(self, record: dict[str, Any]) -> None:
-        payload = {"name": record["name"],
+        payload = {
+            "name": record["name"],
             "identifier": record["id"],
             "description": record.get("description", ""),
             "parentId": record.get("parentId"),
@@ -182,7 +195,8 @@ class ProjectsSink(OICBaseSink):
             "properties": record.get("properties", {}),
         }
 
-        response = self.client.post("/ic/api/integration/v1/projects",
+        response = self.client.post(
+            "/ic/api/integration/v1/projects",
             json=payload,
         )
         response.raise_for_status()
@@ -194,23 +208,27 @@ class ProjectsSink(OICBaseSink):
                 self._create_folder(project_id_var, folder)
 
     def _create_folder(self, project_id: str, folder: dict[str, Any]) -> None:
-        payload = {"name": folder["name"],
+        payload = {
+            "name": folder["name"],
             "type": folder.get("type", "INTEGRATION"),
             "description": folder.get("description", ""),
         }
 
-        response = self.client.post(f"/ic/api/integration/v1/projects/{project_id}/folders",
+        response = self.client.post(
+            f"/ic/api/integration/v1/projects/{project_id}/folders",
             json=payload,
         )
         response.raise_for_status()
 
     def _update_project(self, project_id: str, record: dict[str, Any]) -> None:
-        payload = {"description": record.get("description", ""),
+        payload = {
+            "description": record.get("description", ""),
             "visibility": record.get("visibility", "PRIVATE"),
             "properties": record.get("properties", {}),
         }
 
-        response = self.client.put(f"/ic/api/integration/v1/projects/{project_id}",
+        response = self.client.put(
+            f"/ic/api/integration/v1/projects/{project_id}",
             json=payload,
         )
         response.raise_for_status()
@@ -233,13 +251,15 @@ class SchedulesSink(OICBaseSink):
         integration_id = record.get("integrationId") or ""
 
         if not integration_id:
-            self.logger.warning("No integration ID provided for schedule %s",
+            self.logger.warning(
+                "No integration ID provided for schedule %s",
                 schedule_id,
             )
             return
 
         # Check if schedule exists:
-        response = self.client.get(f"/ic/api/integration/v1/integrations/{integration_id}/schedule",
+        response = self.client.get(
+            f"/ic/api/integration/v1/integrations/{integration_id}/schedule",
         )
 
         if response.status_code == 404:
@@ -251,7 +271,8 @@ class SchedulesSink(OICBaseSink):
     def _create_schedule(self, integration_id: str, record: dict[str, Any]) -> None:
         payload = self._build_schedule_payload(record)
 
-        response = self.client.post(f"/ic/api/integration/v1/integrations/{integration_id}/schedule",
+        response = self.client.post(
+            f"/ic/api/integration/v1/integrations/{integration_id}/schedule",
             json=payload,
         )
         response.raise_for_status()
@@ -259,20 +280,24 @@ class SchedulesSink(OICBaseSink):
     def _update_schedule(self, integration_id: str, record: dict[str, Any]) -> None:
         payload = self._build_schedule_payload(record)
 
-        response = self.client.put(f"/ic/api/integration/v1/integrations/{integration_id}/schedule",
+        response = self.client.put(
+            f"/ic/api/integration/v1/integrations/{integration_id}/schedule",
             json=payload,
         )
         response.raise_for_status()
 
     def _build_schedule_payload(self, record: dict[str, Any]) -> dict[str, Any]:
-        payload = {"scheduleType": record.get("scheduleType", "SIMPLE"),
+        payload = {
+            "scheduleType": record.get("scheduleType", "SIMPLE"),
             "enabled": record.get("enabled", True),
             "timezone": record.get("timezone", "UTC"),
         }
 
         # Simple schedule
         if payload["scheduleType"] == "SIMPLE":
-            payload.update({"frequency": record.get("frequency", "DAILY"),
+            payload.update(
+                {
+                    "frequency": record.get("frequency", "DAILY"),
                     "interval": record.get("interval", 1),
                     "startTime": record.get("startTime"),
                     "endTime": record.get("endTime"),
@@ -285,7 +310,9 @@ class SchedulesSink(OICBaseSink):
 
         # Calendar schedule
         elif payload["scheduleType"] == "CALENDAR":
-            payload.update({"calendarId": record.get("calendarId"),
+            payload.update(
+                {
+                    "calendarId": record.get("calendarId"),
                     "includeHolidays": record.get("includeHolidays", False),
                     "includeWeekends": record.get("includeWeekends", True),
                 },
@@ -296,7 +323,9 @@ class SchedulesSink(OICBaseSink):
             payload["executionWindows"] = record["executionWindows"]
 
         # Advanced options
-        payload.update({"priority": record.get("priority", 5),
+        payload.update(
+            {
+                "priority": record.get("priority", 5),
                 "maxConcurrentExecutions": record.get("maxConcurrentExecutions", 1),
                 "retryOnFailure": record.get("retryOnFailure", False),
                 "retryCount": record.get("retryCount", 3),
@@ -326,7 +355,8 @@ class BusinessEventsSink(OICBaseSink):
     def _publish_event(self, record: dict[str, Any]) -> None:
         event_type = record.get("eventType") or ""
 
-        payload = {"eventType": event_type,
+        payload = {
+            "eventType": event_type,
             "eventName": record.get("eventName", ""),
             "eventVersion": record.get("eventVersion", "1.0"),
             "sourceSystem": record.get("sourceSystem", ""),
@@ -339,7 +369,8 @@ class BusinessEventsSink(OICBaseSink):
             "ttl": record.get("ttl", 3600),
         }
 
-        response = self.client.post("/ic/api/integration/v1/events/publish",
+        response = self.client.post(
+            "/ic/api/integration/v1/events/publish",
             json=payload,
         )
         response.raise_for_status()
@@ -368,37 +399,43 @@ class MonitoringConfigSink(OICBaseSink):
             self._configure_tracing(record)
 
     def _configure_alerts(self, record: dict[str, Any]) -> None:
-        payload = {"alertRules": record.get("alertRules", []),
+        payload = {
+            "alertRules": record.get("alertRules", []),
             "recipients": record.get("recipients", []),
             "enabled": record.get("enabled", True),
             "severityThreshold": record.get("severityThreshold", "ERROR"),
         }
 
-        response = self.client.put("/ic/api/integration/v1/monitoring/alerts/config",
+        response = self.client.put(
+            "/ic/api/integration/v1/monitoring/alerts/config",
             json=payload,
         )
         response.raise_for_status()
 
     def _configure_metrics(self, record: dict[str, Any]) -> None:
-        payload = {"metricsEnabled": record.get("metricsEnabled", True),
+        payload = {
+            "metricsEnabled": record.get("metricsEnabled", True),
             "retentionPeriod": record.get("retentionPeriod", 30),
             "aggregationInterval": record.get("aggregationInterval", 300),
             "customMetrics": record.get("customMetrics", []),
         }
 
-        response = self.client.put("/ic/api/integration/v1/monitoring/metrics/config",
+        response = self.client.put(
+            "/ic/api/integration/v1/monitoring/metrics/config",
             json=payload,
         )
         response.raise_for_status()
 
     def _configure_tracing(self, record: dict[str, Any]) -> None:
-        payload = {"tracingEnabled": record.get("tracingEnabled", True),
+        payload = {
+            "tracingEnabled": record.get("tracingEnabled", True),
             "payloadTracingEnabled": record.get("payloadTracingEnabled", False),
             "traceLevel": record.get("traceLevel", "INFO"),
             "samplingRate": record.get("samplingRate", 1.0),
         }
 
-        response = self.client.put("/ic/api/integration/v1/monitoring/tracing/config",
+        response = self.client.put(
+            "/ic/api/integration/v1/monitoring/tracing/config",
             json=payload,
         )
         response.raise_for_status()
@@ -434,37 +471,58 @@ class IntegrationActionsSink(OICBaseSink):
         elif action == "clone":
             self._clone_integration(integration_id, version, record)
 
-    def _activate_integration(self, integration_id: str, version: str, record: dict[str, Any]) -> None:
-        payload = {"enableTracing": record.get("enableTracing", False),
+    def _activate_integration(
+        self,
+        integration_id: str,
+        version: str,
+        record: dict[str, Any],
+    ) -> None:
+        payload = {
+            "enableTracing": record.get("enableTracing", False),
             "payloadTracingEnabled": record.get("payloadTracingEnabled", False),
         }
 
-        response = self.client.post(f"/ic/api/integration/v1/integrations/{integration_id}|{version}/activate",
+        response = self.client.post(
+            f"/ic/api/integration/v1/integrations/{integration_id}|{version}/activate",
             json=payload,
         )
         response.raise_for_status()
 
     def _deactivate_integration(self, integration_id: str, version: str) -> None:
-        response = self.client.post(f"/ic/api/integration/v1/integrations/{integration_id}|{version}/deactivate",
+        response = self.client.post(
+            f"/ic/api/integration/v1/integrations/{integration_id}|{version}/deactivate",
         )
         response.raise_for_status()
 
-    def _test_integration(self, integration_id: str, version: str, record: dict[str, Any]) -> None:
+    def _test_integration(
+        self,
+        integration_id: str,
+        version: str,
+        record: dict[str, Any],
+    ) -> None:
         test_payload = record.get("testPayload", {})
 
-        response = self.client.post(f"/ic/api/integration/v1/integrations/{integration_id}|{version}/test",
+        response = self.client.post(
+            f"/ic/api/integration/v1/integrations/{integration_id}|{version}/test",
             json=test_payload,
         )
         response.raise_for_status()
 
-    def _clone_integration(self, integration_id: str, version: str, record: dict[str, Any]) -> None:
-        payload = {"name": record.get("newName", f"{integration_id}_clone"),
+    def _clone_integration(
+        self,
+        integration_id: str,
+        version: str,
+        record: dict[str, Any],
+    ) -> None:
+        payload = {
+            "name": record.get("newName", f"{integration_id}_clone"),
             "identifier": record.get("newIdentifier", f"{integration_id}_clone"),
             "version": record.get("newVersion", "01.00.0001"),
             "description": record.get("description", "Cloned integration"),
         }
 
-        response = self.client.post(f"/ic/api/integration/v1/integrations/{integration_id}|{version}/clone",
+        response = self.client.post(
+            f"/ic/api/integration/v1/integrations/{integration_id}|{version}/clone",
             json=payload,
         )
         response.raise_for_status()
@@ -496,19 +554,22 @@ class ConnectionActionsSink(OICBaseSink):
             self._refresh_metadata(connection_id)
 
     def _test_connection(self, connection_id: str) -> None:
-        response = self.client.post(f"/ic/api/integration/v1/connections/{connection_id}/test",
+        response = self.client.post(
+            f"/ic/api/integration/v1/connections/{connection_id}/test",
         )
         response.raise_for_status()
 
         # Get test results
         result = response.json()
         if result.get("status") != "SUCCESS":
-            self.logger.warning("Connection test failed for %s: %s",
+            self.logger.warning(
+                "Connection test failed for %s: %s",
                 connection_id,
                 result.get("message"),
             )
 
     def _refresh_metadata(self, connection_id: str) -> None:
-        response = self.client.post(f"/ic/api/integration/v1/connections/{connection_id}/refreshMetadata",
+        response = self.client.post(
+            f"/ic/api/integration/v1/connections/{connection_id}/refreshMetadata",
         )
         response.raise_for_status()

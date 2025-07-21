@@ -1,7 +1,7 @@
-"""Configuration for target-oracle-oic using flext-core patterns.
+"""Configuration for target-oracle-oic using centralized flext-core patterns.
 
-MIGRATED TO FLEXT-CORE:
-Uses flext-core SingerTargetConfig with structured value objects. Zero tolerance for code duplication.
+Refactored to use centralized Oracle OIC patterns from flext-core.
+Eliminates code duplication across Oracle OIC projects.
 """
 
 from __future__ import annotations
@@ -9,105 +9,24 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any
 
-from pydantic import Field, field_validator, model_validator
+# Use centralized OIC patterns from flext-core - ELIMINATE DUPLICATION
+from flext_core.config.oracle_oic import (
+    OICAuthConfig,
+    OICConnectionConfig,
+)
+from flext_core.domain.pydantic_base import DomainValueObject
+from pydantic import Field, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from flext_core.domain.pydantic_base import DomainValueObject
-
-
-class OICAuthConfig(DomainValueObject):
-    """OIC authentication configuration value object using flext-core patterns."""
-
-    oauth_client_id: str = Field(
-        default="",
-        description="OAuth2 client ID from IDCS application",
-    )
-    oauth_client_secret: str = Field(
-        default="",
-        description="OAuth2 client secret from IDCS application",
-        json_schema_extra={"secret": True},
-    )
-    oauth_token_url: str = Field(
-        default="",
-        description="IDCS token endpoint URL",
-    )
-    oauth_client_aud: str | None = Field(
-        default=None,
-        description="IDCS client audience URL for scope building",
-    )
-
-    @field_validator("oauth_token_url")
-    @classmethod
-    def validate_oauth_token_url(cls, v: str) -> str:
-        """Validate OAuth token URL format.
-
-        Args:
-            v: The OAuth token URL to validate.
-
-        Returns:
-            The validated URL.
-
-        Raises:
-            ValueError: If URL doesn't start with http:// or https://.
-
-        """
-        if not v.startswith(("http://", "https://")):
-            msg = "oauth_token_url must start with http:// or https://"
-            raise ValueError(msg)
-        return v
-
-
-class OICConnectionConfig(DomainValueObject):
-    """OIC connection configuration value object using flext-core patterns."""
-
-    base_url: str = Field(
-        default="",
-        description="OIC instance base URL (e.g., https://myinstance-region.integration.ocp.oraclecloud.com)",
-    )
-    timeout: int = Field(
-        default=30,
-        description="Request timeout in seconds",
-        gt=0,
-        le=300,
-    )
-    max_retries: int = Field(
-        default=3,
-        description="Maximum number of retry attempts",
-        ge=0,
-        le=10,
-    )
-    retry_delay: float = Field(
-        default=1.0,
-        description="Delay between retries in seconds",
-        gt=0.0,
-        le=60.0,
-    )
-    max_concurrent_requests: int = Field(
-        default=5,
-        description="Maximum concurrent requests",
-        gt=0,
-        le=20,
-    )
-
-    @field_validator("base_url")
-    @classmethod
-    def validate_base_url(cls, v: str) -> str:
-        """Validate base URL format.
-
-        Args:
-            v: The base URL to validate.
-
-        Returns:
-            The validated URL with trailing slash removed.
-
-        Raises:
-            ValueError: If URL doesn't start with http:// or https://.
-
-        """
-        if not v.startswith(("http://", "https://")):
-            msg = "base_url must start with http:// or https://"
-            raise ValueError(msg)
-        return v.rstrip("/")
+# Export centralized configurations for backward compatibility
+__all__ = [
+    "OICAuthConfig",
+    "OICConnectionConfig",
+    "OICDeploymentConfig",
+    "OICEntityConfig",
+    "OICProcessingConfig",
+    "TargetOracleOICConfig",
+]
 
 
 class OICDeploymentConfig(DomainValueObject):
@@ -208,7 +127,8 @@ class OICEntityConfig(DomainValueObject):
 class TargetOracleOICConfig(BaseSettings):
     """Complete configuration for target-oracle-oic v0.7.0 using flext-core patterns.
 
-    Uses flext-core patterns with structured value objects. Zero tolerance for legacy patterns or code duplication.
+    Uses flext-core patterns with structured value objects. Zero tolerance for
+    legacy patterns or code duplication.
     """
 
     model_config = SettingsConfigDict(
@@ -292,14 +212,14 @@ class TargetOracleOICConfig(BaseSettings):
                 msg = f"Archive directory does not exist: {archive_path}"
                 raise ValueError(msg)
             if not archive_path.is_dir():
-                msg = f"Archive directory is not a directory: {archive_path}"
+                msg = f"Archive path is not a directory: {archive_path}"
                 raise ValueError(msg)
 
         return self
 
     def get_oauth_headers(self) -> dict[str, str]:
-        """Get OAuth headers (implemented by client using flext-auth)."""
-        # Placeholder - will use flext-auth OAuth2 implementation
+        """Get OAuth headers (implemented by client using flext-api.auth.flext-auth)."""
+        # Placeholder - will use flext-api.auth.flext-auth OAuth2 implementation
         return {
             "Authorization": "Bearer <token>",
             "Content-Type": "application/json",
@@ -310,12 +230,12 @@ class TargetOracleOICConfig(BaseSettings):
         return self.entities.identifier_fields.get(entity_type, "id")
 
     @classmethod
-    def create_with_defaults(cls, **overrides: Any) -> TargetOracleOICConfig:
+    def create_with_defaults(cls, **overrides: dict[str, Any]) -> TargetOracleOICConfig:
         """Create configuration with intelligent defaults."""
         defaults = {
             "auth": OICAuthConfig(
                 oauth_client_id="your-client-id",
-                oauth_client_secret="your-client-secret",
+                oauth_client_secret="your-client-secret",  # nosec B106 - Example configuration value
                 oauth_token_url="https://idcs-url/oauth2/v1/token",
                 oauth_client_aud=None,
             ),

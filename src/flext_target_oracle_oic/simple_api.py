@@ -10,6 +10,7 @@ from typing import Any
 
 # Use centralized ServiceResult from flext-core - ELIMINATE DUPLICATION
 from flext_core.domain.types import ServiceResult
+
 from flext_target_oracle_oic.config import (
     OICAuthConfig,
     OICConnectionConfig,
@@ -58,7 +59,7 @@ def create_development_oic_target_config(**overrides: Any) -> TargetOracleOICCon
     """
     auth_config = OICAuthConfig(
         oauth_client_id="dev-client-id",
-        oauth_client_secret="dev-client-secret",
+        oauth_client_secret="dev-client-secret",  # nosec B106 - Example development value
         oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
     )
 
@@ -126,7 +127,7 @@ def create_production_oic_target_config(**overrides: Any) -> TargetOracleOICConf
     """
     auth_config = OICAuthConfig(
         oauth_client_id="prod-client-id",
-        oauth_client_secret="prod-client-secret",
+        oauth_client_secret="prod-client-secret",  # nosec B106 - Example production value
         oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
     )
 
@@ -169,7 +170,7 @@ def create_production_oic_target_config(**overrides: Any) -> TargetOracleOICConf
             lookup_identifier_field="name",
             identifier_fields={},
         ),
-        project_name="flext-target-oracle-oic",
+        project_name="flext-data.targets.flext-data.targets.flext-target-oracle-oic",
         project_version="0.7.0",
     )
 
@@ -194,7 +195,7 @@ def create_migration_oic_target_config(**overrides: Any) -> TargetOracleOICConfi
     """
     auth_config = OICAuthConfig(
         oauth_client_id="migration-client-id",
-        oauth_client_secret="migration-client-secret",
+        oauth_client_secret="migration-client-secret",  # nosec B106 - Example migration value
         oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
     )
 
@@ -237,7 +238,7 @@ def create_migration_oic_target_config(**overrides: Any) -> TargetOracleOICConfi
             lookup_identifier_field="name",
             identifier_fields={},
         ),
-        project_name="flext-target-oracle-oic-migration",
+        project_name="flext-data.targets.flext-data.targets.flext-target-oracle-oic-migration",
         project_version="0.7.0",
     )
 
@@ -295,7 +296,7 @@ def create_test_connection_config(**overrides: Any) -> TargetOracleOICConfig:
     """
     auth_config = OICAuthConfig(
         oauth_client_id="test-client-id",
-        oauth_client_secret="test-client-secret",
+        oauth_client_secret="test-client-secret",  # nosec B106 - Example testing value
         oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
     )
 
@@ -336,7 +337,7 @@ def create_test_connection_config(**overrides: Any) -> TargetOracleOICConfig:
             lookup_identifier_field="name",
             identifier_fields={},
         ),
-        project_name="flext-target-oracle-oic-test",
+        project_name="flext-data.targets.flext-data.targets.flext-target-oracle-oic-test",
         project_version="0.7.0",
     )
 

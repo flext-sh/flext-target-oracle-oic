@@ -36,8 +36,8 @@ __all__ = ["TargetOracleOIC", "__version__", "main"]
 
 
 def main() -> None:
-        TargetOracleOIC.cli()
+    TargetOracleOIC.cli()
 
 
 if __name__ == "__main__":
-            main()
+    main()

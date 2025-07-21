@@ -5,9 +5,9 @@ from __future__ import annotations
 from typing import Any
 
 import httpx
+from flext_observability.logging import get_logger
 from singer_sdk.sinks import Sink
 
-from flext_observability.logging import get_logger
 from flext_target_oracle_oic.auth import OICOAuth2Authenticator
 
 logger = get_logger(__name__)
@@ -51,7 +51,11 @@ class OICBaseSink(Sink):
             )
         return self._client
 
-    def preprocess_record(self, record: dict[str, Any], _context: dict[str, Any] | None) -> dict[str, Any]:
+    def preprocess_record(
+        self,
+        record: dict[str, Any],
+        _context: dict[str, Any] | None,
+    ) -> dict[str, Any]:
         """Preprocess record before batch processing.
 
         Args:
@@ -106,13 +110,21 @@ class OICBaseSink(Sink):
         # Default implementation - subclasses should override
         return False
 
-    def _process_create_batch(self, records: list[dict[str, Any]], context: dict[str, Any]) -> None:
+    def _process_create_batch(
+        self,
+        records: list[dict[str, Any]],
+        context: dict[str, Any],
+    ) -> None:
         # Default implementation processes records individually
         # Subclasses should override for true batch operations
         for record in records:
             self.process_record(record, context)
 
-    def _process_update_batch(self, records: list[dict[str, Any]], context: dict[str, Any]) -> None:
+    def _process_update_batch(
+        self,
+        records: list[dict[str, Any]],
+        context: dict[str, Any],
+    ) -> None:
         # Default implementation processes records individually
         # Subclasses should override for true batch operations
         for record in records:
@@ -262,7 +274,12 @@ class IntegrationsSink(OICBaseSink):
         )
         response.raise_for_status()
 
-    def _update_integration(self, integration_id: str, version: str, record: dict[str, Any]) -> None:
+    def _update_integration(
+        self,
+        integration_id: str,
+        version: str,
+        record: dict[str, Any],
+    ) -> None:
         payload = {
             "description": record.get("description", ""),
         }
