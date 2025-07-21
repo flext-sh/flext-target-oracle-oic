@@ -15,7 +15,7 @@ from flext_core.config.oracle_oic import (
     OICConnectionConfig,
 )
 from flext_core.domain.pydantic_base import DomainValueObject
-from pydantic import Field, model_validator
+from pydantic import Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Export centralized configurations for backward compatibility
@@ -145,11 +145,11 @@ class TargetOracleOICConfig(BaseSettings):
 
     # Structured configuration using value objects
     auth: OICAuthConfig = Field(
-        default_factory=OICAuthConfig,
+        default_factory=lambda: OICAuthConfig(),
         description="Authentication configuration",
     )
     connection: OICConnectionConfig = Field(
-        default_factory=OICConnectionConfig,
+        default_factory=lambda: OICConnectionConfig(),
         description="Connection configuration",
     )
     deployment: OICDeploymentConfig = Field(
@@ -235,7 +235,7 @@ class TargetOracleOICConfig(BaseSettings):
         defaults = {
             "auth": OICAuthConfig(
                 oauth_client_id="your-client-id",
-                oauth_client_secret="your-client-secret",  # nosec B106 - Example configuration value
+                oauth_client_secret=SecretStr("your-client-secret"),  # nosec B106 - Example configuration value
                 oauth_token_url="https://idcs-url/oauth2/v1/token",
                 oauth_client_aud=None,
             ),
