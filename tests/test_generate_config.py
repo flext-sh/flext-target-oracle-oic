@@ -12,14 +12,13 @@ from unittest.mock import patch
 scripts_path = Path(__file__).parent.parent / "scripts"
 sys.path.insert(0, str(scripts_path))
 
-# Import after path modification
-from generate_config import (  # type: ignore[import-not-found]  # noqa: E402
+# Import after path modification - required due to dynamic path modification
+from generate_config import (  # noqa: E402
     generate_config,
     main,
 )
 
 if TYPE_CHECKING:
-
     import pytest
 
 
@@ -35,16 +34,13 @@ class TestGenerateConfig:
             "OIC_IDCS_CLIENT_SECRET": "test_secret",
             "OIC_IDCS_URL": "https://test.identity.oraclecloud.com",
         }
-
         with patch.dict(os.environ, env_vars):
             config = generate_config()
-
             # Check required fields
             assert "base_url" in config
             assert "oauth_client_id" in config
             assert "oauth_client_secret" in config
             assert "oauth_token_url" in config
-
             # Verify values
             assert config["base_url"] == "https://test.integration.ocp.oraclecloud.com"
             assert config["oauth_client_id"] == "test_client_id"
@@ -54,7 +50,6 @@ class TestGenerateConfig:
         """Test default values in config."""
         with patch.dict(os.environ, {}, clear=True):
             config = generate_config()
-
             # Check defaults
             assert config.get("import_mode") == "create_or_update"
             assert config.get("activate_integrations") is False
@@ -68,11 +63,9 @@ class TestGenerateConfig:
         """Test main function creates config.json."""
         # Change to temp directory
         monkeypatch.chdir(tmp_path)
-
         # Mock input to confirm overwrite
         with patch("builtins.input", return_value="y"):
             main()
-
         # Check file was created
         config_file = tmp_path / "config.json"
         assert config_file.exists()
@@ -85,14 +78,11 @@ class TestGenerateConfig:
         """Test main function skips existing file when user says no."""
         # Change to temp directory
         monkeypatch.chdir(tmp_path)
-
         # Create existing file
         config_file = tmp_path / "config.json"
         config_file.write_text("{}")
-
         # Mock input to skip overwrite
         with patch("builtins.input", return_value="n"):
             main()
-
         # Check file was not modified
         assert config_file.read_text() == "{}"

@@ -25,10 +25,8 @@ class LibrariesSink(OICBaseSink):
 
         """
         library_id = record.get("id") or ""
-
         # Check if library exists:
         response = self.client.get(f"/ic/api/integration/v1/libraries/{library_id}")
-
         if response.status_code == 404:
             # Create new library
             self._create_library(record)
@@ -41,7 +39,6 @@ class LibrariesSink(OICBaseSink):
         if "archive_content" in record:
             self._import_library(record)
             return
-
         payload = {
             "name": record["name"],
             "identifier": record["id"],
@@ -49,7 +46,6 @@ class LibrariesSink(OICBaseSink):
             "type": record.get("type", "JAVASCRIPT"),
             "version": record.get("version", "1.0"),
         }
-
         response = self.client.post(
             "/ic/api/integration/v1/libraries",
             json=payload,
@@ -60,15 +56,9 @@ class LibrariesSink(OICBaseSink):
         archive_content = record.get("archive_content")
         if isinstance(archive_content, str):
             archive_content = archive_content.encode()
-
         files = {
-            "file": (
-                f"{record['id']}.jar",
-                archive_content,
-                "application/octet-stream",
-            ),
+            "file": archive_content,
         }
-
         response = self.client.post(
             "/ic/api/integration/v1/libraries/archive",
             files=files,  # type: ignore[arg-type]
@@ -80,7 +70,6 @@ class LibrariesSink(OICBaseSink):
             "description": record.get("description", ""),
             "version": record.get("version", "1.0"),
         }
-
         response = self.client.put(
             f"/ic/api/integration/v1/libraries/{library_id}",
             json=payload,
@@ -102,10 +91,8 @@ class CertificatesSink(OICBaseSink):
 
         """
         cert_alias = record.get("alias") or ""
-
         # Check if certificate exists:
         response = self.client.get(f"/ic/api/integration/v1/certificates/{cert_alias}")
-
         if response.status_code == 404:
             # Create new certificate
             self._create_certificate(record)
@@ -122,10 +109,8 @@ class CertificatesSink(OICBaseSink):
                 record.get("alias"),
             )
             return
-
         if isinstance(cert_content, str):
             cert_content = cert_content.encode()
-
         files = {
             "certificate": (
                 f"{record['alias']}.cer",
@@ -133,13 +118,11 @@ class CertificatesSink(OICBaseSink):
                 "application/x-x509-ca-cert",
             ),
         }
-
         data = {
             "alias": record["alias"],
             "description": record.get("description", ""),
             "password": record.get("password", ""),  # For private key certificates
         }
-
         response = self.client.post(
             "/ic/api/integration/v1/certificates",
             data=data,
@@ -156,7 +139,6 @@ class CertificatesSink(OICBaseSink):
                 f"/ic/api/integration/v1/certificates/{cert_alias}",
             )
             response.raise_for_status()
-
             # Create new
             self._create_certificate(record)
 
@@ -175,10 +157,8 @@ class ProjectsSink(OICBaseSink):
 
         """
         project_id = record.get("id") or ""
-
         # Check if project exists:
         response = self.client.get(f"/ic/api/integration/v1/projects/{project_id}")
-
         if response.status_code == 404:
             # Create new project
             self._create_project(record)
@@ -194,13 +174,11 @@ class ProjectsSink(OICBaseSink):
             "visibility": record.get("visibility", "PRIVATE"),
             "properties": record.get("properties", {}),
         }
-
         response = self.client.post(
             "/ic/api/integration/v1/projects",
             json=payload,
         )
         response.raise_for_status()
-
         # Create folders if provided:
         if "folders" in record:
             project_id_var = record["id"]
@@ -213,7 +191,6 @@ class ProjectsSink(OICBaseSink):
             "type": folder.get("type", "INTEGRATION"),
             "description": folder.get("description", ""),
         }
-
         response = self.client.post(
             f"/ic/api/integration/v1/projects/{project_id}/folders",
             json=payload,
@@ -226,7 +203,6 @@ class ProjectsSink(OICBaseSink):
             "visibility": record.get("visibility", "PRIVATE"),
             "properties": record.get("properties", {}),
         }
-
         response = self.client.put(
             f"/ic/api/integration/v1/projects/{project_id}",
             json=payload,
@@ -249,19 +225,16 @@ class SchedulesSink(OICBaseSink):
         """
         schedule_id = record.get("id") or ""
         integration_id = record.get("integrationId") or ""
-
         if not integration_id:
             self.logger.warning(
                 "No integration ID provided for schedule %s",
                 schedule_id,
             )
             return
-
         # Check if schedule exists:
         response = self.client.get(
             f"/ic/api/integration/v1/integrations/{integration_id}/schedule",
         )
-
         if response.status_code == 404:
             # Create new schedule
             self._create_schedule(integration_id, record)
@@ -270,7 +243,6 @@ class SchedulesSink(OICBaseSink):
 
     def _create_schedule(self, integration_id: str, record: dict[str, Any]) -> None:
         payload = self._build_schedule_payload(record)
-
         response = self.client.post(
             f"/ic/api/integration/v1/integrations/{integration_id}/schedule",
             json=payload,
@@ -279,7 +251,6 @@ class SchedulesSink(OICBaseSink):
 
     def _update_schedule(self, integration_id: str, record: dict[str, Any]) -> None:
         payload = self._build_schedule_payload(record)
-
         response = self.client.put(
             f"/ic/api/integration/v1/integrations/{integration_id}/schedule",
             json=payload,
@@ -292,7 +263,6 @@ class SchedulesSink(OICBaseSink):
             "enabled": record.get("enabled", True),
             "timezone": record.get("timezone", "UTC"),
         }
-
         # Simple schedule
         if payload["scheduleType"] == "SIMPLE":
             payload.update(
@@ -303,11 +273,9 @@ class SchedulesSink(OICBaseSink):
                     "endTime": record.get("endTime"),
                 },
             )
-
         # Cron schedule
         elif payload["scheduleType"] == "CRON":
             payload["cronExpression"] = record.get("cronExpression", "0 0 * * *")
-
         # Calendar schedule
         elif payload["scheduleType"] == "CALENDAR":
             payload.update(
@@ -317,11 +285,9 @@ class SchedulesSink(OICBaseSink):
                     "includeWeekends": record.get("includeWeekends", True),
                 },
             )
-
         # Execution windows
         if "executionWindows" in record:
             payload["executionWindows"] = record["executionWindows"]
-
         # Advanced options
         payload.update(
             {
@@ -332,7 +298,6 @@ class SchedulesSink(OICBaseSink):
                 "retryInterval": record.get("retryInterval", 5),
             },
         )
-
         return payload
 
 
@@ -354,7 +319,6 @@ class BusinessEventsSink(OICBaseSink):
 
     def _publish_event(self, record: dict[str, Any]) -> None:
         event_type = record.get("eventType") or ""
-
         payload = {
             "eventType": event_type,
             "eventName": record.get("eventName", ""),
@@ -368,7 +332,6 @@ class BusinessEventsSink(OICBaseSink):
             "priority": record.get("priority", 5),
             "ttl": record.get("ttl", 3600),
         }
-
         response = self.client.post(
             "/ic/api/integration/v1/events/publish",
             json=payload,
@@ -390,7 +353,6 @@ class MonitoringConfigSink(OICBaseSink):
 
         """
         config_type = record.get("configType", "alerts")
-
         if config_type == "alerts":
             self._configure_alerts(record)
         elif config_type == "metrics":
@@ -405,7 +367,6 @@ class MonitoringConfigSink(OICBaseSink):
             "enabled": record.get("enabled", True),
             "severityThreshold": record.get("severityThreshold", "ERROR"),
         }
-
         response = self.client.put(
             "/ic/api/integration/v1/monitoring/alerts/config",
             json=payload,
@@ -419,7 +380,6 @@ class MonitoringConfigSink(OICBaseSink):
             "aggregationInterval": record.get("aggregationInterval", 300),
             "customMetrics": record.get("customMetrics", []),
         }
-
         response = self.client.put(
             "/ic/api/integration/v1/monitoring/metrics/config",
             json=payload,
@@ -433,7 +393,6 @@ class MonitoringConfigSink(OICBaseSink):
             "traceLevel": record.get("traceLevel", "INFO"),
             "samplingRate": record.get("samplingRate", 1.0),
         }
-
         response = self.client.put(
             "/ic/api/integration/v1/monitoring/tracing/config",
             json=payload,
@@ -457,11 +416,9 @@ class IntegrationActionsSink(OICBaseSink):
         action = record.get("action", "")
         integration_id = record.get("integrationId", "")
         version = record.get("version", "01.00.0000")
-
         if not integration_id:
             self.logger.warning("No integration ID provided for action")
             return
-
         if action == "activate":
             self._activate_integration(integration_id, version, record)
         elif action == "deactivate":
@@ -481,7 +438,6 @@ class IntegrationActionsSink(OICBaseSink):
             "enableTracing": record.get("enableTracing", False),
             "payloadTracingEnabled": record.get("payloadTracingEnabled", False),
         }
-
         response = self.client.post(
             f"/ic/api/integration/v1/integrations/{integration_id}|{version}/activate",
             json=payload,
@@ -501,7 +457,6 @@ class IntegrationActionsSink(OICBaseSink):
         record: dict[str, Any],
     ) -> None:
         test_payload = record.get("testPayload", {})
-
         response = self.client.post(
             f"/ic/api/integration/v1/integrations/{integration_id}|{version}/test",
             json=test_payload,
@@ -520,7 +475,6 @@ class IntegrationActionsSink(OICBaseSink):
             "version": record.get("newVersion", "01.00.0001"),
             "description": record.get("description", "Cloned integration"),
         }
-
         response = self.client.post(
             f"/ic/api/integration/v1/integrations/{integration_id}|{version}/clone",
             json=payload,
@@ -543,11 +497,9 @@ class ConnectionActionsSink(OICBaseSink):
         """
         action = record.get("action", "")
         connection_id = record.get("connectionId", "")
-
         if not connection_id:
             self.logger.warning("No connection ID provided for action")
             return
-
         if action == "test":
             self._test_connection(connection_id)
         elif action == "refresh_metadata":
@@ -558,7 +510,6 @@ class ConnectionActionsSink(OICBaseSink):
             f"/ic/api/integration/v1/connections/{connection_id}/test",
         )
         response.raise_for_status()
-
         # Get test results
         result = response.json()
         if result.get("status") != "SUCCESS":

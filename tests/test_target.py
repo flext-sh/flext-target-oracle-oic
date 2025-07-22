@@ -61,6 +61,7 @@ class TestTargetOracleOIC:
 
         # Check required properties
         properties = schema["properties"]
+        assert isinstance(properties, dict)
         assert "base_url" in properties
         assert "oauth_client_id" in properties
         assert "oauth_client_secret" in properties
