@@ -1,7 +1,12 @@
-"""Oracle Integration Cloud Singer Target.
+"""FLEXT Target Oracle OIC - Oracle Integration Cloud Data Loading with simplified imports.
 
-A Singer-compatible target for Oracle Integration Cloud (OIC) that supports
-OAuth2 authentication and comprehensive integration management.
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+
+Version 0.7.0 - Target Oracle OIC with simplified public API:
+- All common imports available from root: from flext_target_oracle_oic import TargetOracleOIC
+- Built on flext-core foundation for robust Oracle OIC data loading
+- Deprecation warnings for internal imports
 
 This target provides:
 - OAuth2 authentication with Oracle Identity Cloud Service (IDCS)
@@ -9,33 +14,105 @@ This target provides:
 - Batch processing for efficient data loading
 - Enterprise-grade error handling and logging
 - Archive-based integration deployment
-
-Example:
-            ```bash
-    # Install the target
-    pip install target-oracle-oic
-
-    # Configure the target
-    export OAUTH_CLIENT_ID="your-client-id"
-    export OAUTH_CLIENT_SECRET="your-client-secret"
-    export OAUTH_TOKEN_URL="https://your-idcs.identity.oraclecloud.com/oauth2/v1/token"
-    export BASE_URL="https://your-instance.integration.ocp.oraclecloud.com"
-
-    # Run with Singer data
-    cat data.jsonl | target-oracle-oic --config config.json
-    ```
-
 """
 
 from __future__ import annotations
 
-from flext_target_oracle_oic.__version__ import __version__
-from flext_target_oracle_oic.target import TargetOracleOIC
+import contextlib
+import importlib.metadata
+import warnings
 
-__all__ = ["TargetOracleOIC", "__version__", "main"]
+# Import from flext-core for foundational patterns
+# Foundation patterns - ALWAYS from flext-core
+from flext_core import (
+    BaseConfig,
+    BaseConfig as OICBaseConfig,  # Configuration base
+    DomainBaseModel,
+    DomainBaseModel as BaseModel,  # Base for OIC models
+    DomainError as OICError,  # OIC-specific errors
+    ValidationError as ValidationError,  # Validation errors
+)
+from flext_core.domain.shared_types import ServiceResult
+
+try:
+    __version__ = importlib.metadata.version("flext-target-oracle-oic")
+except importlib.metadata.PackageNotFoundError:
+    __version__ = "0.7.0"
+
+__version_info__ = tuple(int(x) for x in __version__.split(".") if x.isdigit())
+
+
+class FlextTargetOracleOicDeprecationWarning(DeprecationWarning):
+    """Custom deprecation warning for FLEXT TARGET ORACLE OIC import changes."""
+
+
+def _show_deprecation_warning(old_import: str, new_import: str) -> None:
+    """Show deprecation warning for import paths."""
+    message_parts = [
+        f"⚠️  DEPRECATED IMPORT: {old_import}",
+        f"✅ USE INSTEAD: {new_import}",
+        "🔗 This will be removed in version 1.0.0",
+        "📖 See FLEXT TARGET ORACLE OIC docs for migration guide",
+    ]
+    warnings.warn(
+        "\n".join(message_parts),
+        FlextTargetOracleOicDeprecationWarning,
+        stacklevel=3,
+    )
+
+
+# ================================
+# SIMPLIFIED PUBLIC API EXPORTS
+# ================================
+
+# Singer Target exports - simplified imports
+with contextlib.suppress(ImportError):
+    from flext_target_oracle_oic.target import TargetOracleOIC
+
+# OIC Client exports - simplified imports
+with contextlib.suppress(ImportError):
+    from flext_target_oracle_oic.auth import OICOAuth2Authenticator as OICAuthenticator
+
+# OIC Sinks exports - simplified imports
+with contextlib.suppress(ImportError):
+    from flext_target_oracle_oic.sinks import (
+        ConnectionsSink,
+        IntegrationsSink,
+        LookupsSink,
+        PackagesSink,
+    )
+
+# ================================
+# PUBLIC API EXPORTS
+# ================================
+
+__all__ = [
+    "BaseModel",  # from flext_target_oracle_oic import BaseModel
+    # OIC Sinks (simplified access)
+    "ConnectionsSink",  # from flext_target_oracle_oic import ConnectionsSink
+    # Deprecation utilities
+    "FlextTargetOracleOicDeprecationWarning",
+    # OIC Sinks (simplified access)
+    "IntegrationsSink",  # from flext_target_oracle_oic import IntegrationsSink
+    "LookupsSink",  # from flext_target_oracle_oic import LookupsSink
+    # OIC Authentication (simplified access)
+    "OICAuthenticator",  # from flext_target_oracle_oic import OICAuthenticator
+    # Core Patterns (from flext-core)
+    "OICBaseConfig",  # from flext_target_oracle_oic import OICBaseConfig
+    "OICError",  # from flext_target_oracle_oic import OICError
+    "PackagesSink",  # from flext_target_oracle_oic import PackagesSink
+    "ServiceResult",  # from flext_target_oracle_oic import ServiceResult
+    # Main Singer Target (simplified access)
+    "TargetOracleOIC",  # from flext_target_oracle_oic import TargetOracleOIC
+    "ValidationError",  # from flext_target_oracle_oic import ValidationError
+    # Version
+    "__version__",
+    "__version_info__",
+]
 
 
 def main() -> None:
+    """Main entry point for target-oracle-oic CLI."""
     TargetOracleOIC.cli()
 
 

@@ -80,26 +80,21 @@ class OICBaseSink(Sink):
         """
         if not context.get("records"):
             return
-
         batch_size = min(len(context["records"]), 100)  # OIC API batch limit
         records = context["records"]
-
         # Group records by operation type for more efficient processing
         create_records: list[dict[str, Any]] = []
         update_records: list[dict[str, Any]] = []
-
         for record in records:
             if self._record_exists(record):
                 update_records.append(record)
             else:
                 create_records.append(record)
-
         # Process creates in batches
         if create_records:
             for i in range(0, len(create_records), batch_size):
                 batch = create_records[i : i + batch_size]
                 self._process_create_batch(batch, context)
-
         # Process updates in batches
         if update_records:
             for i in range(0, len(update_records), batch_size):
@@ -163,12 +158,10 @@ class ConnectionsSink(OICBaseSink):
 
         """
         connection_id = record.get("id") or ""
-
         # Check if connection exists:
         response = self.client.get(
             f"/ic/api/integration/v1/connections/{connection_id}",
         )
-
         if response.status_code == 404:
             # Create new connection
             self._create_connection(record)
@@ -186,7 +179,6 @@ class ConnectionsSink(OICBaseSink):
                 "connectionProperties": record.get("properties", {}),
             },
         }
-
         response = self.client.post(
             "/ic/api/integration/v1/connections",
             json=payload,
@@ -200,7 +192,6 @@ class ConnectionsSink(OICBaseSink):
                 "connectionProperties": record.get("properties", {}),
             },
         }
-
         response = self.client.put(
             f"/ic/api/integration/v1/connections/{connection_id}",
             json=payload,
@@ -225,12 +216,10 @@ class IntegrationsSink(OICBaseSink):
         """
         integration_id = record.get("id") or ""
         version = record.get("version", "01.00.0000")
-
         # Check if integration exists:
         response = self.client.get(
             f"/ic/api/integration/v1/integrations/{integration_id}|{version}",
         )
-
         if response.status_code == 404:
             # Create new integration from archive if provided:
             if "archive_content" in record:
@@ -248,7 +237,6 @@ class IntegrationsSink(OICBaseSink):
             "description": record.get("description", ""),
             "pattern": record.get("pattern", "ORCHESTRATION"),
         }
-
         response = self.client.post(
             "/ic/api/integration/v1/integrations",
             json=payload,
@@ -259,15 +247,9 @@ class IntegrationsSink(OICBaseSink):
         archive_content = record.get("archive_content")
         if isinstance(archive_content, str):
             archive_content = archive_content.encode()
-
         files = {
-            "file": (
-                f"{record['id']}.iar",
-                archive_content,
-                "application/octet-stream",
-            ),
+            "file": archive_content,
         }
-
         response = self.client.post(
             "/ic/api/integration/v1/integrations/archive",
             files=files,  # type: ignore[arg-type]
@@ -283,7 +265,6 @@ class IntegrationsSink(OICBaseSink):
         payload = {
             "description": record.get("description", ""),
         }
-
         response = self.client.put(
             f"/ic/api/integration/v1/integrations/{integration_id}|{version}",
             json=payload,
@@ -307,10 +288,8 @@ class PackagesSink(OICBaseSink):
 
         """
         package_id = record.get("id") or ""
-
         # Log the package being processed
         self.logger.info(f"Processing package: {package_id}")
-
         # Import package if archive content is provided:
         if "archive_content" in record:
             self._import_package(record)
@@ -321,15 +300,9 @@ class PackagesSink(OICBaseSink):
         archive_content = record.get("archive_content")
         if isinstance(archive_content, str):
             archive_content = archive_content.encode()
-
         files = {
-            "file": (
-                f"{record['id']}.par",
-                archive_content,
-                "application/octet-stream",
-            ),
+            "file": archive_content,
         }
-
         response = self.client.post(
             "/ic/api/integration/v1/packages/archive",
             files=files,  # type: ignore[arg-type]
@@ -353,10 +326,8 @@ class LookupsSink(OICBaseSink):
 
         """
         lookup_name = record.get("name") or ""
-
         # Check if lookup exists:
         response = self.client.get(f"/ic/api/integration/v1/lookups/{lookup_name}")
-
         if response.status_code == 404:
             # Create new lookup
             self._create_lookup(record)
@@ -371,7 +342,6 @@ class LookupsSink(OICBaseSink):
             "columns": record.get("columns", []),
             "rows": record.get("rows", []),
         }
-
         response = self.client.post(
             "/ic/api/integration/v1/lookups",
             json=payload,
@@ -383,7 +353,6 @@ class LookupsSink(OICBaseSink):
             "description": record.get("description", ""),
             "rows": record.get("rows", []),
         }
-
         response = self.client.put(
             f"/ic/api/integration/v1/lookups/{lookup_name}",
             json=payload,

@@ -9,7 +9,8 @@ from __future__ import annotations
 from typing import Any
 
 # Use centralized ServiceResult from flext-core - ELIMINATE DUPLICATION
-from flext_core.domain.types import ServiceResult
+from flext_core.domain.shared_types import ServiceResult
+from pydantic import SecretStr
 
 from flext_target_oracle_oic.config import (
     OICAuthConfig,
@@ -23,7 +24,7 @@ from flext_target_oracle_oic.config import (
 
 def setup_oic_target(
     config: TargetOracleOICConfig | None = None,
-) -> ServiceResult[TargetOracleOICConfig]:
+) -> ServiceResult[Any]:
     """Setup Oracle Integration Cloud target with configuration.
 
     Args:
@@ -59,7 +60,7 @@ def create_development_oic_target_config(**overrides: Any) -> TargetOracleOICCon
     """
     auth_config = OICAuthConfig(
         oauth_client_id="dev-client-id",
-        oauth_client_secret="dev-client-secret",  # nosec B106 - Example development value
+        oauth_client_secret=SecretStr("dev-client-secret"),  # nosec B106 - Example development value
         oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
     )
 
@@ -67,8 +68,6 @@ def create_development_oic_target_config(**overrides: Any) -> TargetOracleOICCon
         base_url="https://dev-instance.integration.ocp.oraclecloud.com",
         timeout=120,
         max_retries=3,
-        retry_delay=2.0,
-        max_concurrent_requests=3,
     )
 
     deployment_config = OICDeploymentConfig(
@@ -127,7 +126,7 @@ def create_production_oic_target_config(**overrides: Any) -> TargetOracleOICConf
     """
     auth_config = OICAuthConfig(
         oauth_client_id="prod-client-id",
-        oauth_client_secret="prod-client-secret",  # nosec B106 - Example production value
+        oauth_client_secret=SecretStr("prod-client-secret"),  # nosec B106 - Example production value
         oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
     )
 
@@ -135,8 +134,6 @@ def create_production_oic_target_config(**overrides: Any) -> TargetOracleOICConf
         base_url="https://prod-instance.integration.ocp.oraclecloud.com",
         timeout=300,
         max_retries=5,
-        retry_delay=1.0,
-        max_concurrent_requests=5,
     )
 
     deployment_config = OICDeploymentConfig(
@@ -195,7 +192,7 @@ def create_migration_oic_target_config(**overrides: Any) -> TargetOracleOICConfi
     """
     auth_config = OICAuthConfig(
         oauth_client_id="migration-client-id",
-        oauth_client_secret="migration-client-secret",  # nosec B106 - Example migration value
+        oauth_client_secret=SecretStr("migration-client-secret"),  # nosec B106 - Example migration value
         oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
     )
 
@@ -203,8 +200,6 @@ def create_migration_oic_target_config(**overrides: Any) -> TargetOracleOICConfi
         base_url="https://migration-instance.integration.ocp.oraclecloud.com",
         timeout=600,
         max_retries=10,
-        retry_delay=0.5,
-        max_concurrent_requests=10,
     )
 
     deployment_config = OICDeploymentConfig(
@@ -251,7 +246,7 @@ def create_migration_oic_target_config(**overrides: Any) -> TargetOracleOICConfi
     return config
 
 
-def validate_oic_target_config(config: TargetOracleOICConfig) -> ServiceResult[bool]:
+def validate_oic_target_config(config: TargetOracleOICConfig) -> ServiceResult[Any]:
     """Validate OIC target configuration.
 
     Args:
@@ -296,7 +291,7 @@ def create_test_connection_config(**overrides: Any) -> TargetOracleOICConfig:
     """
     auth_config = OICAuthConfig(
         oauth_client_id="test-client-id",
-        oauth_client_secret="test-client-secret",  # nosec B106 - Example testing value
+        oauth_client_secret=SecretStr("test-client-secret"),  # nosec B106 - Example testing value
         oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
     )
 
@@ -304,8 +299,6 @@ def create_test_connection_config(**overrides: Any) -> TargetOracleOICConfig:
         base_url="https://test-instance.integration.ocp.oraclecloud.com",
         timeout=30,
         max_retries=1,
-        retry_delay=1.0,
-        max_concurrent_requests=1,
     )
 
     processing_config = OICProcessingConfig(
