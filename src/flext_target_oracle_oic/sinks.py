@@ -2,15 +2,16 @@
 
 from __future__ import annotations
 
+# Removed circular dependency - use DI pattern
+import logging
 from typing import Any
 
 import httpx
-from flext_observability.logging import get_logger
 from singer_sdk.sinks import Sink
 
 from flext_target_oracle_oic.auth import OICOAuth2Authenticator
 
-logger = get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class OICBaseSink(Sink):
@@ -252,7 +253,7 @@ class IntegrationsSink(OICBaseSink):
         }
         response = self.client.post(
             "/ic/api/integration/v1/integrations/archive",
-            files=files,  # type: ignore[arg-type]
+            files=files,
         )
         response.raise_for_status()
 
@@ -305,7 +306,7 @@ class PackagesSink(OICBaseSink):
         }
         response = self.client.post(
             "/ic/api/integration/v1/packages/archive",
-            files=files,  # type: ignore[arg-type]
+            files=files,
         )
         response.raise_for_status()
 

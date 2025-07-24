@@ -61,7 +61,7 @@ class LibrariesSink(OICBaseSink):
         }
         response = self.client.post(
             "/ic/api/integration/v1/libraries/archive",
-            files=files,  # type: ignore[arg-type]
+            files=files,
         )
         response.raise_for_status()
 
