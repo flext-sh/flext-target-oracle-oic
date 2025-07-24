@@ -7,14 +7,25 @@ Eliminates architectural violations by using abstract interfaces.
 from __future__ import annotations
 
 from pathlib import Path
-
-# Oracle OIC validation provider will be injected at runtime
 from typing import Any, Any as ValidationProvider
 
-from flext_core import Field
-from flext_core.domain.pydantic_base import DomainValueObject
 from pydantic import SecretStr, model_validator
 from pydantic_settings import BaseSettings as PydanticSettings, SettingsConfigDict
+
+# 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
+from flext_target_oracle_oic.infrastructure.di_container import (
+    get_base_config,
+    get_domain_entity,
+    get_domain_value_object,
+    get_field,
+    get_service_result,
+)
+
+ServiceResult = get_service_result()
+DomainEntity = get_domain_entity()
+Field = get_field()
+DomainValueObject = get_domain_value_object()
+BaseConfig = get_base_config()
 
 _oic_validation_provider: ValidationProvider | None = None
 
@@ -328,7 +339,9 @@ class TargetOracleOICConfig(PydanticSettings):
         defaults = {
             "auth": OICAuthConfig(
                 oauth_client_id="your-client-id",
-                oauth_client_secret=SecretStr("your-client-secret"),  # nosec B106 - Example configuration value
+                oauth_client_secret=SecretStr(
+                    "your-client-secret"
+                ),  # nosec B106 - Example configuration value
                 oauth_token_url="https://idcs-url/oauth2/v1/token",
                 oauth_client_aud=None,
             ),

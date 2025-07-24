@@ -6,15 +6,16 @@ Follows Clean Architecture principles by using abstract interfaces.
 
 from __future__ import annotations
 
+# Removed circular dependency - use DI pattern
+import logging
 from typing import TYPE_CHECKING, Any
 
-from flext_observability.logging import get_logger
 from singer_sdk.authenticators import OAuthAuthenticator
 
 if TYPE_CHECKING:
     from typing import Any as OracleConfigurationProvider
 
-logger = get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 # Oracle configuration provider will be injected at runtime
 _config_provider: OracleConfigurationProvider | None = None
@@ -187,7 +188,10 @@ class OICOAuth2Authenticator(OAuthAuthenticator):
 
         try:
             response = requests.post(
-                self.auth_endpoint, headers=headers, data=data, timeout=30,
+                self.auth_endpoint,
+                headers=headers,
+                data=data,
+                timeout=30,
             )
             response.raise_for_status()
 

@@ -8,8 +8,6 @@ from __future__ import annotations
 
 from typing import Any
 
-# Use centralized ServiceResult from flext-core - ELIMINATE DUPLICATION
-from flext_core.domain.shared_types import ServiceResult
 from pydantic import SecretStr
 
 from flext_target_oracle_oic.config import (
@@ -20,6 +18,22 @@ from flext_target_oracle_oic.config import (
     OICProcessingConfig,
     TargetOracleOICConfig,
 )
+
+# Use centralized ServiceResult from flext-core - ELIMINATE DUPLICATION
+# 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
+from flext_target_oracle_oic.infrastructure.di_container import (
+    get_base_config,
+    get_domain_entity,
+    get_domain_value_object,
+    get_field,
+    get_service_result,
+)
+
+ServiceResult = get_service_result()
+DomainEntity = get_domain_entity()
+Field = get_field()
+DomainValueObject = get_domain_value_object()
+BaseConfig = get_base_config()
 
 
 def setup_oic_target(
@@ -60,7 +74,9 @@ def create_development_oic_target_config(**overrides: Any) -> TargetOracleOICCon
     """
     auth_config = OICAuthConfig(
         oauth_client_id="dev-client-id",
-        oauth_client_secret=SecretStr("dev-client-secret"),  # nosec B106 - Example development value
+        oauth_client_secret=SecretStr(
+            "dev-client-secret"
+        ),  # nosec B106 - Example development value
         oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
     )
 
@@ -126,7 +142,9 @@ def create_production_oic_target_config(**overrides: Any) -> TargetOracleOICConf
     """
     auth_config = OICAuthConfig(
         oauth_client_id="prod-client-id",
-        oauth_client_secret=SecretStr("prod-client-secret"),  # nosec B106 - Example production value
+        oauth_client_secret=SecretStr(
+            "prod-client-secret"
+        ),  # nosec B106 - Example production value
         oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
     )
 
@@ -192,7 +210,9 @@ def create_migration_oic_target_config(**overrides: Any) -> TargetOracleOICConfi
     """
     auth_config = OICAuthConfig(
         oauth_client_id="migration-client-id",
-        oauth_client_secret=SecretStr("migration-client-secret"),  # nosec B106 - Example migration value
+        oauth_client_secret=SecretStr(
+            "migration-client-secret"
+        ),  # nosec B106 - Example migration value
         oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
     )
 
@@ -291,7 +311,9 @@ def create_test_connection_config(**overrides: Any) -> TargetOracleOICConfig:
     """
     auth_config = OICAuthConfig(
         oauth_client_id="test-client-id",
-        oauth_client_secret=SecretStr("test-client-secret"),  # nosec B106 - Example testing value
+        oauth_client_secret=SecretStr(
+            "test-client-secret"
+        ),  # nosec B106 - Example testing value
         oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
     )
 
