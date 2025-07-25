@@ -9,6 +9,7 @@ from __future__ import annotations
 from pathlib import Path
 from typing import Any, Any as ValidationProvider
 
+from flext_core import FlextValueObject as FlextDomainBaseModel
 from pydantic import SecretStr, model_validator
 from pydantic_settings import BaseSettings as PydanticSettings, SettingsConfigDict
 
@@ -21,7 +22,7 @@ from flext_target_oracle_oic.infrastructure.di_container import (
     get_service_result,
 )
 
-ServiceResult = get_service_result()
+FlextResult = get_service_result()
 DomainEntity = get_domain_entity()
 Field = get_field()
 DomainValueObject = get_domain_value_object()
@@ -51,7 +52,7 @@ def _get_oic_validation_provider() -> ValidationProvider | None:
     return _oic_validation_provider
 
 
-class OICAuthConfig(DomainValueObject):
+class OICAuthConfig(FlextDomainBaseModel):
     """OIC authentication configuration using flext-core patterns."""
 
     oauth_client_id: str = Field(
@@ -78,7 +79,7 @@ class OICAuthConfig(DomainValueObject):
     )
 
 
-class OICConnectionConfig(DomainValueObject):
+class OICConnectionConfig(FlextDomainBaseModel):
     """OIC connection configuration using flext-core patterns."""
 
     base_url: str = Field(
@@ -104,7 +105,7 @@ class OICConnectionConfig(DomainValueObject):
     )
 
 
-class OICDeploymentConfig(DomainValueObject):
+class OICDeploymentConfig(FlextDomainBaseModel):
     """OIC deployment configuration using flext-core patterns."""
 
     import_mode: str = Field(
@@ -138,7 +139,7 @@ class OICDeploymentConfig(DomainValueObject):
     )
 
 
-class OICProcessingConfig(DomainValueObject):
+class OICProcessingConfig(FlextDomainBaseModel):
     """OIC processing configuration using flext-core patterns."""
 
     batch_size: int = Field(
@@ -174,7 +175,7 @@ class OICProcessingConfig(DomainValueObject):
     )
 
 
-class OICEntityConfig(DomainValueObject):
+class OICEntityConfig(FlextDomainBaseModel):
     """OIC entity configuration using flext-core patterns."""
 
     integration_identifier_field: str = Field(
@@ -339,9 +340,7 @@ class TargetOracleOICConfig(PydanticSettings):
         defaults = {
             "auth": OICAuthConfig(
                 oauth_client_id="your-client-id",
-                oauth_client_secret=SecretStr(
-                    "your-client-secret"
-                ),  # nosec B106 - Example configuration value
+                oauth_client_secret=SecretStr("your-client-secret"),  # nosec B106 - Example configuration value
                 oauth_token_url="https://idcs-url/oauth2/v1/token",
                 oauth_client_aud=None,
             ),

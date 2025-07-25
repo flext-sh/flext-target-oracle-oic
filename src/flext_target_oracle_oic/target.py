@@ -4,8 +4,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, ClassVar
 
-from singer_sdk import Target
+# MIGRATED: Singer SDK imports centralized via flext-meltano
+from flext_meltano.singer import FlextMeltanoTarget as Target
 
+from flext_target_oracle_oic.application import OICTargetOrchestrator
 from flext_target_oracle_oic.sinks import (
     ConnectionsSink,
     IntegrationsSink,
@@ -17,7 +19,7 @@ from flext_target_oracle_oic.sinks import (
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
-    from singer_sdk.sinks import Sink
+    from flext_meltano import Sink
 
 
 class TargetOracleOIC(Target):
@@ -99,9 +101,28 @@ class TargetOracleOIC(Target):
         ],
     }
 
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, *args: Any, **kwargs: object) -> None:
         super().__init__(*args, **kwargs)
-        # Use the Singer SDK logger property instead of overriding
+        # Initialize the orchestrator for modular architecture
+        self._orchestrator: OICTargetOrchestrator | None = None
+
+    def setup(self) -> None:
+        """Setup the target orchestrator."""
+        if self._orchestrator is None:
+            self._orchestrator = OICTargetOrchestrator(self.config)
+            setup_result = self._orchestrator.setup()
+            if not setup_result.is_success:
+                self.logger.error(f"Orchestrator setup failed: {setup_result.error}")
+
+    def teardown(self) -> None:
+        """Teardown the target orchestrator."""
+        if self._orchestrator:
+            teardown_result = self._orchestrator.teardown()
+            if not teardown_result.is_success:
+                self.logger.warning(
+                    f"Orchestrator teardown failed: {teardown_result.error}",
+                )
+            self._orchestrator = None
 
     def _process_schema_message(self, message_dict: dict[str, Any]) -> None:
         """Process a schema message by creating and registering the appropriate sink.

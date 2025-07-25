@@ -1,7 +1,7 @@
-"""Simple API for FLEXT target-oracle-oic setup and configuration using flext-core patterns.
+"""Simple API for FLEXT target-oracle-oic setup and configuration.
 
 MIGRATED TO FLEXT-CORE:
-Provides enterprise-ready setup utilities with ServiceResult pattern support.
+Provides enterprise-ready setup utilities with FlextResult pattern support.
 """
 
 from __future__ import annotations
@@ -19,7 +19,7 @@ from flext_target_oracle_oic.config import (
     TargetOracleOICConfig,
 )
 
-# Use centralized ServiceResult from flext-core - ELIMINATE DUPLICATION
+# Use centralized FlextResult from flext-core - ELIMINATE DUPLICATION
 # 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
 from flext_target_oracle_oic.infrastructure.di_container import (
     get_base_config,
@@ -29,23 +29,23 @@ from flext_target_oracle_oic.infrastructure.di_container import (
     get_service_result,
 )
 
-ServiceResult = get_service_result()
+FlextResult = get_service_result()
 DomainEntity = get_domain_entity()
 Field = get_field()
-DomainValueObject = get_domain_value_object()
+FlextValueObject = get_domain_value_object()
 BaseConfig = get_base_config()
 
 
 def setup_oic_target(
     config: TargetOracleOICConfig | None = None,
-) -> ServiceResult[Any]:
+) -> FlextResult[Any]:
     """Setup Oracle Integration Cloud target with configuration.
 
     Args:
         config: Optional configuration. If None, creates defaults.
 
     Returns:
-        ServiceResult with TargetOracleOICConfig or error message.
+        FlextResult with TargetOracleOICConfig or error message.
 
     """
     try:
@@ -56,10 +56,10 @@ def setup_oic_target(
         # Validate configuration
         config.model_validate(config.model_dump())
 
-        return ServiceResult.ok(config)
+        return FlextResult.ok(config)
 
     except Exception as e:
-        return ServiceResult.fail(f"Failed to setup OIC target: {e}")
+        return FlextResult.fail(f"Failed to setup OIC target: {e}")
 
 
 def create_development_oic_target_config(**overrides: Any) -> TargetOracleOICConfig:
@@ -74,9 +74,7 @@ def create_development_oic_target_config(**overrides: Any) -> TargetOracleOICCon
     """
     auth_config = OICAuthConfig(
         oauth_client_id="dev-client-id",
-        oauth_client_secret=SecretStr(
-            "dev-client-secret"
-        ),  # nosec B106 - Example development value
+        oauth_client_secret=SecretStr("dev-client-secret"),  # nosec B106 - Example development value
         oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
     )
 
@@ -142,9 +140,7 @@ def create_production_oic_target_config(**overrides: Any) -> TargetOracleOICConf
     """
     auth_config = OICAuthConfig(
         oauth_client_id="prod-client-id",
-        oauth_client_secret=SecretStr(
-            "prod-client-secret"
-        ),  # nosec B106 - Example production value
+        oauth_client_secret=SecretStr("prod-client-secret"),  # nosec B106 - Example production value
         oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
     )
 
@@ -210,9 +206,7 @@ def create_migration_oic_target_config(**overrides: Any) -> TargetOracleOICConfi
     """
     auth_config = OICAuthConfig(
         oauth_client_id="migration-client-id",
-        oauth_client_secret=SecretStr(
-            "migration-client-secret"
-        ),  # nosec B106 - Example migration value
+        oauth_client_secret=SecretStr("migration-client-secret"),  # nosec B106 - Example migration value
         oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
     )
 
@@ -266,14 +260,14 @@ def create_migration_oic_target_config(**overrides: Any) -> TargetOracleOICConfi
     return config
 
 
-def validate_oic_target_config(config: TargetOracleOICConfig) -> ServiceResult[Any]:
+def validate_oic_target_config(config: TargetOracleOICConfig) -> FlextResult[Any]:
     """Validate OIC target configuration.
 
     Args:
         config: Configuration to validate
 
     Returns:
-        ServiceResult with validation success or error message.
+        FlextResult with validation success or error message.
 
     """
     try:
@@ -282,21 +276,21 @@ def validate_oic_target_config(config: TargetOracleOICConfig) -> ServiceResult[A
 
         # Additional business rule validations
         if not config.connection.base_url:
-            return ServiceResult.fail("Base URL is required")
+            return FlextResult.fail("Base URL is required")
 
         if not config.auth.oauth_client_id:
-            return ServiceResult.fail("OAuth client ID is required")
+            return FlextResult.fail("OAuth client ID is required")
 
         if not config.auth.oauth_client_secret:
-            return ServiceResult.fail("OAuth client secret is required")
+            return FlextResult.fail("OAuth client secret is required")
 
         if not config.auth.oauth_token_url:
-            return ServiceResult.fail("OAuth token URL is required")
+            return FlextResult.fail("OAuth token URL is required")
 
-        return ServiceResult.ok(True)
+        return FlextResult.ok(True)
 
     except Exception as e:
-        return ServiceResult.fail(f"Configuration validation failed: {e}")
+        return FlextResult.fail(f"Configuration validation failed: {e}")
 
 
 def create_test_connection_config(**overrides: Any) -> TargetOracleOICConfig:
@@ -311,9 +305,7 @@ def create_test_connection_config(**overrides: Any) -> TargetOracleOICConfig:
     """
     auth_config = OICAuthConfig(
         oauth_client_id="test-client-id",
-        oauth_client_secret=SecretStr(
-            "test-client-secret"
-        ),  # nosec B106 - Example testing value
+        oauth_client_secret=SecretStr("test-client-secret"),  # nosec B106 - Example testing value
         oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
     )
 
@@ -367,7 +359,7 @@ def create_test_connection_config(**overrides: Any) -> TargetOracleOICConfig:
 
 # Export convenience functions
 __all__ = [
-    "ServiceResult",
+    "FlextResult",
     "create_development_oic_target_config",
     "create_migration_oic_target_config",
     "create_production_oic_target_config",
