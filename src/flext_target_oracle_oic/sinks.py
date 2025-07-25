@@ -2,22 +2,25 @@
 
 from __future__ import annotations
 
-# Removed circular dependency - use DI pattern
-import logging
 from typing import Any
 
 import httpx
-from singer_sdk.sinks import Sink
+
+# Removed circular dependency - use DI pattern
+from flext_core import get_logger
+
+# MIGRATED: from flext_meltano import Sink -> use flext_meltano
+from flext_meltano import Sink
 
 from flext_target_oracle_oic.auth import OICOAuth2Authenticator
 
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__)
 
 
 class OICBaseSink(Sink):
     """Base sink for Oracle Integration Cloud."""
 
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, *args: Any, **kwargs: object) -> None:
         super().__init__(*args, **kwargs)
         # CRITICAL: Set tap_name for Singer SDK auth compatibility
         self.tap_name = "target-oracle-oic"  # Required by Singer SDK authenticators
@@ -248,8 +251,10 @@ class IntegrationsSink(OICBaseSink):
         archive_content = record.get("archive_content")
         if isinstance(archive_content, str):
             archive_content = archive_content.encode()
-        files = {
-            "file": archive_content,
+
+        # Proper type for httpx files parameter
+        files: dict[str, bytes | str] = {
+            "file": archive_content or b"",
         }
         response = self.client.post(
             "/ic/api/integration/v1/integrations/archive",

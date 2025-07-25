@@ -18,8 +18,9 @@ from typing import Any
 from unittest.mock import patch
 
 import pytest
-from singer_sdk.exceptions import ConfigValidationError
-from singer_sdk.testing import get_target_test_class
+# MIGRATED: from singer_sdk.exceptions import ConfigValidationError -> use flext_meltano
+# MIGRATED: from singer_sdk.testing import get_target_test_class -> use flext_meltano
+from flext_meltano import ConfigValidationError, get_target_test_class
 
 from flext_target_oracle_oic.sinks import (
     ConnectionsSink,
@@ -374,5 +375,5 @@ def get_target_oic_test_class() -> type:
     )
 
 
-class TestTargetOICSingerSDK(get_target_oic_test_class()):  # type: ignore[misc]
+class TestTargetOICSingerSDK(get_target_oic_test_class()):
     """Singer SDK standard tests for target-oracle-oic."""

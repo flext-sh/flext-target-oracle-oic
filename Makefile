@@ -1,35 +1,67 @@
-# FLEXT TARGET ORACLE OIC - Singer Target for Oracle Integration Cloud
-# ==================================================================
-# Enterprise Singer target for Oracle OIC integration metadata loading
-# Python 3.13 + Singer SDK + Oracle OIC + OAuth2 + Zero Tolerance Quality Gates
+# FLEXT Target Oracle OIC - Oracle Integration Cloud Singer Target
+# ===============================================================
+# Enterprise-grade Singer target for Oracle Integration Cloud data loading
+# Python 3.13 + Singer SDK + Oracle OIC + OAuth2 + FLEXT Core + Zero Tolerance Quality Gates
 
-.PHONY: help check validate test lint type-check security format format-check fix
+.PHONY: help info diagnose check validate test lint type-check security format format-check fix
 .PHONY: install dev-install setup pre-commit build clean
 .PHONY: coverage coverage-html test-unit test-integration test-singer
 .PHONY: deps-update deps-audit deps-tree deps-outdated
-.PHONY: target-test target-validate target-run singer-spec
-.PHONY: oic-test oic-auth oic-connections oic-integrations oic-packages
+.PHONY: sync validate-config target-test target-validate target-schema target-run
+.PHONY: oic-write-test oic-endpoint-check oic-auth-test
 
 # ============================================================================
 # 🎯 HELP & INFORMATION
 # ============================================================================
 
 help: ## Show this help message
-	@echo "🎯 FLEXT TARGET ORACLE OIC - Singer Target for Oracle Integration Cloud"
-	@echo "=================================================================="
-	@echo "🎯 Singer SDK + Oracle OIC + OAuth2 + Python 3.13"
+	@echo "🎯 FLEXT Target Oracle OIC - Oracle Integration Cloud Singer Target"
+	@echo "==============================================================="
+	@echo "🎯 Singer SDK + Oracle OIC + OAuth2 + FLEXT Core + Python 3.13"
 	@echo ""
-	@echo "📦 Enterprise Singer target for Oracle OIC integration loading"
-	@echo "🔒 Zero tolerance quality gates with real OIC authentication"
-	@echo "🧪 90%+ test coverage requirement with OIC API compliance"
+	@echo "📦 Enterprise-grade Oracle Integration Cloud target for Singer protocol"
+	@echo "🔒 Zero tolerance quality gates with OAuth2 authentication"
+	@echo "🧪 90%+ test coverage requirement with OIC API integration testing"
 	@echo ""
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\\033[36m%-20s\\033[0m %s\\n", $$1, $$2}'
+
+
+info: ## Show project information
+	@echo "📊 Project Information"
+	@echo "======================"
+	@echo "Name: flext-target-oracle-oic"
+	@echo "Type: singer-target"
+	@echo "Title: FLEXT TARGET ORACLE OIC"
+	@echo "Version: $(shell poetry version -s 2>/dev/null || echo "0.7.0")"
+	@echo "Python: $(shell python3.13 --version 2>/dev/null || echo "Not found")"
+	@echo "Poetry: $(shell poetry --version 2>/dev/null || echo "Not installed")"
+	@echo "Venv: $(shell poetry env info --path 2>/dev/null || echo "Not activated")"
+	@echo "Directory: $(CURDIR)"
+	@echo "Git Branch: $(shell git branch --show-current 2>/dev/null || echo "Not a git repo")"
+	@echo "Git Status: $(shell git status --porcelain 2>/dev/null | wc -l | xargs echo) files changed"
+
+diagnose: ## Run complete diagnostics
+	@echo "🔍 Running diagnostics for flext-target-oracle-oic..."
+	@echo "System Information:"
+	@echo "OS: $(shell uname -s)"
+	@echo "Architecture: $(shell uname -m)"
+	@echo "Python: $(shell python3.13 --version 2>/dev/null || echo "Not found")"
+	@echo "Poetry: $(shell poetry --version 2>/dev/null || echo "Not installed")"
+	@echo ""
+	@echo "Project Structure:"
+	@ls -la
+	@echo ""
+	@echo "Poetry Configuration:"
+	@poetry config --list 2>/dev/null || echo "Poetry not configured"
+	@echo ""
+	@echo "Dependencies Status:"
+	@poetry show --outdated 2>/dev/null || echo "No outdated dependencies"
 
 # ============================================================================
 # 🎯 CORE QUALITY GATES - ZERO TOLERANCE
 # ============================================================================
 
-validate: lint type-check security test target-test ## STRICT compliance validation (all must pass)
+validate: lint type-check security test ## STRICT compliance validation (all must pass)
 	@echo "✅ ALL QUALITY GATES PASSED - FLEXT TARGET ORACLE OIC COMPLIANT"
 
 check: lint type-check test ## Essential quality checks (pre-commit standard)
@@ -86,25 +118,10 @@ test-integration: ## Run integration tests only
 	@poetry run pytest tests/integration/ -v
 	@echo "✅ Integration tests complete"
 
-test-singer: ## Run Singer-specific tests
+test-singer: ## Run Singer protocol tests
 	@echo "🧪 Running Singer protocol tests..."
-	@poetry run pytest tests/ -m "singer" -v
+	@poetry run pytest tests/singer/ -v
 	@echo "✅ Singer tests complete"
-
-test-oic: ## Run OIC-specific tests
-	@echo "🧪 Running Oracle OIC tests..."
-	@poetry run pytest tests/ -m "oic" -v
-	@echo "✅ OIC tests complete"
-
-test-oauth2: ## Run OAuth2 authentication tests
-	@echo "🧪 Running OAuth2 authentication tests..."
-	@poetry run pytest tests/ -m "oauth2" -v
-	@echo "✅ OAuth2 tests complete"
-
-test-performance: ## Run performance tests
-	@echo "⚡ Running Singer target performance tests..."
-	@poetry run pytest tests/performance/ -v --benchmark-only
-	@echo "✅ Performance tests complete"
 
 coverage: ## Generate detailed coverage report
 	@echo "📊 Generating coverage report..."
@@ -140,42 +157,68 @@ pre-commit: ## Setup pre-commit hooks
 	@echo "✅ Pre-commit hooks installed"
 
 # ============================================================================
-# 🎵 SINGER TARGET OPERATIONS - CORE FUNCTIONALITY
+# 🎯 SINGER TARGET OPERATIONS
 # ============================================================================
 
-target-test: ## Test Singer target functionality
-	@echo "🧪 Testing Singer target functionality..."
-	@poetry run python -c "from flext_target_oracle_oic.target import TargetOracleOIC; from flext_target_oracle_oic.client.oic_client import OICClient; print('Oracle OIC target loaded successfully')"
-	@echo "✅ Singer target test complete"
+sync: ## Sync data to Oracle OIC target
+	@echo "🎯 Running Oracle OIC data sync..."
+	@poetry run target-oracle-oic --config $(TARGET_CONFIG) < $(TARGET_STATE)
+	@echo "✅ Oracle OIC sync complete"
 
-target-validate: ## Validate Singer target configuration
-	@echo "🔍 Validating Singer target configuration..."
-	@poetry run python scripts/validate_target_config.py
-	@echo "✅ Singer target configuration validation complete"
+validate-config: ## Validate target configuration
+	@echo "🔍 Validating target configuration..."
+	@poetry run target-oracle-oic --config $(TARGET_CONFIG) --validate-config
+	@echo "✅ Target configuration validated"
 
-target-run: ## Run Singer target with sample data
-	@echo "🎵 Running Singer target with sample data..."
-	@poetry run flext-target-oracle-oic --config config.json < sample_data/sample.jsonl
-	@echo "✅ Singer target execution complete"
+target-test: ## Test Oracle OIC target functionality
+	@echo "🎯 Testing Oracle OIC target functionality..."
+	@poetry run target-oracle-oic --about
+	@poetry run target-oracle-oic --version
+	@echo "✅ Target test complete"
 
-target-schema: ## Test Singer target schema handling
-	@echo "📋 Testing Singer target schema handling..."
-	@poetry run python scripts/test_schema_handling.py
-	@echo "✅ Schema handling test complete"
+target-validate: ## Validate target configuration
+	@echo "🔍 Validating target configuration..."
+	@poetry run target-oracle-oic --config tests/fixtures/config/target_config.json --validate-config
+	@echo "✅ Target configuration validated"
 
-target-state: ## Test Singer target state management
-	@echo "📊 Testing Singer target state management..."
-	@poetry run python scripts/test_state_management.py
-	@echo "✅ State management test complete"
+target-schema: ## Validate Oracle OIC schema
+	@echo "🔍 Validating Oracle OIC schema..."
+	@poetry run target-oracle-oic --config tests/fixtures/config/target_config.json --validate-schema
+	@echo "✅ Oracle OIC schema validated"
 
-target-sinks: ## Test all Singer sink implementations
-	@echo "🚰 Testing Singer sink implementations..."
-	@poetry run python scripts/test_target_sinks.py
-	@echo "✅ Target sinks test complete"
+target-run: ## Run Oracle OIC data loading
+	@echo "🎯 Running Oracle OIC data loading..."
+	@poetry run target-oracle-oic --config tests/fixtures/config/target_config.json < tests/fixtures/data/sample_input.jsonl
+	@echo "✅ Oracle OIC data loading complete"
+
+target-run-debug: ## Run Oracle OIC target with debug logging
+	@echo "🎯 Running Oracle OIC target with debug..."
+	@poetry run target-oracle-oic --config tests/fixtures/config/target_config.json --log-level DEBUG < tests/fixtures/data/sample_input.jsonl
+	@echo "✅ Oracle OIC debug run complete"
+
+target-dry-run: ## Run Oracle OIC target in dry-run mode
+	@echo "🎯 Running Oracle OIC target dry-run..."
+	@poetry run target-oracle-oic --config tests/fixtures/config/target_config.json --dry-run < tests/fixtures/data/sample_input.jsonl
+	@echo "✅ Oracle OIC dry-run complete"
 
 # ============================================================================
-# 🏢 ORACLE OIC OPERATIONS
+# 🏢 ORACLE OIC-SPECIFIC OPERATIONS
 # ============================================================================
+
+oic-write-test: ## Test Oracle OIC write operations
+	@echo "🏢 Testing Oracle OIC write operations..."
+	@poetry run python -c "from flext_target_oracle_oic.client import TargetOracleOICClient; import asyncio; import json; config = json.load(open('tests/fixtures/config/target_config.json')); client = TargetOracleOICClient(config); print('Testing write operations...'); result = asyncio.run(client.test_write()); print('✅ Write test passed!' if result.is_success else f'❌ Write test failed: {result.error}')"
+	@echo "✅ Oracle OIC write test complete"
+
+oic-endpoint-check: ## Check Oracle OIC endpoint connectivity
+	@echo "🏢 Checking Oracle OIC endpoint connectivity..."
+	@poetry run python scripts/validate_oic_endpoint.py
+	@echo "✅ Oracle OIC endpoint check complete"
+
+oic-auth-test: ## Test Oracle OIC OAuth2 authentication
+	@echo "🔐 Testing Oracle OIC OAuth2 authentication..."
+	@poetry run python -c "from flext_target_oracle_oic.auth import OICAuthenticator; import json; config = json.load(open('tests/fixtures/config/target_config.json')); auth = OICAuthenticator(config); print('Testing OAuth2 auth...'); result = auth.test_authentication(); print('✅ Auth test passed!' if result.is_success else f'❌ Auth test failed: {result.error}')"
+	@echo "✅ Oracle OIC auth test complete"
 
 oic-test: ## Test Oracle OIC API connectivity
 	@echo "🏢 Testing Oracle OIC API connectivity..."
@@ -207,74 +250,6 @@ oic-lookups: ## Test OIC lookup management
 	@poetry run python scripts/test_oic_lookups.py
 	@echo "✅ OIC lookup management test complete"
 
-oic-import-export: ## Test OIC import/export operations
-	@echo "🔄 Testing OIC import/export operations..."
-	@poetry run python scripts/test_oic_import_export.py
-	@echo "✅ OIC import/export test complete"
-
-oic-deployment: ## Test OIC deployment operations
-	@echo "🚀 Testing OIC deployment operations..."
-	@poetry run python scripts/test_oic_deployment.py
-	@echo "✅ OIC deployment test complete"
-
-# ============================================================================
-# 🎵 SINGER PROTOCOL COMPLIANCE
-# ============================================================================
-
-singer-spec: ## Validate Singer specification compliance
-	@echo "🎵 Validating Singer specification compliance..."
-	@poetry run python scripts/validate_singer_spec.py
-	@echo "✅ Singer specification validation complete"
-
-singer-messages: ## Test Singer message handling
-	@echo "📬 Testing Singer message handling..."
-	@poetry run python scripts/test_singer_messages.py
-	@echo "✅ Singer message test complete"
-
-singer-catalog: ## Test Singer catalog handling
-	@echo "📋 Testing Singer catalog handling..."
-	@poetry run python scripts/test_singer_catalog.py
-	@echo "✅ Singer catalog test complete"
-
-singer-state: ## Test Singer state handling
-	@echo "📊 Testing Singer state handling..."
-	@poetry run python scripts/test_singer_state.py
-	@echo "✅ Singer state test complete"
-
-singer-records: ## Test Singer record processing
-	@echo "📄 Testing Singer record processing..."
-	@poetry run python scripts/test_singer_records.py
-	@echo "✅ Singer record test complete"
-
-singer-sinks: ## Test Singer sink implementations
-	@echo "🚰 Testing Singer sink implementations..."
-	@poetry run python scripts/test_singer_sinks.py
-	@echo "✅ Singer sinks test complete"
-
-# ============================================================================
-# 🔍 DATA QUALITY & VALIDATION
-# ============================================================================
-
-validate-oic-data: ## Validate OIC data format compliance
-	@echo "🔍 Validating OIC data format compliance..."
-	@poetry run python scripts/validate_oic_data.py
-	@echo "✅ OIC data format validation complete"
-
-validate-integration-format: ## Validate integration format
-	@echo "🔍 Validating integration format..."
-	@poetry run python scripts/validate_integration_format.py
-	@echo "✅ Integration format validation complete"
-
-validate-connection-data: ## Validate connection data
-	@echo "🔍 Validating connection data..."
-	@poetry run python scripts/validate_connection_data.py
-	@echo "✅ Connection data validation complete"
-
-data-quality-report: ## Generate comprehensive data quality report
-	@echo "📊 Generating data quality report..."
-	@poetry run python scripts/generate_quality_report.py
-	@echo "✅ Data quality report generated"
-
 # ============================================================================
 # 🔐 AUTHENTICATION & SECURITY
 # ============================================================================
@@ -300,6 +275,30 @@ security-audit: ## Run security audit for OIC target
 	@echo "✅ Security audit complete"
 
 # ============================================================================
+# 🔍 DATA VALIDATION
+# ============================================================================
+
+validate-oic-data: ## Validate OIC data format compliance
+	@echo "🔍 Validating OIC data format compliance..."
+	@poetry run python scripts/validate_oic_data.py
+	@echo "✅ OIC data format validation complete"
+
+validate-integration-format: ## Validate integration format
+	@echo "🔍 Validating integration format..."
+	@poetry run python scripts/validate_integration_format.py
+	@echo "✅ Integration format validation complete"
+
+validate-connection-data: ## Validate connection data
+	@echo "🔍 Validating connection data..."
+	@poetry run python scripts/validate_connection_data.py
+	@echo "✅ Connection data validation complete"
+
+data-quality-report: ## Generate comprehensive data quality report
+	@echo "📊 Generating data quality report..."
+	@poetry run python scripts/generate_quality_report.py
+	@echo "✅ Data quality report generated"
+
+# ============================================================================
 # 📦 BUILD & DISTRIBUTION
 # ============================================================================
 
@@ -307,17 +306,6 @@ build: clean ## Build distribution packages
 	@echo "🔨 Building distribution..."
 	@poetry build
 	@echo "✅ Build complete - packages in dist/"
-
-package: build ## Create deployment package
-	@echo "📦 Creating deployment package..."
-	@tar -czf dist/flext-target-oracle-oic-deployment.tar.gz \
-		src/ \
-		tests/ \
-		scripts/ \
-		pyproject.toml \
-		README.md \
-		CLAUDE.md
-	@echo "✅ Deployment package created: dist/flext-target-oracle-oic-deployment.tar.gz"
 
 # ============================================================================
 # 🧹 CLEANUP
@@ -330,15 +318,14 @@ clean: ## Remove all artifacts
 	@rm -rf *.egg-info/
 	@rm -rf .coverage
 	@rm -rf htmlcov/
-	@rm -rf .pytest_cache/
-	@rm -rf .mypy_cache/
-	@rm -rf .ruff_cache/
 	@rm -rf output/
 	@rm -f *.iar
 	@rm -f *.par
-	@rm -f state.json
 	@rm -f oauth_token.json
 	@find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null || true
+	@find . -type d -name ".pytest_cache" -exec rm -rf {} + 2>/dev/null || true
+	@find . -type d -name ".mypy_cache" -exec rm -rf {} + 2>/dev/null || true
+	@find . -type d -name ".ruff_cache" -exec rm -rf {} + 2>/dev/null || true
 	@find . -type f -name "*.pyc" -delete 2>/dev/null || true
 	@echo "✅ Cleanup complete"
 
@@ -374,11 +361,16 @@ export PYTHONPATH := $(PWD)/src:$(PYTHONPATH)
 export PYTHONDONTWRITEBYTECODE := 1
 export PYTHONUNBUFFERED := 1
 
-# Oracle OIC Target settings
-export FLEXT_TARGET_ORACLE_OIC_CONFIG := ./config.json
-export FLEXT_TARGET_ORACLE_OIC_DEBUG := false
+# Target settings
+TARGET_CONFIG := config.json
+TARGET_STATE := state.json
 
-# Oracle OIC connection settings
+# Singer settings
+export SINGER_LOG_LEVEL := INFO
+export SINGER_BATCH_SIZE := 100
+export SINGER_MAX_BATCH_AGE := 300
+
+# Oracle OIC Target settings
 export TARGET_ORACLE_OIC_BASE_URL := https://oic-prod.integration.ocp.oraclecloud.com
 export TARGET_ORACLE_OIC_API_VERSION := v1
 
@@ -398,21 +390,6 @@ export TARGET_ORACLE_OIC_REQUEST_TIMEOUT := 30
 export TARGET_ORACLE_OIC_MAX_RETRIES := 3
 export TARGET_ORACLE_OIC_CONCURRENT_REQUESTS := 5
 
-# Deployment settings
-export TARGET_ORACLE_OIC_ENVIRONMENT := development
-export TARGET_ORACLE_OIC_DEPLOYMENT_MODE := sync
-export TARGET_ORACLE_OIC_VALIDATE_BEFORE_DEPLOY := true
-
-# Advanced features settings
-export TARGET_ORACLE_OIC_ENABLE_MONITORING := true
-export TARGET_ORACLE_OIC_ENABLE_LOGGING := true
-export TARGET_ORACLE_OIC_LOG_LEVEL := INFO
-
-# Singer settings
-export SINGER_SDK_LOG_LEVEL := INFO
-export SINGER_SDK_BATCH_SIZE := 1000
-export SINGER_SDK_MAX_RECORD_AGE_IN_MINUTES := 5
-
 # Poetry settings
 export POETRY_VENV_IN_PROJECT := false
 export POETRY_CACHE_DIR := $(HOME)/.cache/pypoetry
@@ -427,39 +404,30 @@ export RUFF_CACHE_DIR := .ruff_cache
 
 # Project information
 PROJECT_NAME := flext-target-oracle-oic
+PROJECT_TYPE := meltano-plugin
 PROJECT_VERSION := $(shell poetry version -s)
-PROJECT_DESCRIPTION := FLEXT TARGET ORACLE OIC - Singer Target for Oracle Integration Cloud
+PROJECT_DESCRIPTION := FLEXT Target Oracle OIC - Oracle Integration Cloud Singer Target
 
 .DEFAULT_GOAL := help
 
 # ============================================================================
-# 🎯 DEVELOPMENT UTILITIES
+# 🎯 SINGER SPECIFIC COMMANDS
 # ============================================================================
 
-dev-oic-server: ## Start development OIC mock server
-	@echo "🔧 Starting development OIC mock server..."
-	@poetry run python scripts/dev_oic_server.py
-	@echo "✅ Development OIC mock server started"
+singer-about: ## Show Singer target about information
+	@echo "🎵 Singer target about information..."
+	@poetry run target-oracle-oic --about
+	@echo "✅ About information displayed"
 
-dev-oauth2-server: ## Start development OAuth2 mock server
-	@echo "🔧 Starting development OAuth2 mock server..."
-	@poetry run python scripts/dev_oauth2_server.py
-	@echo "✅ Development OAuth2 mock server started"
+singer-config-sample: ## Generate Singer config sample
+	@echo "🎵 Generating Singer config sample..."
+	@poetry run target-oracle-oic --config-sample > config_sample.json
+	@echo "✅ Config sample generated: config_sample.json"
 
-dev-target-monitor: ## Monitor target operations
-	@echo "📊 Monitoring target operations..."
-	@poetry run python scripts/monitor_target_operations.py
-	@echo "✅ Target monitoring complete"
-
-dev-oic-explorer: ## Interactive OIC API explorer
-	@echo "🎮 Starting OIC API explorer..."
-	@poetry run python scripts/oic_explorer.py
-	@echo "✅ OIC API explorer session complete"
-
-dev-integration-wizard: ## Interactive integration deployment wizard
-	@echo "🧙 Starting integration deployment wizard..."
-	@poetry run python scripts/integration_wizard.py
-	@echo "✅ Integration wizard session complete"
+singer-test-streams: ## Test Singer streams
+	@echo "🎵 Testing Singer streams..."
+	@poetry run pytest tests/singer/test_streams.py -v
+	@echo "✅ Singer streams tests complete"
 
 # ============================================================================
 # 🎯 FLEXT ECOSYSTEM INTEGRATION
@@ -467,10 +435,10 @@ dev-integration-wizard: ## Interactive integration deployment wizard
 
 ecosystem-check: ## Verify FLEXT ecosystem compatibility
 	@echo "🌐 Checking FLEXT ecosystem compatibility..."
-	@echo "📦 Core project: $(PROJECT_NAME) v$(PROJECT_VERSION)"
+	@echo "📦 Singer project: $(PROJECT_NAME) v$(PROJECT_VERSION)"
 	@echo "🏗️ Architecture: Singer Target + Oracle OIC + OAuth2"
 	@echo "🐍 Python: 3.13"
-	@echo "🔗 Framework: FLEXT Core + Singer SDK + Oracle OIC APIs"
+	@echo "🔗 Framework: FLEXT Core + Singer SDK"
 	@echo "📊 Quality: Zero tolerance enforcement"
 	@echo "✅ Ecosystem compatibility verified"
 
@@ -478,92 +446,7 @@ workspace-info: ## Show workspace integration info
 	@echo "🏢 FLEXT Workspace Integration"
 	@echo "==============================="
 	@echo "📁 Project Path: $(PWD)"
-	@echo "🏆 Role: Singer Target for Oracle Integration Cloud"
-	@echo "🔗 Dependencies: flext-core, flext-observability, singer-sdk, requests-oauthlib"
-	@echo "📦 Provides: Oracle OIC integration loading via Singer protocol"
-	@echo "🎯 Standards: Enterprise Singer target patterns with OAuth2 authentication"
-
-# ============================================================================
-# 🔄 CONTINUOUS INTEGRATION
-# ============================================================================
-
-ci-check: validate ## CI quality checks
-	@echo "🔍 Running CI quality checks..."
-	@poetry run python scripts/ci_quality_report.py
-	@echo "✅ CI quality checks complete"
-
-ci-performance: ## CI performance benchmarks
-	@echo "⚡ Running CI performance benchmarks..."
-	@poetry run python scripts/ci_performance_benchmarks.py
-	@echo "✅ CI performance benchmarks complete"
-
-ci-integration: ## CI integration tests
-	@echo "🔗 Running CI integration tests..."
-	@poetry run pytest tests/integration/ -v --tb=short
-	@echo "✅ CI integration tests complete"
-
-ci-singer: ## CI Singer protocol tests
-	@echo "🎵 Running CI Singer tests..."
-	@poetry run pytest tests/ -m "singer" -v --tb=short
-	@echo "✅ CI Singer tests complete"
-
-ci-oic: ## CI Oracle OIC tests
-	@echo "🏢 Running CI Oracle OIC tests..."
-	@poetry run pytest tests/ -m "oic" -v --tb=short
-	@echo "✅ CI Oracle OIC tests complete"
-
-ci-oauth2: ## CI OAuth2 tests
-	@echo "🔐 Running CI OAuth2 tests..."
-	@poetry run pytest tests/ -m "oauth2" -v --tb=short
-	@echo "✅ CI OAuth2 tests complete"
-
-ci-all: ci-check ci-performance ci-integration ci-singer ci-oic ci-oauth2 ## Run all CI checks
-	@echo "✅ All CI checks complete"
-
-# ============================================================================
-# 🚀 PRODUCTION DEPLOYMENT
-# ============================================================================
-
-deploy-target: validate build ## Deploy target for production use
-	@echo "🚀 Deploying Oracle OIC target..."
-	@poetry run python scripts/deploy_target.py
-	@echo "✅ Oracle OIC target deployment complete"
-
-test-deployment: ## Test deployed target functionality
-	@echo "🧪 Testing deployed target..."
-	@poetry run python scripts/test_deployed_target.py
-	@echo "✅ Deployment test complete"
-
-rollback-deployment: ## Rollback target deployment
-	@echo "🔄 Rolling back target deployment..."
-	@poetry run python scripts/rollback_target_deployment.py
-	@echo "✅ Deployment rollback complete"
-
-# ============================================================================
-# 🔬 MONITORING & OBSERVABILITY
-# ============================================================================
-
-monitor-oauth2-tokens: ## Monitor OAuth2 token health
-	@echo "📊 Monitoring OAuth2 token health..."
-	@poetry run python scripts/monitor_oauth2_tokens.py
-	@echo "✅ OAuth2 token monitoring complete"
-
-monitor-oic-api-health: ## Monitor Oracle OIC API health
-	@echo "📊 Monitoring Oracle OIC API health..."
-	@poetry run python scripts/monitor_oic_api_health.py
-	@echo "✅ OIC API health monitoring complete"
-
-monitor-integration-deployments: ## Monitor integration deployments
-	@echo "📊 Monitoring integration deployments..."
-	@poetry run python scripts/monitor_integration_deployments.py
-	@echo "✅ Integration deployment monitoring complete"
-
-generate-target-metrics: ## Generate target performance metrics
-	@echo "📊 Generating target performance metrics..."
-	@poetry run python scripts/generate_target_metrics.py
-	@echo "✅ Target metrics generated"
-
-generate-oic-usage-report: ## Generate OIC usage report
-	@echo "📊 Generating OIC usage report..."
-	@poetry run python scripts/generate_oic_usage_report.py
-	@echo "✅ OIC usage report generated"
+	@echo "🏆 Role: Oracle Integration Cloud Singer Target"
+	@echo "🔗 Dependencies: flext-core, flext-oracle-oic-ext, singer-sdk"
+	@echo "📦 Provides: Oracle OIC integration capabilities"
+	@echo "🎯 Standards: Enterprise OAuth2 integration patterns"

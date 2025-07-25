@@ -13,7 +13,7 @@ scripts_path = Path(__file__).parent.parent / "scripts"
 sys.path.insert(0, str(scripts_path))
 
 # Import after path modification - required due to dynamic path modification
-from generate_config import (  # type: ignore[import-not-found] # noqa: E402
+from generate_config import (
     generate_config,
     main,
 )
