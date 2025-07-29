@@ -2,17 +2,22 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import httpx
 
 # Removed circular dependency - use DI pattern
 from flext_core import get_logger
 
-# MIGRATED: from flext_meltano import Sink -> use flext_meltano
-from flext_meltano import Sink
+# Import directly from Singer SDK to avoid circular imports
+from singer_sdk.sinks import Sink
 
-from flext_target_oracle_oic.auth import OICOAuth2Authenticator
+from flext_target_oracle_oic.auth import OICAuthConfig, OICOAuth2Authenticator
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+
+    from singer_sdk import Target
 
 logger = get_logger(__name__)
 
@@ -20,8 +25,14 @@ logger = get_logger(__name__)
 class OICBaseSink(Sink):
     """Base sink for Oracle Integration Cloud."""
 
-    def __init__(self, *args: object, **kwargs: object) -> None:
-        super().__init__(*args, **kwargs)
+    def __init__(
+        self,
+        target: Target,
+        stream_name: str,
+        schema: dict[str, Any],
+        key_properties: Sequence[str] | None = None,
+    ) -> None:
+        super().__init__(target, stream_name, schema, key_properties)
         # CRITICAL: Set tap_name for Singer SDK auth compatibility
         self.tap_name = "target-oracle-oic"  # Required by Singer SDK authenticators
         self._authenticator: OICOAuth2Authenticator | None = None
@@ -36,7 +47,15 @@ class OICBaseSink(Sink):
 
         """
         if not self._authenticator:
-            self._authenticator = OICOAuth2Authenticator(self)
+            # Create OICAuthConfig from sink configuration
+            auth_config = OICAuthConfig(
+                oauth_client_id=self.config.get("oauth_client_id", ""),
+                oauth_client_secret=self.config.get("oauth_client_secret", ""),
+                oauth_token_url=self.config.get("oauth_token_url", ""),
+                oauth_client_aud=self.config.get("oauth_client_aud"),
+                oauth_scope=self.config.get("oauth_scope", ""),
+            )
+            self._authenticator = OICOAuth2Authenticator(auth_config)
         return self._authenticator
 
     @property
@@ -48,9 +67,22 @@ class OICBaseSink(Sink):
 
         """
         if not self._client:
+            # Get access token for authentication
+            token_result = self.authenticator.get_access_token()
+            if not token_result.is_success:
+                msg = f"Authentication failed: {token_result.error}"
+                raise RuntimeError(msg)
+
+            # Create client with Bearer token
+            auth_headers = {
+                "Authorization": f"Bearer {token_result.data}",
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            }
+
             self._client = httpx.Client(
                 base_url=self.config["base_url"],
-                headers=self.authenticator.auth_headers,
+                headers=auth_headers,
                 timeout=30.0,
             )
         return self._client
@@ -307,7 +339,7 @@ class PackagesSink(OICBaseSink):
         if isinstance(archive_content, str):
             archive_content = archive_content.encode()
         files = {
-            "file": archive_content,
+            "file": ("package.iar", archive_content or b"", "application/octet-stream"),
         }
         response = self.client.post(
             "/ic/api/integration/v1/packages/archive",

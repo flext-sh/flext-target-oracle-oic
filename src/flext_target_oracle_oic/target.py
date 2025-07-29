@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, ClassVar
 
-# MIGRATED: Singer SDK imports centralized via flext-meltano
-from flext_meltano.singer import FlextMeltanoTarget as Target
+# Import directly from Singer SDK to avoid circular imports
+from singer_sdk import Target
 
 from flext_target_oracle_oic.application import OICTargetOrchestrator
 from flext_target_oracle_oic.sinks import (
@@ -101,15 +101,27 @@ class TargetOracleOIC(Target):
         ],
     }
 
-    def __init__(self, *args: object, **kwargs: object) -> None:
-        super().__init__(*args, **kwargs)
+    def __init__(
+        self,
+        *,
+        config: dict[str, Any] | None = None,
+        parse_env_config: bool = False,
+        validate_config: bool = True,
+        **kwargs: Any,
+    ) -> None:
+        super().__init__(
+            config=config,
+            parse_env_config=parse_env_config,
+            validate_config=validate_config,
+            **kwargs,
+        )
         # Initialize the orchestrator for modular architecture
         self._orchestrator: OICTargetOrchestrator | None = None
 
     def setup(self) -> None:
         """Setup the target orchestrator."""
         if self._orchestrator is None:
-            self._orchestrator = OICTargetOrchestrator(self.config)
+            self._orchestrator = OICTargetOrchestrator(dict(self.config) if self.config else None)
             setup_result = self._orchestrator.setup()
             if not setup_result.is_success:
                 self.logger.error(f"Orchestrator setup failed: {setup_result.error}")

@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from flext_core import FlextResult
 from pydantic import SecretStr
 
 from flext_target_oracle_oic.config import (
@@ -18,22 +19,6 @@ from flext_target_oracle_oic.config import (
     OICProcessingConfig,
     TargetOracleOICConfig,
 )
-
-# Use centralized FlextResult from flext-core - ELIMINATE DUPLICATION
-# 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
-from flext_target_oracle_oic.infrastructure.di_container import (
-    get_base_config,
-    get_domain_entity,
-    get_domain_value_object,
-    get_field,
-    get_service_result,
-)
-
-FlextResult = get_service_result()
-DomainEntity = get_domain_entity()
-Field = get_field()
-FlextValueObject = get_domain_value_object()
-BaseConfig = get_base_config()
 
 
 def setup_oic_target(

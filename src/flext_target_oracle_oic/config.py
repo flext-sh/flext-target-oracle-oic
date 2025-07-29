@@ -1,58 +1,15 @@
-"""Configuration for target-oracle-oic using dependency injection patterns.
-
-Refactored to use dependency injection for Oracle OIC configuration.
-Eliminates architectural violations by using abstract interfaces.
-"""
+"""Configuration for target-oracle-oic using flext-core patterns."""
 
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Any as ValidationProvider
+from typing import Any
 
-from flext_core import FlextValueObject as FlextDomainBaseModel
-from pydantic import SecretStr, model_validator
-from pydantic_settings import BaseSettings as PydanticSettings, SettingsConfigDict
-
-# 🚨 ARCHITECTURAL COMPLIANCE: Using DI container
-from flext_target_oracle_oic.infrastructure.di_container import (
-    get_base_config,
-    get_domain_entity,
-    get_domain_value_object,
-    get_field,
-    get_service_result,
-)
-
-FlextResult = get_service_result()
-DomainEntity = get_domain_entity()
-Field = get_field()
-DomainValueObject = get_domain_value_object()
-BaseConfig = get_base_config()
-
-_oic_validation_provider: ValidationProvider | None = None
+from flext_core import FlextResult, FlextValueObject
+from pydantic import Field, SecretStr, model_validator
 
 
-def set_oic_validation_provider(provider: ValidationProvider) -> None:
-    """Set the Oracle OIC validation provider via dependency injection.
-
-    Args:
-        provider: Oracle OIC validation provider implementation
-
-    """
-    global _oic_validation_provider
-    _oic_validation_provider = provider
-
-
-def _get_oic_validation_provider() -> ValidationProvider | None:
-    """Get OIC validation provider if available.
-
-    Returns:
-        Oracle OIC validation provider or None if not injected
-
-    """
-    return _oic_validation_provider
-
-
-class OICAuthConfig(FlextDomainBaseModel):
+class OICAuthConfig(FlextValueObject):
     """OIC authentication configuration using flext-core patterns."""
 
     oauth_client_id: str = Field(
@@ -78,8 +35,19 @@ class OICAuthConfig(FlextDomainBaseModel):
         description="OAuth2 scope for Oracle OIC access",
     )
 
+    def validate_domain_rules(self) -> FlextResult[None]:
+        """Validate authentication configuration domain rules."""
+        try:
+            if not self.oauth_client_id.strip():
+                return FlextResult.fail("OAuth client ID cannot be empty")
+            if not self.oauth_token_url.strip():
+                return FlextResult.fail("OAuth token URL cannot be empty")
+            return FlextResult.ok(None)
+        except Exception as e:
+            return FlextResult.fail(f"Auth config validation failed: {e}")
 
-class OICConnectionConfig(FlextDomainBaseModel):
+
+class OICConnectionConfig(FlextValueObject):
     """OIC connection configuration using flext-core patterns."""
 
     base_url: str = Field(
@@ -104,8 +72,19 @@ class OICConnectionConfig(FlextDomainBaseModel):
         description="Verify SSL certificates",
     )
 
+    def validate_domain_rules(self) -> FlextResult[None]:
+        """Validate connection configuration domain rules."""
+        try:
+            if not self.base_url.strip():
+                return FlextResult.fail("Base URL cannot be empty")
+            if self.timeout <= 0:
+                return FlextResult.fail("Timeout must be positive")
+            return FlextResult.ok(None)
+        except Exception as e:
+            return FlextResult.fail(f"Connection config validation failed: {e}")
 
-class OICDeploymentConfig(FlextDomainBaseModel):
+
+class OICDeploymentConfig(FlextValueObject):
     """OIC deployment configuration using flext-core patterns."""
 
     import_mode: str = Field(
@@ -138,8 +117,18 @@ class OICDeploymentConfig(FlextDomainBaseModel):
         description="Enable audit trail logging",
     )
 
+    def validate_domain_rules(self) -> FlextResult[None]:
+        """Validate deployment configuration domain rules."""
+        try:
+            valid_modes = {"create_only", "update_only", "create_or_update"}
+            if self.import_mode not in valid_modes:
+                return FlextResult.fail(f"Invalid import mode: {self.import_mode}")
+            return FlextResult.ok(None)
+        except Exception as e:
+            return FlextResult.fail(f"Deployment config validation failed: {e}")
 
-class OICProcessingConfig(FlextDomainBaseModel):
+
+class OICProcessingConfig(FlextValueObject):
     """OIC processing configuration using flext-core patterns."""
 
     batch_size: int = Field(
@@ -174,8 +163,19 @@ class OICProcessingConfig(FlextDomainBaseModel):
         description="Validate and transform without actually loading data",
     )
 
+    def validate_domain_rules(self) -> FlextResult[None]:
+        """Validate processing configuration domain rules."""
+        try:
+            if self.batch_size <= 0:
+                return FlextResult.fail("Batch size must be positive")
+            if self.max_errors < 0:
+                return FlextResult.fail("Max errors cannot be negative")
+            return FlextResult.ok(None)
+        except Exception as e:
+            return FlextResult.fail(f"Processing config validation failed: {e}")
 
-class OICEntityConfig(FlextDomainBaseModel):
+
+class OICEntityConfig(FlextValueObject):
     """OIC entity configuration using flext-core patterns."""
 
     integration_identifier_field: str = Field(
@@ -199,25 +199,31 @@ class OICEntityConfig(FlextDomainBaseModel):
         description="Identifier fields per entity type",
     )
 
+    def validate_domain_rules(self) -> FlextResult[None]:
+        """Validate entity configuration domain rules."""
+        try:
+            required_fields = ["integration_identifier_field", "connection_identifier_field", "lookup_identifier_field"]
+            for field in required_fields:
+                value = getattr(self, field)
+                if not value or not value.strip():
+                    return FlextResult.fail(f"{field} cannot be empty")
+            return FlextResult.ok(None)
+        except Exception as e:
+            return FlextResult.fail(f"Entity config validation failed: {e}")
 
-class TargetOracleOICConfig(PydanticSettings):
+
+class TargetOracleOICConfig(FlextValueObject):
     """Complete configuration for target-oracle-oic using dependency injection.
 
     Uses dependency injection patterns to access Oracle OIC functionality.
     Zero tolerance for architectural violations.
     """
 
-    model_config = SettingsConfigDict(
-        env_prefix="TARGET_ORACLE_OIC_",
-        env_file=".env",
-        env_file_encoding="utf-8",
-        env_nested_delimiter="__",
-        case_sensitive=False,
-        extra="allow",
-        validate_assignment=True,
-        str_strip_whitespace=True,
-        use_enum_values=True,
-    )
+    class Config:
+        """Pydantic configuration."""
+
+        env_prefix = "TARGET_ORACLE_OIC_"
+        case_sensitive = False
 
     # Structured configuration using value objects
     auth: OICAuthConfig = Field(
@@ -297,42 +303,57 @@ class TargetOracleOICConfig(PydanticSettings):
                 msg = f"Archive path is not a directory: {archive_path}"
                 raise ValueError(msg)
 
-        # Try to use injected OIC validation provider
-        provider = _get_oic_validation_provider()
-        if provider:
-            # Use provider for additional validation if available
-            validation_result = provider.validate_oic_record(
-                {
-                    "oauth_client_id": self.auth.oauth_client_id,
-                    "base_url": self.connection.base_url,
-                },
-            )
-            if not validation_result.is_success:
-                msg = f"OIC validation failed: {validation_result.error}"
-                raise ValueError(msg)
+        # Validate each configuration section
+        auth_validation = self.auth.validate_domain_rules()
+        if not auth_validation.is_success:
+            msg = f"Auth validation failed: {auth_validation.error}"
+            raise ValueError(msg)
+
+        connection_validation = self.connection.validate_domain_rules()
+        if not connection_validation.is_success:
+            msg = f"Connection validation failed: {connection_validation.error}"
+            raise ValueError(msg)
 
         return self
 
     def get_oauth_headers(self) -> dict[str, str]:
-        """Get OAuth headers using dependency injection or fallback."""
-        # Try to use injected provider first
-        provider = _get_oic_validation_provider()
-        if provider:
-            # Provider would implement this functionality
-            return {
-                "Authorization": "Bearer <token-from-provider>",
-                "Content-Type": "application/json",
-            }
-
-        # Fallback implementation
+        """Get OAuth headers for API requests."""
         return {
-            "Authorization": "Bearer <token>",
             "Content-Type": "application/json",
+            "Accept": "application/json",
         }
 
     def get_entity_identifier_field(self, entity_type: str) -> str:
         """Get identifier field for entity type."""
         return self.entities.identifier_fields.get(entity_type, "id")
+
+    def validate_domain_rules(self) -> FlextResult[None]:
+        """Validate configuration domain rules."""
+        try:
+            # Validate each section
+            auth_validation = self.auth.validate_domain_rules()
+            if not auth_validation.is_success:
+                return FlextResult.fail(f"Auth validation failed: {auth_validation.error}")
+
+            connection_validation = self.connection.validate_domain_rules()
+            if not connection_validation.is_success:
+                return FlextResult.fail(f"Connection validation failed: {connection_validation.error}")
+
+            deployment_validation = self.deployment.validate_domain_rules()
+            if not deployment_validation.is_success:
+                return FlextResult.fail(f"Deployment validation failed: {deployment_validation.error}")
+
+            processing_validation = self.processing.validate_domain_rules()
+            if not processing_validation.is_success:
+                return FlextResult.fail(f"Processing validation failed: {processing_validation.error}")
+
+            entities_validation = self.entities.validate_domain_rules()
+            if not entities_validation.is_success:
+                return FlextResult.fail(f"Entities validation failed: {entities_validation.error}")
+
+            return FlextResult.ok(None)
+        except Exception as e:
+            return FlextResult.fail(f"Configuration validation failed: {e}")
 
     @classmethod
     def create_with_defaults(cls, **overrides: dict[str, Any]) -> TargetOracleOICConfig:
@@ -386,5 +407,4 @@ __all__ = [
     "OICEntityConfig",
     "OICProcessingConfig",
     "TargetOracleOICConfig",
-    "set_oic_validation_provider",
 ]
