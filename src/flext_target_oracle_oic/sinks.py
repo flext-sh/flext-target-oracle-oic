@@ -20,7 +20,7 @@ logger = get_logger(__name__)
 class OICBaseSink(Sink):
     """Base sink for Oracle Integration Cloud."""
 
-    def __init__(self, *args: Any, **kwargs: object) -> None:
+    def __init__(self, *args: object, **kwargs: object) -> None:
         super().__init__(*args, **kwargs)
         # CRITICAL: Set tap_name for Singer SDK auth compatibility
         self.tap_name = "target-oracle-oic"  # Required by Singer SDK authenticators

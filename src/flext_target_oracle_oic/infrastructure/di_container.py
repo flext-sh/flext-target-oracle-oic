@@ -1,5 +1,11 @@
 """Oracle OIC DI Container using flext-core patterns."""
 
+from flext_target_oracle_oic.connection import (
+from flext_target_oracle_oic.patterns import (
+from flext_target_oracle_oic.singer import OICRecordProcessor
+from flext_target_oracle_oic.application import OICTargetOrchestrator
+
+
 from __future__ import annotations
 
 from typing import Any
@@ -29,20 +35,21 @@ class OICDIContainer:
 
             logger.info("OIC DI container dependencies setup completed")
 
-        except Exception:
+        except (RuntimeError, ValueError, TypeError):
             logger.exception("OIC DI container setup failed")
             raise
 
     def _register_connection_components(self) -> None:
         """Register connection-related components."""
         # Import components locally to avoid circular dependencies
-        from flext_target_oracle_oic.connection import (
+
             OICConnection,
             OICConnectionConfig,
         )
 
         register_result = self._container.register(
-            "oic_connection_config", OICConnectionConfig,
+            "oic_connection_config",
+            OICConnectionConfig,
         )
         if not register_result.is_success:
             logger.warning(
@@ -55,7 +62,7 @@ class OICDIContainer:
 
     def _register_pattern_components(self) -> None:
         """Register pattern-related components."""
-        from flext_target_oracle_oic.patterns import (
+
             OICDataTransformer,
             OICEntryManager,
             OICSchemaMapper,
@@ -76,10 +83,11 @@ class OICDIContainer:
 
     def _register_singer_components(self) -> None:
         """Register Singer SDK-related components."""
-        from flext_target_oracle_oic.singer import OICRecordProcessor
+
 
         register_result = self._container.register(
-            "oic_record_processor", OICRecordProcessor,
+            "oic_record_processor",
+            OICRecordProcessor,
         )
         if not register_result.is_success:
             logger.warning(
@@ -88,10 +96,11 @@ class OICDIContainer:
 
     def _register_application_components(self) -> None:
         """Register application-level components."""
-        from flext_target_oracle_oic.application import OICTargetOrchestrator
+
 
         register_result = self._container.register(
-            "oic_target_orchestrator", OICTargetOrchestrator,
+            "oic_target_orchestrator",
+            OICTargetOrchestrator,
         )
         if not register_result.is_success:
             logger.warning(
@@ -110,7 +119,7 @@ class OICDIContainer:
         """
         try:
             return self._container.get(name)
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             logger.exception(f"Failed to get component: {name}")
             return FlextResult.fail(f"Component retrieval failed: {e}")
 
@@ -127,7 +136,7 @@ class OICDIContainer:
         """
         try:
             return self._container.register(name, component)
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             logger.exception(f"Failed to register component: {name}")
             return FlextResult.fail(f"Component registration failed: {e}")
 
@@ -197,6 +206,6 @@ def configure_oic_container(
 
         return FlextResult.ok(_oic_container)
 
-    except Exception as e:
+    except (RuntimeError, ValueError, TypeError) as e:
         logger.exception("OIC DI container configuration failed")
         return FlextResult.fail(f"Container configuration failed: {e}")

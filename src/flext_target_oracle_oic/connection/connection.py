@@ -1,5 +1,8 @@
 """Oracle OIC connection management using flext-core patterns."""
 
+import urllib3
+
+
 from __future__ import annotations
 
 import json
@@ -12,6 +15,9 @@ from flext_core import FlextResult, get_logger
 
 # Import exception classes
 from flext_target_oracle_oic.exceptions import (
+# Constants
+HTTP_OK = 200
+
     FlextTargetOracleOicAuthenticationError,
 )
 
@@ -41,7 +47,7 @@ class OICConnection:
             # Configure session
             if not self.config.verify_ssl:
                 self._session.verify = False
-                import urllib3
+
 
                 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -56,7 +62,7 @@ class OICConnection:
         except FlextTargetOracleOicAuthenticationError as e:
             logger.exception("OIC authentication failed")
             return FlextResult.fail(f"Authentication failed: {e}")
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("OIC connection failed")
             return FlextResult.fail(f"Connection failed: {e}")
 
@@ -71,7 +77,7 @@ class OICConnection:
 
             return FlextResult.ok(None)
 
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("OIC disconnect failed")
             return FlextResult.fail(f"Disconnect failed: {e}")
 
@@ -109,7 +115,7 @@ class OICConnection:
                 timeout=self.config.timeout,
             )
 
-            if response.status_code != 200:
+            if response.status_code != HTTP_OK:
                 return FlextResult.fail(
                     f"Authentication failed: {response.status_code} - {response.text}",
                 )
@@ -122,7 +128,7 @@ class OICConnection:
 
             return FlextResult.ok(self._access_token)
 
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("OIC authentication failed")
             return FlextResult.fail(f"Authentication failed: {e}")
 
@@ -152,7 +158,7 @@ class OICConnection:
 
             return FlextResult.fail(f"Connection test failed: {response.status_code}")
 
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("OIC connection test failed")
             return FlextResult.fail(f"Connection test failed: {e}")
 
@@ -201,7 +207,7 @@ class OICConnection:
 
             return FlextResult.ok(response_data)
 
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             logger.exception(f"OIC API request failed: {method} {endpoint}")
             return FlextResult.fail(f"API request failed: {e}")
 

@@ -58,7 +58,7 @@ def setup_oic_target(
 
         return FlextResult.ok(config)
 
-    except Exception as e:
+    except (RuntimeError, ValueError, TypeError) as e:
         return FlextResult.fail(f"Failed to setup OIC target: {e}")
 
 
@@ -289,7 +289,7 @@ def validate_oic_target_config(config: TargetOracleOICConfig) -> FlextResult[Any
 
         return FlextResult.ok(True)
 
-    except Exception as e:
+    except (RuntimeError, ValueError, TypeError) as e:
         return FlextResult.fail(f"Configuration validation failed: {e}")
 
 

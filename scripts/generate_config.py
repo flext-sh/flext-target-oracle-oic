@@ -69,7 +69,7 @@ def main() -> None:
             )
             print("   Make sure to set OIC_IDCS_CLIENT_ID and OIC_IDCS_CLIENT_SECRET")
 
-    except Exception as e:
+    except (RuntimeError, ValueError, TypeError) as e:
         print(f"❌ Error generating configuration: {e}")
         return
 

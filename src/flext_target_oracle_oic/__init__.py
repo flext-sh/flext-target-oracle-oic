@@ -21,6 +21,7 @@ from flext_core import FlextResult, FlextValueObject
 # Modular architecture components
 from flext_target_oracle_oic.application import OICTargetOrchestrator
 from flext_target_oracle_oic.auth import OAuth2TokenManager, OICAuthenticator
+from flext_target_oracle_oic.cli import main as cli_main
 from flext_target_oracle_oic.client import OICClient
 from flext_target_oracle_oic.connection import OICConnection, OICConnectionConfig
 
@@ -86,8 +87,6 @@ FlextTargetOracleOicResult = FlextResult
 # CLI entry point
 def main() -> None:
     """CLI entry point for flext-target-oracle-oic."""
-    from flext_target_oracle_oic.cli import main as cli_main
-
     cli_main()
 
 

@@ -28,7 +28,8 @@ class TestTargetOracleOIC:
         valid_config: dict[str, str],
     ) -> None:
         target = TargetOracleOIC(config=valid_config)
-        assert target.name == "target-oracle-oic"
+        if target.name != "target-oracle-oic":
+            raise AssertionError(f"Expected {"target-oracle-oic"}, got {target.name}")
         assert target.config == valid_config
 
     def test_target_initialization_fails_with_invalid_config(self) -> None:
@@ -49,25 +50,31 @@ class TestTargetOracleOIC:
         target = TargetOracleOIC(config=config)
 
         # Test known streams
-        assert target._get_sink_class("connections") == ConnectionsSink
+        if target._get_sink_class("connections") != ConnectionsSink:
+            raise AssertionError(f"Expected {ConnectionsSink}, got {target._get_sink_class("connections")}")
         assert target._get_sink_class("integrations") == IntegrationsSink
 
         # Test unknown stream returns default
-        assert target._get_sink_class("unknown_stream") == target.default_sink_class
+        if target._get_sink_class("unknown_stream") != target.default_sink_class:
+            raise AssertionError(f"Expected {target.default_sink_class}, got {target._get_sink_class("unknown_stream")}")
 
     def test_config_schema(self) -> None:
         schema = TargetOracleOIC.config_jsonschema
         assert isinstance(schema, dict)
-        assert "properties" in schema
+        if "properties" not in schema:
+            raise AssertionError(f"Expected {"properties"} in {schema}")
 
         # Check required properties
         properties = schema["properties"]
         assert isinstance(properties, dict)
-        assert "base_url" in properties
+        if "base_url" not in properties:
+            raise AssertionError(f"Expected {"base_url"} in {properties}")
         assert "oauth_client_id" in properties
-        assert "oauth_client_secret" in properties
+        if "oauth_client_secret" not in properties:
+            raise AssertionError(f"Expected {"oauth_client_secret"} in {properties}")
         assert "oauth_token_url" in properties
 
         # Check target-specific properties
-        assert "import_mode" in properties
+        if "import_mode" not in properties:
+            raise AssertionError(f"Expected {"import_mode"} in {properties}")
         assert "activate_integrations" in properties
