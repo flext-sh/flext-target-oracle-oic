@@ -37,7 +37,7 @@ class OICTypeConverter:
                 )
             return FlextResult.ok(value)
 
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             logger.warning(f"Type conversion failed for {singer_type}: {e}")
             return FlextResult.ok(str(value))  # Fallback to string
 
@@ -69,7 +69,8 @@ class OICDataTransformer:
                     singer_type = prop_def.get("type", "string")
 
                     convert_result = self.type_converter.convert_singer_to_oic(
-                        singer_type, value,
+                        singer_type,
+                        value,
                     )
                     if convert_result.is_success:
                         transformed[oic_key] = convert_result.data
@@ -80,7 +81,7 @@ class OICDataTransformer:
 
             return FlextResult.ok(transformed)
 
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("OIC record transformation failed")
             return FlextResult.fail(f"Record transformation failed: {e}")
 
@@ -115,7 +116,7 @@ class OICDataTransformer:
 
             return FlextResult.ok(payload)
 
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("OIC payload preparation failed")
             return FlextResult.fail(f"Payload preparation failed: {e}")
 
@@ -151,7 +152,7 @@ class OICSchemaMapper:
 
             return FlextResult.ok(oic_schema)
 
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("OIC schema mapping failed")
             return FlextResult.fail(f"Schema mapping failed: {e}")
 
@@ -188,7 +189,7 @@ class OICSchemaMapper:
                 return FlextResult.ok("object")
             return FlextResult.ok("string")
 
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             logger.warning(f"OIC type mapping failed: {e}")
             return FlextResult.ok("string")
 
@@ -210,7 +211,8 @@ class OICEntryManager:
                 "name": integration_name,
                 "version": record.get("version", "01.00.0000"),
                 "description": record.get(
-                    "description", f"Integration: {integration_name}",
+                    "description",
+                    f"Integration: {integration_name}",
                 ),
                 "style": record.get("style", "ORCHESTRATION"),
                 "pattern": record.get("pattern", "SYNCHRONOUS"),
@@ -219,7 +221,7 @@ class OICEntryManager:
 
             return FlextResult.ok(entry)
 
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Integration entry preparation failed")
             return FlextResult.fail(f"Integration entry preparation failed: {e}")
 
@@ -240,7 +242,7 @@ class OICEntryManager:
 
             return FlextResult.ok(entry)
 
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Connection entry preparation failed")
             return FlextResult.fail(f"Connection entry preparation failed: {e}")
 
@@ -261,7 +263,7 @@ class OICEntryManager:
 
             return FlextResult.ok(entry)
 
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Package entry preparation failed")
             return FlextResult.fail(f"Package entry preparation failed: {e}")
 
@@ -281,7 +283,7 @@ class OICEntryManager:
 
             return FlextResult.ok(entry)
 
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Lookup entry preparation failed")
             return FlextResult.fail(f"Lookup entry preparation failed: {e}")
 
@@ -307,6 +309,6 @@ class OICEntryManager:
 
             return FlextResult.ok(True)
 
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Entry validation failed")
             return FlextResult.fail(f"Entry validation failed: {e}")

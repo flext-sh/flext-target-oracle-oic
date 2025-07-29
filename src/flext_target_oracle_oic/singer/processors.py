@@ -48,7 +48,8 @@ class OICRecordProcessor:
             # Schema validation if provided
             if schema:
                 validation_result = self._validate_against_schema(
-                    processed_record, schema,
+                    processed_record,
+                    schema,
                 )
                 if not validation_result.is_success:
                     return FlextResult.fail(
@@ -60,14 +61,16 @@ class OICRecordProcessor:
             )
             return FlextResult.ok(processed_record)
 
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             logger.exception(
                 f"Singer record processing failed for stream: {stream_name}",
             )
             return FlextResult.fail(f"Record processing failed: {e}")
 
     def _validate_against_schema(
-        self, record: dict[str, Any], schema: dict[str, Any],
+        self,
+        record: dict[str, Any],
+        schema: dict[str, Any],
     ) -> FlextResult[None]:
         """Validate record against Singer schema.
 
@@ -105,11 +108,11 @@ class OICRecordProcessor:
 
             return FlextResult.ok(None)
 
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Schema validation failed")
             return FlextResult.fail(f"Schema validation failed: {e}")
 
-    def _validate_field_type(self, value: Any, expected_type: str | None) -> bool:
+    def _validate_field_type(self, value: object, expected_type: str | None) -> bool:
         """Validate field value against expected type.
 
         Args:
@@ -143,7 +146,9 @@ class OICRecordProcessor:
         return isinstance(value, expected_python_type)
 
     def extract_stream_metadata(
-        self, stream_name: str, schema: dict[str, Any] | None = None,
+        self,
+        stream_name: str,
+        schema: dict[str, Any] | None = None,
     ) -> FlextResult[dict[str, Any]]:
         """Extract metadata from stream definition.
 
@@ -172,12 +177,14 @@ class OICRecordProcessor:
 
             return FlextResult.ok(metadata)
 
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             logger.exception(f"Stream metadata extraction failed for: {stream_name}")
             return FlextResult.fail(f"Metadata extraction failed: {e}")
 
     def prepare_batch_records(
-        self, records: list[dict[str, Any]], batch_size: int = 100,
+        self,
+        records: list[dict[str, Any]],
+        batch_size: int = 100,
     ) -> FlextResult[list[list[dict[str, Any]]]]:
         """Prepare records for batch processing.
 
@@ -201,6 +208,6 @@ class OICRecordProcessor:
             logger.debug(f"Created {len(batches)} batches from {len(records)} records")
             return FlextResult.ok(batches)
 
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Batch preparation failed")
             return FlextResult.fail(f"Batch preparation failed: {e}")

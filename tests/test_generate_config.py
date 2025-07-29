@@ -37,23 +37,28 @@ class TestGenerateConfig:
         with patch.dict(os.environ, env_vars):
             config = generate_config()
             # Check required fields
-            assert "base_url" in config
+            if "base_url" not in config:
+                raise AssertionError(f"Expected {"base_url"} in {config}")
             assert "oauth_client_id" in config
-            assert "oauth_client_secret" in config
+            if "oauth_client_secret" not in config:
+                raise AssertionError(f"Expected {"oauth_client_secret"} in {config}")
             assert "oauth_token_url" in config
             # Verify values
-            assert config["base_url"] == "https://test.integration.ocp.oraclecloud.com"
+            if config["base_url"] != "https://test.integration.ocp.oraclecloud.com":
+                raise AssertionError(f"Expected {"https://test.integration.ocp.oraclecloud.com"}, got {config["base_url"]}")
             assert config["oauth_client_id"] == "test_client_id"
-            assert config["oauth_client_secret"] == "test_secret"
+            if config["oauth_client_secret"] != "test_secret":
+                raise AssertionError(f"Expected {"test_secret"}, got {config["oauth_client_secret"]}")
 
     def test_generate_config_defaults(self) -> None:
         """Test default values in config."""
         with patch.dict(os.environ, {}, clear=True):
             config = generate_config()
             # Check defaults
-            assert config.get("import_mode") == "create_or_update"
-            assert config.get("activate_integrations") is False
-            assert config.get("batch_size") == 10
+            if config.get("import_mode") != "create_or_update":
+                raise AssertionError(f"Expected {"create_or_update"}, got {config.get("import_mode")}")
+            if config.get("activate_integrations"):
+                raise AssertionError(f"Expected False, got {config.get("activate_integrations")}")\ n            assert config.get("batch_size") == 10
 
     def test_main_creates_file(
         self,
@@ -85,4 +90,5 @@ class TestGenerateConfig:
         with patch("builtins.input", return_value="n"):
             main()
         # Check file was not modified
-        assert config_file.read_text() == "{}"
+        if config_file.read_text() != "{}":
+            raise AssertionError(f"Expected {"{}"}, got {config_file.read_text()}")

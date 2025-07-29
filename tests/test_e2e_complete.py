@@ -61,19 +61,24 @@ class TestTargetOracleOICE2E:
         target: TargetOracleOIC,
         config: dict[str, Any],
     ) -> None:
-        assert target.name == "target-oracle-oic"
+        if target.name != "target-oracle-oic":
+            raise AssertionError(f"Expected {"target-oracle-oic"}, got {target.name}")
         assert target.config == config
-        assert target.config["base_url"] == config["base_url"]
+        if target.config["base_url"] != config["base_url"]:
+            raise AssertionError(f"Expected {config["base_url"]}, got {target.config["base_url"]}")
 
     def test_sink_discovery(self, target: TargetOracleOIC) -> None:
         # Test known sinks
-        assert target._get_sink_class("connections") == ConnectionsSink
+        if target._get_sink_class("connections") != ConnectionsSink:
+            raise AssertionError(f"Expected {ConnectionsSink}, got {target._get_sink_class("connections")}")
         assert target._get_sink_class("integrations") == IntegrationsSink
-        assert target._get_sink_class("packages") == PackagesSink
+        if target._get_sink_class("packages") != PackagesSink:
+            raise AssertionError(f"Expected {PackagesSink}, got {target._get_sink_class("packages")}")
         assert target._get_sink_class("lookups") == LookupsSink
         # Test unknown stream returns default
         default_sink = target._get_sink_class("unknown_stream")
-        assert default_sink == target.default_sink_class
+        if default_sink != target.default_sink_class:
+            raise AssertionError(f"Expected {target.default_sink_class}, got {default_sink}")
 
     def test_sink_initialization(self, target: TargetOracleOIC) -> None:
         # Test each sink type
@@ -90,7 +95,8 @@ class TestTargetOracleOICE2E:
                 schema={"properties": {"id": {"type": "string"}}},
                 key_properties=["id"],
             )
-            assert sink.stream_name == stream_name
+            if sink.stream_name != stream_name:
+                raise AssertionError(f"Expected {stream_name}, got {sink.stream_name}")
             assert sink.config == target.config
 
     def test_process_singer_messages(
@@ -182,7 +188,7 @@ class TestTargetOracleOICE2E:
         try:
             # Process the record
             sink.process_record(test_record, {})
-        except Exception as e:
+        except (RuntimeError, ValueError, TypeError) as e:
             if any(code in str(e) for code in ["401", "403", "404", "500"]):
                 # HTTP errors are expected in test environment without live credentials/instance
                 # This confirms the sink is attempting real API calls as expected
@@ -242,7 +248,8 @@ class TestTargetOracleOICE2E:
             "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
         }
         target = TargetOracleOIC(config=minimal_config)
-        assert target.config == minimal_config
+        if target.config != minimal_config:
+            raise AssertionError(f"Expected {minimal_config}, got {target.config}")
 
     def test_batch_processing(self, target: TargetOracleOIC) -> None:
         sink = PackagesSink(
@@ -270,7 +277,8 @@ class TestTargetOracleOICE2E:
             for record in records:
                 sink.process_record(record, {})
             # Verify all records were processed
-            assert mock_client.post.call_count >= len(records)
+            if mock_client.post.call_count < len(records):
+                raise AssertionError(f"Expected {mock_client.post.call_count} >= {len(records)}")
 
     def test_update_vs_create_logic(self, target: TargetOracleOIC) -> None:
         sink = LookupsSink(
@@ -332,7 +340,8 @@ class TestTargetOracleOICE2E:
             )
         # Should complete without errors (might fail on actual API calls)
         # Check that it at least started processing
-        assert "target-oracle-oic" in result.stderr or result.returncode == 0
+        if "target-oracle-oic" in result.stderr or result.returncode != 0:
+            raise AssertionError(f"Expected {0}, got {"target-oracle-oic" in result.stderr or result.returncode}")
 
     def test_conditional_config_generation(self) -> None:
         config_path = Path(__file__).parent.parent / "config.json"
@@ -346,18 +355,22 @@ class TestTargetOracleOICE2E:
                 input="y\n",
                 check=False,
             )
-            assert result.returncode == 0
+            if result.returncode != 0:
+                raise AssertionError(f"Expected {0}, got {result.returncode}")
             assert config_path.exists()
         # Load and validate config
         with open(config_path, encoding="utf-8") as f:
             config = json.load(f)
         # Check required fields
-        assert "base_url" in config
+        if "base_url" not in config:
+            raise AssertionError(f"Expected {"base_url"} in {config}")
         assert "oauth_client_id" in config
-        assert "oauth_client_secret" in config
+        if "oauth_client_secret" not in config:
+            raise AssertionError(f"Expected {"oauth_client_secret"} in {config}")
         assert "oauth_token_url" in config
         # Check target-specific fields
-        assert "import_mode" in config
+        if "import_mode" not in config:
+            raise AssertionError(f"Expected {"import_mode"} in {config}")
         assert config["import_mode"] in {"create", "update", "create_or_update"}
 
 

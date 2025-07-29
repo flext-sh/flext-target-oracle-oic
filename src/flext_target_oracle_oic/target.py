@@ -101,7 +101,7 @@ class TargetOracleOIC(Target):
         ],
     }
 
-    def __init__(self, *args: Any, **kwargs: object) -> None:
+    def __init__(self, *args: object, **kwargs: object) -> None:
         super().__init__(*args, **kwargs)
         # Initialize the orchestrator for modular architecture
         self._orchestrator: OICTargetOrchestrator | None = None
