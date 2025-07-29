@@ -57,7 +57,7 @@ class LibrariesSink(OICBaseSink):
         if isinstance(archive_content, str):
             archive_content = archive_content.encode()
         files = {
-            "file": archive_content,
+            "file": ("library.jar", archive_content or b"", "application/octet-stream"),
         }
         response = self.client.post(
             "/ic/api/integration/v1/libraries/archive",

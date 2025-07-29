@@ -1,25 +1,21 @@
 """Oracle OIC connection management using flext-core patterns."""
 
-import urllib3
-
-
 from __future__ import annotations
 
 import json
 from typing import TYPE_CHECKING, Any
 
 import requests
+import urllib3
 
 # Import from flext-core for foundational patterns
 from flext_core import FlextResult, get_logger
 
 # Import exception classes
-from flext_target_oracle_oic.exceptions import (
+from flext_target_oracle_oic.exceptions import FlextTargetOracleOicAuthenticationError
+
 # Constants
 HTTP_OK = 200
-
-    FlextTargetOracleOicAuthenticationError,
-)
 
 if TYPE_CHECKING:
     from flext_target_oracle_oic.connection.config import OICConnectionConfig
@@ -47,7 +43,6 @@ class OICConnection:
             # Configure session
             if not self.config.verify_ssl:
                 self._session.verify = False
-
 
                 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -138,12 +133,16 @@ class OICConnection:
             if not self._session or not self._access_token:
                 connect_result = self.connect()
                 if not connect_result.is_success:
-                    return FlextResult.fail(connect_result.error)
+                    return FlextResult.fail(connect_result.error or "Connection failed")
 
             # Test with simple API call
             api_url = f"{self.config.build_api_base_url()}/integrations"
+            if not self._access_token:
+                return FlextResult.fail("No access token available")
             headers = self.config.get_api_headers(self._access_token)
 
+            if not self._session:
+                return FlextResult.fail("No active session available")
             response = self._session.get(
                 api_url,
                 headers=headers,
@@ -174,9 +173,11 @@ class OICConnection:
             if not self._session or not self._access_token:
                 connect_result = self.connect()
                 if not connect_result.is_success:
-                    return FlextResult.fail(connect_result.error)
+                    return FlextResult.fail(connect_result.error or "Connection failed")
 
             url = f"{self.config.build_api_base_url()}/{endpoint.lstrip('/')}"
+            if not self._access_token:
+                return FlextResult.fail("No access token available")
             headers = self.config.get_api_headers(self._access_token)
 
             # Prepare request arguments
@@ -192,7 +193,12 @@ class OICConnection:
                 request_kwargs["data"] = json.dumps(data)
 
             # Make request
-            response = self._session.request(method.upper(), url, **request_kwargs)
+            if not self._session:
+                return FlextResult.fail("No active session available")
+
+            # Simplify request_kwargs typing
+            kwargs = dict(request_kwargs) if request_kwargs else {}
+            response = self._session.request(method.upper(), url, **kwargs)  # type: ignore[arg-type]
 
             # Handle response
             if response.status_code >= 400:

@@ -1,11 +1,5 @@
 """Oracle OIC DI Container using flext-core patterns."""
 
-from flext_target_oracle_oic.connection import (
-from flext_target_oracle_oic.patterns import (
-from flext_target_oracle_oic.singer import OICRecordProcessor
-from flext_target_oracle_oic.application import OICTargetOrchestrator
-
-
 from __future__ import annotations
 
 from typing import Any
@@ -42,7 +36,7 @@ class OICDIContainer:
     def _register_connection_components(self) -> None:
         """Register connection-related components."""
         # Import components locally to avoid circular dependencies
-
+        from flext_target_oracle_oic.connection import (
             OICConnection,
             OICConnectionConfig,
         )
@@ -62,7 +56,7 @@ class OICDIContainer:
 
     def _register_pattern_components(self) -> None:
         """Register pattern-related components."""
-
+        from flext_target_oracle_oic.patterns import (
             OICDataTransformer,
             OICEntryManager,
             OICSchemaMapper,
@@ -83,8 +77,7 @@ class OICDIContainer:
 
     def _register_singer_components(self) -> None:
         """Register Singer SDK-related components."""
-
-
+        from flext_target_oracle_oic.singer import OICRecordProcessor
         register_result = self._container.register(
             "oic_record_processor",
             OICRecordProcessor,
@@ -96,8 +89,7 @@ class OICDIContainer:
 
     def _register_application_components(self) -> None:
         """Register application-level components."""
-
-
+        from flext_target_oracle_oic.application import OICTargetOrchestrator
         register_result = self._container.register(
             "oic_target_orchestrator",
             OICTargetOrchestrator,
@@ -150,7 +142,7 @@ class OICDIContainer:
             True if component is registered, False otherwise
 
         """
-        return self._container.is_registered(name)
+        return self._container.has(name)
 
     def get_all_registered(self) -> list[str]:
         """Get list of all registered component names.
@@ -159,7 +151,7 @@ class OICDIContainer:
             List of registered component names
 
         """
-        return self._container.get_all_registered()
+        return self._container.get_service_names()
 
     @property
     def container(self) -> FlextContainer:

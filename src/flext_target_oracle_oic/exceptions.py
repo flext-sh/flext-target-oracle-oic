@@ -1,7 +1,4 @@
-"""Oracle OIC exceptions - CONSOLIDATED to eliminate duplication.
-
-Uses flext-meltano common exception patterns. Eliminates 82-line duplication
-with target-ldif and other target projects.
+"""Oracle OIC exceptions using flext-core patterns.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -11,42 +8,50 @@ from __future__ import annotations
 
 from typing import Any
 
-from flext_core import FlextValueObject
+from flext_core import FlextError, FlextResult, FlextValueObject
 
-# Import consolidated target exceptions from flext-meltano common
-# MIGRATED: Singer SDK imports centralized via flext-meltano
-from flext_meltano.common import (
-    FlextMeltanoTargetAuthenticationError,
-    FlextMeltanoTargetError,
-    FlextMeltanoTargetProcessingError,
-    FlextMeltanoTargetTransformationError,
-)
 
-# Use consolidated base target exception
-FlextTargetOracleOicError = FlextMeltanoTargetError
-FlextTargetOracleOicAuthenticationError = FlextMeltanoTargetAuthenticationError
-FlextTargetOracleOicProcessingError = FlextMeltanoTargetProcessingError
-FlextTargetOracleOicTransformationError = FlextMeltanoTargetTransformationError
+# Base Oracle OIC exception
+class FlextTargetOracleOicError(FlextError):
+    """Base exception for Oracle OIC target operations."""
+
+    def __init__(self, message: str, details: dict[str, Any] | None = None) -> None:
+        """Initialize exception with message and optional details."""
+        super().__init__(message)
+        self.message = message
+        self.details = details or {}
+
+
+class FlextTargetOracleOicAuthenticationError(FlextTargetOracleOicError):
+    """Oracle OIC authentication errors."""
+
+
+class FlextTargetOracleOicProcessingError(FlextTargetOracleOicError):
+    """Oracle OIC processing errors."""
+
+
+class FlextTargetOracleOicTransformationError(FlextTargetOracleOicError):
+    """Oracle OIC transformation errors."""
 
 
 # Oracle OIC-specific exceptions that need custom behavior
-class FlextTargetOracleOicConnectionError(FlextMeltanoTargetError):
+class FlextTargetOracleOicConnectionError(FlextTargetOracleOicError):
     """Oracle OIC-specific connection errors."""
 
 
-class FlextTargetOracleOicValidationError(FlextMeltanoTargetError):
+class FlextTargetOracleOicValidationError(FlextTargetOracleOicError):
     """Oracle OIC-specific validation errors."""
 
 
-class FlextTargetOracleOicConfigurationError(FlextMeltanoTargetError):
+class FlextTargetOracleOicConfigurationError(FlextTargetOracleOicError):
     """Oracle OIC-specific configuration errors."""
 
 
-class FlextTargetOracleOicInfrastructureError(FlextMeltanoTargetError):
+class FlextTargetOracleOicInfrastructureError(FlextTargetOracleOicError):
     """Oracle OIC infrastructure errors."""
 
 
-class FlextTargetOracleOicAPIError(FlextMeltanoTargetError):
+class FlextTargetOracleOicAPIError(FlextTargetOracleOicError):
     """Oracle OIC API-specific errors."""
 
     def __init__(
@@ -69,26 +74,28 @@ class FlextTargetOracleOicErrorDetails(FlextValueObject):
     timestamp: str
     source_component: str
 
-    def validate_domain_rules(self) -> None:
+    def validate_domain_rules(self) -> FlextResult[None]:
         """Validate domain-specific business rules."""
-        # Validate error code format
-        if not self.error_code or not self.error_code.startswith("OIC"):
-            msg = "Error code must start with 'OIC'"
-            raise ValueError(msg)
+        try:
+            # Validate error code format
+            if not self.error_code or not self.error_code.startswith("OIC"):
+                return FlextResult.fail("Error code must start with 'OIC'")
 
-        # Validate error type is not empty
-        if not self.error_type:
-            msg = "Error type cannot be empty"
-            raise ValueError(msg)
+            # Validate error type is not empty
+            if not self.error_type:
+                return FlextResult.fail("Error type cannot be empty")
 
-        # Validate source component is valid
-        valid_components = [
-            "connection",
-            "patterns",
-            "singer",
-            "application",
-            "infrastructure",
-        ]
-        if self.source_component not in valid_components:
-            msg = f"Invalid source component: {self.source_component}"
-            raise ValueError(msg)
+            # Validate source component is valid
+            valid_components = [
+                "connection",
+                "patterns",
+                "singer",
+                "application",
+                "infrastructure",
+            ]
+            if self.source_component not in valid_components:
+                return FlextResult.fail(f"Invalid source component: {self.source_component}")
+
+            return FlextResult.ok(None)
+        except Exception as e:
+            return FlextResult.fail(f"Domain validation failed: {e}")
