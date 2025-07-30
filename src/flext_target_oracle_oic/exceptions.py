@@ -9,46 +9,182 @@ from __future__ import annotations
 from typing import Any
 
 from flext_core import FlextError, FlextResult, FlextValueObject
+from flext_core.exceptions import (
+    FlextAuthenticationError,
+    FlextConfigurationError,
+    FlextConnectionError,
+    FlextProcessingError,
+    FlextValidationError,
+)
 
 
 # Base Oracle OIC exception
 class FlextTargetOracleOicError(FlextError):
     """Base exception for Oracle OIC target operations."""
 
-    def __init__(self, message: str, details: dict[str, Any] | None = None) -> None:
+    def __init__(
+        self,
+        message: str = "Oracle OIC target error",
+        details: dict[str, Any] | None = None,
+        **kwargs: object,
+    ) -> None:
         """Initialize exception with message and optional details."""
-        super().__init__(message)
-        self.message = message
-        self.details = details or {}
+        context = kwargs.copy()
+        if details:
+            context.update(details)
+
+        super().__init__(message, error_code="ORACLE_OIC_TARGET_ERROR", context=context)
 
 
-class FlextTargetOracleOicAuthenticationError(FlextTargetOracleOicError):
+class FlextTargetOracleOicAuthenticationError(FlextAuthenticationError):
     """Oracle OIC authentication errors."""
 
+    def __init__(
+        self,
+        message: str = "Oracle OIC authentication failed",
+        auth_method: str | None = None,
+        endpoint: str | None = None,
+        **kwargs: object,
+    ) -> None:
+        """Initialize Oracle OIC authentication error with context."""
+        context = kwargs.copy()
+        if auth_method is not None:
+            context["auth_method"] = auth_method
+        if endpoint is not None:
+            context["endpoint"] = endpoint
 
-class FlextTargetOracleOicProcessingError(FlextTargetOracleOicError):
+        super().__init__(f"Oracle OIC auth: {message}", **context)
+
+
+class FlextTargetOracleOicProcessingError(FlextProcessingError):
     """Oracle OIC processing errors."""
 
+    def __init__(
+        self,
+        message: str = "Oracle OIC processing failed",
+        integration_name: str | None = None,
+        processing_stage: str | None = None,
+        **kwargs: object,
+    ) -> None:
+        """Initialize Oracle OIC processing error with context."""
+        context = kwargs.copy()
+        if integration_name is not None:
+            context["integration_name"] = integration_name
+        if processing_stage is not None:
+            context["processing_stage"] = processing_stage
 
-class FlextTargetOracleOicTransformationError(FlextTargetOracleOicError):
+        super().__init__(f"Oracle OIC processing: {message}", **context)
+
+
+class FlextTargetOracleOicTransformationError(FlextProcessingError):
     """Oracle OIC transformation errors."""
+
+    def __init__(
+        self,
+        message: str = "Oracle OIC transformation failed",
+        transformation_type: str | None = None,
+        input_data: dict[str, Any] | None = None,
+        **kwargs: object,
+    ) -> None:
+        """Initialize Oracle OIC transformation error with context."""
+        context = kwargs.copy()
+        if transformation_type is not None:
+            context["transformation_type"] = transformation_type
+        if input_data is not None:
+            # Include minimal data info for debugging
+            context["input_keys"] = list(input_data.keys())
+
+        super().__init__(f"Oracle OIC transformation: {message}", **context)
 
 
 # Oracle OIC-specific exceptions that need custom behavior
-class FlextTargetOracleOicConnectionError(FlextTargetOracleOicError):
+class FlextTargetOracleOicConnectionError(FlextConnectionError):
     """Oracle OIC-specific connection errors."""
 
+    def __init__(
+        self,
+        message: str = "Oracle OIC connection failed",
+        oic_instance: str | None = None,
+        endpoint: str | None = None,
+        **kwargs: object,
+    ) -> None:
+        """Initialize Oracle OIC connection error with context."""
+        context = kwargs.copy()
+        if oic_instance is not None:
+            context["oic_instance"] = oic_instance
+        if endpoint is not None:
+            context["endpoint"] = endpoint
 
-class FlextTargetOracleOicValidationError(FlextTargetOracleOicError):
+        super().__init__(f"Oracle OIC connection: {message}", **context)
+
+
+class FlextTargetOracleOicValidationError(FlextValidationError):
     """Oracle OIC-specific validation errors."""
 
+    def __init__(
+        self,
+        message: str = "Oracle OIC validation failed",
+        field: str | None = None,
+        value: object = None,
+        integration_name: str | None = None,
+        **kwargs: object,
+    ) -> None:
+        """Initialize Oracle OIC validation error with context."""
+        validation_details = {}
+        if field is not None:
+            validation_details["field"] = field
+        if value is not None:
+            validation_details["value"] = str(value)[:100]  # Truncate long values
 
-class FlextTargetOracleOicConfigurationError(FlextTargetOracleOicError):
+        context = kwargs.copy()
+        if integration_name is not None:
+            context["integration_name"] = integration_name
+
+        super().__init__(
+            f"Oracle OIC validation: {message}",
+            validation_details=validation_details,
+            context=context,
+        )
+
+
+class FlextTargetOracleOicConfigurationError(FlextConfigurationError):
     """Oracle OIC-specific configuration errors."""
+
+    def __init__(
+        self,
+        message: str = "Oracle OIC configuration error",
+        config_key: str | None = None,
+        integration_name: str | None = None,
+        **kwargs: object,
+    ) -> None:
+        """Initialize Oracle OIC configuration error with context."""
+        context = kwargs.copy()
+        if config_key is not None:
+            context["config_key"] = config_key
+        if integration_name is not None:
+            context["integration_name"] = integration_name
+
+        super().__init__(f"Oracle OIC config: {message}", **context)
 
 
 class FlextTargetOracleOicInfrastructureError(FlextTargetOracleOicError):
     """Oracle OIC infrastructure errors."""
+
+    def __init__(
+        self,
+        message: str = "Oracle OIC infrastructure error",
+        component: str | None = None,
+        service: str | None = None,
+        **kwargs: object,
+    ) -> None:
+        """Initialize Oracle OIC infrastructure error with context."""
+        context = kwargs.copy()
+        if component is not None:
+            context["component"] = component
+        if service is not None:
+            context["service"] = service
+
+        super().__init__(f"Oracle OIC infrastructure: {message}", **context)
 
 
 class FlextTargetOracleOicAPIError(FlextTargetOracleOicError):
@@ -56,13 +192,22 @@ class FlextTargetOracleOicAPIError(FlextTargetOracleOicError):
 
     def __init__(
         self,
-        message: str,
+        message: str = "Oracle OIC API error",
         status_code: int | None = None,
-        details: dict[str, Any] | None = None,
+        endpoint: str | None = None,
+        response_body: str | None = None,
+        **kwargs: object,
     ) -> None:
-        """Initialize API error with status code."""
-        super().__init__(message, details)
-        self.status_code = status_code
+        """Initialize Oracle OIC API error with context."""
+        context = kwargs.copy()
+        if status_code is not None:
+            context["status_code"] = status_code
+        if endpoint is not None:
+            context["endpoint"] = endpoint
+        if response_body is not None:
+            context["response_body"] = response_body[:500]  # Truncate long responses
+
+        super().__init__(f"Oracle OIC API: {message}", **context)
 
 
 class FlextTargetOracleOicErrorDetails(FlextValueObject):
