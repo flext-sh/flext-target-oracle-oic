@@ -59,7 +59,7 @@ from flext_target_oracle_oic.target import TargetOracleOIC
 try:
     __version__ = importlib.metadata.version("flext-target-oracle-oic")
 except importlib.metadata.PackageNotFoundError:
-    __version__ = "0.7.0"
+    __version__ = "0.9.0"
 
 __version_info__ = tuple(int(x) for x in __version__.split(".") if x.isdigit())
 

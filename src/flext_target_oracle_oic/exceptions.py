@@ -239,7 +239,9 @@ class FlextTargetOracleOicErrorDetails(FlextValueObject):
                 "infrastructure",
             ]
             if self.source_component not in valid_components:
-                return FlextResult.fail(f"Invalid source component: {self.source_component}")
+                return FlextResult.fail(
+                    f"Invalid source component: {self.source_component}",
+                )
 
             return FlextResult.ok(None)
         except Exception as e:

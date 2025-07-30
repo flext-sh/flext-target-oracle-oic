@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import pytest
+
 # MIGRATED: from singer_sdk.exceptions import ConfigValidationError -> use flext_meltano
 from flext_meltano import ConfigValidationError
 
@@ -29,7 +30,8 @@ class TestTargetOracleOIC:
     ) -> None:
         target = TargetOracleOIC(config=valid_config)
         if target.name != "target-oracle-oic":
-            raise AssertionError(f"Expected {"target-oracle-oic"}, got {target.name}")
+            msg = f"Expected {'target-oracle-oic'}, got {target.name}"
+            raise AssertionError(msg)
         assert target.config == valid_config
 
     def test_target_initialization_fails_with_invalid_config(self) -> None:
@@ -51,30 +53,36 @@ class TestTargetOracleOIC:
 
         # Test known streams
         if target._get_sink_class("connections") != ConnectionsSink:
-            raise AssertionError(f"Expected {ConnectionsSink}, got {target._get_sink_class("connections")}")
+            msg = f"Expected {ConnectionsSink}, got {target._get_sink_class('connections')}"
+            raise AssertionError(msg)
         assert target._get_sink_class("integrations") == IntegrationsSink
 
         # Test unknown stream returns default
         if target._get_sink_class("unknown_stream") != target.default_sink_class:
-            raise AssertionError(f"Expected {target.default_sink_class}, got {target._get_sink_class("unknown_stream")}")
+            msg = f"Expected {target.default_sink_class}, got {target._get_sink_class('unknown_stream')}"
+            raise AssertionError(msg)
 
     def test_config_schema(self) -> None:
         schema = TargetOracleOIC.config_jsonschema
         assert isinstance(schema, dict)
         if "properties" not in schema:
-            raise AssertionError(f"Expected {"properties"} in {schema}")
+            msg = f"Expected {'properties'} in {schema}"
+            raise AssertionError(msg)
 
         # Check required properties
         properties = schema["properties"]
         assert isinstance(properties, dict)
         if "base_url" not in properties:
-            raise AssertionError(f"Expected {"base_url"} in {properties}")
+            msg = f"Expected {'base_url'} in {properties}"
+            raise AssertionError(msg)
         assert "oauth_client_id" in properties
         if "oauth_client_secret" not in properties:
-            raise AssertionError(f"Expected {"oauth_client_secret"} in {properties}")
+            msg = f"Expected {'oauth_client_secret'} in {properties}"
+            raise AssertionError(msg)
         assert "oauth_token_url" in properties
 
         # Check target-specific properties
         if "import_mode" not in properties:
-            raise AssertionError(f"Expected {"import_mode"} in {properties}")
+            msg = f"Expected {'import_mode'} in {properties}"
+            raise AssertionError(msg)
         assert "activate_integrations" in properties

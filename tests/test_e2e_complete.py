@@ -18,6 +18,7 @@ from typing import Any
 from unittest.mock import patch
 
 import pytest
+
 # MIGRATED: from singer_sdk.exceptions import ConfigValidationError -> use flext_meltano
 # MIGRATED: from singer_sdk.testing import get_target_test_class -> use flext_meltano
 from flext_meltano import ConfigValidationError, get_target_test_class
@@ -62,23 +63,28 @@ class TestTargetOracleOICE2E:
         config: dict[str, Any],
     ) -> None:
         if target.name != "target-oracle-oic":
-            raise AssertionError(f"Expected {"target-oracle-oic"}, got {target.name}")
+            msg = f"Expected {'target-oracle-oic'}, got {target.name}"
+            raise AssertionError(msg)
         assert target.config == config
         if target.config["base_url"] != config["base_url"]:
-            raise AssertionError(f"Expected {config["base_url"]}, got {target.config["base_url"]}")
+            msg = f"Expected {config['base_url']}, got {target.config['base_url']}"
+            raise AssertionError(msg)
 
     def test_sink_discovery(self, target: TargetOracleOIC) -> None:
         # Test known sinks
         if target._get_sink_class("connections") != ConnectionsSink:
-            raise AssertionError(f"Expected {ConnectionsSink}, got {target._get_sink_class("connections")}")
+            msg = f"Expected {ConnectionsSink}, got {target._get_sink_class('connections')}"
+            raise AssertionError(msg)
         assert target._get_sink_class("integrations") == IntegrationsSink
         if target._get_sink_class("packages") != PackagesSink:
-            raise AssertionError(f"Expected {PackagesSink}, got {target._get_sink_class("packages")}")
+            msg = f"Expected {PackagesSink}, got {target._get_sink_class('packages')}"
+            raise AssertionError(msg)
         assert target._get_sink_class("lookups") == LookupsSink
         # Test unknown stream returns default
         default_sink = target._get_sink_class("unknown_stream")
         if default_sink != target.default_sink_class:
-            raise AssertionError(f"Expected {target.default_sink_class}, got {default_sink}")
+            msg = f"Expected {target.default_sink_class}, got {default_sink}"
+            raise AssertionError(msg)
 
     def test_sink_initialization(self, target: TargetOracleOIC) -> None:
         # Test each sink type
@@ -96,7 +102,8 @@ class TestTargetOracleOICE2E:
                 key_properties=["id"],
             )
             if sink.stream_name != stream_name:
-                raise AssertionError(f"Expected {stream_name}, got {sink.stream_name}")
+                msg = f"Expected {stream_name}, got {sink.stream_name}"
+                raise AssertionError(msg)
             assert sink.config == target.config
 
     def test_process_singer_messages(
@@ -249,7 +256,8 @@ class TestTargetOracleOICE2E:
         }
         target = TargetOracleOIC(config=minimal_config)
         if target.config != minimal_config:
-            raise AssertionError(f"Expected {minimal_config}, got {target.config}")
+            msg = f"Expected {minimal_config}, got {target.config}"
+            raise AssertionError(msg)
 
     def test_batch_processing(self, target: TargetOracleOIC) -> None:
         sink = PackagesSink(
@@ -278,7 +286,8 @@ class TestTargetOracleOICE2E:
                 sink.process_record(record, {})
             # Verify all records were processed
             if mock_client.post.call_count < len(records):
-                raise AssertionError(f"Expected {mock_client.post.call_count} >= {len(records)}")
+                msg = f"Expected {mock_client.post.call_count} >= {len(records)}"
+                raise AssertionError(msg)
 
     def test_update_vs_create_logic(self, target: TargetOracleOIC) -> None:
         sink = LookupsSink(
@@ -341,7 +350,8 @@ class TestTargetOracleOICE2E:
         # Should complete without errors (might fail on actual API calls)
         # Check that it at least started processing
         if "target-oracle-oic" in result.stderr or result.returncode != 0:
-            raise AssertionError(f"Expected {0}, got {"target-oracle-oic" in result.stderr or result.returncode}")
+            msg = f"Expected {0}, got {'target-oracle-oic' in result.stderr or result.returncode}"
+            raise AssertionError(msg)
 
     def test_conditional_config_generation(self) -> None:
         config_path = Path(__file__).parent.parent / "config.json"
@@ -356,21 +366,25 @@ class TestTargetOracleOICE2E:
                 check=False,
             )
             if result.returncode != 0:
-                raise AssertionError(f"Expected {0}, got {result.returncode}")
+                msg = f"Expected {0}, got {result.returncode}"
+                raise AssertionError(msg)
             assert config_path.exists()
         # Load and validate config
         with open(config_path, encoding="utf-8") as f:
             config = json.load(f)
         # Check required fields
         if "base_url" not in config:
-            raise AssertionError(f"Expected {"base_url"} in {config}")
+            msg = f"Expected {'base_url'} in {config}"
+            raise AssertionError(msg)
         assert "oauth_client_id" in config
         if "oauth_client_secret" not in config:
-            raise AssertionError(f"Expected {"oauth_client_secret"} in {config}")
+            msg = f"Expected {'oauth_client_secret'} in {config}"
+            raise AssertionError(msg)
         assert "oauth_token_url" in config
         # Check target-specific fields
         if "import_mode" not in config:
-            raise AssertionError(f"Expected {"import_mode"} in {config}")
+            msg = f"Expected {'import_mode'} in {config}"
+            raise AssertionError(msg)
         assert config["import_mode"] in {"create", "update", "create_or_update"}
 
 

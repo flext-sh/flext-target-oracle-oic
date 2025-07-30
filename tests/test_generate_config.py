@@ -38,17 +38,25 @@ class TestGenerateConfig:
             config = generate_config()
             # Check required fields
             if "base_url" not in config:
-                raise AssertionError(f"Expected {"base_url"} in {config}")
+                msg = f"Expected {'base_url'} in {config}"
+                raise AssertionError(msg)
             assert "oauth_client_id" in config
             if "oauth_client_secret" not in config:
-                raise AssertionError(f"Expected {"oauth_client_secret"} in {config}")
+                msg = f"Expected {'oauth_client_secret'} in {config}"
+                raise AssertionError(msg)
             assert "oauth_token_url" in config
             # Verify values
             if config["base_url"] != "https://test.integration.ocp.oraclecloud.com":
-                raise AssertionError(f"Expected {"https://test.integration.ocp.oraclecloud.com"}, got {config["base_url"]}")
+                msg = f"Expected {'https://test.integration.ocp.oraclecloud.com'}, got {config['base_url']}"
+                raise AssertionError(
+                    msg,
+                )
             assert config["oauth_client_id"] == "test_client_id"
             if config["oauth_client_secret"] != "test_secret":
-                raise AssertionError(f"Expected {"test_secret"}, got {config["oauth_client_secret"]}")
+                msg = f"Expected {'test_secret'}, got {config['oauth_client_secret']}"
+                raise AssertionError(
+                    msg,
+                )
 
     def test_generate_config_defaults(self) -> None:
         """Test default values in config."""
@@ -56,9 +64,16 @@ class TestGenerateConfig:
             config = generate_config()
             # Check defaults
             if config.get("import_mode") != "create_or_update":
-                raise AssertionError(f"Expected {"create_or_update"}, got {config.get("import_mode")}")
+                msg = f"Expected {'create_or_update'}, got {config.get('import_mode')}"
+                raise AssertionError(
+                    msg,
+                )
             if config.get("activate_integrations"):
-                raise AssertionError(f"Expected False, got {config.get("activate_integrations")}")\ n            assert config.get("batch_size") == 10
+                msg = f"Expected False, got {config.get('activate_integrations')}"
+                raise AssertionError(
+                    msg,
+                )
+            assert config.get("batch_size") == 10
 
     def test_main_creates_file(
         self,
@@ -91,4 +106,5 @@ class TestGenerateConfig:
             main()
         # Check file was not modified
         if config_file.read_text() != "{}":
-            raise AssertionError(f"Expected {"{}"}, got {config_file.read_text()}")
+            msg = f"Expected {'{}'}, got {config_file.read_text()}"
+            raise AssertionError(msg)
