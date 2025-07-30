@@ -73,7 +73,8 @@ class OICTargetOrchestrator:
             return FlextResult.fail(f"Teardown failed: {e}")
 
     def orchestrate_target_pipeline(
-        self, records: list[dict[str, Any]],
+        self,
+        records: list[dict[str, Any]],
     ) -> FlextResult[dict[str, Any]]:
         """Orchestrate OIC target pipeline execution.
 
@@ -99,7 +100,8 @@ class OICTargetOrchestrator:
             }
 
             logger.info(
-                "OIC target pipeline completed: %d records processed", processed_count,
+                "OIC target pipeline completed: %d records processed",
+                processed_count,
             )
             return FlextResult.ok(result)
 
