@@ -198,7 +198,7 @@ class OICConnection:
 
             # Simplify request_kwargs typing
             kwargs = dict(request_kwargs) if request_kwargs else {}
-            response = self._session.request(method.upper(), url, **kwargs)  # type: ignore[arg-type]
+            response = self._session.request(method.upper(), url, **kwargs)
 
             # Handle response
             if response.status_code >= 400:

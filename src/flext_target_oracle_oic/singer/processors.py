@@ -36,7 +36,7 @@ class OICRecordProcessor:
         try:
             # Validate record structure first
             if not isinstance(record, dict):
-                return FlextResult.fail("Record must be a dictionary")  # type: ignore[unreachable]
+                return FlextResult.fail("Record must be a dictionary")
 
             # Add metadata
             processed_record = {
