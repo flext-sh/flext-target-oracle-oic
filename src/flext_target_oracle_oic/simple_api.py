@@ -101,7 +101,7 @@ def create_development_oic_target_config(**overrides: Any) -> TargetOracleOICCon
             identifier_fields={},
         ),
         project_name="flext-target-oracle-oic-dev",
-        project_version="0.7.0",
+        project_version="0.9.0",
     )
 
     # Apply overrides
@@ -167,7 +167,7 @@ def create_production_oic_target_config(**overrides: Any) -> TargetOracleOICConf
             identifier_fields={},
         ),
         project_name="flext-data.targets.flext-data.targets.flext-target-oracle-oic",
-        project_version="0.7.0",
+        project_version="0.9.0",
     )
 
     # Apply overrides
@@ -233,7 +233,7 @@ def create_migration_oic_target_config(**overrides: Any) -> TargetOracleOICConfi
             identifier_fields={},
         ),
         project_name="flext-data.targets.flext-data.targets.flext-target-oracle-oic-migration",
-        project_version="0.7.0",
+        project_version="0.9.0",
     )
 
     # Apply overrides
@@ -330,7 +330,7 @@ def create_test_connection_config(**overrides: Any) -> TargetOracleOICConfig:
             identifier_fields={},
         ),
         project_name="flext-data.targets.flext-data.targets.flext-target-oracle-oic-test",
-        project_version="0.7.0",
+        project_version="0.9.0",
     )
 
     # Apply overrides

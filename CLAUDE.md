@@ -22,6 +22,7 @@ The project follows Clean Architecture principles with flext-core patterns:
 ### FLEXT Core Integration
 
 The project heavily uses flext-core patterns:
+
 - `FlextResult<T>` for railway-oriented programming and error handling
 - `FlextValueObject` for configuration objects
 - `FlextError` hierarchy for structured exception handling
@@ -31,6 +32,7 @@ The project heavily uses flext-core patterns:
 ### Singer SDK Architecture
 
 Stream processing is handled through specialized sinks:
+
 - `ConnectionsSink`: Manages OIC connection definitions
 - `IntegrationsSink`: Handles integration artifacts and activation
 - `PackagesSink`: Processes integration packages (IAR files)
@@ -39,6 +41,7 @@ Stream processing is handled through specialized sinks:
 ## Development Commands
 
 ### Essential Quality Gates (Zero Tolerance)
+
 ```bash
 make check                    # Essential checks (lint + type + test)
 make validate                 # Full compliance validation (lint + type + security + test)
@@ -49,6 +52,7 @@ make test                     # Run tests with 90% coverage requirement
 ```
 
 ### Development Setup
+
 ```bash
 make setup                    # Complete dev setup (install + pre-commit)
 make install                  # Install dependencies with Poetry
@@ -57,10 +61,11 @@ make pre-commit               # Setup and run pre-commit hooks
 ```
 
 ### Testing Commands
+
 ```bash
 make test                     # Full test suite with 90% coverage
 make test-unit                # Unit tests only
-make test-integration         # Integration tests only  
+make test-integration         # Integration tests only
 make test-singer              # Singer protocol tests
 make coverage                 # Generate detailed coverage report
 pytest -m unit               # Run unit tests via pytest
@@ -69,6 +74,7 @@ pytest -m e2e                # Run end-to-end tests via pytest
 ```
 
 ### Singer Target Operations
+
 ```bash
 make target-test              # Test target functionality (--about, --version)
 make target-validate          # Validate target configuration
@@ -80,6 +86,7 @@ make sync                     # Sync data to OIC (requires TARGET_CONFIG, TARGET
 ```
 
 ### Oracle OIC Specific Operations
+
 ```bash
 make oic-write-test           # Test OIC write operations
 make oic-endpoint-check       # Test OIC endpoint connectivity
@@ -90,6 +97,7 @@ make token-validation         # Test token validation and refresh
 ```
 
 ### Build and Maintenance
+
 ```bash
 make build                    # Build distribution packages
 make format                   # Auto-format code with ruff
@@ -102,9 +110,11 @@ make deps-audit               # Security audit of dependencies
 ## Configuration
 
 ### Target Configuration Schema
+
 The target accepts the following configuration:
+
 - `base_url` (required): OIC instance base URL
-- `oauth_client_id` (required): OAuth2 client ID  
+- `oauth_client_id` (required): OAuth2 client ID
 - `oauth_client_secret` (required): OAuth2 client secret
 - `oauth_token_url` (required): OAuth2 token endpoint URL
 - `oauth_client_aud` (optional): OAuth2 client audience
@@ -112,7 +122,9 @@ The target accepts the following configuration:
 - `activate_integrations` (default: false): Auto-activate integrations after import
 
 ### Environment Variables
+
 Key environment variables for development:
+
 - `TARGET_ORACLE_OIC_BASE_URL`: OIC instance URL
 - `TARGET_ORACLE_OIC_OAUTH_CLIENT_ID`: OAuth2 client credentials
 - `TARGET_ORACLE_OIC_OAUTH_CLIENT_SECRET`: OAuth2 client secret
@@ -123,6 +135,7 @@ Key environment variables for development:
 ## Code Standards
 
 ### Quality Requirements
+
 - **90% minimum test coverage** (enforced by pytest)
 - **Zero MyPy errors** in strict mode
 - **All Ruff rules enabled** with comprehensive linting
@@ -130,6 +143,7 @@ Key environment variables for development:
 - **Pre-commit hooks** for automated quality gates
 
 ### Architecture Patterns
+
 - Use `FlextResult<T>` for all operations that can fail
 - Implement proper exception hierarchy extending flext-core errors
 - Follow dependency injection patterns via `OICDIContainer`
@@ -137,6 +151,7 @@ Key environment variables for development:
 - Implement async/await patterns for I/O operations
 
 ### Testing Strategy
+
 - Unit tests in `tests/unit/` directory
 - Integration tests in `tests/integration/` directory
 - E2E tests in `tests/e2e/` directory
@@ -147,6 +162,7 @@ Key environment variables for development:
 ## Common Development Tasks
 
 ### Running the Target
+
 ```bash
 # Direct execution with configuration
 poetry run target-oracle-oic --config config.json < input.jsonl
@@ -159,6 +175,7 @@ poetry run target-oracle-oic --config config.json --log-level DEBUG < input.json
 ```
 
 ### Development Testing
+
 ```bash
 # Test specific functionality
 python -c "from flext_target_oracle_oic.client import OICClient; print('Client import successful')"
@@ -171,6 +188,7 @@ poetry run target-oracle-oic --config config.json --validate-config
 ```
 
 ### Debugging Issues
+
 - Check `make diagnose` for system information and project status
 - Use `make target-run-debug` for verbose logging during data loading
 - Examine test fixtures in `tests/fixtures/` for example configurations
@@ -180,6 +198,7 @@ poetry run target-oracle-oic --config config.json --validate-config
 ## Dependencies
 
 ### Core Dependencies
+
 - `flext-core`: Foundation patterns and utilities
 - `flext-meltano`: Singer SDK integration
 - `flext-oracle-oic-ext`: OIC-specific extensions
@@ -189,6 +208,7 @@ poetry run target-oracle-oic --config config.json --validate-config
 - `requests`/`httpx`: HTTP client operations
 
 ### Development Dependencies
+
 - `pytest`: Testing framework with async support
 - `ruff`: Linting and formatting (ALL rules enabled)
 - `mypy`: Static type checking in strict mode
@@ -198,6 +218,7 @@ poetry run target-oracle-oic --config config.json --validate-config
 ## Integration with FLEXT Ecosystem
 
 This target is designed to work within the broader FLEXT data integration platform:
+
 - Follows flext-core architectural patterns and error handling
 - Integrates with flext-observability for monitoring
 - Uses flext-meltano for Singer SDK orchestration

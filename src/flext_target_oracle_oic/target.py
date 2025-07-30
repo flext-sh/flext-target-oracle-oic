@@ -121,7 +121,9 @@ class TargetOracleOIC(Target):
     def setup(self) -> None:
         """Setup the target orchestrator."""
         if self._orchestrator is None:
-            self._orchestrator = OICTargetOrchestrator(dict(self.config) if self.config else None)
+            self._orchestrator = OICTargetOrchestrator(
+                dict(self.config) if self.config else None,
+            )
             setup_result = self._orchestrator.setup()
             if not setup_result.is_success:
                 self.logger.error(f"Orchestrator setup failed: {setup_result.error}")

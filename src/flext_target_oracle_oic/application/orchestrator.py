@@ -72,7 +72,9 @@ class OICTargetOrchestrator:
             logger.exception("OIC orchestrator teardown failed")
             return FlextResult.fail(f"Teardown failed: {e}")
 
-    def orchestrate_target_pipeline(self, records: list[dict[str, Any]]) -> FlextResult[dict[str, Any]]:
+    def orchestrate_target_pipeline(
+        self, records: list[dict[str, Any]],
+    ) -> FlextResult[dict[str, Any]]:
         """Orchestrate OIC target pipeline execution.
 
         Args:
@@ -96,7 +98,9 @@ class OICTargetOrchestrator:
                 "status": "completed",
             }
 
-            logger.info("OIC target pipeline completed: %d records processed", processed_count)
+            logger.info(
+                "OIC target pipeline completed: %d records processed", processed_count,
+            )
             return FlextResult.ok(result)
 
         except Exception as e:

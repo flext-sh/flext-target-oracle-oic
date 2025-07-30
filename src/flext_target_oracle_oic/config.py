@@ -202,7 +202,11 @@ class OICEntityConfig(FlextValueObject):
     def validate_domain_rules(self) -> FlextResult[None]:
         """Validate entity configuration domain rules."""
         try:
-            required_fields = ["integration_identifier_field", "connection_identifier_field", "lookup_identifier_field"]
+            required_fields = [
+                "integration_identifier_field",
+                "connection_identifier_field",
+                "lookup_identifier_field",
+            ]
             for field in required_fields:
                 value = getattr(self, field)
                 if not value or not value.strip():
@@ -286,7 +290,7 @@ class TargetOracleOICConfig(FlextValueObject):
         description="Project name",
     )
     project_version: str = Field(
-        default="0.7.0",
+        default="0.9.0",
         description="Project version",
     )
 
@@ -333,23 +337,33 @@ class TargetOracleOICConfig(FlextValueObject):
             # Validate each section
             auth_validation = self.auth.validate_domain_rules()
             if not auth_validation.is_success:
-                return FlextResult.fail(f"Auth validation failed: {auth_validation.error}")
+                return FlextResult.fail(
+                    f"Auth validation failed: {auth_validation.error}",
+                )
 
             connection_validation = self.connection.validate_domain_rules()
             if not connection_validation.is_success:
-                return FlextResult.fail(f"Connection validation failed: {connection_validation.error}")
+                return FlextResult.fail(
+                    f"Connection validation failed: {connection_validation.error}",
+                )
 
             deployment_validation = self.deployment.validate_domain_rules()
             if not deployment_validation.is_success:
-                return FlextResult.fail(f"Deployment validation failed: {deployment_validation.error}")
+                return FlextResult.fail(
+                    f"Deployment validation failed: {deployment_validation.error}",
+                )
 
             processing_validation = self.processing.validate_domain_rules()
             if not processing_validation.is_success:
-                return FlextResult.fail(f"Processing validation failed: {processing_validation.error}")
+                return FlextResult.fail(
+                    f"Processing validation failed: {processing_validation.error}",
+                )
 
             entities_validation = self.entities.validate_domain_rules()
             if not entities_validation.is_success:
-                return FlextResult.fail(f"Entities validation failed: {entities_validation.error}")
+                return FlextResult.fail(
+                    f"Entities validation failed: {entities_validation.error}",
+                )
 
             return FlextResult.ok(None)
         except Exception as e:
@@ -393,7 +407,7 @@ class TargetOracleOICConfig(FlextValueObject):
                 identifier_fields={},
             ),
             "project_name": "flext-target-oracle-oic",
-            "project_version": "0.7.0",
+            "project_version": "0.9.0",
         }
         defaults.update(overrides)
         return cls.model_validate(defaults)

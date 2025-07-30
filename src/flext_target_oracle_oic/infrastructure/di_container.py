@@ -78,6 +78,7 @@ class OICDIContainer:
     def _register_singer_components(self) -> None:
         """Register Singer SDK-related components."""
         from flext_target_oracle_oic.singer import OICRecordProcessor
+
         register_result = self._container.register(
             "oic_record_processor",
             OICRecordProcessor,
@@ -90,6 +91,7 @@ class OICDIContainer:
     def _register_application_components(self) -> None:
         """Register application-level components."""
         from flext_target_oracle_oic.application import OICTargetOrchestrator
+
         register_result = self._container.register(
             "oic_target_orchestrator",
             OICTargetOrchestrator,
