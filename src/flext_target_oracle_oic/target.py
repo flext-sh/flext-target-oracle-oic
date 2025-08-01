@@ -6,6 +6,8 @@ from typing import TYPE_CHECKING, Any, ClassVar
 
 # Import directly from Singer SDK to avoid circular imports
 from singer_sdk import Target
+from flext_meltano.common_schemas import create_oauth2_api_tap_schema
+from singer_sdk import typing as th
 
 from flext_target_oracle_oic.application import OICTargetOrchestrator
 from flext_target_oracle_oic.sinks import (
@@ -57,49 +59,31 @@ class TargetOracleOIC(Target):
     # Use Singer SDK default configuration (will define custom later if needed)
     default_sink_class = OICBaseSink
 
-    config_jsonschema: ClassVar[dict[str, object]] = {
-        "type": "object",
-        "properties": {
-            "base_url": {
-                "type": "string",
-                "description": "OIC instance base URL",
-            },
-            "oauth_client_id": {
-                "type": "string",
-                "description": "OAuth2 client ID",
-            },
-            "oauth_client_secret": {
-                "type": "string",
-                "description": "OAuth2 client secret",
-                "secret": True,
-            },
-            "oauth_token_url": {
-                "type": "string",
-                "description": "OAuth2 token endpoint URL",
-            },
-            "oauth_client_aud": {
-                "type": ["string", "null"],
-                "description": "OAuth2 client audience",
-            },
-            "import_mode": {
-                "type": "string",
-                "enum": ["create", "update", "create_or_update"],
-                "default": "create_or_update",
-                "description": "Import mode for integrations",
-            },
-            "activate_integrations": {
-                "type": "boolean",
-                "default": False,
-                "description": "Automatically activate integrations after import",
-            },
-        },
-        "required": [
-            "base_url",
-            "oauth_client_id",
-            "oauth_client_secret",
-            "oauth_token_url",
-        ],
-    }
+    # Create additional target-specific configuration properties
+    _additional_properties = th.PropertiesList(
+        th.Property(
+            "oauth_client_aud",
+            th.StringType,
+            description="OAuth2 client audience",
+        ),
+        th.Property(
+            "import_mode",
+            th.StringType,
+            allowed_values=["create", "update", "create_or_update"],
+            default="create_or_update",
+            description="Import mode for integrations",
+        ),
+        th.Property(
+            "activate_integrations",
+            th.BooleanType,
+            default=False,
+            description="Automatically activate integrations after import",
+        ),
+    )
+
+    config_jsonschema: ClassVar = create_oauth2_api_tap_schema(
+        additional_properties=_additional_properties
+    ).to_dict()
 
     def __init__(
         self,
