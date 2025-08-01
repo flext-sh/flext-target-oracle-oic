@@ -165,9 +165,9 @@ class OICConnection:
         self,
         method: str,
         endpoint: str,
-        data: dict[str, Any] | None = None,
-        params: dict[str, Any] | None = None,
-    ) -> FlextResult[dict[str, Any]]:
+        data: dict[str, object] | None = None,
+        params: dict[str, object] | None = None,
+    ) -> FlextResult[dict[str, object]]:
         """Make authenticated request to OIC API."""
         try:
             if not self._session or not self._access_token:

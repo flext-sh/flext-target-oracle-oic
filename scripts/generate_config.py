@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any
 
 
-def generate_config() -> dict[str, Any]:
+def generate_config() -> dict[str, object]:
     """Generate configuration dictionary from environment variables.
 
     Returns:

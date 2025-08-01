@@ -279,7 +279,7 @@ class TargetOracleOICConfig(FlextValueObject):
     )
 
     # Custom transformation rules
-    transformation_rules: list[dict[str, Any]] = Field(
+    transformation_rules: list[dict[str, object]] = Field(
         default_factory=list,
         description="Custom transformation rules",
     )
@@ -370,7 +370,9 @@ class TargetOracleOICConfig(FlextValueObject):
             return FlextResult.fail(f"Configuration validation failed: {e}")
 
     @classmethod
-    def create_with_defaults(cls, **overrides: dict[str, Any]) -> TargetOracleOICConfig:
+    def create_with_defaults(
+        cls, **overrides: dict[str, object]
+    ) -> TargetOracleOICConfig:
         """Create configuration with intelligent defaults."""
         defaults = {
             "auth": OICAuthConfig(
