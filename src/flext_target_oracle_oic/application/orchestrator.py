@@ -16,7 +16,7 @@ logger = get_logger(__name__)
 class OICTargetOrchestrator:
     """Oracle OIC Target Orchestrator for FLEXT ecosystem integration."""
 
-    def __init__(self, config: dict[str, Any] | None = None) -> None:
+    def __init__(self, config: dict[str, object] | None = None) -> None:
         """Initialize OIC target orchestrator.
 
         Args:
@@ -74,8 +74,8 @@ class OICTargetOrchestrator:
 
     def orchestrate_target_pipeline(
         self,
-        records: list[dict[str, Any]],
-    ) -> FlextResult[dict[str, Any]]:
+        records: list[dict[str, object]],
+    ) -> FlextResult[dict[str, object]]:
         """Orchestrate OIC target pipeline execution.
 
         Args:

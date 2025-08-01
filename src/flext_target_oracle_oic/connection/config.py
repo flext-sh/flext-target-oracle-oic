@@ -49,11 +49,11 @@ class OICConnectionConfig(FlextValueObject):
             "Accept": "application/json",
         }
 
-    def to_dict(self) -> dict[str, Any]:
+    def to_dict(self) -> dict[str, object]:
         """Convert configuration to dictionary."""
         return self.model_dump()
 
     @classmethod
-    def from_dict(cls, data: dict[str, Any]) -> OICConnectionConfig:
+    def from_dict(cls, data: dict[str, object]) -> OICConnectionConfig:
         """Create configuration from dictionary."""
         return cls(**data)

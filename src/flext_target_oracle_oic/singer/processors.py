@@ -18,10 +18,10 @@ class OICRecordProcessor:
 
     def process_singer_record(
         self,
-        record: dict[str, Any],
+        record: dict[str, object],
         stream_name: str,
-        schema: dict[str, Any] | None = None,
-    ) -> FlextResult[dict[str, Any]]:
+        schema: dict[str, object] | None = None,
+    ) -> FlextResult[dict[str, object]]:
         """Process Singer record for OIC format.
 
         Args:
@@ -69,8 +69,8 @@ class OICRecordProcessor:
 
     def _validate_against_schema(
         self,
-        record: dict[str, Any],
-        schema: dict[str, Any],
+        record: dict[str, object],
+        schema: dict[str, object],
     ) -> FlextResult[None]:
         """Validate record against Singer schema.
 
@@ -148,8 +148,8 @@ class OICRecordProcessor:
     def extract_stream_metadata(
         self,
         stream_name: str,
-        schema: dict[str, Any] | None = None,
-    ) -> FlextResult[dict[str, Any]]:
+        schema: dict[str, object] | None = None,
+    ) -> FlextResult[dict[str, object]]:
         """Extract metadata from stream definition.
 
         Args:
@@ -183,9 +183,9 @@ class OICRecordProcessor:
 
     def prepare_batch_records(
         self,
-        records: list[dict[str, Any]],
+        records: list[dict[str, object]],
         batch_size: int = 100,
-    ) -> FlextResult[list[list[dict[str, Any]]]]:
+    ) -> FlextResult[list[list[dict[str, object]]]]:
         """Prepare records for batch processing.
 
         Args:

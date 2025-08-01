@@ -16,7 +16,9 @@ class LibrariesSink(OICBaseSink):
 
     name = "libraries"
 
-    def process_record(self, record: dict[str, Any], _context: dict[str, Any]) -> None:
+    def process_record(
+        self, record: dict[str, object], _context: dict[str, object]
+    ) -> None:
         """Process a library record.
 
         Args:
@@ -34,7 +36,7 @@ class LibrariesSink(OICBaseSink):
             # Update existing library
             self._update_library(library_id, record)
 
-    def _create_library(self, record: dict[str, Any]) -> None:
+    def _create_library(self, record: dict[str, object]) -> None:
         # If archive content is provided, import it
         if "archive_content" in record:
             self._import_library(record)
@@ -52,7 +54,7 @@ class LibrariesSink(OICBaseSink):
         )
         response.raise_for_status()
 
-    def _import_library(self, record: dict[str, Any]) -> None:
+    def _import_library(self, record: dict[str, object]) -> None:
         archive_content = record.get("archive_content")
         if isinstance(archive_content, str):
             archive_content = archive_content.encode()
@@ -65,7 +67,7 @@ class LibrariesSink(OICBaseSink):
         )
         response.raise_for_status()
 
-    def _update_library(self, library_id: str, record: dict[str, Any]) -> None:
+    def _update_library(self, library_id: str, record: dict[str, object]) -> None:
         payload = {
             "description": record.get("description", ""),
             "version": record.get("version", "1.0"),
@@ -82,7 +84,9 @@ class CertificatesSink(OICBaseSink):
 
     name = "certificates"
 
-    def process_record(self, record: dict[str, Any], _context: dict[str, Any]) -> None:
+    def process_record(
+        self, record: dict[str, object], _context: dict[str, object]
+    ) -> None:
         """Process a certificate record.
 
         Args:
@@ -100,7 +104,7 @@ class CertificatesSink(OICBaseSink):
             # Update existing certificate
             self._update_certificate(cert_alias, record)
 
-    def _create_certificate(self, record: dict[str, Any]) -> None:
+    def _create_certificate(self, record: dict[str, object]) -> None:
         # Certificate content must be provided
         cert_content = record.get("certificate_content")
         if not cert_content:
@@ -130,7 +134,7 @@ class CertificatesSink(OICBaseSink):
         )
         response.raise_for_status()
 
-    def _update_certificate(self, cert_alias: str, record: dict[str, Any]) -> None:
+    def _update_certificate(self, cert_alias: str, record: dict[str, object]) -> None:
         # Certificates can only be replaced, not updated
         # Delete and recreate if needed:
         if "certificate_content" in record:
@@ -148,7 +152,9 @@ class ProjectsSink(OICBaseSink):
 
     name = "projects"
 
-    def process_record(self, record: dict[str, Any], _context: dict[str, Any]) -> None:
+    def process_record(
+        self, record: dict[str, object], _context: dict[str, object]
+    ) -> None:
         """Process a project record.
 
         Args:
@@ -165,7 +171,7 @@ class ProjectsSink(OICBaseSink):
             # Update existing project
             self._update_project(project_id, record)
 
-    def _create_project(self, record: dict[str, Any]) -> None:
+    def _create_project(self, record: dict[str, object]) -> None:
         payload = {
             "name": record["name"],
             "identifier": record["id"],
@@ -185,7 +191,7 @@ class ProjectsSink(OICBaseSink):
             for folder in record["folders"]:
                 self._create_folder(project_id_var, folder)
 
-    def _create_folder(self, project_id: str, folder: dict[str, Any]) -> None:
+    def _create_folder(self, project_id: str, folder: dict[str, object]) -> None:
         payload = {
             "name": folder["name"],
             "type": folder.get("type", "INTEGRATION"),
@@ -197,7 +203,7 @@ class ProjectsSink(OICBaseSink):
         )
         response.raise_for_status()
 
-    def _update_project(self, project_id: str, record: dict[str, Any]) -> None:
+    def _update_project(self, project_id: str, record: dict[str, object]) -> None:
         payload = {
             "description": record.get("description", ""),
             "visibility": record.get("visibility", "PRIVATE"),
@@ -215,7 +221,9 @@ class SchedulesSink(OICBaseSink):
 
     name = "schedules"
 
-    def process_record(self, record: dict[str, Any], _context: dict[str, Any]) -> None:
+    def process_record(
+        self, record: dict[str, object], _context: dict[str, object]
+    ) -> None:
         """Process a schedule record.
 
         Args:
@@ -241,7 +249,7 @@ class SchedulesSink(OICBaseSink):
             # Update existing schedule
             self._update_schedule(integration_id, record)
 
-    def _create_schedule(self, integration_id: str, record: dict[str, Any]) -> None:
+    def _create_schedule(self, integration_id: str, record: dict[str, object]) -> None:
         payload = self._build_schedule_payload(record)
         response = self.client.post(
             f"/ic/api/integration/v1/integrations/{integration_id}/schedule",
@@ -249,7 +257,7 @@ class SchedulesSink(OICBaseSink):
         )
         response.raise_for_status()
 
-    def _update_schedule(self, integration_id: str, record: dict[str, Any]) -> None:
+    def _update_schedule(self, integration_id: str, record: dict[str, object]) -> None:
         payload = self._build_schedule_payload(record)
         response = self.client.put(
             f"/ic/api/integration/v1/integrations/{integration_id}/schedule",
@@ -257,7 +265,7 @@ class SchedulesSink(OICBaseSink):
         )
         response.raise_for_status()
 
-    def _build_schedule_payload(self, record: dict[str, Any]) -> dict[str, Any]:
+    def _build_schedule_payload(self, record: dict[str, object]) -> dict[str, object]:
         payload = {
             "scheduleType": record.get("scheduleType", "SIMPLE"),
             "enabled": record.get("enabled", True),
@@ -306,7 +314,9 @@ class BusinessEventsSink(OICBaseSink):
 
     name = "business_events"
 
-    def process_record(self, record: dict[str, Any], _context: dict[str, Any]) -> None:
+    def process_record(
+        self, record: dict[str, object], _context: dict[str, object]
+    ) -> None:
         """Process a business event record.
 
         Args:
@@ -317,7 +327,7 @@ class BusinessEventsSink(OICBaseSink):
         # Business events are typically published, not created
         self._publish_event(record)
 
-    def _publish_event(self, record: dict[str, Any]) -> None:
+    def _publish_event(self, record: dict[str, object]) -> None:
         event_type = record.get("eventType") or ""
         payload = {
             "eventType": event_type,
@@ -344,7 +354,9 @@ class MonitoringConfigSink(OICBaseSink):
 
     name = "monitoring_config"
 
-    def process_record(self, record: dict[str, Any], _context: dict[str, Any]) -> None:
+    def process_record(
+        self, record: dict[str, object], _context: dict[str, object]
+    ) -> None:
         """Process a monitoring configuration record.
 
         Args:
@@ -360,7 +372,7 @@ class MonitoringConfigSink(OICBaseSink):
         elif config_type == "tracing":
             self._configure_tracing(record)
 
-    def _configure_alerts(self, record: dict[str, Any]) -> None:
+    def _configure_alerts(self, record: dict[str, object]) -> None:
         payload = {
             "alertRules": record.get("alertRules", []),
             "recipients": record.get("recipients", []),
@@ -373,7 +385,7 @@ class MonitoringConfigSink(OICBaseSink):
         )
         response.raise_for_status()
 
-    def _configure_metrics(self, record: dict[str, Any]) -> None:
+    def _configure_metrics(self, record: dict[str, object]) -> None:
         payload = {
             "metricsEnabled": record.get("metricsEnabled", True),
             "retentionPeriod": record.get("retentionPeriod", 30),
@@ -386,7 +398,7 @@ class MonitoringConfigSink(OICBaseSink):
         )
         response.raise_for_status()
 
-    def _configure_tracing(self, record: dict[str, Any]) -> None:
+    def _configure_tracing(self, record: dict[str, object]) -> None:
         payload = {
             "tracingEnabled": record.get("tracingEnabled", True),
             "payloadTracingEnabled": record.get("payloadTracingEnabled", False),
@@ -405,7 +417,9 @@ class IntegrationActionsSink(OICBaseSink):
 
     name = "integration_actions"
 
-    def process_record(self, record: dict[str, Any], _context: dict[str, Any]) -> None:
+    def process_record(
+        self, record: dict[str, object], _context: dict[str, object]
+    ) -> None:
         """Process an integration action record.
 
         Args:
@@ -432,7 +446,7 @@ class IntegrationActionsSink(OICBaseSink):
         self,
         integration_id: str,
         version: str,
-        record: dict[str, Any],
+        record: dict[str, object],
     ) -> None:
         payload = {
             "enableTracing": record.get("enableTracing", False),
@@ -454,7 +468,7 @@ class IntegrationActionsSink(OICBaseSink):
         self,
         integration_id: str,
         version: str,
-        record: dict[str, Any],
+        record: dict[str, object],
     ) -> None:
         test_payload = record.get("testPayload", {})
         response = self.client.post(
@@ -467,7 +481,7 @@ class IntegrationActionsSink(OICBaseSink):
         self,
         integration_id: str,
         version: str,
-        record: dict[str, Any],
+        record: dict[str, object],
     ) -> None:
         payload = {
             "name": record.get("newName", f"{integration_id}_clone"),
@@ -487,7 +501,9 @@ class ConnectionActionsSink(OICBaseSink):
 
     name = "connection_actions"
 
-    def process_record(self, record: dict[str, Any], _context: dict[str, Any]) -> None:
+    def process_record(
+        self, record: dict[str, object], _context: dict[str, object]
+    ) -> None:
         """Process a connection action record.
 
         Args:

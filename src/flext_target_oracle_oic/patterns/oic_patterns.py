@@ -51,9 +51,9 @@ class OICDataTransformer:
 
     def transform_record(
         self,
-        record: dict[str, Any],
-        schema: dict[str, Any] | None = None,
-    ) -> FlextResult[dict[str, Any]]:
+        record: dict[str, object],
+        schema: dict[str, object] | None = None,
+    ) -> FlextResult[dict[str, object]]:
         """Transform Singer record for OIC storage."""
         try:
             transformed = {}
@@ -100,9 +100,9 @@ class OICDataTransformer:
 
     def prepare_oic_payload(
         self,
-        record: dict[str, Any],
+        record: dict[str, object],
         resource_type: str,
-    ) -> FlextResult[dict[str, Any]]:
+    ) -> FlextResult[dict[str, object]]:
         """Prepare payload for OIC API calls."""
         try:
             payload = {
@@ -129,7 +129,7 @@ class OICSchemaMapper:
 
     def map_singer_schema_to_oic(
         self,
-        schema: dict[str, Any],
+        schema: dict[str, object],
         resource_type: str = "integration",
     ) -> FlextResult[dict[str, str]]:
         """Map Singer schema to OIC resource definitions."""
@@ -171,7 +171,7 @@ class OICSchemaMapper:
 
     def _map_singer_type_to_oic(
         self,
-        prop_def: dict[str, Any],
+        prop_def: dict[str, object],
         resource_type: str,
     ) -> FlextResult[str]:
         """Map Singer property definition to OIC resource type."""
@@ -202,9 +202,9 @@ class OICEntryManager:
 
     def prepare_integration_entry(
         self,
-        record: dict[str, Any],
+        record: dict[str, object],
         integration_name: str,
-    ) -> FlextResult[dict[str, Any]]:
+    ) -> FlextResult[dict[str, object]]:
         """Prepare integration entry for OIC."""
         try:
             entry = {
@@ -227,9 +227,9 @@ class OICEntryManager:
 
     def prepare_connection_entry(
         self,
-        record: dict[str, Any],
+        record: dict[str, object],
         connection_name: str,
-    ) -> FlextResult[dict[str, Any]]:
+    ) -> FlextResult[dict[str, object]]:
         """Prepare connection entry for OIC."""
         try:
             entry = {
@@ -248,9 +248,9 @@ class OICEntryManager:
 
     def prepare_package_entry(
         self,
-        record: dict[str, Any],
+        record: dict[str, object],
         package_name: str,
-    ) -> FlextResult[dict[str, Any]]:
+    ) -> FlextResult[dict[str, object]]:
         """Prepare package entry for OIC."""
         try:
             entry = {
@@ -269,9 +269,9 @@ class OICEntryManager:
 
     def prepare_lookup_entry(
         self,
-        record: dict[str, Any],
+        record: dict[str, object],
         lookup_name: str,
-    ) -> FlextResult[dict[str, Any]]:
+    ) -> FlextResult[dict[str, object]]:
         """Prepare lookup entry for OIC."""
         try:
             entry = {
@@ -289,7 +289,7 @@ class OICEntryManager:
 
     def validate_entry_structure(
         self,
-        entry: dict[str, Any],
+        entry: dict[str, object],
         entry_type: str,
     ) -> FlextResult[bool]:
         """Validate OIC entry structure."""

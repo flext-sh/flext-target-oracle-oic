@@ -4,10 +4,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, ClassVar
 
-# Import directly from Singer SDK to avoid circular imports
-from singer_sdk import Target
 from flext_meltano.common_schemas import create_oauth2_api_tap_schema
-from singer_sdk import typing as th
+
+# Import directly from Singer SDK to avoid circular imports
+from singer_sdk import Target, typing as th
 
 from flext_target_oracle_oic.application import OICTargetOrchestrator
 from flext_target_oracle_oic.sinks import (
@@ -88,7 +88,7 @@ class TargetOracleOIC(Target):
     def __init__(
         self,
         *,
-        config: dict[str, Any] | None = None,
+        config: dict[str, object] | None = None,
         parse_env_config: bool = False,
         validate_config: bool = True,
         **kwargs: Any,
@@ -122,7 +122,7 @@ class TargetOracleOIC(Target):
                 )
             self._orchestrator = None
 
-    def _process_schema_message(self, message_dict: dict[str, Any]) -> None:
+    def _process_schema_message(self, message_dict: dict[str, object]) -> None:
         """Process a schema message by creating and registering the appropriate sink.
 
         Args:
@@ -145,8 +145,8 @@ class TargetOracleOIC(Target):
         self,
         stream_name: str,
         *,
-        record: dict[str, Any] | None = None,
-        schema: dict[str, Any] | None = None,
+        record: dict[str, object] | None = None,
+        schema: dict[str, object] | None = None,
         key_properties: Sequence[str] | None = None,
     ) -> Sink:
         """Get appropriate sink for the given stream.

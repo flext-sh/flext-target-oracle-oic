@@ -25,7 +25,7 @@ class FlextTargetOracleOicError(FlextError):
     def __init__(
         self,
         message: str = "Oracle OIC target error",
-        details: dict[str, Any] | None = None,
+        details: dict[str, object] | None = None,
         **kwargs: object,
     ) -> None:
         """Initialize exception with message and optional details."""
@@ -83,7 +83,7 @@ class FlextTargetOracleOicTransformationError(FlextProcessingError):
         self,
         message: str = "Oracle OIC transformation failed",
         transformation_type: str | None = None,
-        input_data: dict[str, Any] | None = None,
+        input_data: dict[str, object] | None = None,
         **kwargs: object,
     ) -> None:
         """Initialize Oracle OIC transformation error with context."""
@@ -215,7 +215,7 @@ class FlextTargetOracleOicErrorDetails(FlextValueObject):
 
     error_code: str
     error_type: str
-    context: dict[str, Any]
+    context: dict[str, object]
     timestamp: str
     source_component: str
 
