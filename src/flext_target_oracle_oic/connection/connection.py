@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 import requests
 import urllib3
@@ -153,7 +153,7 @@ class OICConnection:
                 200,
                 401,
             }:  # 401 means we connected but not authorized
-                return FlextResult.ok(True)
+                return FlextResult.ok(data=True)
 
             return FlextResult.fail(f"Connection test failed: {response.status_code}")
 

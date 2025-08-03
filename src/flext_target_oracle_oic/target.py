@@ -82,7 +82,7 @@ class TargetOracleOIC(Target):
     )
 
     config_jsonschema: ClassVar = create_oauth2_api_tap_schema(
-        additional_properties=_additional_properties
+        additional_properties=_additional_properties,
     ).to_dict()
 
     def __init__(

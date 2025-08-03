@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 import httpx
 
@@ -162,7 +162,9 @@ class OICBaseSink(Sink):
             self.process_record(record, context)
 
     def process_record(
-        self, record: dict[str, object], context: dict[str, object]
+        self,
+        record: dict[str, object],
+        context: dict[str, object],
     ) -> None:
         """Process a single record - default implementation for base sink.
 
@@ -186,7 +188,9 @@ class ConnectionsSink(OICBaseSink):
     name = "connections"
 
     def process_record(
-        self, record: dict[str, object], _context: dict[str, object]
+        self,
+        record: dict[str, object],
+        _context: dict[str, object],
     ) -> None:
         """Process a connection record.
 
@@ -245,7 +249,9 @@ class IntegrationsSink(OICBaseSink):
     name = "integrations"
 
     def process_record(
-        self, record: dict[str, object], _context: dict[str, object]
+        self,
+        record: dict[str, object],
+        _context: dict[str, object],
     ) -> None:
         """Process an integration record.
 
@@ -322,7 +328,9 @@ class PackagesSink(OICBaseSink):
     name = "packages"
 
     def process_record(
-        self, record: dict[str, object], _context: dict[str, object]
+        self,
+        record: dict[str, object],
+        _context: dict[str, object],
     ) -> None:
         """Process a package record.
 
@@ -362,7 +370,9 @@ class LookupsSink(OICBaseSink):
     name = "lookups"
 
     def process_record(
-        self, record: dict[str, object], _context: dict[str, object]
+        self,
+        record: dict[str, object],
+        _context: dict[str, object],
     ) -> None:
         """Process a lookup record.
 
