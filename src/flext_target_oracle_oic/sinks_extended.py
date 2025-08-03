@@ -6,8 +6,6 @@ certificates, schedules, and projects.
 
 from __future__ import annotations
 
-from typing import Any
-
 from flext_target_oracle_oic.sinks import OICBaseSink
 
 
@@ -17,7 +15,9 @@ class LibrariesSink(OICBaseSink):
     name = "libraries"
 
     def process_record(
-        self, record: dict[str, object], _context: dict[str, object]
+        self,
+        record: dict[str, object],
+        _context: dict[str, object],
     ) -> None:
         """Process a library record.
 
@@ -85,7 +85,9 @@ class CertificatesSink(OICBaseSink):
     name = "certificates"
 
     def process_record(
-        self, record: dict[str, object], _context: dict[str, object]
+        self,
+        record: dict[str, object],
+        _context: dict[str, object],
     ) -> None:
         """Process a certificate record.
 
@@ -153,7 +155,9 @@ class ProjectsSink(OICBaseSink):
     name = "projects"
 
     def process_record(
-        self, record: dict[str, object], _context: dict[str, object]
+        self,
+        record: dict[str, object],
+        _context: dict[str, object],
     ) -> None:
         """Process a project record.
 
@@ -222,7 +226,9 @@ class SchedulesSink(OICBaseSink):
     name = "schedules"
 
     def process_record(
-        self, record: dict[str, object], _context: dict[str, object]
+        self,
+        record: dict[str, object],
+        _context: dict[str, object],
     ) -> None:
         """Process a schedule record.
 
@@ -315,7 +321,9 @@ class BusinessEventsSink(OICBaseSink):
     name = "business_events"
 
     def process_record(
-        self, record: dict[str, object], _context: dict[str, object]
+        self,
+        record: dict[str, object],
+        _context: dict[str, object],
     ) -> None:
         """Process a business event record.
 
@@ -355,7 +363,9 @@ class MonitoringConfigSink(OICBaseSink):
     name = "monitoring_config"
 
     def process_record(
-        self, record: dict[str, object], _context: dict[str, object]
+        self,
+        record: dict[str, object],
+        _context: dict[str, object],
     ) -> None:
         """Process a monitoring configuration record.
 
@@ -418,7 +428,9 @@ class IntegrationActionsSink(OICBaseSink):
     name = "integration_actions"
 
     def process_record(
-        self, record: dict[str, object], _context: dict[str, object]
+        self,
+        record: dict[str, object],
+        _context: dict[str, object],
     ) -> None:
         """Process an integration action record.
 
@@ -502,7 +514,9 @@ class ConnectionActionsSink(OICBaseSink):
     name = "connection_actions"
 
     def process_record(
-        self, record: dict[str, object], _context: dict[str, object]
+        self,
+        record: dict[str, object],
+        _context: dict[str, object],
     ) -> None:
         """Process a connection action record.
 

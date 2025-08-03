@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
 
 from flext_core import FlextResult, FlextValueObject
 from pydantic import Field, SecretStr, model_validator
@@ -371,7 +370,8 @@ class TargetOracleOICConfig(FlextValueObject):
 
     @classmethod
     def create_with_defaults(
-        cls, **overrides: dict[str, object]
+        cls,
+        **overrides: dict[str, object],
     ) -> TargetOracleOICConfig:
         """Create configuration with intelligent defaults."""
         defaults = {

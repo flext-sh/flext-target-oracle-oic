@@ -14,7 +14,6 @@ from __future__ import annotations
 import json
 import subprocess
 from pathlib import Path
-from typing import Any
 from unittest.mock import patch
 
 import pytest
@@ -60,7 +59,7 @@ class TestTargetOracleOICE2E:
     def test_target_initialization(
         self,
         target: TargetOracleOIC,
-        config: dict[str, Any],
+        config: dict[str, object],
     ) -> None:
         if target.name != "target-oracle-oic":
             msg = f"Expected {'target-oracle-oic'}, got {target.name}"
