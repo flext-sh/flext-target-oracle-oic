@@ -343,7 +343,7 @@ def create_test_connection_config(**overrides: Any) -> TargetOracleOICConfig:
 
 
 # Export convenience functions
-__all__ = [
+__all__: list[str] = [
     "FlextResult",
     "create_development_oic_target_config",
     "create_migration_oic_target_config",

@@ -30,7 +30,7 @@ class TestTargetOracleOIC:
     ) -> None:
         target = TargetOracleOIC(config=valid_config)
         if target.name != "target-oracle-oic":
-            msg = f"Expected {'target-oracle-oic'}, got {target.name}"
+            msg: str = f"Expected {'target-oracle-oic'}, got {target.name}"
             raise AssertionError(msg)
         assert target.config == valid_config
 
@@ -53,36 +53,36 @@ class TestTargetOracleOIC:
 
         # Test known streams
         if target._get_sink_class("connections") != ConnectionsSink:
-            msg = f"Expected {ConnectionsSink}, got {target._get_sink_class('connections')}"
+            msg: str = f"Expected {ConnectionsSink}, got {target._get_sink_class('connections')}"
             raise AssertionError(msg)
         assert target._get_sink_class("integrations") == IntegrationsSink
 
         # Test unknown stream returns default
         if target._get_sink_class("unknown_stream") != target.default_sink_class:
-            msg = f"Expected {target.default_sink_class}, got {target._get_sink_class('unknown_stream')}"
+            msg: str = f"Expected {target.default_sink_class}, got {target._get_sink_class('unknown_stream')}"
             raise AssertionError(msg)
 
     def test_config_schema(self) -> None:
         schema = TargetOracleOIC.config_jsonschema
         assert isinstance(schema, dict)
         if "properties" not in schema:
-            msg = f"Expected {'properties'} in {schema}"
+            msg: str = f"Expected {'properties'} in {schema}"
             raise AssertionError(msg)
 
         # Check required properties
         properties = schema["properties"]
         assert isinstance(properties, dict)
         if "base_url" not in properties:
-            msg = f"Expected {'base_url'} in {properties}"
+            msg: str = f"Expected {'base_url'} in {properties}"
             raise AssertionError(msg)
         assert "oauth_client_id" in properties
         if "oauth_client_secret" not in properties:
-            msg = f"Expected {'oauth_client_secret'} in {properties}"
+            msg: str = f"Expected {'oauth_client_secret'} in {properties}"
             raise AssertionError(msg)
         assert "oauth_token_url" in properties
 
         # Check target-specific properties
         if "import_mode" not in properties:
-            msg = f"Expected {'import_mode'} in {properties}"
+            msg: str = f"Expected {'import_mode'} in {properties}"
             raise AssertionError(msg)
         assert "activate_integrations" in properties

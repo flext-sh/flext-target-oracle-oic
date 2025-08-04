@@ -72,7 +72,7 @@ class OICDataTransformer:
                         singer_type,
                         value,
                     )
-                    if convert_result.is_success:
+                    if convert_result.success:
                         transformed[oic_key] = convert_result.data
                     else:
                         transformed[oic_key] = value
@@ -141,7 +141,7 @@ class OICSchemaMapper:
                 oic_name = self._normalize_attribute_name(prop_name)
                 oic_type_result = self._map_singer_type_to_oic(prop_def, resource_type)
 
-                if oic_type_result.is_success:
+                if oic_type_result.success:
                     # Ensure we have a string type
                     mapped_type = oic_type_result.data
                     oic_schema[oic_name] = (

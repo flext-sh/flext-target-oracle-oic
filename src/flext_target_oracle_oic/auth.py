@@ -15,4 +15,4 @@ from flext_tap_oracle_oic.auth import OICAuthConfig, OICOAuth2Authenticator
 # Compatibility - no need to reimplement identical functionality
 
 
-__all__ = ["OICAuthConfig", "OICOAuth2Authenticator"]
+__all__: list[str] = ["OICAuthConfig", "OICOAuth2Authenticator"]

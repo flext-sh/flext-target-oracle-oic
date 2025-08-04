@@ -49,7 +49,7 @@ class OICRecordProcessor:
                     processed_record,
                     schema,
                 )
-                if not validation_result.is_success:
+                if not validation_result.success:
                     return FlextResult.fail(
                         validation_result.error or "Schema validation failed",
                     )

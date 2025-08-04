@@ -90,7 +90,7 @@ def main() -> None:
     cli_main()
 
 
-__all__ = [
+__all__: list[str] = [
     # Singer SDK sinks
     "ConnectionsSink",
     # Core flext-core patterns

@@ -48,7 +48,7 @@ class OICConnection:
 
             # Authenticate and get access token
             auth_result = self._authenticate()
-            if not auth_result.is_success:
+            if not auth_result.success:
                 return FlextResult.fail(auth_result.error or "Authentication failed")
 
             logger.info(f"Connected to OIC server: {self.config.server_url}")
@@ -132,7 +132,7 @@ class OICConnection:
         try:
             if not self._session or not self._access_token:
                 connect_result = self.connect()
-                if not connect_result.is_success:
+                if not connect_result.success:
                     return FlextResult.fail(connect_result.error or "Connection failed")
 
             # Test with simple API call
@@ -172,7 +172,7 @@ class OICConnection:
         try:
             if not self._session or not self._access_token:
                 connect_result = self.connect()
-                if not connect_result.is_success:
+                if not connect_result.success:
                     return FlextResult.fail(connect_result.error or "Connection failed")
 
             url = f"{self.config.build_api_base_url()}/{endpoint.lstrip('/')}"
