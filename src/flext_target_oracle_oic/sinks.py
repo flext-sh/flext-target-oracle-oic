@@ -69,8 +69,8 @@ class OICBaseSink(Sink):
         if not self._client:
             # Get access token for authentication
             token_result = self.authenticator.get_access_token()
-            if not token_result.is_success:
-                msg = f"Authentication failed: {token_result.error}"
+            if not token_result.success:
+                msg: str = f"Authentication failed: {token_result.error}"
                 raise RuntimeError(msg)
 
             # Create client with Bearer token

@@ -24,11 +24,11 @@ class TestFlextTargetOracleOicError:
         """Test basic exception creation."""
         exception = FlextTargetOracleOicError("Test error")
         if str(exception) != "Test error":
-            msg = f"Expected {'Test error'}, got {exception!s}"
+            msg: str = f"Expected {'Test error'}, got {exception!s}"
             raise AssertionError(msg)
         assert exception.message == "Test error"
         if exception.details != {}:
-            msg = f"Expected {{}}, got {exception.details}"
+            msg: str = f"Expected {{}}, got {exception.details}"
             raise AssertionError(msg)
 
     def test_exception_with_details(self) -> None:
@@ -36,7 +36,7 @@ class TestFlextTargetOracleOicError:
         details = {"component": "connection", "operation": "authenticate"}
         exception = FlextTargetOracleOicError("Test error", details)
         if exception.details != details:
-            msg = f"Expected {details}, got {exception.details}"
+            msg: str = f"Expected {details}, got {exception.details}"
             raise AssertionError(msg)
 
     def test_exception_inheritance(self) -> None:
@@ -53,7 +53,7 @@ class TestSpecificExceptions:
         error = FlextTargetOracleOicConnectionError("Connection failed")
         assert isinstance(error, FlextTargetOracleOicError)
         if str(error) != "Connection failed":
-            msg = f"Expected {'Connection failed'}, got {error!s}"
+            msg: str = f"Expected {'Connection failed'}, got {error!s}"
             raise AssertionError(msg)
 
     def test_authentication_error(self) -> None:
@@ -61,7 +61,7 @@ class TestSpecificExceptions:
         error = FlextTargetOracleOicAuthenticationError("Auth failed")
         assert isinstance(error, FlextTargetOracleOicError)
         if str(error) != "Auth failed":
-            msg = f"Expected {'Auth failed'}, got {error!s}"
+            msg: str = f"Expected {'Auth failed'}, got {error!s}"
             raise AssertionError(msg)
 
     def test_validation_error(self) -> None:
@@ -69,7 +69,7 @@ class TestSpecificExceptions:
         error = FlextTargetOracleOicValidationError("Validation failed")
         assert isinstance(error, FlextTargetOracleOicError)
         if str(error) != "Validation failed":
-            msg = f"Expected {'Validation failed'}, got {error!s}"
+            msg: str = f"Expected {'Validation failed'}, got {error!s}"
             raise AssertionError(msg)
 
     def test_transformation_error(self) -> None:
@@ -77,7 +77,7 @@ class TestSpecificExceptions:
         error = FlextTargetOracleOicTransformationError("Transform failed")
         assert isinstance(error, FlextTargetOracleOicError)
         if str(error) != "Transform failed":
-            msg = f"Expected {'Transform failed'}, got {error!s}"
+            msg: str = f"Expected {'Transform failed'}, got {error!s}"
             raise AssertionError(msg)
 
     def test_processing_error(self) -> None:
@@ -85,7 +85,7 @@ class TestSpecificExceptions:
         error = FlextTargetOracleOicProcessingError("Processing failed")
         assert isinstance(error, FlextTargetOracleOicError)
         if str(error) != "Processing failed":
-            msg = f"Expected {'Processing failed'}, got {error!s}"
+            msg: str = f"Expected {'Processing failed'}, got {error!s}"
             raise AssertionError(msg)
 
     def test_configuration_error(self) -> None:
@@ -93,7 +93,7 @@ class TestSpecificExceptions:
         error = FlextTargetOracleOicConfigurationError("Config failed")
         assert isinstance(error, FlextTargetOracleOicError)
         if str(error) != "Config failed":
-            msg = f"Expected {'Config failed'}, got {error!s}"
+            msg: str = f"Expected {'Config failed'}, got {error!s}"
             raise AssertionError(msg)
 
     def test_infrastructure_error(self) -> None:
@@ -101,7 +101,7 @@ class TestSpecificExceptions:
         error = FlextTargetOracleOicInfrastructureError("Infrastructure failed")
         assert isinstance(error, FlextTargetOracleOicError)
         if str(error) != "Infrastructure failed":
-            msg = f"Expected {'Infrastructure failed'}, got {error!s}"
+            msg: str = f"Expected {'Infrastructure failed'}, got {error!s}"
             raise AssertionError(msg)
 
     def test_api_error(self) -> None:
@@ -109,7 +109,7 @@ class TestSpecificExceptions:
         error = FlextTargetOracleOicAPIError("API failed", 500)
         assert isinstance(error, FlextTargetOracleOicError)
         if str(error) != "API failed":
-            msg = f"Expected {'API failed'}, got {error!s}"
+            msg: str = f"Expected {'API failed'}, got {error!s}"
             raise AssertionError(msg)
         assert error.status_code == 500
 
@@ -133,15 +133,17 @@ class TestFlextTargetOracleOicErrorDetails:
         )
 
         if details.error_code != "OIC001":
-            msg = f"Expected {'OIC001'}, got {details.error_code}"
+            msg: str = f"Expected {'OIC001'}, got {details.error_code}"
             raise AssertionError(msg)
         assert details.error_type == "ConnectionError"
         if details.context != {"server": "oic.example.com"}:
-            msg = f"Expected {{'server': 'oic.example.com'}}, got {details.context}"
+            msg: str = (
+                f"Expected {{'server': 'oic.example.com'}}, got {details.context}"
+            )
             raise AssertionError(msg)
         assert details.timestamp == "2025-01-20T10:00:00Z"
         if details.source_component != "connection":
-            msg = f"Expected {'connection'}, got {details.source_component}"
+            msg: str = f"Expected {'connection'}, got {details.source_component}"
             raise AssertionError(msg)
 
     def test_error_details_immutability(self) -> None:

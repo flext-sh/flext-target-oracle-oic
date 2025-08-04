@@ -4,6 +4,6 @@ from __future__ import annotations
 
 from flext_target_oracle_oic.application.orchestrator import OICTargetOrchestrator
 
-__all__ = [
+__all__: list[str] = [
     "OICTargetOrchestrator",
 ]

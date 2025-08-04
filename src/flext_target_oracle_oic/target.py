@@ -109,14 +109,14 @@ class TargetOracleOIC(Target):
                 dict(self.config) if self.config else None,
             )
             setup_result = self._orchestrator.setup()
-            if not setup_result.is_success:
+            if not setup_result.success:
                 self.logger.error(f"Orchestrator setup failed: {setup_result.error}")
 
     def teardown(self) -> None:
         """Teardown the target orchestrator."""
         if self._orchestrator:
             teardown_result = self._orchestrator.teardown()
-            if not teardown_result.is_success:
+            if not teardown_result.success:
                 self.logger.warning(
                     f"Orchestrator teardown failed: {teardown_result.error}",
                 )

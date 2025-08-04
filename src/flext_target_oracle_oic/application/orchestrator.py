@@ -108,6 +108,6 @@ class OICTargetOrchestrator:
             return FlextResult.fail(f"Pipeline orchestration failed: {e}")
 
 
-__all__ = [
+__all__: list[str] = [
     "OICTargetOrchestrator",
 ]

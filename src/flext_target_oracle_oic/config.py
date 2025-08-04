@@ -300,21 +300,21 @@ class TargetOracleOICConfig(FlextValueObject):
         if self.deployment.archive_directory:
             archive_path = Path(self.deployment.archive_directory)
             if not archive_path.exists():
-                msg = f"Archive directory does not exist: {archive_path}"
+                msg: str = f"Archive directory does not exist: {archive_path}"
                 raise ValueError(msg)
             if not archive_path.is_dir():
-                msg = f"Archive path is not a directory: {archive_path}"
+                msg: str = f"Archive path is not a directory: {archive_path}"
                 raise ValueError(msg)
 
         # Validate each configuration section
         auth_validation = self.auth.validate_domain_rules()
-        if not auth_validation.is_success:
-            msg = f"Auth validation failed: {auth_validation.error}"
+        if not auth_validation.success:
+            msg: str = f"Auth validation failed: {auth_validation.error}"
             raise ValueError(msg)
 
         connection_validation = self.connection.validate_domain_rules()
-        if not connection_validation.is_success:
-            msg = f"Connection validation failed: {connection_validation.error}"
+        if not connection_validation.success:
+            msg: str = f"Connection validation failed: {connection_validation.error}"
             raise ValueError(msg)
 
         return self
@@ -335,31 +335,31 @@ class TargetOracleOICConfig(FlextValueObject):
         try:
             # Validate each section
             auth_validation = self.auth.validate_domain_rules()
-            if not auth_validation.is_success:
+            if not auth_validation.success:
                 return FlextResult.fail(
                     f"Auth validation failed: {auth_validation.error}",
                 )
 
             connection_validation = self.connection.validate_domain_rules()
-            if not connection_validation.is_success:
+            if not connection_validation.success:
                 return FlextResult.fail(
                     f"Connection validation failed: {connection_validation.error}",
                 )
 
             deployment_validation = self.deployment.validate_domain_rules()
-            if not deployment_validation.is_success:
+            if not deployment_validation.success:
                 return FlextResult.fail(
                     f"Deployment validation failed: {deployment_validation.error}",
                 )
 
             processing_validation = self.processing.validate_domain_rules()
-            if not processing_validation.is_success:
+            if not processing_validation.success:
                 return FlextResult.fail(
                     f"Processing validation failed: {processing_validation.error}",
                 )
 
             entities_validation = self.entities.validate_domain_rules()
-            if not entities_validation.is_success:
+            if not entities_validation.success:
                 return FlextResult.fail(
                     f"Entities validation failed: {entities_validation.error}",
                 )
@@ -416,7 +416,7 @@ class TargetOracleOICConfig(FlextValueObject):
 
 
 # Export configuration classes
-__all__ = [
+__all__: list[str] = [
     "OICAuthConfig",
     "OICConnectionConfig",
     "OICDeploymentConfig",

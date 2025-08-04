@@ -9,7 +9,7 @@ from flext_target_oracle_oic.patterns.oic_patterns import (
     OICTypeConverter,
 )
 
-__all__ = [
+__all__: list[str] = [
     "OICDataTransformer",
     "OICEntryManager",
     "OICSchemaMapper",
