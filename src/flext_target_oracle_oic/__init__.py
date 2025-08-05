@@ -114,6 +114,7 @@ __all__: list[str] = [
     "IntegrationsSink",
     "LookupsSink",
     "OAuth2TokenManager",
+    "OICAuthConfig",
     "OICAuthenticator",
     "OICClient",
     "OICConnection",
@@ -121,6 +122,7 @@ __all__: list[str] = [
     "OICDIContainer",
     "OICDataTransformer",
     "OICEntryManager",
+    "OICOAuth2Authenticator",
     "OICRecordProcessor",
     "OICSchemaMapper",
     # Modular architecture components

@@ -6,7 +6,6 @@ import pytest
 
 # MIGRATED: from singer_sdk.exceptions import ConfigValidationError -> use flext_meltano
 from flext_meltano import ConfigValidationError
-
 from flext_target_oracle_oic.sinks import ConnectionsSink, IntegrationsSink
 from flext_target_oracle_oic.target import TargetOracleOIC
 
