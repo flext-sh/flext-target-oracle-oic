@@ -59,8 +59,11 @@ Documentation = "https://github.com/flext-sh/flext/blob/main/README.md"
 target-oracle-oic = "flext_target_oracle_oic.target:main"
 flext-target-oracle-oic = "flext_target_oracle_oic.target:main"
 
+[tool.ruff]
 extend = "../.ruff-shared.toml"
-lint.isort.known-first-party = ["flext_target_oracle_oic"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["flext_target_oracle_oic"]
 
 [tool.mypy]
 # Strict mode - enables all recommended checks

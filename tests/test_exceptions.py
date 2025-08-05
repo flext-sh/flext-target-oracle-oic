@@ -1,6 +1,8 @@
 """Test exception hierarchy for FlextTargetOracleOic."""
 
 import pytest
+from pydantic_core import ValidationError
+
 from flext_target_oracle_oic.exceptions import (
     FlextTargetOracleOicAPIError,
     FlextTargetOracleOicAuthenticationError,
@@ -13,7 +15,6 @@ from flext_target_oracle_oic.exceptions import (
     FlextTargetOracleOicTransformationError,
     FlextTargetOracleOicValidationError,
 )
-from pydantic_core import ValidationError
 
 
 class TestFlextTargetOracleOicError:

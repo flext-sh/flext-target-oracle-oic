@@ -3,7 +3,10 @@
 from __future__ import annotations
 
 import json
-from typing import Any
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from flext_core.flext_types import TAnyObject
 
 # Import from flext-core for foundational patterns
 from flext_core import FlextResult, get_logger
@@ -17,7 +20,7 @@ class OICTypeConverter:
     def __init__(self) -> None:
         """Initialize OIC type converter."""
 
-    def convert_singer_to_oic(self, singer_type: str, value: Any) -> FlextResult[Any]:
+    def convert_singer_to_oic(self, singer_type: str, value: TAnyObject) -> FlextResult[TAnyObject]:
         """Convert Singer type to OIC-compatible type."""
         try:
             if value is None:
