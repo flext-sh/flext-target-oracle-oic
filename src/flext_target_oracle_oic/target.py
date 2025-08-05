@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, ClassVar
+from typing import TYPE_CHECKING, ClassVar
 
 from flext_meltano.common_schemas import create_oauth2_api_tap_schema
 
@@ -91,7 +91,7 @@ class TargetOracleOIC(Target):
         config: dict[str, object] | None = None,
         parse_env_config: bool = False,
         validate_config: bool = True,
-        **kwargs: Any,
+        **kwargs: object,
     ) -> None:
         super().__init__(
             config=config,
