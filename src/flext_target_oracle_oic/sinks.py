@@ -163,8 +163,8 @@ class OICBaseSink(Sink):
 
     def process_record(
         self,
-        record: dict[str, object],
-        context: dict[str, object],
+        _record: dict[str, object],
+        _context: dict[str, object],
     ) -> None:
         """Process a single record - default implementation for base sink.
 
