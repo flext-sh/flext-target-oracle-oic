@@ -9,15 +9,15 @@ import httpx
 # Removed circular dependency - use DI pattern
 from flext_core import get_logger
 
-# Import directly from Singer SDK to avoid circular imports
-from singer_sdk.sinks import Sink
+# Import from flext-meltano for centralized Singer SDK
+from flext_meltano import Sink
 
 from flext_target_oracle_oic.auth import OICAuthConfig, OICOAuth2Authenticator
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
-    from singer_sdk import Target
+    from flext_meltano import Target
 
 logger = get_logger(__name__)
 
@@ -343,12 +343,12 @@ class PackagesSink(OICBaseSink):
         """
         package_id = record.get("id") or ""
         # Log the package being processed
-        self.logger.info(f"Processing package: {package_id}")
+        self.logger.info("Processing package: %s", package_id)
         # Import package if archive content is provided:
         if "archive_content" in record:
             self._import_package(record)
         else:
-            self.logger.warning(f"No archive content provided for package {package_id}")
+            self.logger.warning("No archive content provided for package %s", package_id)
 
     def _import_package(self, record: dict[str, object]) -> None:
         archive_content = record.get("archive_content")

@@ -34,7 +34,7 @@ class OICAuthConfig(FlextValueObject):
         description="OAuth2 scope for Oracle OIC access",
     )
 
-    def validate_domain_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self) -> FlextResult[None]:
         """Validate authentication configuration domain rules."""
         try:
             if not self.oauth_client_id.strip():
@@ -71,7 +71,7 @@ class OICConnectionConfig(FlextValueObject):
         description="Verify SSL certificates",
     )
 
-    def validate_domain_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self) -> FlextResult[None]:
         """Validate connection configuration domain rules."""
         try:
             if not self.base_url.strip():
@@ -116,7 +116,7 @@ class OICDeploymentConfig(FlextValueObject):
         description="Enable audit trail logging",
     )
 
-    def validate_domain_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self) -> FlextResult[None]:
         """Validate deployment configuration domain rules."""
         try:
             valid_modes = {"create_only", "update_only", "create_or_update"}
@@ -162,7 +162,7 @@ class OICProcessingConfig(FlextValueObject):
         description="Validate and transform without actually loading data",
     )
 
-    def validate_domain_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self) -> FlextResult[None]:
         """Validate processing configuration domain rules."""
         try:
             if self.batch_size <= 0:
@@ -198,7 +198,7 @@ class OICEntityConfig(FlextValueObject):
         description="Identifier fields per entity type",
     )
 
-    def validate_domain_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self) -> FlextResult[None]:
         """Validate entity configuration domain rules."""
         try:
             required_fields = [
@@ -296,25 +296,26 @@ class TargetOracleOICConfig(FlextValueObject):
     @model_validator(mode="after")
     def validate_configuration(self) -> TargetOracleOICConfig:
         """Validate complete configuration using dependency injection."""
+        msg: str = ""  # Declare msg here
         # Validate archive directory if provided
         if self.deployment.archive_directory:
             archive_path = Path(self.deployment.archive_directory)
             if not archive_path.exists():
-                msg: str = f"Archive directory does not exist: {archive_path}"
+                msg = f"Archive directory does not exist: {archive_path}"
                 raise ValueError(msg)
             if not archive_path.is_dir():
-                msg: str = f"Archive path is not a directory: {archive_path}"
+                msg = f"Archive path is not a directory: {archive_path}"
                 raise ValueError(msg)
 
         # Validate each configuration section
-        auth_validation = self.auth.validate_domain_rules()
+        auth_validation = self.auth.validate_business_rules()
         if not auth_validation.success:
-            msg: str = f"Auth validation failed: {auth_validation.error}"
+            msg = f"Auth validation failed: {auth_validation.error}"
             raise ValueError(msg)
 
-        connection_validation = self.connection.validate_domain_rules()
+        connection_validation = self.connection.validate_business_rules()
         if not connection_validation.success:
-            msg: str = f"Connection validation failed: {connection_validation.error}"
+            msg = f"Connection validation failed: {connection_validation.error}"
             raise ValueError(msg)
 
         return self
@@ -334,31 +335,31 @@ class TargetOracleOICConfig(FlextValueObject):
         """Validate configuration domain rules."""
         try:
             # Validate each section
-            auth_validation = self.auth.validate_domain_rules()
+            auth_validation = self.auth.validate_business_rules()
             if not auth_validation.success:
                 return FlextResult.fail(
                     f"Auth validation failed: {auth_validation.error}",
                 )
 
-            connection_validation = self.connection.validate_domain_rules()
+            connection_validation = self.connection.validate_business_rules()
             if not connection_validation.success:
                 return FlextResult.fail(
                     f"Connection validation failed: {connection_validation.error}",
                 )
 
-            deployment_validation = self.deployment.validate_domain_rules()
+            deployment_validation = self.deployment.validate_business_rules()
             if not deployment_validation.success:
                 return FlextResult.fail(
                     f"Deployment validation failed: {deployment_validation.error}",
                 )
 
-            processing_validation = self.processing.validate_domain_rules()
+            processing_validation = self.processing.validate_business_rules()
             if not processing_validation.success:
                 return FlextResult.fail(
                     f"Processing validation failed: {processing_validation.error}",
                 )
 
-            entities_validation = self.entities.validate_domain_rules()
+            entities_validation = self.entities.validate_business_rules()
             if not entities_validation.success:
                 return FlextResult.fail(
                     f"Entities validation failed: {entities_validation.error}",
@@ -378,7 +379,7 @@ class TargetOracleOICConfig(FlextValueObject):
             "auth": OICAuthConfig(
                 oauth_client_id="your-client-id",
                 oauth_client_secret=SecretStr("your-client-secret"),  # nosec B106 - Example configuration value
-                oauth_token_url="https://idcs-url/oauth2/v1/token",
+                oauth_token_url="",
                 oauth_client_aud=None,
             ),
             "connection": OICConnectionConfig(

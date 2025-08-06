@@ -20,7 +20,9 @@ class OICTypeConverter:
     def __init__(self) -> None:
         """Initialize OIC type converter."""
 
-    def convert_singer_to_oic(self, singer_type: str, value: TAnyObject) -> FlextResult[TAnyObject]:
+    def convert_singer_to_oic(
+        self, singer_type: str, value: TAnyObject,
+    ) -> FlextResult[TAnyObject]:
         """Convert Singer type to OIC-compatible type."""
         try:
             if value is None:
@@ -41,7 +43,7 @@ class OICTypeConverter:
             return FlextResult.ok(value)
 
         except (RuntimeError, ValueError, TypeError) as e:
-            logger.warning(f"Type conversion failed for {singer_type}: {e}")
+            logger.warning("Type conversion failed for %s: %s", singer_type, e)
             return FlextResult.ok(str(value))  # Fallback to string
 
 
@@ -193,7 +195,7 @@ class OICSchemaMapper:
             return FlextResult.ok("string")
 
         except (RuntimeError, ValueError, TypeError) as e:
-            logger.warning(f"OIC type mapping failed: {e}")
+            logger.warning("OIC type mapping failed: %s", e)
             return FlextResult.ok("string")
 
 

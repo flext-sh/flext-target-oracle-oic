@@ -15,6 +15,43 @@ from __future__ import annotations
 
 import importlib.metadata
 
+# === FLEXT-MELTANO COMPLETE INTEGRATION ===
+# Re-export ALL flext-meltano facilities for full ecosystem integration  
+from flext_meltano import (
+    # Core Singer SDK classes (centralized from flext-meltano)
+    Stream,
+    Tap,
+    Target,
+    Sink,
+    BatchSink,
+    SQLSink,
+    
+    # Enterprise services from flext-meltano.base
+    FlextMeltanoTargetService,
+    FlextMeltanoBaseService,
+    create_meltano_target_service,
+    
+    # Configuration and validation
+    FlextMeltanoConfig,
+    FlextMeltanoEvent,
+    
+    # Singer typing utilities (centralized)
+    singer_typing,
+    
+    # Bridge integration
+    FlextMeltanoBridge,
+    
+    # Testing utilities
+    get_tap_test_class,
+    
+    # Authentication patterns
+    OAuthAuthenticator,
+    
+    # Typing definitions
+    PropertiesList,
+    Property,
+)
+
 # Core flext-core imports
 from flext_core import FlextResult, FlextValueObject
 
@@ -38,7 +75,6 @@ from flext_target_oracle_oic.exceptions import (
     FlextTargetOracleOicTransformationError,
     FlextTargetOracleOicValidationError,
 )
-from flext_target_oracle_oic.infrastructure import OICDIContainer
 from flext_target_oracle_oic.patterns import (
     OICDataTransformer,
     OICEntryManager,
@@ -91,16 +127,52 @@ def main() -> None:
 
 
 __all__: list[str] = [
-    # Singer SDK sinks
-    "ConnectionsSink",
-    # Core flext-core patterns
-    "FlextResult",
-    # FlextTargetOracleOic main classes
+    # === FLEXT-MELTANO COMPLETE RE-EXPORTS ===
+    "BatchSink",
+    "FlextMeltanoBaseService",
+    "FlextMeltanoBridge",
+    "FlextMeltanoConfig",
+    "FlextMeltanoEvent",
+    "FlextMeltanoTargetService",
+    "OAuthAuthenticator",
+    "PropertiesList",
+    "Property",
+    "SQLSink",
+    "Sink",
+    "Stream",
+    "Tap",
+    "Target",
+    "create_meltano_target_service",
+    "get_tap_test_class",
+    "singer_typing",
+    
+    # === PRIMARY CLASSES ===
     "FlextTargetOracleOic",
-    # Exception hierarchy
+    "FlextTargetOracleOicConfig",
+    "TargetOracleOIC",
+    
+    # === SINKS ===
+    "ConnectionsSink",
+    "IntegrationsSink", 
+    "LookupsSink",
+    "PackagesSink",
+    
+    # === OIC COMPONENTS ===
+    "OICAuthConfig",
+    "OICClient",
+    "OICConnection",
+    "OICConnectionConfig",
+    "OICDataTransformer",
+    "OICEntryManager",
+    "OICOAuth2Authenticator",
+    "OICRecordProcessor",
+    "OICSchemaMapper",
+    "OICTargetOrchestrator",
+    "OICTypeConverter",
+    
+    # === EXCEPTIONS ===
     "FlextTargetOracleOicAPIError",
     "FlextTargetOracleOicAuthenticationError",
-    "FlextTargetOracleOicConfig",
     "FlextTargetOracleOicConfigurationError",
     "FlextTargetOracleOicConnectionError",
     "FlextTargetOracleOicError",
@@ -110,31 +182,14 @@ __all__: list[str] = [
     "FlextTargetOracleOicResult",
     "FlextTargetOracleOicTransformationError",
     "FlextTargetOracleOicValidationError",
+    
+    # === CORE RE-EXPORTS ===
+    "FlextResult",
     "FlextValueObject",
-    "IntegrationsSink",
-    "LookupsSink",
-    "OAuth2TokenManager",
-    "OICAuthConfig",
-    "OICAuthenticator",
-    "OICClient",
-    "OICConnection",
-    "OICConnectionConfig",
-    "OICDIContainer",
-    "OICDataTransformer",
-    "OICEntryManager",
-    "OICOAuth2Authenticator",
-    "OICRecordProcessor",
-    "OICSchemaMapper",
-    # Modular architecture components
-    "OICTargetOrchestrator",
-    "OICTypeConverter",
-    "PackagesSink",
-    # Singer SDK target
-    "TargetOracleOIC",
-    # Metadata
+    
+    # === METADATA ===
     "__version__",
     "__version_info__",
-    # CLI
     "main",
 ]
 
