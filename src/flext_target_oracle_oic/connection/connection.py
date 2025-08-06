@@ -51,7 +51,7 @@ class OICConnection:
             if not auth_result.success:
                 return FlextResult.fail(auth_result.error or "Authentication failed")
 
-            logger.info(f"Connected to OIC server: {self.config.server_url}")
+            logger.info("Connected to OIC server: %s", self.config.server_url)
             return FlextResult.ok(None)
 
         except FlextTargetOracleOicAuthenticationError as e:
@@ -214,7 +214,7 @@ class OICConnection:
             return FlextResult.ok(response_data)
 
         except (RuntimeError, ValueError, TypeError) as e:
-            logger.exception(f"OIC API request failed: {method} {endpoint}")
+            logger.exception("OIC API request failed: %s %s", method, endpoint)
             return FlextResult.fail(f"API request failed: {e}")
 
     @property

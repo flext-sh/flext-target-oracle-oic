@@ -182,7 +182,7 @@ class FlextTargetOracleOicInfrastructureError(FlextTargetOracleOicError):
         if service is not None:
             context["service"] = service
 
-        super().__init__(f"Oracle OIC infrastructure: {message}", **context)
+        super().__init__(f"Oracle OIC infrastructure: {message}", context=context)
 
 
 class FlextTargetOracleOicAPIError(FlextTargetOracleOicError):
@@ -205,7 +205,7 @@ class FlextTargetOracleOicAPIError(FlextTargetOracleOicError):
         if response_body is not None:
             context["response_body"] = response_body[:500]  # Truncate long responses
 
-        super().__init__(f"Oracle OIC API: {message}", **context)
+        super().__init__(f"Oracle OIC API: {message}", context=context)
 
 
 class FlextTargetOracleOicErrorDetails(FlextValueObject):

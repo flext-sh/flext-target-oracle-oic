@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, ClassVar
 from flext_meltano.common_schemas import create_oauth2_api_tap_schema
 
 # Import directly from Singer SDK to avoid circular imports
-from singer_sdk import Target, typing as th
+from flext_meltano import Target, singer_typing as th
 
 from flext_target_oracle_oic.application import OICTargetOrchestrator
 from flext_target_oracle_oic.sinks import (
@@ -110,7 +110,7 @@ class TargetOracleOIC(Target):
             )
             setup_result = self._orchestrator.setup()
             if not setup_result.success:
-                self.logger.error(f"Orchestrator setup failed: {setup_result.error}")
+                self.logger.error("Orchestrator setup failed: %s", setup_result.error)
 
     def teardown(self) -> None:
         """Teardown the target orchestrator."""
@@ -118,7 +118,8 @@ class TargetOracleOIC(Target):
             teardown_result = self._orchestrator.teardown()
             if not teardown_result.success:
                 self.logger.warning(
-                    f"Orchestrator teardown failed: {teardown_result.error}",
+                    "Orchestrator teardown failed: %s",
+                    teardown_result.error,
                 )
             self._orchestrator = None
 
