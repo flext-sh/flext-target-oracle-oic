@@ -176,7 +176,7 @@ class OICRecordProcessor:
                 properties_count = len(properties) if isinstance(properties, dict) else 0
                 required_fields = schema.get("required", [])
                 required_fields = required_fields if isinstance(required_fields, list) else []
-                
+
                 metadata.update(
                     {
                         "properties_count": properties_count,

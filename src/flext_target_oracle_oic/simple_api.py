@@ -47,7 +47,7 @@ def setup_oic_target(
         return FlextResult.fail(f"Failed to setup OIC target: {e}")
 
 
-def create_development_oic_target_config(**overrides: Any) -> TargetOracleOICConfig:
+def create_development_oic_target_config(**overrides: object) -> TargetOracleOICConfig:
     """Create development OIC target configuration with defaults.
 
     Args:
@@ -60,7 +60,7 @@ def create_development_oic_target_config(**overrides: Any) -> TargetOracleOICCon
     auth_config = OICAuthConfig(
         oauth_client_id="dev-client-id",
         oauth_client_secret=SecretStr("dev-client-secret"),  # nosec B106 - Example development value
-        oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
+        oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",  # noqa: S106 - OAuth endpoint URL, not a password
     )
 
     connection_config = OICConnectionConfig(
@@ -113,7 +113,7 @@ def create_development_oic_target_config(**overrides: Any) -> TargetOracleOICCon
     return config
 
 
-def create_production_oic_target_config(**overrides: Any) -> TargetOracleOICConfig:
+def create_production_oic_target_config(**overrides: object) -> TargetOracleOICConfig:
     """Create production OIC target configuration with security defaults.
 
     Args:
@@ -126,7 +126,7 @@ def create_production_oic_target_config(**overrides: Any) -> TargetOracleOICConf
     auth_config = OICAuthConfig(
         oauth_client_id="prod-client-id",
         oauth_client_secret=SecretStr("prod-client-secret"),  # nosec B106 - Example production value
-        oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
+        oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",  # noqa: S106 - OAuth endpoint URL, not a password
     )
 
     connection_config = OICConnectionConfig(
@@ -179,7 +179,7 @@ def create_production_oic_target_config(**overrides: Any) -> TargetOracleOICConf
     return config
 
 
-def create_migration_oic_target_config(**overrides: Any) -> TargetOracleOICConfig:
+def create_migration_oic_target_config(**overrides: object) -> TargetOracleOICConfig:
     """Create OIC target configuration optimized for large-scale migrations.
 
     Args:
@@ -192,7 +192,7 @@ def create_migration_oic_target_config(**overrides: Any) -> TargetOracleOICConfi
     auth_config = OICAuthConfig(
         oauth_client_id="migration-client-id",
         oauth_client_secret=SecretStr("migration-client-secret"),  # nosec B106 - Example migration value
-        oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
+        oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",  # noqa: S106 - OAuth endpoint URL, not a password
     )
 
     connection_config = OICConnectionConfig(
@@ -278,7 +278,7 @@ def validate_oic_target_config(config: TargetOracleOICConfig) -> FlextResult[Any
         return FlextResult.fail(f"Configuration validation failed: {e}")
 
 
-def create_test_connection_config(**overrides: Any) -> TargetOracleOICConfig:
+def create_test_connection_config(**overrides: object) -> TargetOracleOICConfig:
     """Create configuration for testing OIC connections.
 
     Args:
@@ -291,7 +291,7 @@ def create_test_connection_config(**overrides: Any) -> TargetOracleOICConfig:
     auth_config = OICAuthConfig(
         oauth_client_id="test-client-id",
         oauth_client_secret=SecretStr("test-client-secret"),  # nosec B106 - Example testing value
-        oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
+        oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",  # noqa: S106 - OAuth endpoint URL, not a password
     )
 
     connection_config = OICConnectionConfig(

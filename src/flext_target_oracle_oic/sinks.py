@@ -19,6 +19,9 @@ if TYPE_CHECKING:
 
     from flext_meltano import Target
 
+# Constants
+HTTP_NOT_FOUND = 404
+
 logger = get_logger(__name__)
 
 
@@ -206,7 +209,7 @@ class ConnectionsSink(OICBaseSink):
         response = self.client.get(
             f"/ic/api/integration/v1/connections/{connection_id}",
         )
-        if response.status_code == 404:
+        if response.status_code == HTTP_NOT_FOUND:
             # Create new connection
             self._create_connection(record)
         else:
@@ -268,7 +271,7 @@ class IntegrationsSink(OICBaseSink):
         response = self.client.get(
             f"/ic/api/integration/v1/integrations/{integration_id}|{version}",
         )
-        if response.status_code == 404:
+        if response.status_code == HTTP_NOT_FOUND:
             # Create new integration from archive if provided:
             if "archive_content" in record:
                 self._import_integration(record)
@@ -386,7 +389,7 @@ class LookupsSink(OICBaseSink):
         lookup_name = record.get("name") or ""
         # Check if lookup exists:
         response = self.client.get(f"/ic/api/integration/v1/lookups/{lookup_name}")
-        if response.status_code == 404:
+        if response.status_code == HTTP_NOT_FOUND:
             # Create new lookup
             self._create_lookup(record)
         else:
