@@ -4,10 +4,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, ClassVar
 
-from flext_meltano.common_schemas import create_oauth2_api_tap_schema
-
 # Import directly from Singer SDK to avoid circular imports
 from flext_meltano import Target, singer_typing as th
+from flext_meltano.common_schemas import create_oauth2_api_tap_schema
 
 from flext_target_oracle_oic.application import OICTargetOrchestrator
 from flext_target_oracle_oic.sinks import (
@@ -146,7 +145,7 @@ class TargetOracleOIC(Target):
         self,
         stream_name: str,
         *,
-        record: dict[str, object] | None = None,
+        _record: dict[str, object] | None = None,
         schema: dict[str, object] | None = None,
         key_properties: Sequence[str] | None = None,
     ) -> Sink:
@@ -207,6 +206,7 @@ class TargetOracleOIC(Target):
 
 
 def main() -> None:
+    """Entry point for target-oracle-oic CLI."""
     TargetOracleOIC.cli()
 
 

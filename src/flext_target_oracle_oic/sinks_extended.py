@@ -8,6 +8,9 @@ from __future__ import annotations
 
 from flext_target_oracle_oic.sinks import OICBaseSink
 
+# Constants
+HTTP_NOT_FOUND = 404
+
 
 class LibrariesSink(OICBaseSink):
     """Oracle Integration Cloud target sink for libraries."""
@@ -29,7 +32,7 @@ class LibrariesSink(OICBaseSink):
         library_id = record.get("id") or ""
         # Check if library exists:
         response = self.client.get(f"/ic/api/integration/v1/libraries/{library_id}")
-        if response.status_code == 404:
+        if response.status_code == HTTP_NOT_FOUND:
             # Create new library
             self._create_library(record)
         else:
@@ -99,7 +102,7 @@ class CertificatesSink(OICBaseSink):
         cert_alias = record.get("alias") or ""
         # Check if certificate exists:
         response = self.client.get(f"/ic/api/integration/v1/certificates/{cert_alias}")
-        if response.status_code == 404:
+        if response.status_code == HTTP_NOT_FOUND:
             # Create new certificate
             self._create_certificate(record)
         else:
@@ -169,7 +172,7 @@ class ProjectsSink(OICBaseSink):
         project_id = record.get("id") or ""
         # Check if project exists:
         response = self.client.get(f"/ic/api/integration/v1/projects/{project_id}")
-        if response.status_code == 404:
+        if response.status_code == HTTP_NOT_FOUND:
             # Create new project
             self._create_project(record)
             # Update existing project
@@ -249,7 +252,7 @@ class SchedulesSink(OICBaseSink):
         response = self.client.get(
             f"/ic/api/integration/v1/integrations/{integration_id}/schedule",
         )
-        if response.status_code == 404:
+        if response.status_code == HTTP_NOT_FOUND:
             # Create new schedule
             self._create_schedule(integration_id, record)
             # Update existing schedule

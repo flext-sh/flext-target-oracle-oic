@@ -15,45 +15,38 @@ from __future__ import annotations
 
 import importlib.metadata
 
+# Core flext-core imports
+from flext_core import FlextResult, FlextValueObject
+
 # === FLEXT-MELTANO COMPLETE INTEGRATION ===
-# Re-export ALL flext-meltano facilities for full ecosystem integration  
+# Re-export ALL flext-meltano facilities for full ecosystem integration
 from flext_meltano import (
+    BatchSink,
+    FlextMeltanoBaseService,
+    # Bridge integration
+    FlextMeltanoBridge,
+    # Configuration and validation
+    FlextMeltanoConfig,
+    FlextMeltanoEvent,
+    # Enterprise services from flext-meltano.base
+    FlextMeltanoTargetService,
+    # Authentication patterns
+    OAuthAuthenticator,
+    # Typing definitions
+    PropertiesList,
+    Property,
+    Sink,
+    SQLSink,
     # Core Singer SDK classes (centralized from flext-meltano)
     Stream,
     Tap,
     Target,
-    Sink,
-    BatchSink,
-    SQLSink,
-    
-    # Enterprise services from flext-meltano.base
-    FlextMeltanoTargetService,
-    FlextMeltanoBaseService,
     create_meltano_target_service,
-    
-    # Configuration and validation
-    FlextMeltanoConfig,
-    FlextMeltanoEvent,
-    
-    # Singer typing utilities (centralized)
-    singer_typing,
-    
-    # Bridge integration
-    FlextMeltanoBridge,
-    
     # Testing utilities
     get_tap_test_class,
-    
-    # Authentication patterns
-    OAuthAuthenticator,
-    
-    # Typing definitions
-    PropertiesList,
-    Property,
+    # Singer typing utilities (centralized)
+    singer_typing,
 )
-
-# Core flext-core imports
-from flext_core import FlextResult, FlextValueObject
 
 # Modular architecture components
 from flext_target_oracle_oic.application import OICTargetOrchestrator
@@ -129,34 +122,34 @@ def main() -> None:
 __all__: list[str] = [
     # === FLEXT-MELTANO COMPLETE RE-EXPORTS ===
     "BatchSink",
+    # === SINKS ===
+    "ConnectionsSink",
     "FlextMeltanoBaseService",
     "FlextMeltanoBridge",
     "FlextMeltanoConfig",
     "FlextMeltanoEvent",
     "FlextMeltanoTargetService",
-    "OAuthAuthenticator",
-    "PropertiesList",
-    "Property",
-    "SQLSink",
-    "Sink",
-    "Stream",
-    "Tap",
-    "Target",
-    "create_meltano_target_service",
-    "get_tap_test_class",
-    "singer_typing",
-    
+    # === CORE RE-EXPORTS ===
+    "FlextResult",
     # === PRIMARY CLASSES ===
     "FlextTargetOracleOic",
+    # === EXCEPTIONS ===
+    "FlextTargetOracleOicAPIError",
+    "FlextTargetOracleOicAuthenticationError",
     "FlextTargetOracleOicConfig",
-    "TargetOracleOIC",
-    
-    # === SINKS ===
-    "ConnectionsSink",
-    "IntegrationsSink", 
+    "FlextTargetOracleOicConfigurationError",
+    "FlextTargetOracleOicConnectionError",
+    "FlextTargetOracleOicError",
+    "FlextTargetOracleOicErrorDetails",
+    "FlextTargetOracleOicInfrastructureError",
+    "FlextTargetOracleOicProcessingError",
+    "FlextTargetOracleOicResult",
+    "FlextTargetOracleOicTransformationError",
+    "FlextTargetOracleOicValidationError",
+    "FlextValueObject",
+    "IntegrationsSink",
     "LookupsSink",
-    "PackagesSink",
-    
+    "OAuthAuthenticator",
     # === OIC COMPONENTS ===
     "OICAuthConfig",
     "OICClient",
@@ -169,28 +162,22 @@ __all__: list[str] = [
     "OICSchemaMapper",
     "OICTargetOrchestrator",
     "OICTypeConverter",
-    
-    # === EXCEPTIONS ===
-    "FlextTargetOracleOicAPIError",
-    "FlextTargetOracleOicAuthenticationError",
-    "FlextTargetOracleOicConfigurationError",
-    "FlextTargetOracleOicConnectionError",
-    "FlextTargetOracleOicError",
-    "FlextTargetOracleOicErrorDetails",
-    "FlextTargetOracleOicInfrastructureError",
-    "FlextTargetOracleOicProcessingError",
-    "FlextTargetOracleOicResult",
-    "FlextTargetOracleOicTransformationError",
-    "FlextTargetOracleOicValidationError",
-    
-    # === CORE RE-EXPORTS ===
-    "FlextResult",
-    "FlextValueObject",
-    
+    "PackagesSink",
+    "PropertiesList",
+    "Property",
+    "SQLSink",
+    "Sink",
+    "Stream",
+    "Tap",
+    "Target",
+    "TargetOracleOIC",
     # === METADATA ===
     "__version__",
     "__version_info__",
+    "create_meltano_target_service",
+    "get_tap_test_class",
     "main",
+    "singer_typing",
 ]
 
 

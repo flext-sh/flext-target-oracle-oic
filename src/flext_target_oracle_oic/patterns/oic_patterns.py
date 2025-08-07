@@ -28,18 +28,28 @@ class OICTypeConverter:
             if value is None:
                 return FlextResult.ok(None)
 
-            if singer_type in {"string", "text"}:
-                return FlextResult.ok(str(value))
-            if singer_type in {"integer", "number"}:
-                return FlextResult.ok(value)  # OIC handles numbers natively
-            if singer_type == "boolean":
-                return FlextResult.ok(bool(value))
+            # Handle complex types first
             if singer_type in {"object", "array"}:
                 if isinstance(value, (dict, list)):
-                    return FlextResult.ok(value)
-                return FlextResult.ok(
-                    json.loads(str(value)) if isinstance(value, str) else value,
-                )
+                    converted_value = value
+                else:
+                    converted_value = json.loads(str(value)) if isinstance(value, str) else value
+                return FlextResult.ok(converted_value)
+
+            # Handle simple types with mapping
+            type_converters = {
+                "string": str,
+                "text": str,
+                "boolean": bool,
+                "integer": lambda x: x,  # OIC handles numbers natively
+                "number": lambda x: x,   # OIC handles numbers natively
+            }
+
+            if singer_type in type_converters:
+                converter = type_converters[singer_type]
+                return FlextResult.ok(converter(value))
+
+            # Default fallback
             return FlextResult.ok(value)
 
         except (RuntimeError, ValueError, TypeError) as e:
@@ -177,7 +187,7 @@ class OICSchemaMapper:
     def _map_singer_type_to_oic(
         self,
         prop_def: dict[str, object],
-        resource_type: str,
+        _resource_type: str,
     ) -> FlextResult[str]:
         """Map Singer property definition to OIC resource type."""
         try:

@@ -92,11 +92,11 @@ class OICDeploymentConfig(FlextValueObject):
         pattern="^(create_only|update_only|create_or_update)$",
     )
     activate_integrations: bool = Field(
-        False,
+        default=False,
         description="Automatically activate integrations after import",
     )
     validate_connections: bool = Field(
-        True,
+        default=True,
         description="Validate connections before creating/updating",
     )
     archive_directory: str | None = Field(
@@ -104,15 +104,15 @@ class OICDeploymentConfig(FlextValueObject):
         description="Directory to read integration archives from",
     )
     rollback_on_failure: bool = Field(
-        True,
+        default=True,
         description="Rollback deployment on failure",
     )
     enable_versioning: bool = Field(
-        True,
+        default=True,
         description="Enable integration versioning",
     )
     audit_trail: bool = Field(
-        True,
+        default=True,
         description="Enable audit trail logging",
     )
 
@@ -137,15 +137,15 @@ class OICProcessingConfig(FlextValueObject):
         le=1000,
     )
     enable_validation: bool = Field(
-        True,
+        default=True,
         description="Enable payload validation before sending to OIC",
     )
     validation_strict_mode: bool = Field(
-        False,
+        default=False,
         description="Fail on validation errors (vs. warnings)",
     )
     skip_missing_connections: bool = Field(
-        False,
+        default=False,
         description="Skip integrations with missing connections",
     )
     max_errors: int = Field(
@@ -154,11 +154,11 @@ class OICProcessingConfig(FlextValueObject):
         ge=0,
     )
     ignore_transformation_errors: bool = Field(
-        True,
+        default=True,
         description="Continue processing on transformation errors",
     )
     dry_run_mode: bool = Field(
-        False,
+        default=False,
         description="Validate and transform without actually loading data",
     )
 
@@ -334,36 +334,21 @@ class TargetOracleOICConfig(FlextValueObject):
     def validate_domain_rules(self) -> FlextResult[None]:
         """Validate configuration domain rules."""
         try:
-            # Validate each section
-            auth_validation = self.auth.validate_business_rules()
-            if not auth_validation.success:
-                return FlextResult.fail(
-                    f"Auth validation failed: {auth_validation.error}",
-                )
+            # Validate each section - collect all validations first
+            validations = [
+                ("Auth", self.auth.validate_business_rules()),
+                ("Connection", self.connection.validate_business_rules()),
+                ("Deployment", self.deployment.validate_business_rules()),
+                ("Processing", self.processing.validate_business_rules()),
+                ("Entities", self.entities.validate_business_rules()),
+            ]
 
-            connection_validation = self.connection.validate_business_rules()
-            if not connection_validation.success:
-                return FlextResult.fail(
-                    f"Connection validation failed: {connection_validation.error}",
-                )
-
-            deployment_validation = self.deployment.validate_business_rules()
-            if not deployment_validation.success:
-                return FlextResult.fail(
-                    f"Deployment validation failed: {deployment_validation.error}",
-                )
-
-            processing_validation = self.processing.validate_business_rules()
-            if not processing_validation.success:
-                return FlextResult.fail(
-                    f"Processing validation failed: {processing_validation.error}",
-                )
-
-            entities_validation = self.entities.validate_business_rules()
-            if not entities_validation.success:
-                return FlextResult.fail(
-                    f"Entities validation failed: {entities_validation.error}",
-                )
+            # Check for first failure
+            for section_name, validation_result in validations:
+                if not validation_result.success:
+                    return FlextResult.fail(
+                        f"{section_name} validation failed: {validation_result.error}",
+                    )
 
             return FlextResult.ok(None)
         except Exception as e:

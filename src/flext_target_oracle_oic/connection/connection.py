@@ -16,6 +16,7 @@ from flext_target_oracle_oic.exceptions import FlextTargetOracleOicAuthenticatio
 
 # Constants
 HTTP_OK = 200
+HTTP_BAD_REQUEST = 400
 
 if TYPE_CHECKING:
     from flext_target_oracle_oic.connection.config import OICConnectionConfig
@@ -201,7 +202,7 @@ class OICConnection:
             response = self._session.request(method.upper(), url, **kwargs)
 
             # Handle response
-            if response.status_code >= 400:
+            if response.status_code >= HTTP_BAD_REQUEST:
                 return FlextResult.fail(
                     f"API request failed: {response.status_code} - {response.text}",
                 )
