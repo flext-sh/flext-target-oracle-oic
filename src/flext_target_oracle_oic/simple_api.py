@@ -60,7 +60,7 @@ def create_development_oic_target_config(**overrides: object) -> TargetOracleOIC
     auth_config = OICAuthConfig(
         oauth_client_id="dev-client-id",
         oauth_client_secret=SecretStr("dev-client-secret"),  # nosec B106 - Example development value
-        oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",  # noqa: S106 - OAuth endpoint URL, not a password
+        oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
     )
 
     connection_config = OICConnectionConfig(
@@ -126,7 +126,7 @@ def create_production_oic_target_config(**overrides: object) -> TargetOracleOICC
     auth_config = OICAuthConfig(
         oauth_client_id="prod-client-id",
         oauth_client_secret=SecretStr("prod-client-secret"),  # nosec B106 - Example production value
-        oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",  # noqa: S106 - OAuth endpoint URL, not a password
+        oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
     )
 
     connection_config = OICConnectionConfig(
@@ -192,7 +192,7 @@ def create_migration_oic_target_config(**overrides: object) -> TargetOracleOICCo
     auth_config = OICAuthConfig(
         oauth_client_id="migration-client-id",
         oauth_client_secret=SecretStr("migration-client-secret"),  # nosec B106 - Example migration value
-        oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",  # noqa: S106 - OAuth endpoint URL, not a password
+        oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
     )
 
     connection_config = OICConnectionConfig(
@@ -291,7 +291,7 @@ def create_test_connection_config(**overrides: object) -> TargetOracleOICConfig:
     auth_config = OICAuthConfig(
         oauth_client_id="test-client-id",
         oauth_client_secret=SecretStr("test-client-secret"),  # nosec B106 - Example testing value
-        oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",  # noqa: S106 - OAuth endpoint URL, not a password
+        oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
     )
 
     connection_config = OICConnectionConfig(
