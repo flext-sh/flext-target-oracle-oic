@@ -6,7 +6,7 @@ import json
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from flext_core.flext_types import TAnyObject
+    from flext_core.typings import TAnyObject
 
 # Import from flext-core for foundational patterns
 from flext_core import FlextResult, get_logger
@@ -21,7 +21,9 @@ class OICTypeConverter:
         """Initialize OIC type converter."""
 
     def convert_singer_to_oic(
-        self, singer_type: str, value: TAnyObject,
+        self,
+        singer_type: str,
+        value: TAnyObject,
     ) -> FlextResult[TAnyObject]:
         """Convert Singer type to OIC-compatible type."""
         try:
@@ -33,7 +35,9 @@ class OICTypeConverter:
                 if isinstance(value, (dict, list)):
                     converted_value = value
                 else:
-                    converted_value = json.loads(str(value)) if isinstance(value, str) else value
+                    converted_value = (
+                        json.loads(str(value)) if isinstance(value, str) else value
+                    )
                 return FlextResult.ok(converted_value)
 
             # Handle simple types with mapping
@@ -42,7 +46,7 @@ class OICTypeConverter:
                 "text": str,
                 "boolean": bool,
                 "integer": lambda x: x,  # OIC handles numbers natively
-                "number": lambda x: x,   # OIC handles numbers natively
+                "number": lambda x: x,  # OIC handles numbers natively
             }
 
             if singer_type in type_converters:
