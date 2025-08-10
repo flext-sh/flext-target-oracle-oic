@@ -154,7 +154,7 @@ class OICConnection:
                 200,
                 401,
             }:  # 401 means we connected but not authorized
-                return FlextResult.ok(data=True)
+                return FlextResult.ok(True)
 
             return FlextResult.fail(f"Connection test failed: {response.status_code}")
 
