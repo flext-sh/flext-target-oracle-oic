@@ -3,10 +3,6 @@
 from __future__ import annotations
 
 import json
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from flext_core.typings import TAnyObject
 
 # Import from flext-core for foundational patterns
 from flext_core import FlextResult, get_logger
@@ -23,8 +19,8 @@ class OICTypeConverter:
     def convert_singer_to_oic(
         self,
         singer_type: str,
-        value: TAnyObject,
-    ) -> FlextResult[TAnyObject]:
+        value: object,
+    ) -> FlextResult[object]:
         """Convert Singer type to OIC-compatible type."""
         try:
             if value is None:
@@ -326,7 +322,7 @@ class OICEntryManager:
             if missing_fields:
                 return FlextResult.fail(f"Missing required fields: {missing_fields}")
 
-            return FlextResult.ok(True)
+            return FlextResult.ok(data=True)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Entry validation failed")

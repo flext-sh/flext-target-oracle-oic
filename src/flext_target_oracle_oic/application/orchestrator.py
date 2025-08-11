@@ -38,7 +38,7 @@ class OICTargetOrchestrator:
                 if field not in self.config:
                     return FlextResult.fail(f"Missing required field: {field}")
 
-            return FlextResult.ok(True)
+            return FlextResult.ok(data=True)
         except Exception as e:
             return FlextResult.fail(f"Configuration validation failed: {e}")
 
