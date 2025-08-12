@@ -11,12 +11,7 @@ from unittest.mock import patch
 # Add scripts directory to Python path for import
 scripts_path = Path(__file__).parent.parent / "scripts"
 sys.path.insert(0, str(scripts_path))
-
-# Import after path modification - required due to dynamic path modification
-from generate_config import (
-    generate_config,
-    main,
-)
+from generate_config import generate_config, main  # noqa: E402
 
 if TYPE_CHECKING:
     import pytest

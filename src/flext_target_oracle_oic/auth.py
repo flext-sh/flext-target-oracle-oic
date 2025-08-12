@@ -1,7 +1,7 @@
-"""Oracle Integration Cloud authentication - ELIMINATES DUPLICATION.
+"""Oracle Integration Cloud authentication - PEP8 compliant with maximum composition.
 
-Re-exports OAuth from tap-oracle-oic to eliminate exact code duplication.
-This eliminates the 42-line identical OAuth2 authenticator implementation.
+This module provides backward compatibility while directing to the new unified configuration.
+For new development, use flext_target_oracle_oic.target_config directly.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -9,10 +9,13 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-# CONSOLIDATION: Import OAuth from tap to eliminate duplication
-from flext_tap_oracle_oic.auth import OICAuthConfig, OICOAuth2Authenticator
+# BACKWARD COMPATIBILITY: Re-export from new unified configuration
+from flext_target_oracle_oic.target_config import (
+    OICAuthConfig,
+    OICOAuth2Authenticator,
+)
 
-# Compatibility - no need to reimplement identical functionality
-
+# Note: This module is maintained for backward compatibility only.
+# New code should import directly from flext_target_oracle_oic.target_config
 
 __all__: list[str] = ["OICAuthConfig", "OICOAuth2Authenticator"]

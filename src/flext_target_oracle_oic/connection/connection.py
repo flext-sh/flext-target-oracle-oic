@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, cast
 
 import requests
 import urllib3
@@ -197,8 +197,8 @@ class OICConnection:
             if not self._session:
                 return FlextResult.fail("No active session available")
 
-            # Simplify request_kwargs typing
-            kwargs = dict(request_kwargs) if request_kwargs else {}
+            # Simplify request_kwargs typing for requests.Session.request
+            kwargs = cast("Any", request_kwargs) if request_kwargs else {}
             response = self._session.request(method.upper(), url, **kwargs)
 
             # Handle response

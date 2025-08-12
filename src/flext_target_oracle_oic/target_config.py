@@ -1,51 +1,79 @@
-"""Configuration for target-oracle-oic using flext-core patterns."""
+"""Target Oracle OIC Configuration - Unified configuration management using flext-core patterns.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+
+PEP8-compliant configuration management with maximum flext-core composition.
+"""
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 from flext_core import FlextResult, FlextValueObject
+from flext_meltano import singer_typing as th
+from flext_meltano.common_schemas import create_oauth2_api_tap_schema
 from pydantic import Field, SecretStr, model_validator
 
-from flext_target_oracle_oic.connection.config import OICConnectionConfig as _OICConnCfg
-
-
-class OICAuthConfig(FlextValueObject):
-    """OIC authentication configuration using flext-core patterns."""
-
-    oauth_client_id: str = Field(
-        ...,
-        description="OAuth2 client ID for Oracle OIC authentication",
-        min_length=1,
-    )
-    oauth_client_secret: SecretStr = Field(
-        ...,
-        description="OAuth2 client secret for Oracle OIC authentication",
-    )
-    oauth_token_url: str = Field(
-        ...,
-        description="OAuth2 token URL for Oracle OIC authentication",
-        pattern=r"^https?://",
-    )
-    oauth_client_aud: str | None = Field(
-        None,
-        description="OAuth2 client audience (optional)",
-    )
-    oauth_scope: str = Field(
-        default="",
-        description="OAuth2 scope for Oracle OIC access",
+# Import auth utilities from flext-oracle-oic-ext for maximum composition
+try:
+    from flext_oracle_oic_ext.auth import (
+        OICAuthConfig as ExtAuthConfig,
+        OICOAuth2Authenticator as ExtAuthenticator,
     )
 
-    def validate_business_rules(self) -> FlextResult[None]:
-        """Validate authentication configuration domain rules."""
-        try:
-            if not self.oauth_client_id.strip():
-                return FlextResult.fail("OAuth client ID cannot be empty")
-            if not self.oauth_token_url.strip():
-                return FlextResult.fail("OAuth token URL cannot be empty")
-            return FlextResult.ok(None)
-        except Exception as e:
-            return FlextResult.fail(f"Auth config validation failed: {e}")
+    # Use flext-oracle-oic-ext implementations
+    OICAuthConfig = ExtAuthConfig
+    OICOAuth2Authenticator = ExtAuthenticator
+except ImportError:
+    # Fallback implementations if ext not available
+    class OICAuthConfig(FlextValueObject):
+        """OIC authentication configuration using flext-core patterns."""
+
+        oauth_client_id: str = Field(
+            ...,
+            description="OAuth2 client ID for Oracle OIC authentication",
+            min_length=1,
+        )
+        oauth_client_secret: SecretStr = Field(
+            ...,
+            description="OAuth2 client secret for Oracle OIC authentication",
+        )
+        oauth_token_url: str = Field(
+            ...,
+            description="OAuth2 token URL for Oracle OIC authentication",
+            pattern=r"^https?://",
+        )
+        oauth_client_aud: str | None = Field(
+            None,
+            description="OAuth2 client audience (optional)",
+        )
+        oauth_scope: str = Field(
+            default="",
+            description="OAuth2 scope for Oracle OIC access",
+        )
+
+        def validate_business_rules(self) -> FlextResult[None]:
+            """Validate authentication configuration domain rules."""
+            try:
+                if not self.oauth_client_id.strip():
+                    return FlextResult.fail("OAuth client ID cannot be empty")
+                if not self.oauth_token_url.strip():
+                    return FlextResult.fail("OAuth token URL cannot be empty")
+                return FlextResult.ok(None)
+            except Exception as e:
+                return FlextResult.fail(f"Auth config validation failed: {e}")
+
+    class OICOAuth2Authenticator:
+        """Fallback OAuth2 authenticator."""
+
+        def __init__(self, config: OICAuthConfig) -> None:
+            self.config = config
+
+        def get_access_token(self) -> FlextResult[str]:
+            """Get access token - fallback implementation."""
+            return FlextResult.fail("flext-oracle-oic-ext not available")
 
 
 class OICConnectionConfig(FlextValueObject):
@@ -218,9 +246,9 @@ class OICEntityConfig(FlextValueObject):
 
 
 class TargetOracleOICConfig(FlextValueObject):
-    """Complete configuration for target-oracle-oic using dependency injection.
+    """Complete configuration for target-oracle-oic using flext-core patterns.
 
-    Uses dependency injection patterns to access Oracle OIC functionality.
+    Uses maximum composition from flext-core and flext-oracle-oic-ext.
     Zero tolerance for architectural violations.
     """
 
@@ -246,36 +274,15 @@ class TargetOracleOICConfig(FlextValueObject):
         description="Connection configuration",
     )
     deployment: OICDeploymentConfig = Field(
-        default_factory=lambda: OICDeploymentConfig(
-            import_mode="create_or_update",
-            activate_integrations=False,
-            validate_connections=True,
-            archive_directory=None,
-            rollback_on_failure=True,
-            enable_versioning=True,
-            audit_trail=True,
-        ),
+        default_factory=OICDeploymentConfig,
         description="Deployment configuration",
     )
     processing: OICProcessingConfig = Field(
-        default_factory=lambda: OICProcessingConfig(
-            batch_size=100,
-            enable_validation=True,
-            validation_strict_mode=False,
-            skip_missing_connections=False,
-            max_errors=10,
-            ignore_transformation_errors=True,
-            dry_run_mode=False,
-        ),
+        default_factory=OICProcessingConfig,
         description="Processing configuration",
     )
     entities: OICEntityConfig = Field(
-        default_factory=lambda: OICEntityConfig(
-            integration_identifier_field="code",
-            connection_identifier_field="code",
-            lookup_identifier_field="name",
-            identifier_fields={},
-        ),
+        default_factory=OICEntityConfig,
         description="Entity configuration",
     )
 
@@ -297,8 +304,9 @@ class TargetOracleOICConfig(FlextValueObject):
 
     @model_validator(mode="after")
     def validate_configuration(self) -> TargetOracleOICConfig:
-        """Validate complete configuration using dependency injection."""
-        msg: str = ""  # Declare msg here
+        """Validate complete configuration."""
+        msg: str = ""
+
         # Validate archive directory if provided
         if self.deployment.archive_directory:
             archive_path = Path(self.deployment.archive_directory)
@@ -321,16 +329,6 @@ class TargetOracleOICConfig(FlextValueObject):
             raise ValueError(msg)
 
         return self
-
-    def get_oauth_headers(self) -> dict[str, str]:
-        """Get OAuth headers for API requests."""
-        # ELIMINATED DUPLICATION: Use connection config's get_auth_headers()
-        connection_config = _OICConnCfg(
-            server_url=self.connection.base_url,
-            client_id=self.auth.oauth_client_id,
-            client_secret=self.auth.oauth_client_secret.get_secret_value(),
-        )
-        return connection_config.get_auth_headers()
 
     def get_entity_identifier_field(self, entity_type: str) -> str:
         """Get identifier field for entity type."""
@@ -375,35 +373,75 @@ class TargetOracleOICConfig(FlextValueObject):
             "connection": OICConnectionConfig(
                 base_url="https://your-instance.integration.ocp.oraclecloud.com",
             ),
-            "deployment": OICDeploymentConfig(
-                import_mode="create_or_update",
-                activate_integrations=False,
-                validate_connections=True,
-                archive_directory=None,
-                rollback_on_failure=True,
-                enable_versioning=True,
-                audit_trail=True,
-            ),
-            "processing": OICProcessingConfig(
-                batch_size=100,
-                enable_validation=True,
-                validation_strict_mode=False,
-                skip_missing_connections=False,
-                max_errors=10,
-                ignore_transformation_errors=True,
-                dry_run_mode=False,
-            ),
-            "entities": OICEntityConfig(
-                integration_identifier_field="code",
-                connection_identifier_field="code",
-                lookup_identifier_field="name",
-                identifier_fields={},
-            ),
+            "deployment": OICDeploymentConfig(),
+            "processing": OICProcessingConfig(),
+            "entities": OICEntityConfig(),
             "project_name": "flext-target-oracle-oic",
             "project_version": "0.9.0",
         }
         defaults.update(overrides)
         return cls.model_validate(defaults)
+
+
+# Singer SDK configuration schema creation
+def create_singer_config_schema() -> dict[str, object]:
+    """Create Singer SDK compatible configuration schema."""
+    # Additional target-specific properties
+    additional_properties = th.PropertiesList(
+        th.Property(
+            "oauth_client_aud",
+            th.StringType,
+            description="OAuth2 client audience",
+        ),
+        th.Property(
+            "import_mode",
+            th.StringType,
+            allowed_values=["create", "update", "create_or_update"],
+            default="create_or_update",
+            description="Import mode for integrations",
+        ),
+        th.Property(
+            "activate_integrations",
+            th.BooleanType,
+            default=False,
+            description="Automatically activate integrations after import",
+        ),
+    )
+
+    return create_oauth2_api_tap_schema(
+        additional_properties=additional_properties,
+    ).to_dict()
+
+
+# Configuration factory functions
+def create_config_from_dict(config_dict: dict[str, object]) -> TargetOracleOICConfig:
+    """Create configuration from dictionary with validation."""
+    return TargetOracleOICConfig.model_validate(config_dict)
+
+
+def create_config_with_env_overrides(
+    base_config: dict[str, object] | None = None,
+) -> TargetOracleOICConfig:
+    """Create configuration with environment variable overrides."""
+    config = base_config or {}
+
+    # Override with environment variables
+    env_mappings = {
+        "TARGET_ORACLE_OIC_BASE_URL": ("connection", "base_url"),
+        "TARGET_ORACLE_OIC_OAUTH_CLIENT_ID": ("auth", "oauth_client_id"),
+        "TARGET_ORACLE_OIC_OAUTH_CLIENT_SECRET": ("auth", "oauth_client_secret"),
+        "TARGET_ORACLE_OIC_OAUTH_TOKEN_URL": ("auth", "oauth_token_url"),
+        "TARGET_ORACLE_OIC_OAUTH_CLIENT_AUD": ("auth", "oauth_client_aud"),
+        "TARGET_ORACLE_OIC_IMPORT_MODE": ("deployment", "import_mode"),
+    }
+
+    for env_key, (section, field) in env_mappings.items():
+        if env_key in os.environ:
+            if section not in config:
+                config[section] = {}
+            config[section][field] = os.environ[env_key]
+
+    return TargetOracleOICConfig.model_validate(config)
 
 
 # Export configuration classes
@@ -412,6 +450,10 @@ __all__: list[str] = [
     "OICConnectionConfig",
     "OICDeploymentConfig",
     "OICEntityConfig",
+    "OICOAuth2Authenticator",
     "OICProcessingConfig",
     "TargetOracleOICConfig",
+    "create_config_from_dict",
+    "create_config_with_env_overrides",
+    "create_singer_config_schema",
 ]

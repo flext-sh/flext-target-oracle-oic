@@ -48,7 +48,7 @@ class TestTargetOracleOICE2E:
 
     @pytest.fixture
     def config(self, config_path: str) -> dict[str, object]:
-        with open(config_path, encoding="utf-8") as f:
+        with config_path.open(encoding="utf-8") as f:
             loaded_config: dict[str, object] = json.load(f)
             return loaded_config
 
@@ -144,7 +144,7 @@ class TestTargetOracleOICE2E:
         ]
         # Write messages to file
         input_file = tmp_path / "input.jsonl"
-        with open(input_file, "w", encoding="utf-8") as f:
+        with input_file.open("w", encoding="utf-8") as f:
             f.writelines(json.dumps(msg) + "\n" for msg in messages)
         # Process messages using Singer SDK API
         with (
@@ -155,7 +155,7 @@ class TestTargetOracleOICE2E:
             mock_client.get.return_value.status_code = 404
             mock_client.post.return_value.status_code = 201
             # Use the proper Singer SDK listen method with file input
-            with open(input_file, encoding="utf-8") as f:
+            with input_file.open(encoding="utf-8") as f:
                 target.listen(file_input=f)
             # Verify that the record was processed
             assert mock_process.called, "process_record should have been called"
@@ -336,10 +336,10 @@ class TestTargetOracleOICE2E:
             },
         ]
         input_file = tmp_path / "singer_input.jsonl"
-        with open(input_file, "w", encoding="utf-8") as f:
+        with input_file.open("w", encoding="utf-8") as f:
             f.writelines(json.dumps(msg) + "\n" for msg in singer_input)
         # Run target via CLI
-        with open(input_file, encoding="utf-8") as f:
+        with input_file.open(encoding="utf-8") as f:
             result = subprocess.run(
                 ["python", "-m", "flext_target_oracle_oic", "--config", config_path],
                 stdin=f,
@@ -371,7 +371,7 @@ class TestTargetOracleOICE2E:
                 raise AssertionError(msg)
             assert config_path.exists()
         # Load and validate config
-        with open(config_path, encoding="utf-8") as f:
+        with config_path.open(encoding="utf-8") as f:
             config = json.load(f)
         # Check required fields
         if "base_url" not in config:
