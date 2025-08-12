@@ -51,7 +51,7 @@ class FlextTargetOracleOicAuthenticationError(FlextAuthenticationError):
         if endpoint is not None:
             context["endpoint"] = endpoint
 
-        super().__init__(f"Oracle OIC auth: {message}", **context)
+        super().__init__(f"Oracle OIC auth: {message}", service="oracle_oic_auth", **context)
 
 
 class FlextTargetOracleOicProcessingError(FlextProcessingError):
@@ -71,7 +71,7 @@ class FlextTargetOracleOicProcessingError(FlextProcessingError):
         if processing_stage is not None:
             context["processing_stage"] = processing_stage
 
-        super().__init__(f"Oracle OIC processing: {message}", **context)
+        super().__init__(f"Oracle OIC processing: {message}", business_rule="oracle_oic_processing", **context)
 
 
 class FlextTargetOracleOicTransformationError(FlextProcessingError):
@@ -92,7 +92,7 @@ class FlextTargetOracleOicTransformationError(FlextProcessingError):
             # Include minimal data info for debugging
             context["input_keys"] = list(input_data.keys())
 
-        super().__init__(f"Oracle OIC transformation: {message}", **context)
+        super().__init__(f"Oracle OIC transformation: {message}", business_rule="oracle_oic_transformation", **context)
 
 
 # Oracle OIC-specific exceptions that need custom behavior
@@ -113,7 +113,7 @@ class FlextTargetOracleOicConnectionError(FlextConnectionError):
         if endpoint is not None:
             context["endpoint"] = endpoint
 
-        super().__init__(f"Oracle OIC connection: {message}", **context)
+        super().__init__(f"Oracle OIC connection: {message}", service="oracle_oic_connection", **context)
 
 
 class FlextTargetOracleOicValidationError(FlextValidationError):
@@ -162,7 +162,7 @@ class FlextTargetOracleOicConfigurationError(FlextConfigurationError):
         if integration_name is not None:
             context["integration_name"] = integration_name
 
-        super().__init__(f"Oracle OIC config: {message}", **context)
+        super().__init__(f"Oracle OIC config: {message}", config_key=config_key, **context)
 
 
 class FlextTargetOracleOicInfrastructureError(FlextTargetOracleOicError):

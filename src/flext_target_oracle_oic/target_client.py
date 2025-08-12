@@ -1,23 +1,34 @@
-"""Oracle Integration Cloud target sinks."""
+"""Target Oracle OIC Client - Unified target, loader and plugin implementation.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+
+PEP8-compliant client implementation with maximum flext-core and flext-meltano composition.
+"""
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any, ClassVar, cast
 
 import httpx
 
-# Removed circular dependency - use DI pattern
+# Maximum flext-core composition
 from flext_core import get_logger
 
-# Import from flext-meltano for centralized Singer SDK
-from flext_meltano import Sink
+# Maximum flext-meltano composition
+from flext_meltano import Sink, Target
 
-from flext_target_oracle_oic.auth import OICAuthConfig, OICOAuth2Authenticator
+# Import unified configuration
+from flext_target_oracle_oic.target_config import (
+    OICOAuth2Authenticator,
+    TargetOracleOICConfig,
+    create_singer_config_schema,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
-    from flext_meltano import Target
+    from flext_meltano import Sink as SinkType
 
 # Constants
 HTTP_NOT_FOUND = 404
@@ -25,8 +36,12 @@ HTTP_NOT_FOUND = 404
 logger = get_logger(__name__)
 
 
+# ===============================================================================
+# BASE SINK IMPLEMENTATION - USING FLEXT-CORE PATTERNS
+# ===============================================================================
+
 class OICBaseSink(Sink):
-    """Base sink for Oracle Integration Cloud."""
+    """Base sink for Oracle Integration Cloud using flext-core patterns."""
 
     def __init__(
         self,
@@ -38,28 +53,17 @@ class OICBaseSink(Sink):
         super().__init__(target, stream_name, schema, key_properties)
         # CRITICAL: Set tap_name for Singer SDK auth compatibility
         self.tap_name = "target-oracle-oic"  # Required by Singer SDK authenticators
-        self._authenticator: OICOAuth2Authenticator | None = None
+        self._config: TargetOracleOICConfig | None = None
         self._client: httpx.Client | None = None
 
     @property
-    def authenticator(self) -> OICOAuth2Authenticator:
-        """Get or create OAuth2 authenticator instance.
-
-        Returns:
-            OICOAuth2Authenticator for API authentication.
-
-        """
-        if not self._authenticator:
-            # Create OICAuthConfig from sink configuration
-            auth_config = OICAuthConfig(
-                oauth_client_id=self.config.get("oauth_client_id", ""),
-                oauth_client_secret=self.config.get("oauth_client_secret", ""),
-                oauth_token_url=self.config.get("oauth_token_url", ""),
-                oauth_client_aud=self.config.get("oauth_client_aud"),
-                oauth_scope=self.config.get("oauth_scope", ""),
+    def oic_config(self) -> TargetOracleOICConfig:
+        """Get unified OIC configuration."""
+        if not self._config:
+            self._config = TargetOracleOICConfig.model_validate(
+                dict(self.config) if self.config else {},
             )
-            self._authenticator = OICOAuth2Authenticator(auth_config)
-        return self._authenticator
+        return self._config
 
     @property
     def client(self) -> httpx.Client:
@@ -70,10 +74,12 @@ class OICBaseSink(Sink):
 
         """
         if not self._client:
-            # Get access token for authentication
-            token_result = self.authenticator.get_access_token()
+            # Get access token using unified configuration
+            authenticator = OICOAuth2Authenticator(self.oic_config.auth)
+            token_result = authenticator.get_access_token()
+
             if not token_result.success:
-                msg: str = f"Authentication failed: {token_result.error}"
+                msg = f"Authentication failed: {token_result.error}"
                 raise RuntimeError(msg)
 
             # Create client with Bearer token
@@ -84,9 +90,9 @@ class OICBaseSink(Sink):
             }
 
             self._client = httpx.Client(
-                base_url=self.config["base_url"],
+                base_url=self.oic_config.connection.base_url,
                 headers=auth_headers,
-                timeout=30.0,
+                timeout=self.oic_config.connection.timeout,
             )
         return self._client
 
@@ -119,21 +125,29 @@ class OICBaseSink(Sink):
         """
         if not context.get("records"):
             return
-        batch_size = min(len(context["records"]), 100)  # OIC API batch limit
+
+        batch_size = min(
+            len(context["records"]),
+            self.oic_config.processing.batch_size,
+        )
         records = context["records"]
+
         # Group records by operation type for more efficient processing
         create_records: list[dict[str, object]] = []
         update_records: list[dict[str, object]] = []
+
         for record in records:
             if self._record_exists(record):
                 update_records.append(record)
             else:
                 create_records.append(record)
+
         # Process creates in batches
         if create_records:
             for i in range(0, len(create_records), batch_size):
                 batch = create_records[i : i + batch_size]
                 self._process_create_batch(batch, context)
+
         # Process updates in batches
         if update_records:
             for i in range(0, len(update_records), batch_size):
@@ -141,7 +155,7 @@ class OICBaseSink(Sink):
                 self._process_update_batch(batch, context)
 
     def _record_exists(self, _record: dict[str, object]) -> bool:
-        # Default implementation - subclasses should override
+        """Check if record exists in OIC - default implementation."""
         return False
 
     def _process_create_batch(
@@ -149,8 +163,7 @@ class OICBaseSink(Sink):
         records: list[dict[str, object]],
         context: dict[str, object],
     ) -> None:
-        # Default implementation processes records individually
-        # Subclasses should override for true batch operations
+        """Process create batch - default implementation."""
         for record in records:
             self.process_record(record, context)
 
@@ -159,8 +172,7 @@ class OICBaseSink(Sink):
         records: list[dict[str, object]],
         context: dict[str, object],
     ) -> None:
-        # Default implementation processes records individually
-        # Subclasses should override for true batch operations
+        """Process update batch - default implementation."""
         for record in records:
             self.process_record(record, context)
 
@@ -172,18 +184,21 @@ class OICBaseSink(Sink):
         """Process a single record - default implementation for base sink.
 
         Args:
-            record: Record data to process.
-            context: Processing context.
+            _record: Record data to process.
+            _context: Processing context.
 
         """
         # Default implementation: log and skip
-        # Subclasses should override this method
         self.logger.warning(
             "OICBaseSink.process_record called directly - "
             "stream '%s' should use a specific sink class",
             self.stream_name,
         )
 
+
+# ===============================================================================
+# SPECIALIZED SINK IMPLEMENTATIONS
+# ===============================================================================
 
 class ConnectionsSink(OICBaseSink):
     """Oracle Integration Cloud target sink for connections."""
@@ -195,20 +210,14 @@ class ConnectionsSink(OICBaseSink):
         record: dict[str, object],
         _context: dict[str, object],
     ) -> None:
-        """Process a connection record.
+        """Process a connection record."""
+        connection_id = str(record.get("id", ""))
 
-        Creates new connections or updates existing ones based on record ID.
-
-        Args:
-            record: Connection record data containing id and configuration.
-            _context: Processing context (unused).
-
-        """
-        connection_id = record.get("id") or ""
-        # Check if connection exists:
+        # Check if connection exists
         response = self.client.get(
             f"/ic/api/integration/v1/connections/{connection_id}",
         )
+
         if response.status_code == HTTP_NOT_FOUND:
             # Create new connection
             self._create_connection(record)
@@ -217,6 +226,7 @@ class ConnectionsSink(OICBaseSink):
             self._update_connection(connection_id, record)
 
     def _create_connection(self, record: dict[str, object]) -> None:
+        """Create new connection."""
         payload = {
             "connectionProperties": {
                 "name": record["name"],
@@ -233,6 +243,7 @@ class ConnectionsSink(OICBaseSink):
         response.raise_for_status()
 
     def _update_connection(self, connection_id: str, record: dict[str, object]) -> None:
+        """Update existing connection."""
         payload = {
             "connectionProperties": {
                 "description": record.get("description", ""),
@@ -256,23 +267,17 @@ class IntegrationsSink(OICBaseSink):
         record: dict[str, object],
         _context: dict[str, object],
     ) -> None:
-        """Process an integration record.
+        """Process an integration record."""
+        integration_id = str(record.get("id", ""))
+        version = str(record.get("version", "01.00.0000"))
 
-        Imports integrations to OIC with version management.
-
-        Args:
-            record: Integration record containing id, version, and integration archive.
-            _context: Processing context (unused).
-
-        """
-        integration_id = record.get("id") or ""
-        version = record.get("version", "01.00.0000")
-        # Check if integration exists:
+        # Check if integration exists
         response = self.client.get(
             f"/ic/api/integration/v1/integrations/{integration_id}|{version}",
         )
+
         if response.status_code == HTTP_NOT_FOUND:
-            # Create new integration from archive if provided:
+            # Create new integration from archive if provided
             if "archive_content" in record:
                 self._import_integration(record)
             else:
@@ -282,6 +287,7 @@ class IntegrationsSink(OICBaseSink):
             self._update_integration(integration_id, version, record)
 
     def _create_integration(self, record: dict[str, object]) -> None:
+        """Create new integration."""
         payload = {
             "name": record["name"],
             "identifier": record["id"],
@@ -295,14 +301,12 @@ class IntegrationsSink(OICBaseSink):
         response.raise_for_status()
 
     def _import_integration(self, record: dict[str, object]) -> None:
+        """Import integration from archive."""
         archive_content = record.get("archive_content")
         if isinstance(archive_content, str):
             archive_content = archive_content.encode()
 
-        # Proper type for httpx files parameter
-        files: dict[str, bytes | str] = {
-            "file": archive_content or b"",
-        }
+        files = {"file": archive_content or b""}
         response = self.client.post(
             "/ic/api/integration/v1/integrations/archive",
             files=cast("Any", files),
@@ -315,6 +319,7 @@ class IntegrationsSink(OICBaseSink):
         version: str,
         record: dict[str, object],
     ) -> None:
+        """Update existing integration."""
         payload = {
             "description": record.get("description", ""),
         }
@@ -335,28 +340,22 @@ class PackagesSink(OICBaseSink):
         record: dict[str, object],
         _context: dict[str, object],
     ) -> None:
-        """Process a package record.
-
-        Imports package archives to OIC if archive content is provided.
-
-        Args:
-            record: Package record containing id and optional archive_content.
-            _context: Processing context (unused).
-
-        """
-        package_id = record.get("id") or ""
-        # Log the package being processed
+        """Process a package record."""
+        package_id = str(record.get("id", ""))
         self.logger.info("Processing package: %s", package_id)
-        # Import package if archive content is provided:
+
+        # Import package if archive content is provided
         if "archive_content" in record:
             self._import_package(record)
         else:
             self.logger.warning("No archive content provided for package %s", package_id)
 
     def _import_package(self, record: dict[str, object]) -> None:
+        """Import package from archive."""
         archive_content = record.get("archive_content")
         if isinstance(archive_content, str):
             archive_content = archive_content.encode()
+
         files = {
             "file": ("package.iar", archive_content or b"", "application/octet-stream"),
         }
@@ -377,18 +376,12 @@ class LookupsSink(OICBaseSink):
         record: dict[str, object],
         _context: dict[str, object],
     ) -> None:
-        """Process a lookup record.
+        """Process a lookup record."""
+        lookup_name = str(record.get("name", ""))
 
-        Creates new lookups or updates existing ones based on lookup name.
-
-        Args:
-            record: Lookup record containing name and lookup definitions.
-            _context: Processing context (unused).
-
-        """
-        lookup_name = record.get("name") or ""
-        # Check if lookup exists:
+        # Check if lookup exists
         response = self.client.get(f"/ic/api/integration/v1/lookups/{lookup_name}")
+
         if response.status_code == HTTP_NOT_FOUND:
             # Create new lookup
             self._create_lookup(record)
@@ -397,6 +390,7 @@ class LookupsSink(OICBaseSink):
             self._update_lookup(lookup_name, record)
 
     def _create_lookup(self, record: dict[str, object]) -> None:
+        """Create new lookup."""
         payload = {
             "name": record["name"],
             "description": record.get("description", ""),
@@ -410,6 +404,7 @@ class LookupsSink(OICBaseSink):
         response.raise_for_status()
 
     def _update_lookup(self, lookup_name: str, record: dict[str, object]) -> None:
+        """Update existing lookup."""
         payload = {
             "description": record.get("description", ""),
             "rows": record.get("rows", []),
@@ -419,3 +414,164 @@ class LookupsSink(OICBaseSink):
             json=payload,
         )
         response.raise_for_status()
+
+
+# ===============================================================================
+# UNIFIED TARGET IMPLEMENTATION
+# ===============================================================================
+
+class TargetOracleOIC(Target):
+    """Oracle Integration Cloud (OIC) target for Singer using flext patterns.
+
+    This target handles data integration with Oracle Integration Cloud,
+    supporting OAuth2 authentication and integration artifact management.
+
+    Features:
+    - OAuth2 authentication with OIC
+    - Secure integration artifact upload
+    - Configurable import modes (create, update, create_or_update)
+    - Automatic integration activation
+    - Comprehensive error handling and retry logic
+    - Maximum composition from flext-core and flext-meltano
+
+    Configuration:
+    - base_url: OIC instance base URL
+    - oauth_client_id: OAuth2 client ID
+    - oauth_client_secret: OAuth2 client secret
+    - oauth_token_url: OAuth2 token endpoint URL
+    - oauth_client_aud: OAuth2 client audience (optional)
+    - import_mode: Integration import mode
+    - activate_integrations: Auto-activate after import
+    """
+
+    name = "target-oracle-oic"
+    default_sink_class = OICBaseSink
+
+    # Use unified configuration schema
+    config_jsonschema: ClassVar[dict[str, object]] = create_singer_config_schema()
+
+    def __init__(
+        self,
+        *,
+        config: dict[str, object] | None = None,
+        parse_env_config: bool = False,
+        validate_config: bool = True,
+        **kwargs: dict[str, object],
+    ) -> None:
+        super().__init__(
+            config=config,
+            parse_env_config=parse_env_config,
+            validate_config=validate_config,
+            **kwargs,
+        )
+        self._oic_config: TargetOracleOICConfig | None = None
+
+    @property
+    def oic_config(self) -> TargetOracleOICConfig:
+        """Get unified OIC configuration."""
+        if not self._oic_config:
+            self._oic_config = TargetOracleOICConfig.model_validate(
+                dict(self.config) if self.config else {},
+            )
+        return self._oic_config
+
+    def setup(self) -> None:
+        """Setup the target with validation."""
+        super().setup()
+
+        # Validate configuration using flext-core patterns
+        validation_result = self.oic_config.validate_domain_rules()
+        if not validation_result.success:
+            error_msg = f"Configuration validation failed: {validation_result.error}"
+            self.logger.error("Configuration validation failed: %s", validation_result.error)
+            raise ValueError(error_msg)
+
+    def teardown(self) -> None:
+        """Teardown the target."""
+        super().teardown()
+
+    def _process_schema_message(self, message_dict: dict[str, object]) -> None:
+        """Process a schema message by creating and registering the appropriate sink."""
+        # Call parent implementation first
+        super()._process_schema_message(message_dict)
+
+        # Ensure sink is created and registered for this stream
+        stream_name = str(message_dict["stream"])
+        schema = message_dict["schema"]
+        key_properties = message_dict.get("key_properties", [])
+
+        # Add sink if it doesn't exist yet
+        if not self.sink_exists(stream_name):
+            self.add_sink(stream_name, schema, key_properties)
+
+    def get_sink(
+        self,
+        stream_name: str,
+        *,
+        _record: dict[str, object] | None = None,
+        schema: dict[str, object] | None = None,
+        key_properties: Sequence[str] | None = None,
+    ) -> SinkType:
+        """Get appropriate sink for the given stream."""
+        # Return existing sink if it exists
+        if self.sink_exists(stream_name):
+            return self._sinks_active[stream_name]
+
+        # Create new sink only if we have a valid schema
+        if schema and "properties" in schema:
+            sink_class = self._get_sink_class(stream_name)
+            return sink_class(
+                target=self,
+                stream_name=stream_name,
+                schema=schema,
+                key_properties=key_properties,
+            )
+
+        # If no schema provided and no existing sink, raise an error
+        msg = (
+            f"Cannot create sink for stream '{stream_name}' without a valid schema. "
+            "Ensure a SCHEMA message is sent before any RECORD messages."
+        )
+        raise ValueError(msg)
+
+    def get_sink_class(self, stream_name: str) -> type[OICBaseSink]:
+        """Get sink class for the given stream name."""
+        sink_mapping = {
+            "connections": ConnectionsSink,
+            "integrations": IntegrationsSink,
+            "packages": PackagesSink,
+            "lookups": LookupsSink,
+        }
+        return sink_mapping.get(stream_name, self.default_sink_class)
+
+    def _get_sink_class(self, stream_name: str) -> type[OICBaseSink]:
+        """Private method - delegates to public get_sink_class."""
+        return self.get_sink_class(stream_name)
+
+
+# ===============================================================================
+# CLI ENTRY POINT
+# ===============================================================================
+
+def main() -> None:
+    """Entry point for target-oracle-oic CLI."""
+    TargetOracleOIC.cli()
+
+
+if __name__ == "__main__":
+    main()
+
+
+# ===============================================================================
+# EXPORTS
+# ===============================================================================
+
+__all__: list[str] = [
+    "ConnectionsSink",
+    "IntegrationsSink",
+    "LookupsSink",
+    "OICBaseSink",
+    "PackagesSink",
+    "TargetOracleOIC",
+    "main",
+]

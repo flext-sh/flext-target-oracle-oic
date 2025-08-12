@@ -29,12 +29,11 @@ class OICTypeConverter:
             # Handle complex types first
             if singer_type in {"object", "array"}:
                 if isinstance(value, (dict, list)):
-                    converted_value = value
-                else:
-                    converted_value = (
-                        json.loads(str(value)) if isinstance(value, str) else value
-                    )
-                return FlextResult.ok(converted_value)
+                    return FlextResult.ok(value)
+                parsed_value: dict[str, object] | list[object] = (
+                    json.loads(str(value)) if isinstance(value, str) else value
+                )
+                return FlextResult.ok(parsed_value)
 
             # Handle simple types with mapping
             type_converters = {
@@ -47,7 +46,9 @@ class OICTypeConverter:
 
             if singer_type in type_converters:
                 converter = type_converters[singer_type]
-                return FlextResult.ok(converter(value))
+                if callable(converter):
+                    return FlextResult.ok(converter(value))
+                return FlextResult.ok(value)
 
             # Default fallback
             return FlextResult.ok(value)
@@ -78,9 +79,10 @@ class OICDataTransformer:
                 oic_key = self._normalize_oic_attribute_name(key)
 
                 # Type conversion
-                if schema:
+                if schema and isinstance(schema, dict):
                     properties = schema.get("properties", {})
-                    prop_def = properties.get(key, {})
+                    if isinstance(properties, dict):
+                        prop_def = properties.get(key, {})
                     singer_type = prop_def.get("type", "string")
 
                     convert_result = self.type_converter.convert_singer_to_oic(
@@ -152,18 +154,19 @@ class OICSchemaMapper:
             oic_schema: dict[str, str] = {}
             properties = schema.get("properties", {})
 
-            for prop_name, prop_def in properties.items():
-                oic_name = self._normalize_attribute_name(prop_name)
-                oic_type_result = self._map_singer_type_to_oic(prop_def, resource_type)
+            if isinstance(properties, dict):
+                for prop_name, prop_def in properties.items():
+                    oic_name = self._normalize_attribute_name(prop_name)
+                    oic_type_result = self._map_singer_type_to_oic(prop_def, resource_type)
 
-                if oic_type_result.success:
-                    # Ensure we have a string type
-                    mapped_type = oic_type_result.data
-                    oic_schema[oic_name] = (
-                        mapped_type if isinstance(mapped_type, str) else "string"
-                    )
-                else:
-                    oic_schema[oic_name] = "string"  # Fallback
+                    if oic_type_result.success:
+                        # Ensure we have a string type
+                        mapped_type = oic_type_result.data
+                        oic_schema[oic_name] = (
+                            mapped_type if isinstance(mapped_type, str) else "string"
+                        )
+                    else:
+                        oic_schema[oic_name] = "string"  # Fallback
 
             return FlextResult.ok(oic_schema)
 

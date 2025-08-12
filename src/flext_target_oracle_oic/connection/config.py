@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 # Import from flext-core for foundational patterns
-from flext_core import FlextValueObject, get_logger
+from flext_core import FlextResult, FlextValueObject, get_logger
 
 logger = get_logger(__name__)
 
@@ -54,4 +54,45 @@ class OICConnectionConfig(FlextValueObject):
     @classmethod
     def from_dict(cls, data: dict[str, object]) -> OICConnectionConfig:
         """Create configuration from dictionary."""
-        return cls(**data)
+        try:
+            return cls(
+                server_url=str(data.get("server_url", "")),
+                client_id=str(data.get("client_id", "")),
+                client_secret=str(data.get("client_secret", "")),
+                scope=str(data.get("scope", "oic_instance")),
+                username=str(data["username"]) if data.get("username") else None,
+                password=str(data["password"]) if data.get("password") else None,
+                use_oauth2=bool(data.get("use_oauth2", True)),
+                timeout=int(data.get("timeout", 30)),
+                max_retries=int(data.get("max_retries", 3)),
+                verify_ssl=bool(data.get("verify_ssl", True)),
+            )
+        except (ValueError, TypeError, KeyError) as e:
+            logger.exception("Failed to create OICConnectionConfig from dict: %s", e)
+            raise
+
+    def validate_business_rules(self) -> FlextResult[None]:
+        """Validate OIC connection configuration business rules."""
+        errors = []
+
+        if not self.server_url:
+            errors.append("server_url is required")
+        elif not self.server_url.startswith(("http://", "https://")):
+            errors.append("server_url must be a valid URL")
+
+        if not self.client_id:
+            errors.append("client_id is required")
+
+        if not self.client_secret:
+            errors.append("client_secret is required")
+
+        if self.timeout <= 0:
+            errors.append("timeout must be positive")
+
+        if self.max_retries < 0:
+            errors.append("max_retries must be non-negative")
+
+        if errors:
+            return FlextResult.fail(f"OIC connection config validation failed: {'; '.join(errors)}")
+
+        return FlextResult.ok(None)

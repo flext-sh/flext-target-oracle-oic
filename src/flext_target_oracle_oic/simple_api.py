@@ -6,6 +6,7 @@ Provides enterprise-ready setup utilities with FlextResult pattern support.
 
 from __future__ import annotations
 
+from os import getenv
 from typing import Any
 
 from flext_core import FlextResult
@@ -58,9 +59,12 @@ def create_development_oic_target_config(**overrides: object) -> TargetOracleOIC
 
     """
     auth_config = OICAuthConfig(
-        oauth_client_id="dev-client-id",
-        oauth_client_secret=SecretStr("dev-client-secret"),  # nosec B106 - Example development value
-        oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
+        oauth_client_id=getenv("OIC_DEV_CLIENT_ID", "dev-client-id"),
+        oauth_client_secret=SecretStr(getenv("OIC_DEV_CLIENT_SECRET", "dev-client-secret")),
+        oauth_token_url=getenv(
+            "OIC_OAUTH_TOKEN_URL",
+            "https://identity.oraclecloud.com/oauth2/v1/token",
+        ),
     )
 
     connection_config = OICConnectionConfig(
@@ -124,9 +128,12 @@ def create_production_oic_target_config(**overrides: object) -> TargetOracleOICC
 
     """
     auth_config = OICAuthConfig(
-        oauth_client_id="prod-client-id",
-        oauth_client_secret=SecretStr("prod-client-secret"),  # nosec B106 - Example production value
-        oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
+        oauth_client_id=getenv("OIC_PROD_CLIENT_ID", "prod-client-id"),
+        oauth_client_secret=SecretStr(getenv("OIC_PROD_CLIENT_SECRET", "prod-client-secret")),
+        oauth_token_url=getenv(
+            "OIC_OAUTH_TOKEN_URL",
+            "https://identity.oraclecloud.com/oauth2/v1/token",
+        ),
     )
 
     connection_config = OICConnectionConfig(
@@ -190,9 +197,12 @@ def create_migration_oic_target_config(**overrides: object) -> TargetOracleOICCo
 
     """
     auth_config = OICAuthConfig(
-        oauth_client_id="migration-client-id",
-        oauth_client_secret=SecretStr("migration-client-secret"),  # nosec B106 - Example migration value
-        oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
+        oauth_client_id=getenv("OIC_MIG_CLIENT_ID", "migration-client-id"),
+        oauth_client_secret=SecretStr(getenv("OIC_MIG_CLIENT_SECRET", "migration-client-secret")),
+        oauth_token_url=getenv(
+            "OIC_OAUTH_TOKEN_URL",
+            "https://identity.oraclecloud.com/oauth2/v1/token",
+        ),
     )
 
     connection_config = OICConnectionConfig(
@@ -272,7 +282,7 @@ def validate_oic_target_config(config: TargetOracleOICConfig) -> FlextResult[Any
         if not config.auth.oauth_token_url:
             return FlextResult.fail("OAuth token URL is required")
 
-        return FlextResult.ok(True)
+        return FlextResult.ok(data=True)
 
     except (RuntimeError, ValueError, TypeError) as e:
         return FlextResult.fail(f"Configuration validation failed: {e}")
@@ -289,9 +299,12 @@ def create_test_connection_config(**overrides: object) -> TargetOracleOICConfig:
 
     """
     auth_config = OICAuthConfig(
-        oauth_client_id="test-client-id",
-        oauth_client_secret=SecretStr("test-client-secret"),  # nosec B106 - Example testing value
-        oauth_token_url="https://identity.oraclecloud.com/oauth2/v1/token",
+        oauth_client_id=getenv("OIC_TEST_CLIENT_ID", "test-client-id"),
+        oauth_client_secret=SecretStr(getenv("OIC_TEST_CLIENT_SECRET", "test-client-secret")),
+        oauth_token_url=getenv(
+            "OIC_OAUTH_TOKEN_URL",
+            "https://identity.oraclecloud.com/oauth2/v1/token",
+        ),
     )
 
     connection_config = OICConnectionConfig(
