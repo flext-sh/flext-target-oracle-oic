@@ -25,7 +25,7 @@ from flext_target_oracle_oic.config import (
 def setup_oic_target(
     config: TargetOracleOICConfig | None = None,
 ) -> FlextResult[Any]:
-    """Setup Oracle Integration Cloud target with configuration.
+    """Set up Oracle Integration Cloud target with configuration.
 
     Args:
         config: Optional configuration. If None, creates defaults.
@@ -45,7 +45,7 @@ def setup_oic_target(
         return FlextResult.ok(config)
 
     except (RuntimeError, ValueError, TypeError) as e:
-        return FlextResult.fail(f"Failed to setup OIC target: {e}")
+        return FlextResult.fail(f"Failed to set up OIC target: {e}")
 
 
 def create_development_oic_target_config(**overrides: object) -> TargetOracleOICConfig:

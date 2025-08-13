@@ -92,6 +92,7 @@ class TargetOracleOIC(Target):
         validate_config: bool = True,
         **kwargs: object,
     ) -> None:
+        """Initialize target with configuration and options."""
         super().__init__(
             config=config,
             parse_env_config=parse_env_config,
@@ -102,7 +103,7 @@ class TargetOracleOIC(Target):
         self._orchestrator: OICTargetOrchestrator | None = None
 
     def setup(self) -> None:
-        """Setup the target orchestrator."""
+        """Set up the target orchestrator."""
         if self._orchestrator is None:
             self._orchestrator = OICTargetOrchestrator(
                 dict(self.config) if self.config else None,

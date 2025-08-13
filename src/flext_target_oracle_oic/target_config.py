@@ -14,66 +14,11 @@ from pathlib import Path
 from flext_core import FlextResult, FlextValueObject
 from flext_meltano import singer_typing as th
 from flext_meltano.common_schemas import create_oauth2_api_tap_schema
+from flext_oracle_oic_ext.ext_client import (
+    OICExtensionAuthenticator as OICOAuth2Authenticator,
+)
+from flext_oracle_oic_ext.ext_models import OICAuthConfig
 from pydantic import Field, SecretStr, model_validator
-
-# Import auth utilities from flext-oracle-oic-ext for maximum composition
-try:
-    from flext_oracle_oic_ext.auth import (
-        OICAuthConfig as ExtAuthConfig,
-        OICOAuth2Authenticator as ExtAuthenticator,
-    )
-
-    # Use flext-oracle-oic-ext implementations
-    OICAuthConfig = ExtAuthConfig
-    OICOAuth2Authenticator = ExtAuthenticator
-except ImportError:
-    # Fallback implementations if ext not available
-    class OICAuthConfig(FlextValueObject):
-        """OIC authentication configuration using flext-core patterns."""
-
-        oauth_client_id: str = Field(
-            ...,
-            description="OAuth2 client ID for Oracle OIC authentication",
-            min_length=1,
-        )
-        oauth_client_secret: SecretStr = Field(
-            ...,
-            description="OAuth2 client secret for Oracle OIC authentication",
-        )
-        oauth_token_url: str = Field(
-            ...,
-            description="OAuth2 token URL for Oracle OIC authentication",
-            pattern=r"^https?://",
-        )
-        oauth_client_aud: str | None = Field(
-            None,
-            description="OAuth2 client audience (optional)",
-        )
-        oauth_scope: str = Field(
-            default="",
-            description="OAuth2 scope for Oracle OIC access",
-        )
-
-        def validate_business_rules(self) -> FlextResult[None]:
-            """Validate authentication configuration domain rules."""
-            try:
-                if not self.oauth_client_id.strip():
-                    return FlextResult.fail("OAuth client ID cannot be empty")
-                if not self.oauth_token_url.strip():
-                    return FlextResult.fail("OAuth token URL cannot be empty")
-                return FlextResult.ok(None)
-            except Exception as e:
-                return FlextResult.fail(f"Auth config validation failed: {e}")
-
-    class OICOAuth2Authenticator:
-        """Fallback OAuth2 authenticator."""
-
-        def __init__(self, config: OICAuthConfig) -> None:
-            self.config = config
-
-        def get_access_token(self) -> FlextResult[str]:
-            """Get access token - fallback implementation."""
-            return FlextResult.fail("flext-oracle-oic-ext not available")
 
 
 class OICConnectionConfig(FlextValueObject):
@@ -318,9 +263,12 @@ class TargetOracleOICConfig(FlextValueObject):
                 raise ValueError(msg)
 
         # Validate each configuration section
-        auth_validation = self.auth.validate_business_rules()
-        if not auth_validation.success:
-            msg = f"Auth validation failed: {auth_validation.error}"
+        # Auth model comes from flext-oracle-oic-ext; validate required fields
+        if not self.auth.oauth_client_id:
+            msg = "Auth validation failed: oauth_client_id required"
+            raise ValueError(msg)
+        if not self.auth.oauth_token_url:
+            msg = "Auth validation failed: oauth_token_url required"
             raise ValueError(msg)
 
         connection_validation = self.connection.validate_business_rules()
@@ -339,7 +287,6 @@ class TargetOracleOICConfig(FlextValueObject):
         try:
             # Validate each section - collect all validations first
             validations = [
-                ("Auth", self.auth.validate_business_rules()),
                 ("Connection", self.connection.validate_business_rules()),
                 ("Deployment", self.deployment.validate_business_rules()),
                 ("Processing", self.processing.validate_business_rules()),
@@ -423,7 +370,7 @@ def create_config_with_env_overrides(
     base_config: dict[str, object] | None = None,
 ) -> TargetOracleOICConfig:
     """Create configuration with environment variable overrides."""
-    config = base_config or {}
+    config: dict[str, object] = dict(base_config) if base_config else {}
 
     # Override with environment variables
     env_mappings = {
@@ -439,7 +386,11 @@ def create_config_with_env_overrides(
         if env_key in os.environ:
             if section not in config:
                 config[section] = {}
-            config[section][field] = os.environ[env_key]
+            section_obj = config[section]
+            if not isinstance(section_obj, dict):
+                section_obj = {}
+                config[section] = section_obj
+            section_obj[field] = os.environ[env_key]
 
     return TargetOracleOICConfig.model_validate(config)
 

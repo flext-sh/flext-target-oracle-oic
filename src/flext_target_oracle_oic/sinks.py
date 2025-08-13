@@ -35,6 +35,7 @@ class OICBaseSink(Sink):
         schema: dict[str, object],
         key_properties: Sequence[str] | None = None,
     ) -> None:
+        """Initialize base sink with target and stream metadata."""
         super().__init__(target, stream_name, schema, key_properties)
         # CRITICAL: Set tap_name for Singer SDK auth compatibility
         self.tap_name = "target-oracle-oic"  # Required by Singer SDK authenticators
@@ -79,8 +80,8 @@ class OICBaseSink(Sink):
             # Create client with Bearer token
             auth_headers = {
                 "Authorization": f"Bearer {token_result.data}",
-                "Content-Type": "application/json",
-                "Accept": "application/json",
+                "Content-Type": FlextApiConstants.ContentTypes.JSON,
+                "Accept": FlextApiConstants.ContentTypes.JSON,
             }
 
             self._client = httpx.Client(

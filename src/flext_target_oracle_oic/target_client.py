@@ -50,6 +50,7 @@ class OICBaseSink(Sink):
         schema: dict[str, object],
         key_properties: Sequence[str] | None = None,
     ) -> None:
+        """Initialize base sink with target and stream metadata."""
         super().__init__(target, stream_name, schema, key_properties)
         # CRITICAL: Set tap_name for Singer SDK auth compatibility
         self.tap_name = "target-oracle-oic"  # Required by Singer SDK authenticators
@@ -85,8 +86,8 @@ class OICBaseSink(Sink):
             # Create client with Bearer token
             auth_headers = {
                 "Authorization": f"Bearer {token_result.data}",
-                "Content-Type": "application/json",
-                "Accept": "application/json",
+                "Content-Type": FlextApiConstants.ContentTypes.JSON,
+                "Accept": FlextApiConstants.ContentTypes.JSON,
             }
 
             self._client = httpx.Client(
@@ -458,6 +459,7 @@ class TargetOracleOIC(Target):
         validate_config: bool = True,
         **kwargs: dict[str, object],
     ) -> None:
+        """Initialize target with configuration and options."""
         super().__init__(
             config=config,
             parse_env_config=parse_env_config,
@@ -476,7 +478,7 @@ class TargetOracleOIC(Target):
         return self._oic_config
 
     def setup(self) -> None:
-        """Setup the target with validation."""
+        """Set up the target with validation."""
         super().setup()
 
         # Validate configuration using flext-core patterns
