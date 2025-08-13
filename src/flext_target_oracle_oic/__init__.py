@@ -77,7 +77,7 @@ from flext_target_oracle_oic.target_client import (
 )
 
 # Unified data models
-from flext_target_oracle_oic.target_models import (
+from flext_target_oracle_oic.models import (
     OICConnection,
     OICConnectionAction,
     OICDataTransformation,
