@@ -304,6 +304,11 @@ class TargetOracleOICConfig(FlextValueObject):
         except Exception as e:
             return FlextResult.fail(f"Configuration validation failed: {e}")
 
+    # Backward compatibility with base interface expectations
+    def validate_business_rules(self) -> FlextResult[None]:
+        """Alias to domain rules validation for compatibility."""
+        return self.validate_domain_rules()
+
     @classmethod
     def create_with_defaults(
         cls,

@@ -30,6 +30,7 @@ PackageBase = FlextValueObject
 # CORE OIC ENTITY MODELS
 # ===============================================================================
 
+
 class OICConnection(ConnectionBase):
     """Oracle Integration Cloud connection model using flext-core patterns."""
 
@@ -264,7 +265,11 @@ class OICLookup(LookupBase):
             if self.columns and self.rows:
                 column_names = {col["name"] for col in self.columns}
                 for row in self.rows:
-                    validation_errors.extend(f"Row contains unknown column: {key}" for key in row if key not in column_names)
+                    validation_errors.extend(
+                        f"Row contains unknown column: {key}"
+                        for key in row
+                        if key not in column_names
+                    )
 
             if validation_errors:
                 return FlextResult.fail("; ".join(validation_errors))
@@ -277,6 +282,7 @@ class OICLookup(LookupBase):
 # ===============================================================================
 # EXTENDED OIC MODELS (FROM PATTERNS)
 # ===============================================================================
+
 
 class OICProject(FlextValueObject):
     """Oracle Integration Cloud project model using flext-core patterns."""
@@ -362,7 +368,9 @@ class OICSchedule(FlextValueObject):
 
             # Validate cron expression if CRON type
             if self.schedule_type == "CRON" and not self.schedule_expression:
-                return FlextResult.fail("CRON schedule type requires schedule expression")
+                return FlextResult.fail(
+                    "CRON schedule type requires schedule expression",
+                )
 
             return FlextResult.ok(None)
         except Exception as e:
@@ -451,6 +459,7 @@ class OICConnectionAction(FlextValueObject):
 # DATA TRANSFORMATION MODELS
 # ===============================================================================
 
+
 class OICDataTransformation(FlextValueObject):
     """Data transformation model for OIC records using flext-core patterns."""
 
@@ -519,6 +528,7 @@ class OICSchemaMapping(FlextValueObject):
 # MODEL FACTORY FUNCTIONS
 # ===============================================================================
 
+
 def create_oic_connection(data: dict[str, object]) -> FlextResult[OICConnection]:
     """Create OIC connection from data dictionary."""
     try:
@@ -537,7 +547,9 @@ def create_oic_integration(data: dict[str, object]) -> FlextResult[OICIntegratio
         integration = OICIntegration.model_validate(data)
         validation = integration.validate_business_rules()
         if not validation.success:
-            return FlextResult.fail(f"Integration validation failed: {validation.error}")
+            return FlextResult.fail(
+                f"Integration validation failed: {validation.error}",
+            )
         return FlextResult.ok(integration)
     except Exception as e:
         return FlextResult.fail(f"Failed to create integration: {e}")

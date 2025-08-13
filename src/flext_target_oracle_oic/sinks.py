@@ -2,14 +2,10 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING
 
 import httpx
-
-# Removed circular dependency - use DI pattern
 from flext_core import get_logger
-
-# Import from flext-meltano for centralized Singer SDK
 from flext_meltano import Sink
 
 from flext_target_oracle_oic.auth import OICAuthConfig, OICOAuth2Authenticator
@@ -21,6 +17,7 @@ if TYPE_CHECKING:
 
 # Constants
 HTTP_NOT_FOUND = 404
+JSON_MIME = "application/json"
 
 logger = get_logger(__name__)
 
@@ -80,8 +77,8 @@ class OICBaseSink(Sink):
             # Create client with Bearer token
             auth_headers = {
                 "Authorization": f"Bearer {token_result.data}",
-                "Content-Type": FlextApiConstants.ContentTypes.JSON,
-                "Accept": FlextApiConstants.ContentTypes.JSON,
+                "Content-Type": JSON_MIME,
+                "Accept": JSON_MIME,
             }
 
             self._client = httpx.Client(
@@ -120,8 +117,11 @@ class OICBaseSink(Sink):
         """
         if not context.get("records"):
             return
-        batch_size = min(len(context["records"]), 100)  # OIC API batch limit
-        records = context["records"]
+        records_obj = context["records"]
+        records: list[dict[str, object]] = (
+            records_obj if isinstance(records_obj, list) else []
+        )
+        batch_size = min(len(records), 100)  # OIC API batch limit
         # Group records by operation type for more efficient processing
         create_records: list[dict[str, object]] = []
         update_records: list[dict[str, object]] = []
@@ -205,7 +205,7 @@ class ConnectionsSink(OICBaseSink):
             _context: Processing context (unused).
 
         """
-        connection_id = record.get("id") or ""
+        connection_id = str(record.get("id", ""))
         # Check if connection exists:
         response = self.client.get(
             f"/ic/api/integration/v1/connections/{connection_id}",
@@ -266,8 +266,8 @@ class IntegrationsSink(OICBaseSink):
             _context: Processing context (unused).
 
         """
-        integration_id = record.get("id") or ""
-        version = record.get("version", "01.00.0000")
+        integration_id = str(record.get("id", ""))
+        version = str(record.get("version", "01.00.0000"))
         # Check if integration exists:
         response = self.client.get(
             f"/ic/api/integration/v1/integrations/{integration_id}|{version}",
@@ -299,14 +299,17 @@ class IntegrationsSink(OICBaseSink):
         archive_content = record.get("archive_content")
         if isinstance(archive_content, str):
             archive_content = archive_content.encode()
-
-        # Proper type for httpx files parameter
-        files: dict[str, bytes | str] = {
-            "file": archive_content or b"",
+        content: bytes = (
+            archive_content
+            if isinstance(archive_content, bytes)
+            else (bytes(archive_content) if isinstance(archive_content, bytearray) else b"")
+        )
+        files: dict[str, tuple[str, bytes, str]] = {
+            "file": ("integration.iar", content, "application/octet-stream"),
         }
         response = self.client.post(
             "/ic/api/integration/v1/integrations/archive",
-            files=cast("Any", files),
+            files=files,
         )
         response.raise_for_status()
 
@@ -345,25 +348,32 @@ class PackagesSink(OICBaseSink):
             _context: Processing context (unused).
 
         """
-        package_id = record.get("id") or ""
+        package_id = str(record.get("id", ""))
         # Log the package being processed
         self.logger.info("Processing package: %s", package_id)
         # Import package if archive content is provided:
         if "archive_content" in record:
             self._import_package(record)
         else:
-            self.logger.warning("No archive content provided for package %s", package_id)
+            self.logger.warning(
+                "No archive content provided for package %s", package_id,
+            )
 
     def _import_package(self, record: dict[str, object]) -> None:
         archive_content = record.get("archive_content")
         if isinstance(archive_content, str):
             archive_content = archive_content.encode()
-        files = {
-            "file": ("package.iar", archive_content or b"", "application/octet-stream"),
+        pkg_bytes: bytes = (
+            archive_content
+            if isinstance(archive_content, bytes)
+            else (bytes(archive_content) if isinstance(archive_content, bytearray) else b"")
+        )
+        files: dict[str, tuple[str, bytes, str]] = {
+            "file": ("package.iar", pkg_bytes, "application/octet-stream"),
         }
         response = self.client.post(
             "/ic/api/integration/v1/packages/archive",
-            files=cast("Any", files),
+            files=files,
         )
         response.raise_for_status()
 
@@ -387,7 +397,7 @@ class LookupsSink(OICBaseSink):
             _context: Processing context (unused).
 
         """
-        lookup_name = record.get("name") or ""
+        lookup_name = str(record.get("name", ""))
         # Check if lookup exists:
         response = self.client.get(f"/ic/api/integration/v1/lookups/{lookup_name}")
         if response.status_code == HTTP_NOT_FOUND:

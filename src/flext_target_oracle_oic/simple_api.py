@@ -7,7 +7,6 @@ Provides enterprise-ready setup utilities with FlextResult pattern support.
 from __future__ import annotations
 
 from os import getenv
-from typing import Any
 
 from flext_core import FlextResult
 from pydantic import SecretStr
@@ -24,7 +23,7 @@ from flext_target_oracle_oic.config import (
 
 def setup_oic_target(
     config: TargetOracleOICConfig | None = None,
-) -> FlextResult[Any]:
+) -> FlextResult[TargetOracleOICConfig]:
     """Set up Oracle Integration Cloud target with configuration.
 
     Args:
@@ -60,7 +59,9 @@ def create_development_oic_target_config(**overrides: object) -> TargetOracleOIC
     """
     auth_config = OICAuthConfig(
         oauth_client_id=getenv("OIC_DEV_CLIENT_ID", "dev-client-id"),
-        oauth_client_secret=SecretStr(getenv("OIC_DEV_CLIENT_SECRET", "dev-client-secret")),
+        oauth_client_secret=SecretStr(
+            getenv("OIC_DEV_CLIENT_SECRET", "dev-client-secret"),
+        ),
         oauth_token_url=getenv(
             "OIC_OAUTH_TOKEN_URL",
             "https://identity.oraclecloud.com/oauth2/v1/token",
@@ -112,7 +113,7 @@ def create_development_oic_target_config(**overrides: object) -> TargetOracleOIC
     if overrides:
         config_dict = config.model_dump()
         config_dict.update(overrides)
-        config = TargetOracleOICConfig(**config_dict)
+        config = TargetOracleOICConfig.model_validate(config_dict)
 
     return config
 
@@ -129,7 +130,9 @@ def create_production_oic_target_config(**overrides: object) -> TargetOracleOICC
     """
     auth_config = OICAuthConfig(
         oauth_client_id=getenv("OIC_PROD_CLIENT_ID", "prod-client-id"),
-        oauth_client_secret=SecretStr(getenv("OIC_PROD_CLIENT_SECRET", "prod-client-secret")),
+        oauth_client_secret=SecretStr(
+            getenv("OIC_PROD_CLIENT_SECRET", "prod-client-secret"),
+        ),
         oauth_token_url=getenv(
             "OIC_OAUTH_TOKEN_URL",
             "https://identity.oraclecloud.com/oauth2/v1/token",
@@ -181,7 +184,7 @@ def create_production_oic_target_config(**overrides: object) -> TargetOracleOICC
     if overrides:
         config_dict = config.model_dump()
         config_dict.update(overrides)
-        config = TargetOracleOICConfig(**config_dict)
+        config = TargetOracleOICConfig.model_validate(config_dict)
 
     return config
 
@@ -198,7 +201,9 @@ def create_migration_oic_target_config(**overrides: object) -> TargetOracleOICCo
     """
     auth_config = OICAuthConfig(
         oauth_client_id=getenv("OIC_MIG_CLIENT_ID", "migration-client-id"),
-        oauth_client_secret=SecretStr(getenv("OIC_MIG_CLIENT_SECRET", "migration-client-secret")),
+        oauth_client_secret=SecretStr(
+            getenv("OIC_MIG_CLIENT_SECRET", "migration-client-secret"),
+        ),
         oauth_token_url=getenv(
             "OIC_OAUTH_TOKEN_URL",
             "https://identity.oraclecloud.com/oauth2/v1/token",
@@ -250,12 +255,12 @@ def create_migration_oic_target_config(**overrides: object) -> TargetOracleOICCo
     if overrides:
         config_dict = config.model_dump()
         config_dict.update(overrides)
-        config = TargetOracleOICConfig(**config_dict)
+        config = TargetOracleOICConfig.model_validate(config_dict)
 
     return config
 
 
-def validate_oic_target_config(config: TargetOracleOICConfig) -> FlextResult[Any]:
+def validate_oic_target_config(config: TargetOracleOICConfig) -> FlextResult[bool]:  # noqa: PLR0911
     """Validate OIC target configuration.
 
     Args:
@@ -268,6 +273,10 @@ def validate_oic_target_config(config: TargetOracleOICConfig) -> FlextResult[Any
     try:
         # Validate using Pydantic model validation
         config.model_validate(config.model_dump())
+        # Validate business/domain rules
+        domain_result = config.validate_domain_rules()
+        if not domain_result.success:
+            return FlextResult.fail(str(domain_result.error))
 
         # Additional business rule validations
         if not config.connection.base_url:
@@ -300,7 +309,9 @@ def create_test_connection_config(**overrides: object) -> TargetOracleOICConfig:
     """
     auth_config = OICAuthConfig(
         oauth_client_id=getenv("OIC_TEST_CLIENT_ID", "test-client-id"),
-        oauth_client_secret=SecretStr(getenv("OIC_TEST_CLIENT_SECRET", "test-client-secret")),
+        oauth_client_secret=SecretStr(
+            getenv("OIC_TEST_CLIENT_SECRET", "test-client-secret"),
+        ),
         oauth_token_url=getenv(
             "OIC_OAUTH_TOKEN_URL",
             "https://identity.oraclecloud.com/oauth2/v1/token",

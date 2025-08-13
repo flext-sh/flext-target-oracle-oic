@@ -55,6 +55,7 @@ class FlextTargetOracleOicError(FlextError):
 # SPECIALIZED ORACLE OIC EXCEPTIONS
 # ===============================================================================
 
+
 class FlextTargetOracleOicAuthenticationError(FlextAuthenticationError):
     """Oracle OIC authentication errors using flext-core patterns."""
 
@@ -159,7 +160,7 @@ class FlextTargetOracleOicValidationError(FlextValidationError):
         **kwargs: object,
     ) -> None:
         """Initialize Oracle OIC validation error with context."""
-        validation_details = {}
+        validation_details: dict[str, object] = {}
         context = kwargs.copy()
 
         if field is not None:
@@ -213,6 +214,7 @@ class FlextTargetOracleOicConfigurationError(FlextConfigurationError):
 # ===============================================================================
 # ADDITIONAL SPECIALIZED EXCEPTIONS
 # ===============================================================================
+
 
 class FlextTargetOracleOicTransformationError(FlextTargetOracleOicError):
     """Oracle OIC transformation errors using flext-core patterns."""
@@ -310,6 +312,7 @@ class FlextTargetOracleOicAPIError(FlextTargetOracleOicError):
 # ERROR DETAILS VALUE OBJECT
 # ===============================================================================
 
+
 class FlextTargetOracleOicErrorDetails(FlextValueObject):
     """Structured error details using flext-core patterns."""
 
@@ -357,6 +360,7 @@ class FlextTargetOracleOicErrorDetails(FlextValueObject):
 # ===============================================================================
 # EXCEPTION FACTORY FUNCTIONS
 # ===============================================================================
+
 
 def create_authentication_error(
     message: str,
@@ -461,6 +465,7 @@ def create_api_error(
 # ===============================================================================
 # ERROR RESULT FACTORY FUNCTIONS
 # ===============================================================================
+
 
 def create_auth_error_result(
     message: str,

@@ -173,9 +173,13 @@ class OICRecordProcessor:
 
             if schema:
                 properties = schema.get("properties", {})
-                properties_count = len(properties) if isinstance(properties, dict) else 0
+                properties_count = (
+                    len(properties) if isinstance(properties, dict) else 0
+                )
                 required_fields = schema.get("required", [])
-                required_fields = required_fields if isinstance(required_fields, list) else []
+                required_fields = (
+                    required_fields if isinstance(required_fields, list) else []
+                )
 
                 metadata.update(
                     {
@@ -215,7 +219,9 @@ class OICRecordProcessor:
                 batch = records[i : i + batch_size]
                 batches.append(batch)
 
-            logger.debug("Created %d batches from %d records", len(batches), len(records))
+            logger.debug(
+                "Created %d batches from %d records", len(batches), len(records),
+            )
             return FlextResult.ok(batches)
 
         except (RuntimeError, ValueError, TypeError) as e:

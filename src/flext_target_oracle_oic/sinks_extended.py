@@ -29,7 +29,7 @@ class LibrariesSink(OICBaseSink):
             _context: Record context (unused).
 
         """
-        library_id = record.get("id") or ""
+        library_id = str(record.get("id", ""))
         # Check if library exists:
         response = self.client.get(f"/ic/api/integration/v1/libraries/{library_id}")
         if response.status_code == HTTP_NOT_FOUND:
@@ -61,8 +61,19 @@ class LibrariesSink(OICBaseSink):
         archive_content = record.get("archive_content")
         if isinstance(archive_content, str):
             archive_content = archive_content.encode()
-        files = {
-            "file": ("library.jar", archive_content or b"", "application/octet-stream"),
+        lib_bytes: bytes
+        if isinstance(archive_content, bytes):
+            lib_bytes = archive_content
+        elif isinstance(archive_content, bytearray):
+            lib_bytes = bytes(archive_content)
+        else:
+            lib_bytes = b""
+        files: dict[str, tuple[str, bytes, str]] = {
+            "file": (
+                "library.jar",
+                lib_bytes,
+                "application/octet-stream",
+            ),
         }
         response = self.client.post(
             "/ic/api/integration/v1/libraries/archive",
@@ -99,7 +110,7 @@ class CertificatesSink(OICBaseSink):
             _context: Record context (unused).
 
         """
-        cert_alias = record.get("alias") or ""
+        cert_alias = str(record.get("alias", ""))
         # Check if certificate exists:
         response = self.client.get(f"/ic/api/integration/v1/certificates/{cert_alias}")
         if response.status_code == HTTP_NOT_FOUND:
@@ -120,10 +131,16 @@ class CertificatesSink(OICBaseSink):
             return
         if isinstance(cert_content, str):
             cert_content = cert_content.encode()
-        files = {
+        # Ensure bytes type for files parameter
+        content_bytes: bytes = (
+            bytes(cert_content)
+            if isinstance(cert_content, (bytes, bytearray))
+            else b""
+        )
+        files: dict[str, tuple[str, bytes, str]] = {
             "certificate": (
                 f"{record['alias']}.cer",
-                cert_content,
+                content_bytes,
                 "application/x-x509-ca-cert",
             ),
         }
@@ -169,7 +186,7 @@ class ProjectsSink(OICBaseSink):
             _context: Record context (unused).
 
         """
-        project_id = record.get("id") or ""
+        project_id = str(record.get("id", ""))
         # Check if project exists:
         response = self.client.get(f"/ic/api/integration/v1/projects/{project_id}")
         if response.status_code == HTTP_NOT_FOUND:
@@ -194,9 +211,12 @@ class ProjectsSink(OICBaseSink):
         response.raise_for_status()
         # Create folders if provided:
         if "folders" in record:
-            project_id_var = record["id"]
-            for folder in record["folders"]:
-                self._create_folder(project_id_var, folder)
+            project_id_var = str(record.get("id", ""))
+            folders = record.get("folders", [])
+            if isinstance(folders, list):
+                for folder in folders:
+                    if isinstance(folder, dict):
+                        self._create_folder(project_id_var, folder)
 
     def _create_folder(self, project_id: str, folder: dict[str, object]) -> None:
         payload = {
@@ -240,8 +260,8 @@ class SchedulesSink(OICBaseSink):
             _context: Record context (unused).
 
         """
-        schedule_id = record.get("id") or ""
-        integration_id = record.get("integrationId") or ""
+        schedule_id = str(record.get("id", ""))
+        integration_id = str(record.get("integrationId", ""))
         if not integration_id:
             self.logger.warning(
                 "No integration ID provided for schedule %s",
@@ -339,7 +359,7 @@ class BusinessEventsSink(OICBaseSink):
         self._publish_event(record)
 
     def _publish_event(self, record: dict[str, object]) -> None:
-        event_type = record.get("eventType") or ""
+        event_type = str(record.get("eventType", ""))
         payload = {
             "eventType": event_type,
             "eventName": record.get("eventName", ""),
@@ -443,8 +463,8 @@ class IntegrationActionsSink(OICBaseSink):
 
         """
         action = record.get("action", "")
-        integration_id = record.get("integrationId", "")
-        version = record.get("version", "01.00.0000")
+        integration_id = str(record.get("integrationId", ""))
+        version = str(record.get("version", "01.00.0000"))
         if not integration_id:
             self.logger.warning("No integration ID provided for action")
             return
@@ -529,7 +549,7 @@ class ConnectionActionsSink(OICBaseSink):
 
         """
         action = record.get("action", "")
-        connection_id = record.get("connectionId", "")
+        connection_id = str(record.get("connectionId", ""))
         if not connection_id:
             self.logger.warning("No connection ID provided for action")
             return

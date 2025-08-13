@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-# Import from flext-core for foundational patterns
 from flext_core import FlextResult, FlextValueObject, get_logger
 
 logger = get_logger(__name__)
@@ -36,15 +35,15 @@ class OICConnectionConfig(FlextValueObject):
         """Get authentication headers."""
         return {
             "Content-Type": "application/x-www-form-urlencoded",
-            "Accept": FlextApiConstants.ContentTypes.JSON,
+            "Accept": "application/json",
         }
 
     def get_api_headers(self, access_token: str) -> dict[str, str]:
         """Get API request headers with authentication."""
         return {
             "Authorization": f"Bearer {access_token}",
-            "Content-Type": FlextApiConstants.ContentTypes.JSON,
-            "Accept": FlextApiConstants.ContentTypes.JSON,
+            "Content-Type": "application/json",
+            "Accept": "application/json",
         }
 
     def to_dict(self) -> dict[str, object]:
@@ -93,6 +92,8 @@ class OICConnectionConfig(FlextValueObject):
             errors.append("max_retries must be non-negative")
 
         if errors:
-            return FlextResult.fail(f"OIC connection config validation failed: {'; '.join(errors)}")
+            return FlextResult.fail(
+                f"OIC connection config validation failed: {'; '.join(errors)}",
+            )
 
         return FlextResult.ok(None)

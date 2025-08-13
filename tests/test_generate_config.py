@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 from unittest.mock import patch
 
-# Add scripts directory to Python path for import
+# Add scripts directory to Python path for import (ensure path setup before import)
 scripts_path = Path(__file__).parent.parent / "scripts"
 sys.path.insert(0, str(scripts_path))
 from generate_config import generate_config, main  # noqa: E402

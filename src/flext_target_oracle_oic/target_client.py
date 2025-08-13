@@ -8,17 +8,12 @@ PEP8-compliant client implementation with maximum flext-core and flext-meltano c
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, ClassVar, cast
+from typing import TYPE_CHECKING, ClassVar
 
 import httpx
-
-# Maximum flext-core composition
 from flext_core import get_logger
-
-# Maximum flext-meltano composition
 from flext_meltano import Sink, Target
 
-# Import unified configuration
 from flext_target_oracle_oic.target_config import (
     OICOAuth2Authenticator,
     TargetOracleOICConfig,
@@ -32,6 +27,7 @@ if TYPE_CHECKING:
 
 # Constants
 HTTP_NOT_FOUND = 404
+JSON_MIME = "application/json"
 
 logger = get_logger(__name__)
 
@@ -39,6 +35,7 @@ logger = get_logger(__name__)
 # ===============================================================================
 # BASE SINK IMPLEMENTATION - USING FLEXT-CORE PATTERNS
 # ===============================================================================
+
 
 class OICBaseSink(Sink):
     """Base sink for Oracle Integration Cloud using flext-core patterns."""
@@ -54,17 +51,18 @@ class OICBaseSink(Sink):
         super().__init__(target, stream_name, schema, key_properties)
         # CRITICAL: Set tap_name for Singer SDK auth compatibility
         self.tap_name = "target-oracle-oic"  # Required by Singer SDK authenticators
-        self._config: TargetOracleOICConfig | None = None
+        # Keep a separate attribute for typed config to avoid base type conflicts
+        self._oic_config: TargetOracleOICConfig | None = None
         self._client: httpx.Client | None = None
 
     @property
     def oic_config(self) -> TargetOracleOICConfig:
         """Get unified OIC configuration."""
-        if not self._config:
-            self._config = TargetOracleOICConfig.model_validate(
+        if not self._oic_config:
+            self._oic_config = TargetOracleOICConfig.model_validate(
                 dict(self.config) if self.config else {},
             )
-        return self._config
+        return self._oic_config
 
     @property
     def client(self) -> httpx.Client:
@@ -86,8 +84,8 @@ class OICBaseSink(Sink):
             # Create client with Bearer token
             auth_headers = {
                 "Authorization": f"Bearer {token_result.data}",
-                "Content-Type": FlextApiConstants.ContentTypes.JSON,
-                "Accept": FlextApiConstants.ContentTypes.JSON,
+                "Content-Type": JSON_MIME,
+                "Accept": JSON_MIME,
             }
 
             self._client = httpx.Client(
@@ -127,11 +125,11 @@ class OICBaseSink(Sink):
         if not context.get("records"):
             return
 
-        batch_size = min(
-            len(context["records"]),
-            self.oic_config.processing.batch_size,
+        records_obj = context.get("records")
+        records: list[dict[str, object]] = (
+            records_obj if isinstance(records_obj, list) else []
         )
-        records = context["records"]
+        batch_size = min(len(records), self.oic_config.processing.batch_size)
 
         # Group records by operation type for more efficient processing
         create_records: list[dict[str, object]] = []
@@ -200,6 +198,7 @@ class OICBaseSink(Sink):
 # ===============================================================================
 # SPECIALIZED SINK IMPLEMENTATIONS
 # ===============================================================================
+
 
 class ConnectionsSink(OICBaseSink):
     """Oracle Integration Cloud target sink for connections."""
@@ -307,10 +306,17 @@ class IntegrationsSink(OICBaseSink):
         if isinstance(archive_content, str):
             archive_content = archive_content.encode()
 
-        files = {"file": archive_content or b""}
+        content: bytes = (
+            archive_content
+            if isinstance(archive_content, bytes)
+            else (bytes(archive_content) if isinstance(archive_content, bytearray) else b"")
+        )
+        files: dict[str, tuple[str, bytes, str]] = {
+            "file": ("integration.iar", content, "application/octet-stream")
+        }
         response = self.client.post(
             "/ic/api/integration/v1/integrations/archive",
-            files=cast("Any", files),
+            files=files,
         )
         response.raise_for_status()
 
@@ -349,7 +355,9 @@ class PackagesSink(OICBaseSink):
         if "archive_content" in record:
             self._import_package(record)
         else:
-            self.logger.warning("No archive content provided for package %s", package_id)
+            self.logger.warning(
+                "No archive content provided for package %s", package_id,
+            )
 
     def _import_package(self, record: dict[str, object]) -> None:
         """Import package from archive."""
@@ -357,12 +365,17 @@ class PackagesSink(OICBaseSink):
         if isinstance(archive_content, str):
             archive_content = archive_content.encode()
 
-        files = {
-            "file": ("package.iar", archive_content or b"", "application/octet-stream"),
+        pkg_bytes: bytes = (
+            archive_content
+            if isinstance(archive_content, bytes)
+            else (bytes(archive_content) if isinstance(archive_content, bytearray) else b"")
+        )
+        files: dict[str, tuple[str, bytes, str]] = {
+            "file": ("package.iar", pkg_bytes, "application/octet-stream"),
         }
         response = self.client.post(
             "/ic/api/integration/v1/packages/archive",
-            files=cast("Any", files),
+            files=files,
         )
         response.raise_for_status()
 
@@ -421,6 +434,7 @@ class LookupsSink(OICBaseSink):
 # UNIFIED TARGET IMPLEMENTATION
 # ===============================================================================
 
+
 class TargetOracleOIC(Target):
     """Oracle Integration Cloud (OIC) target for Singer using flext patterns.
 
@@ -457,14 +471,13 @@ class TargetOracleOIC(Target):
         config: dict[str, object] | None = None,
         parse_env_config: bool = False,
         validate_config: bool = True,
-        **kwargs: dict[str, object],
+        **_kwargs: object,
     ) -> None:
         """Initialize target with configuration and options."""
         super().__init__(
             config=config,
             parse_env_config=parse_env_config,
             validate_config=validate_config,
-            **kwargs,
         )
         self._oic_config: TargetOracleOICConfig | None = None
 
@@ -479,28 +492,30 @@ class TargetOracleOIC(Target):
 
     def setup(self) -> None:
         """Set up the target with validation."""
-        super().setup()
-
         # Validate configuration using flext-core patterns
         validation_result = self.oic_config.validate_domain_rules()
         if not validation_result.success:
             error_msg = f"Configuration validation failed: {validation_result.error}"
-            self.logger.error("Configuration validation failed: %s", validation_result.error)
+            self.logger.error(
+                "Configuration validation failed: %s", validation_result.error,
+            )
             raise ValueError(error_msg)
 
     def teardown(self) -> None:
         """Teardown the target."""
-        super().teardown()
 
     def _process_schema_message(self, message_dict: dict[str, object]) -> None:
         """Process a schema message by creating and registering the appropriate sink."""
-        # Call parent implementation first
-        super()._process_schema_message(message_dict)
-
         # Ensure sink is created and registered for this stream
         stream_name = str(message_dict["stream"])
-        schema = message_dict["schema"]
-        key_properties = message_dict.get("key_properties", [])
+        schema_obj = message_dict["schema"]
+        if not isinstance(schema_obj, dict):
+            return
+        schema: dict[str, object] = schema_obj
+        key_props_obj = message_dict.get("key_properties", [])
+        key_properties: Sequence[str] | None = (
+            key_props_obj if isinstance(key_props_obj, list) else None
+        )
 
         # Add sink if it doesn't exist yet
         if not self.sink_exists(stream_name):
@@ -510,17 +525,18 @@ class TargetOracleOIC(Target):
         self,
         stream_name: str,
         *,
-        _record: dict[str, object] | None = None,
+        record: dict[str, object] | None = None,  # kept for interface compatibility, not used
         schema: dict[str, object] | None = None,
         key_properties: Sequence[str] | None = None,
     ) -> SinkType:
         """Get appropriate sink for the given stream."""
+        _ = record
         # Return existing sink if it exists
         if self.sink_exists(stream_name):
             return self._sinks_active[stream_name]
 
         # Create new sink only if we have a valid schema
-        if schema and "properties" in schema:
+        if schema and isinstance(schema, dict) and "properties" in schema:
             sink_class = self._get_sink_class(stream_name)
             return sink_class(
                 target=self,
@@ -554,6 +570,7 @@ class TargetOracleOIC(Target):
 # ===============================================================================
 # CLI ENTRY POINT
 # ===============================================================================
+
 
 def main() -> None:
     """Entry point for target-oracle-oic CLI."""

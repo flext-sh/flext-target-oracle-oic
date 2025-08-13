@@ -12,7 +12,9 @@ Tests all functionalities including:
 from __future__ import annotations
 
 import json
+import shutil
 import subprocess
+import sys
 from pathlib import Path
 from unittest.mock import patch
 
@@ -39,8 +41,9 @@ class TestTargetOracleOICE2E:
         config_file = Path(__file__).parent.parent / "config.json"
         if not config_file.exists():
             # Generate config if it doesn't exist:
+            python_exe = shutil.which("python3") or shutil.which("python") or sys.executable
             subprocess.run(
-                ["python", "generate_config.py"],
+                [python_exe, "generate_config.py"],
                 cwd=Path(__file__).parent.parent,
                 check=True,
             )
@@ -340,8 +343,9 @@ class TestTargetOracleOICE2E:
             f.writelines(json.dumps(msg) + "\n" for msg in singer_input)
         # Run target via CLI
         with input_file.open(encoding="utf-8") as f:
+            python_exe = shutil.which("python3") or shutil.which("python") or sys.executable
             result = subprocess.run(
-                ["python", "-m", "flext_target_oracle_oic", "--config", config_path],
+                [python_exe, "-m", "flext_target_oracle_oic", "--config", config_path],
                 stdin=f,
                 capture_output=True,
                 text=True,
@@ -358,8 +362,9 @@ class TestTargetOracleOICE2E:
         config_path = Path(__file__).parent.parent / "config.json"
         # If config doesn't exist, it should be generated
         if not config_path.exists():
+            python_exe = shutil.which("python3") or shutil.which("python") or sys.executable
             result = subprocess.run(
-                ["python", "generate_config.py"],
+                [python_exe, "generate_config.py"],
                 capture_output=True,
                 text=True,
                 cwd=Path(__file__).parent.parent,

@@ -90,14 +90,14 @@ class TargetOracleOIC(Target):
         config: dict[str, object] | None = None,
         parse_env_config: bool = False,
         validate_config: bool = True,
-        **kwargs: object,
+        **_kwargs: object,
     ) -> None:
         """Initialize target with configuration and options."""
         super().__init__(
             config=config,
             parse_env_config=parse_env_config,
             validate_config=validate_config,
-            **kwargs,
+            # Do not forward arbitrary kwargs; Singer Target expects fixed signature
         )
         # Initialize the orchestrator for modular architecture
         self._orchestrator: OICTargetOrchestrator | None = None
@@ -130,13 +130,16 @@ class TargetOracleOIC(Target):
             message_dict: The schema message dictionary.
 
         """
-        # Call parent implementation first
-        super()._process_schema_message(message_dict)
-
         # Ensure sink is created and registered for this stream
-        stream_name = message_dict["stream"]
-        schema = message_dict["schema"]
-        key_properties = message_dict.get("key_properties", [])
+        stream_name = str(message_dict["stream"])  # Ensure str for typing
+        schema_obj = message_dict["schema"]
+        if not isinstance(schema_obj, dict):
+            return
+        schema: dict[str, object] = schema_obj
+        key_properties_obj = message_dict.get("key_properties", [])
+        key_properties: Sequence[str] | None = (
+            key_properties_obj if isinstance(key_properties_obj, list) else None
+        )
 
         # Add sink if it doesn't exist yet
         if not self.sink_exists(stream_name):
@@ -146,7 +149,7 @@ class TargetOracleOIC(Target):
         self,
         stream_name: str,
         *,
-        _record: dict[str, object] | None = None,
+        record: dict[str, object] | None = None,  # kept for interface compatibility, not used
         schema: dict[str, object] | None = None,
         key_properties: Sequence[str] | None = None,
     ) -> Sink:
@@ -162,12 +165,13 @@ class TargetOracleOIC(Target):
             Sink instance for processing the stream data.
 
         """
+        _ = record
         # Return existing sink if it exists
         if self.sink_exists(stream_name):
             return self._sinks_active[stream_name]
 
         # Create new sink only if we have a valid schema
-        if schema and "properties" in schema:
+        if schema and isinstance(schema, dict) and "properties" in schema:
             sink_class = self._get_sink_class(stream_name)
             return sink_class(
                 target=self,
