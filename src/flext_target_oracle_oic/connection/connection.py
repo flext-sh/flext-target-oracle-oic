@@ -193,7 +193,7 @@ class OICConnection:
                 headers=headers,
                 timeout=self.config.timeout,
                 params=prepared_params,
-                json=data if data else None,
+                json=data or None,
             )
 
             # Handle response

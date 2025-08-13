@@ -312,7 +312,7 @@ class IntegrationsSink(OICBaseSink):
             else (bytes(archive_content) if isinstance(archive_content, bytearray) else b"")
         )
         files: dict[str, tuple[str, bytes, str]] = {
-            "file": ("integration.iar", content, "application/octet-stream")
+            "file": ("integration.iar", content, "application/octet-stream"),
         }
         response = self.client.post(
             "/ic/api/integration/v1/integrations/archive",
