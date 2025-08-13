@@ -133,9 +133,7 @@ class CertificatesSink(OICBaseSink):
             cert_content = cert_content.encode()
         # Ensure bytes type for files parameter
         content_bytes: bytes = (
-            bytes(cert_content)
-            if isinstance(cert_content, (bytes, bytearray))
-            else b""
+            bytes(cert_content) if isinstance(cert_content, (bytes, bytearray)) else b""
         )
         files: dict[str, tuple[str, bytes, str]] = {
             "certificate": (

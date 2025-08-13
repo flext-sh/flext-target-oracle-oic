@@ -302,7 +302,11 @@ class IntegrationsSink(OICBaseSink):
         content: bytes = (
             archive_content
             if isinstance(archive_content, bytes)
-            else (bytes(archive_content) if isinstance(archive_content, bytearray) else b"")
+            else (
+                bytes(archive_content)
+                if isinstance(archive_content, bytearray)
+                else b""
+            )
         )
         files: dict[str, tuple[str, bytes, str]] = {
             "file": ("integration.iar", content, "application/octet-stream"),
@@ -356,7 +360,8 @@ class PackagesSink(OICBaseSink):
             self._import_package(record)
         else:
             self.logger.warning(
-                "No archive content provided for package %s", package_id,
+                "No archive content provided for package %s",
+                package_id,
             )
 
     def _import_package(self, record: dict[str, object]) -> None:
@@ -366,7 +371,11 @@ class PackagesSink(OICBaseSink):
         pkg_bytes: bytes = (
             archive_content
             if isinstance(archive_content, bytes)
-            else (bytes(archive_content) if isinstance(archive_content, bytearray) else b"")
+            else (
+                bytes(archive_content)
+                if isinstance(archive_content, bytearray)
+                else b""
+            )
         )
         files: dict[str, tuple[str, bytes, str]] = {
             "file": ("package.iar", pkg_bytes, "application/octet-stream"),

@@ -41,7 +41,10 @@ class TestTargetOracleOICE2E:
         config_file = Path(__file__).parent.parent / "config.json"
         if not config_file.exists():
             # Generate config if it doesn't exist:
-            python_exe = shutil.which("python3") or shutil.which("python") or sys.executable
+            python_exe = (
+                shutil.which("python3") or shutil.which("python") or sys.executable
+            )
+
             async def _run(cmd_list: list[str], cwd: str | None = None) -> int:
                 process = await asyncio.create_subprocess_exec(
                     *cmd_list,
@@ -51,11 +54,16 @@ class TestTargetOracleOICE2E:
                 )
                 await process.communicate()
                 return process.returncode
+
             rc = asyncio.run(
-                _run([python_exe, "generate_config.py"], cwd=str(Path(__file__).parent.parent)),
+                _run(
+                    [python_exe, "generate_config.py"],
+                    cwd=str(Path(__file__).parent.parent),
+                ),
             )
             if rc != 0:
-                raise RuntimeError("Failed to generate config.json")
+                msg = "Failed to generate config.json"
+                raise RuntimeError(msg)
         return str(config_file)
 
     @pytest.fixture
@@ -352,8 +360,15 @@ class TestTargetOracleOICE2E:
             f.writelines(json.dumps(msg) + "\n" for msg in singer_input)
         # Run target via CLI
         with input_file.open(encoding="utf-8") as f:
-            python_exe = shutil.which("python3") or shutil.which("python") or sys.executable
-            async def _run_cli(cmd_list: list[str], cwd: str | None = None, stdin_data: str | None = None) -> tuple[int, str, str]:
+            python_exe = (
+                shutil.which("python3") or shutil.which("python") or sys.executable
+            )
+
+            async def _run_cli(
+                cmd_list: list[str],
+                cwd: str | None = None,
+                stdin_data: str | None = None,
+            ) -> tuple[int, str, str]:
                 process = await asyncio.create_subprocess_exec(
                     *cmd_list,
                     cwd=cwd,
@@ -361,12 +376,20 @@ class TestTargetOracleOICE2E:
                     stdout=asyncio.subprocess.PIPE,
                     stderr=asyncio.subprocess.PIPE,
                 )
-                stdout, stderr = await process.communicate(input=stdin_data.encode() if stdin_data is not None else None)
+                stdout, stderr = await process.communicate(
+                    input=stdin_data.encode() if stdin_data is not None else None,
+                )
                 return process.returncode, stdout.decode(), stderr.decode()
 
-            rc, out, err = asyncio.run(
+            rc, _out, err = asyncio.run(
                 _run_cli(
-                    [python_exe, "-m", "flext_target_oracle_oic", "--config", config_path],
+                    [
+                        python_exe,
+                        "-m",
+                        "flext_target_oracle_oic",
+                        "--config",
+                        config_path,
+                    ],
                     cwd=str(Path(__file__).parent.parent),
                     stdin_data=input_file.read_text(encoding="utf-8"),
                 ),
@@ -381,8 +404,15 @@ class TestTargetOracleOICE2E:
         config_path = Path(__file__).parent.parent / "config.json"
         # If config doesn't exist, it should be generated
         if not config_path.exists():
-            python_exe = shutil.which("python3") or shutil.which("python") or sys.executable
-            async def _run_input(cmd_list: list[str], cwd: str | None = None, input_text: str = "") -> tuple[int, str, str]:
+            python_exe = (
+                shutil.which("python3") or shutil.which("python") or sys.executable
+            )
+
+            async def _run_input(
+                cmd_list: list[str],
+                cwd: str | None = None,
+                input_text: str = "",
+            ) -> tuple[int, str, str]:
                 process = await asyncio.create_subprocess_exec(
                     *cmd_list,
                     cwd=cwd,
@@ -392,8 +422,13 @@ class TestTargetOracleOICE2E:
                 )
                 stdout, stderr = await process.communicate(input=input_text.encode())
                 return process.returncode, stdout.decode(), stderr.decode()
+
             rc, _out, _err = asyncio.run(
-                _run_input([python_exe, "generate_config.py"], cwd=str(Path(__file__).parent.parent), input_text="y\n"),
+                _run_input(
+                    [python_exe, "generate_config.py"],
+                    cwd=str(Path(__file__).parent.parent),
+                    input_text="y\n",
+                ),
             )
             if rc != 0:
                 msg: str = f"Expected {0}, got {rc}"
