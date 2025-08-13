@@ -365,7 +365,7 @@ def create_authentication_error(
     endpoint: str | None = None,
     oic_instance: str | None = None,
 ) -> FlextTargetOracleOicAuthenticationError:
-    """Factory function to create authentication errors."""
+    """Create authentication errors."""
     return FlextTargetOracleOicAuthenticationError(
         message,
         auth_method=auth_method,
@@ -381,7 +381,7 @@ def create_connection_error(
     endpoint: str | None = None,
     connection_type: str | None = None,
 ) -> FlextTargetOracleOicConnectionError:
-    """Factory function to create connection errors."""
+    """Create connection errors."""
     return FlextTargetOracleOicConnectionError(
         message,
         oic_instance=oic_instance,
@@ -397,7 +397,7 @@ def create_processing_error(
     processing_stage: str | None = None,
     record_count: int | None = None,
 ) -> FlextTargetOracleOicProcessingError:
-    """Factory function to create processing errors."""
+    """Create processing errors."""
     return FlextTargetOracleOicProcessingError(
         message,
         integration_name=integration_name,
@@ -414,7 +414,7 @@ def create_validation_error(
     integration_name: str | None = None,
     entity_type: str | None = None,
 ) -> FlextTargetOracleOicValidationError:
-    """Factory function to create validation errors."""
+    """Create validation errors."""
     return FlextTargetOracleOicValidationError(
         message,
         field=field,
@@ -431,7 +431,7 @@ def create_configuration_error(
     config_section: str | None = None,
     integration_name: str | None = None,
 ) -> FlextTargetOracleOicConfigurationError:
-    """Factory function to create configuration errors."""
+    """Create configuration errors."""
     return FlextTargetOracleOicConfigurationError(
         message,
         config_key=config_key,
@@ -448,7 +448,7 @@ def create_api_error(
     response_body: str | None = None,
     request_method: str | None = None,
 ) -> FlextTargetOracleOicAPIError:
-    """Factory function to create API errors."""
+    """Create API errors."""
     return FlextTargetOracleOicAPIError(
         message,
         status_code=status_code,

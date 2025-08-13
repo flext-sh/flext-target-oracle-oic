@@ -43,7 +43,7 @@ class OICTargetOrchestrator:
             return FlextResult.fail(f"Configuration validation failed: {e}")
 
     def setup(self) -> FlextResult[None]:
-        """Setup OIC target orchestrator.
+        """Set up OIC target orchestrator.
 
         Returns:
             FlextResult indicating setup success

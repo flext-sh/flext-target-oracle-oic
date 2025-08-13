@@ -36,15 +36,15 @@ class OICConnectionConfig(FlextValueObject):
         """Get authentication headers."""
         return {
             "Content-Type": "application/x-www-form-urlencoded",
-            "Accept": "application/json",
+            "Accept": FlextApiConstants.ContentTypes.JSON,
         }
 
     def get_api_headers(self, access_token: str) -> dict[str, str]:
         """Get API request headers with authentication."""
         return {
             "Authorization": f"Bearer {access_token}",
-            "Content-Type": "application/json",
-            "Accept": "application/json",
+            "Content-Type": FlextApiConstants.ContentTypes.JSON,
+            "Accept": FlextApiConstants.ContentTypes.JSON,
         }
 
     def to_dict(self) -> dict[str, object]:
@@ -63,12 +63,12 @@ class OICConnectionConfig(FlextValueObject):
                 username=str(data["username"]) if data.get("username") else None,
                 password=str(data["password"]) if data.get("password") else None,
                 use_oauth2=bool(data.get("use_oauth2", True)),
-                timeout=int(data.get("timeout", 30)),
-                max_retries=int(data.get("max_retries", 3)),
+                timeout=int(str(data.get("timeout", 30))),
+                max_retries=int(str(data.get("max_retries", 3))),
                 verify_ssl=bool(data.get("verify_ssl", True)),
             )
-        except (ValueError, TypeError, KeyError) as e:
-            logger.exception("Failed to create OICConnectionConfig from dict: %s", e)
+        except (ValueError, TypeError, KeyError):
+            logger.exception("Failed to create OICConnectionConfig from dict")
             raise
 
     def validate_business_rules(self) -> FlextResult[None]:

@@ -17,28 +17,13 @@ from pydantic import Field
 if TYPE_CHECKING:
     from datetime import datetime
 
-# Import from flext-oracle-oic-ext if available for maximum composition
-try:
-    from flext_oracle_oic_ext.ext_models import (
-        OICConnectionInfo,
-        OICIntegrationInfo,
-    )
-    HAS_EXT = True
-except ImportError:
-    HAS_EXT = False
+from flext_oracle_oic_ext.ext_models import (
+    OICConnectionInfo as ConnectionBase,
+    OICIntegrationInfo as IntegrationBase,
+)
 
-if HAS_EXT:
-    # Use flext-oracle-oic-ext models as base
-    ConnectionBase = OICConnectionInfo  # type: ignore[misc]
-    IntegrationBase = OICIntegrationInfo  # type: ignore[misc]
-    LookupBase = FlextValueObject  # These models don't exist in ext_models
-    PackageBase = FlextValueObject
-else:
-    # Fallback if ext not available
-    ConnectionBase = FlextValueObject  # type: ignore[misc]
-    IntegrationBase = FlextValueObject  # type: ignore[misc]
-    LookupBase = FlextValueObject  # type: ignore[misc]
-    PackageBase = FlextValueObject  # type: ignore[misc]
+LookupBase = FlextValueObject  # These models don't exist in ext_models
+PackageBase = FlextValueObject
 
 
 # ===============================================================================

@@ -115,32 +115,21 @@ from flext_target_oracle_oic.target_exceptions import (
 )
 
 # === BACKWARD COMPATIBILITY IMPORTS ===
-# Import legacy modules for 100% backward compatibility
-try:
-    from flext_target_oracle_oic.application import OICTargetOrchestrator
-    from flext_target_oracle_oic.cli import main as cli_main
-    from flext_target_oracle_oic.client import OICClient
-    from flext_target_oracle_oic.connection import OICConnection as LegacyOICConnection
-    from flext_target_oracle_oic.connection import OICConnectionConfig as LegacyOICConnectionConfig
-    from flext_target_oracle_oic.patterns import (
-        OICDataTransformer,
-        OICEntryManager,
-        OICSchemaMapper,
-        OICTypeConverter,
-    )
-    from flext_target_oracle_oic.singer import OICRecordProcessor
-except ImportError:
-    # If legacy modules are not available, provide fallbacks
-    OICTargetOrchestrator = None
-    cli_main = client_main
-    OICClient = None
-    LegacyOICConnection = OICConnection
-    LegacyOICConnectionConfig = OICConnectionConfig
-    OICDataTransformer = None
-    OICEntryManager = None
-    OICSchemaMapper = None
-    OICTypeConverter = None
-    OICRecordProcessor = None
+# Import legacy modules for 100% backward compatibility (optional)
+from flext_target_oracle_oic.application import OICTargetOrchestrator
+from flext_target_oracle_oic.cli import main as cli_main
+from flext_target_oracle_oic.client import OICClient
+from flext_target_oracle_oic.connection import OICConnection as LegacyOICConnection
+from flext_target_oracle_oic.connection import (
+    OICConnectionConfig as LegacyOICConnectionConfig,
+)
+from flext_target_oracle_oic.patterns import (
+    OICDataTransformer,
+    OICEntryManager,
+    OICSchemaMapper,
+    OICTypeConverter,
+)
+from flext_target_oracle_oic.singer import OICRecordProcessor
 
 # Version information
 try:
@@ -181,26 +170,6 @@ def main() -> None:
 # ===============================================================================
 
 __all__: list[str] = [
-    "annotations", "FlextResult", "FlextValueObject", "BatchSink", "FlextMeltanoBaseService",
-    "FlextMeltanoBridge", "FlextMeltanoConfig", "FlextMeltanoEvent", "FlextMeltanoTargetService",
-    "OAuthAuthenticator", "PropertiesList", "Property", "Sink", "SQLSink", "Stream", "Tap", "Target",
-    "create_meltano_target_service", "get_tap_test_class", "singer_typing", "OICAuthConfig",
-    "OICConnectionConfig", "OICDeploymentConfig", "OICEntityConfig", "OICOAuth2Authenticator",
-    "OICProcessingConfig", "TargetOracleOICConfig", "create_config_from_dict",
-    "create_config_with_env_overrides", "create_singer_config_schema", "ConnectionsSink",
-    "IntegrationsSink", "LookupsSink", "OICBaseSink", "PackagesSink", "TargetOracleOIC", "client_main",
-    "OICConnection", "OICConnectionAction", "OICDataTransformation", "OICIntegration",
-    "OICIntegrationAction", "OICLookup", "OICPackage", "OICProject", "OICSchemaMapping", "OICSchedule",
-    "create_oic_connection", "create_oic_integration", "create_oic_lookup", "create_oic_package",
-    "FlextTargetOracleOicAPIError", "FlextTargetOracleOicAuthenticationError",
-    "FlextTargetOracleOicConfigurationError", "FlextTargetOracleOicConnectionError",
-    "FlextTargetOracleOicError", "FlextTargetOracleOicErrorDetails",
-    "FlextTargetOracleOicInfrastructureError", "FlextTargetOracleOicProcessingError",
-    "FlextTargetOracleOicTransformationError", "FlextTargetOracleOicValidationError", "create_api_error",
-    "create_authentication_error", "create_configuration_error", "create_connection_error",
-    "create_processing_error", "create_validation_error", "__version_info__", "FlextTargetOracleOic",
-    "FlextTargetOracleOicConfig", "FlextTargetOracleOicResult", "main",
-] = [
     # === FLEXT-MELTANO COMPLETE RE-EXPORTS ===
     "BatchSink",
     "FlextMeltanoBaseService",
