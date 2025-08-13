@@ -220,7 +220,9 @@ class OICRecordProcessor:
                 batches.append(batch)
 
             logger.debug(
-                "Created %d batches from %d records", len(batches), len(records),
+                "Created %d batches from %d records",
+                len(batches),
+                len(records),
             )
             return FlextResult.ok(batches)
 

@@ -149,7 +149,8 @@ class TargetOracleOIC(Target):
         self,
         stream_name: str,
         *,
-        record: dict[str, object] | None = None,  # kept for interface compatibility, not used
+        record: dict[str, object]
+        | None = None,  # kept for interface compatibility, not used
         schema: dict[str, object] | None = None,
         key_properties: Sequence[str] | None = None,
     ) -> Sink:

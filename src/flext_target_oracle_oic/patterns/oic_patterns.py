@@ -157,7 +157,8 @@ class OICSchemaMapper:
                 for prop_name, prop_def in properties.items():
                     oic_name = self._normalize_attribute_name(prop_name)
                     oic_type_result = self._map_singer_type_to_oic(
-                        prop_def, resource_type,
+                        prop_def,
+                        resource_type,
                     )
 
                     if oic_type_result.success:
