@@ -51,7 +51,7 @@ def main() -> None:
     try:
         config = generate_config()
 
-        with open(config_path, "w", encoding="utf-8") as f:
+        with config_path.open("w", encoding="utf-8") as f:
             json.dump(config, f, indent=2)
 
         print("✅ Successfully generated target-oracle-oic configuration")

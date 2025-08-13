@@ -51,7 +51,11 @@ class FlextTargetOracleOicAuthenticationError(FlextAuthenticationError):
         if endpoint is not None:
             context["endpoint"] = endpoint
 
-        super().__init__(f"Oracle OIC auth: {message}", service="oracle_oic_auth", **context)
+        super().__init__(
+            f"Oracle OIC auth: {message}",
+            error_code="ORACLE_OIC_AUTH_ERROR",
+            context=context,
+        )
 
 
 class FlextTargetOracleOicProcessingError(FlextProcessingError):
@@ -71,7 +75,11 @@ class FlextTargetOracleOicProcessingError(FlextProcessingError):
         if processing_stage is not None:
             context["processing_stage"] = processing_stage
 
-        super().__init__(f"Oracle OIC processing: {message}", business_rule="oracle_oic_processing", **context)
+        super().__init__(
+            f"Oracle OIC processing: {message}",
+            error_code="ORACLE_OIC_PROCESSING_ERROR",
+            context=context,
+        )
 
 
 class FlextTargetOracleOicTransformationError(FlextProcessingError):
@@ -92,7 +100,11 @@ class FlextTargetOracleOicTransformationError(FlextProcessingError):
             # Include minimal data info for debugging
             context["input_keys"] = list(input_data.keys())
 
-        super().__init__(f"Oracle OIC transformation: {message}", business_rule="oracle_oic_transformation", **context)
+        super().__init__(
+            f"Oracle OIC transformation: {message}",
+            error_code="ORACLE_OIC_TRANSFORMATION_ERROR",
+            context=context,
+        )
 
 
 # Oracle OIC-specific exceptions that need custom behavior
@@ -113,7 +125,11 @@ class FlextTargetOracleOicConnectionError(FlextConnectionError):
         if endpoint is not None:
             context["endpoint"] = endpoint
 
-        super().__init__(f"Oracle OIC connection: {message}", service="oracle_oic_connection", **context)
+        super().__init__(
+            f"Oracle OIC connection: {message}",
+            error_code="ORACLE_OIC_CONNECTION_ERROR",
+            context=context,
+        )
 
 
 class FlextTargetOracleOicValidationError(FlextValidationError):
@@ -128,7 +144,7 @@ class FlextTargetOracleOicValidationError(FlextValidationError):
         **kwargs: object,
     ) -> None:
         """Initialize Oracle OIC validation error with context."""
-        validation_details = {}
+        validation_details: dict[str, object] = {}
         if field is not None:
             validation_details["field"] = field
         if value is not None:
@@ -141,6 +157,7 @@ class FlextTargetOracleOicValidationError(FlextValidationError):
         super().__init__(
             f"Oracle OIC validation: {message}",
             validation_details=validation_details,
+            error_code="ORACLE_OIC_VALIDATION_ERROR",
             context=context,
         )
 
@@ -162,7 +179,11 @@ class FlextTargetOracleOicConfigurationError(FlextConfigurationError):
         if integration_name is not None:
             context["integration_name"] = integration_name
 
-        super().__init__(f"Oracle OIC config: {message}", config_key=config_key, **context)
+        super().__init__(
+            f"Oracle OIC config: {message}",
+            error_code="ORACLE_OIC_CONFIG_ERROR",
+            context=context,
+        )
 
 
 class FlextTargetOracleOicInfrastructureError(FlextTargetOracleOicError):

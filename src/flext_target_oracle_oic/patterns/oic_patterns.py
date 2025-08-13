@@ -30,9 +30,8 @@ class OICTypeConverter:
             if singer_type in {"object", "array"}:
                 if isinstance(value, (dict, list)):
                     return FlextResult.ok(value)
-                parsed_value: dict[str, object] | list[object] = (
-                    json.loads(str(value)) if isinstance(value, str) else value
-                )
+                parsed_value: object
+                parsed_value = json.loads(value) if isinstance(value, str) else value
                 return FlextResult.ok(parsed_value)
 
             # Handle simple types with mapping
@@ -122,7 +121,7 @@ class OICDataTransformer:
     ) -> FlextResult[dict[str, object]]:
         """Prepare payload for OIC API calls."""
         try:
-            payload = {
+            payload: dict[str, object] = {
                 "resourceType": resource_type,
                 "properties": record,
                 "metadata": {
@@ -157,7 +156,9 @@ class OICSchemaMapper:
             if isinstance(properties, dict):
                 for prop_name, prop_def in properties.items():
                     oic_name = self._normalize_attribute_name(prop_name)
-                    oic_type_result = self._map_singer_type_to_oic(prop_def, resource_type)
+                    oic_type_result = self._map_singer_type_to_oic(
+                        prop_def, resource_type,
+                    )
 
                     if oic_type_result.success:
                         # Ensure we have a string type

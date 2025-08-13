@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING
 
 import requests
 import urllib3
@@ -181,25 +181,20 @@ class OICConnection:
                 return FlextResult.fail("No access token available")
             headers = self.config.get_api_headers(self._access_token)
 
-            # Prepare request arguments
-            request_kwargs = {
-                "headers": headers,
-                "timeout": self.config.timeout,
-            }
-
-            if params:
-                request_kwargs["params"] = params
-
-            if data:
-                request_kwargs["data"] = json.dumps(data)
-
             # Make request
             if not self._session:
                 return FlextResult.fail("No active session available")
 
-            # Simplify request_kwargs typing for requests.Session.request
-            kwargs = cast("Any", request_kwargs) if request_kwargs else {}
-            response = self._session.request(method.upper(), url, **kwargs)
+            # Prepare params as strings to satisfy typing
+            prepared_params = {k: str(v) for k, v in params.items()} if params else None
+            response = self._session.request(
+                method.upper(),
+                url,
+                headers=headers,
+                timeout=self.config.timeout,
+                params=prepared_params,
+                json=data if data else None,
+            )
 
             # Handle response
             if response.status_code >= HTTP_BAD_REQUEST:
@@ -208,11 +203,18 @@ class OICConnection:
                 )
 
             try:
-                response_data = response.json()
+                response_data_obj: object = response.json()
             except json.JSONDecodeError:
-                response_data = {"text": response.text}
+                response_data_obj = {"text": response.text}
 
-            return FlextResult.ok(response_data)
+            response_dict: dict[str, object]
+            if isinstance(response_data_obj, dict):
+                # Treat as dict[str, object] for result typing
+                response_dict = response_data_obj  # mypy: ignore[assignment]
+            else:
+                response_dict = {"data": response_data_obj}
+
+            return FlextResult.ok(response_dict)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("OIC API request failed: %s %s", method, endpoint)

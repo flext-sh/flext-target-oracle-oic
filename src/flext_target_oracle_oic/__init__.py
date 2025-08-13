@@ -144,6 +144,7 @@ __version_info__ = tuple(int(x) for x in __version__.split(".") if x.isdigit())
 # MAIN CLASSES AND ALIASES
 # ===============================================================================
 
+
 class FlextTargetOracleOic(TargetOracleOIC):
     """FlextTargetOracleOic - Main class following flext patterns with new structure."""
 
@@ -158,6 +159,7 @@ FlextTargetOracleOicResult = FlextResult
 # ===============================================================================
 # CLI ENTRY POINT
 # ===============================================================================
+
 
 def main() -> None:
     """CLI entry point for flext-target-oracle-oic."""
@@ -188,15 +190,12 @@ __all__: list[str] = [
     "create_meltano_target_service",
     "get_tap_test_class",
     "singer_typing",
-
     # === CORE RE-EXPORTS ===
     "FlextResult",
     "FlextValueObject",
-
     # === PRIMARY CLASSES ===
     "FlextTargetOracleOic",
     "TargetOracleOIC",
-
     # === UNIFIED CONFIGURATION ===
     "FlextTargetOracleOicConfig",  # Backward compatibility alias
     "OICAuthConfig",
@@ -209,14 +208,12 @@ __all__: list[str] = [
     "create_config_from_dict",
     "create_config_with_env_overrides",
     "create_singer_config_schema",
-
     # === UNIFIED CLIENT (SINKS) ===
     "ConnectionsSink",
     "IntegrationsSink",
     "LookupsSink",
     "OICBaseSink",
     "PackagesSink",
-
     # === UNIFIED MODELS ===
     "OICConnection",
     "OICConnectionAction",
@@ -232,7 +229,6 @@ __all__: list[str] = [
     "create_oic_integration",
     "create_oic_lookup",
     "create_oic_package",
-
     # === UNIFIED EXCEPTIONS ===
     "FlextTargetOracleOicAPIError",
     "FlextTargetOracleOicAuthenticationError",
@@ -251,7 +247,6 @@ __all__: list[str] = [
     "create_connection_error",
     "create_processing_error",
     "create_validation_error",
-
     # === BACKWARD COMPATIBILITY (LEGACY) ===
     "OICClient",  # May be None if legacy not available
     "OICDataTransformer",  # May be None if legacy not available
@@ -260,7 +255,6 @@ __all__: list[str] = [
     "OICSchemaMapper",  # May be None if legacy not available
     "OICTargetOrchestrator",  # May be None if legacy not available
     "OICTypeConverter",  # May be None if legacy not available
-
     # === METADATA ===
     "__version__",
     "__version_info__",
