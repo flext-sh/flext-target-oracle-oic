@@ -1,0 +1,25 @@
+"""Centralized typings facade for flext-target-oracle-oic.
+
+- Extends flext-core types
+- Add Target Oracle OIC-specific type aliases and Protocols here
+"""
+from __future__ import annotations
+
+from flext_core.typings import E, F, FlextTypes as CoreFlextTypes, P, R, T, U, V
+
+
+class FlextTypes(CoreFlextTypes):
+    """Target Oracle OIC domain-specific types can extend here."""
+
+
+
+__all__ = [
+    "E",
+    "F",
+    "FlextTypes",
+    "P",
+    "R",
+    "T",
+    "U",
+    "V",
+]
