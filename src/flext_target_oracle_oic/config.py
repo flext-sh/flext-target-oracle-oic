@@ -4,13 +4,13 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from flext_core import FlextResult, FlextValueObject
+from flext_core import FlextResult, FlextBaseConfigModel
 from pydantic import Field, SecretStr, model_validator
 
 from flext_target_oracle_oic.connection.config import OICConnectionConfig as _OICConnCfg
 
 
-class OICAuthConfig(FlextValueObject):
+class OICAuthConfig(FlextBaseConfigModel):
     """OIC authentication configuration using flext-core patterns."""
 
     oauth_client_id: str = Field(
@@ -48,7 +48,7 @@ class OICAuthConfig(FlextValueObject):
             return FlextResult.fail(f"Auth config validation failed: {e}")
 
 
-class OICConnectionConfig(FlextValueObject):
+class OICConnectionConfig(FlextBaseConfigModel):
     """OIC connection configuration using flext-core patterns."""
 
     base_url: str = Field(
@@ -85,7 +85,7 @@ class OICConnectionConfig(FlextValueObject):
             return FlextResult.fail(f"Connection config validation failed: {e}")
 
 
-class OICDeploymentConfig(FlextValueObject):
+class OICDeploymentConfig(FlextBaseConfigModel):
     """OIC deployment configuration using flext-core patterns."""
 
     import_mode: str = Field(
@@ -129,7 +129,7 @@ class OICDeploymentConfig(FlextValueObject):
             return FlextResult.fail(f"Deployment config validation failed: {e}")
 
 
-class OICProcessingConfig(FlextValueObject):
+class OICProcessingConfig(FlextBaseConfigModel):
     """OIC processing configuration using flext-core patterns."""
 
     batch_size: int = Field(
@@ -176,7 +176,7 @@ class OICProcessingConfig(FlextValueObject):
             return FlextResult.fail(f"Processing config validation failed: {e}")
 
 
-class OICEntityConfig(FlextValueObject):
+class OICEntityConfig(FlextBaseConfigModel):
     """OIC entity configuration using flext-core patterns."""
 
     integration_identifier_field: str = Field(
@@ -217,7 +217,7 @@ class OICEntityConfig(FlextValueObject):
             return FlextResult.fail(f"Entity config validation failed: {e}")
 
 
-class TargetOracleOICConfig(FlextValueObject):
+class TargetOracleOICConfig(FlextBaseConfigModel):
     """Complete configuration for target-oracle-oic using dependency injection.
 
     Uses dependency injection patterns to access Oracle OIC functionality.
