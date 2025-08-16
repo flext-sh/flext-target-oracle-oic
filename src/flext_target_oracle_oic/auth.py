@@ -9,7 +9,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-# BACKWARD COMPATIBILITY: Re-export from new unified configuration
 from flext_target_oracle_oic.target_config import (
     OICAuthConfig,
     OICOAuth2Authenticator,

@@ -162,8 +162,7 @@ FlextTargetOracleOicResult = FlextResult
 
 
 def main() -> None:
-    """CLI entry point for flext-target-oracle-oic."""
-    # Use new unified client main
+    """CLI entry point for flext-target-oracle-oic."""  # Use new unified client main
     client_main()
 
 
