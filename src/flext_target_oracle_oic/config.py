@@ -5,9 +5,10 @@ from __future__ import annotations
 from pathlib import Path
 
 from flext_core import FlextBaseConfigModel, FlextResult
-from pydantic import ConfigDict, Field, SecretStr, model_validator
+from pydantic import Field, SecretStr, model_validator
+from pydantic_settings import SettingsConfigDict
 
-from flext_target_oracle_oic.connection.config import OICConnectionConfig as _OICConnCfg
+# Remove duplicate import - use unified OICConnectionConfig from this file
 
 
 class OICAuthConfig(FlextBaseConfigModel):
@@ -224,7 +225,7 @@ class TargetOracleOICConfig(FlextBaseConfigModel):
     Zero tolerance for architectural violations.
     """
 
-    model_config = ConfigDict(env_prefix="TARGET_ORACLE_OIC_", case_sensitive=False)
+    model_config = SettingsConfigDict(env_prefix="TARGET_ORACLE_OIC_", case_sensitive=False)
 
     # Structured configuration using value objects
     auth: OICAuthConfig = Field(
@@ -320,13 +321,11 @@ class TargetOracleOICConfig(FlextBaseConfigModel):
 
     def get_oauth_headers(self) -> dict[str, str]:
         """Get OAuth headers for API requests."""
-        # ELIMINATED DUPLICATION: Use connection config's get_auth_headers()
-        connection_config = _OICConnCfg(
-            server_url=self.connection.base_url,
-            client_id=self.auth.oauth_client_id,
-            client_secret=self.auth.oauth_client_secret.get_secret_value(),
-        )
-        return connection_config.get_auth_headers()
+        # Return authentication headers directly - no duplication
+        return {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Accept": "application/json",
+        }
 
     def get_entity_identifier_field(self, entity_type: str) -> str:
         """Get identifier field for entity type."""

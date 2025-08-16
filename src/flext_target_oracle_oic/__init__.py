@@ -121,7 +121,7 @@ from flext_target_oracle_oic.cli import main as cli_main
 from flext_target_oracle_oic.client import OICClient
 from flext_target_oracle_oic.connection import OICConnection as LegacyOICConnection
 from flext_target_oracle_oic.connection import (
-    OICConnectionConfig as LegacyOICConnectionConfig,
+    OICConnectionSettings as LegacyOICConnectionSettings,
 )
 from flext_target_oracle_oic.patterns import (
     OICDataTransformer,

@@ -46,7 +46,6 @@ class FlextTargetOracleOicError(FlextError):
 
         super().__init__(
             message,
-            error_code="ORACLE_OIC_TARGET_ERROR",
             context=context,
         )
 
@@ -81,7 +80,6 @@ class FlextTargetOracleOicAuthenticationError(FlextAuthenticationError):
         # Use proper flext-core initialization
         super().__init__(
             f"Oracle OIC auth: {message}",
-            error_code="ORACLE_OIC_AUTH_ERROR",
             context=context,
         )
 
@@ -111,7 +109,6 @@ class FlextTargetOracleOicConnectionError(FlextConnectionError):
         # Use proper flext-core initialization
         super().__init__(
             f"Oracle OIC connection: {message}",
-            error_code="ORACLE_OIC_CONNECTION_ERROR",
             context=context,
         )
 
@@ -141,7 +138,6 @@ class FlextTargetOracleOicProcessingError(FlextProcessingError):
         # Use proper flext-core initialization
         super().__init__(
             f"Oracle OIC processing: {message}",
-            error_code="ORACLE_OIC_PROCESSING_ERROR",
             context=context,
         )
 
@@ -175,8 +171,8 @@ class FlextTargetOracleOicValidationError(FlextValidationError):
         # Use proper flext-core initialization
         super().__init__(
             f"Oracle OIC validation: {message}",
-            error_code="ORACLE_OIC_VALIDATION_ERROR",
-            validation_details=validation_details,
+            field=field,
+            value=value,
             context=context,
         )
 
@@ -206,7 +202,6 @@ class FlextTargetOracleOicConfigurationError(FlextConfigurationError):
         # Use proper flext-core initialization
         super().__init__(
             f"Oracle OIC config: {message}",
-            error_code="ORACLE_OIC_CONFIG_ERROR",
             context=context,
         )
 

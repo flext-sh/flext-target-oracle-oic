@@ -3,33 +3,34 @@
 from __future__ import annotations
 
 from flext_core import FlextResult, FlextValueObject, get_logger
+from pydantic import Field
 
 logger = get_logger(__name__)
 
 
-class OICConnectionConfig(FlextValueObject):
-    """Oracle OIC connection configuration using flext-core patterns."""
+class OICConnectionSettings(FlextValueObject):
+    """Oracle OIC connection settings using flext-core patterns."""
 
-    server_url: str
-    client_id: str
-    client_secret: str
-    scope: str = "oic_instance"
-    username: str | None = None
-    password: str | None = None
-    use_oauth2: bool = True
-    timeout: int = 30
-    max_retries: int = 3
-    verify_ssl: bool = True
+    base_url: str = Field(..., description="Oracle OIC base URL")
+    client_id: str = Field(..., description="OAuth2 client ID")
+    client_secret: str = Field(..., description="OAuth2 client secret", repr=False)
+    scope: str = Field(default="oic_instance", description="OAuth2 scope")
+    username: str | None = Field(default=None, description="Optional username for basic auth")
+    password: str | None = Field(default=None, description="Optional password for basic auth", repr=False)
+    use_oauth2: bool = Field(default=True, description="Use OAuth2 authentication")
+    timeout: int = Field(default=30, description="Request timeout in seconds", gt=0)
+    max_retries: int = Field(default=3, description="Maximum number of retries", ge=0)
+    verify_ssl: bool = Field(default=True, description="Verify SSL certificates")
 
     def build_auth_url(self) -> str:
         """Build OAuth2 authentication URL."""
-        base_url = self.server_url.rstrip("/")
-        return f"{base_url}/oauth2/v1/token"
+        url = self.base_url.rstrip("/")
+        return f"{url}/oauth2/v1/token"
 
     def build_api_base_url(self) -> str:
         """Build OIC API base URL."""
-        base_url = self.server_url.rstrip("/")
-        return f"{base_url}/ic/api/integration/v1"
+        url = self.base_url.rstrip("/")
+        return f"{url}/ic/api/integration/v1"
 
     def get_auth_headers(self) -> dict[str, str]:
         """Get authentication headers."""
@@ -46,38 +47,23 @@ class OICConnectionConfig(FlextValueObject):
             "Accept": "application/json",
         }
 
-    def to_dict(self) -> dict[str, object]:
-        """Convert configuration to dictionary."""
-        return self.model_dump()
-
     @classmethod
-    def from_dict(cls, data: dict[str, object]) -> OICConnectionConfig:
-        """Create configuration from dictionary."""
+    def from_dict(cls, data: dict[str, object]) -> OICConnectionSettings:
+        """Create configuration from dictionary using modern Pydantic patterns."""
         try:
-            return cls(
-                server_url=str(data.get("server_url", "")),
-                client_id=str(data.get("client_id", "")),
-                client_secret=str(data.get("client_secret", "")),
-                scope=str(data.get("scope", "oic_instance")),
-                username=str(data["username"]) if data.get("username") else None,
-                password=str(data["password"]) if data.get("password") else None,
-                use_oauth2=bool(data.get("use_oauth2", True)),
-                timeout=int(str(data.get("timeout", 30))),
-                max_retries=int(str(data.get("max_retries", 3))),
-                verify_ssl=bool(data.get("verify_ssl", True)),
-            )
-        except (ValueError, TypeError, KeyError):
-            logger.exception("Failed to create OICConnectionConfig from dict")
+            return cls.model_validate(data)
+        except Exception:
+            logger.exception("Failed to create OICConnectionSettings from dict")
             raise
 
     def validate_business_rules(self) -> FlextResult[None]:
         """Validate OIC connection configuration business rules."""
         errors = []
 
-        if not self.server_url:
-            errors.append("server_url is required")
-        elif not self.server_url.startswith(("http://", "https://")):
-            errors.append("server_url must be a valid URL")
+        if not self.base_url:
+            errors.append("base_url is required")
+        elif not self.base_url.startswith(("http://", "https://")):
+            errors.append("base_url must be a valid URL")
 
         if not self.client_id:
             errors.append("client_id is required")

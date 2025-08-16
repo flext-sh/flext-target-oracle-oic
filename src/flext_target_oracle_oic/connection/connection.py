@@ -19,7 +19,7 @@ HTTP_OK = 200
 HTTP_BAD_REQUEST = 400
 
 if TYPE_CHECKING:
-    from flext_target_oracle_oic.connection.config import OICConnectionConfig
+    from flext_target_oracle_oic.connection.config import OICConnectionSettings
 
 logger = get_logger(__name__)
 
@@ -27,7 +27,7 @@ logger = get_logger(__name__)
 class OICConnection:
     """Oracle OIC connection using flext-core patterns."""
 
-    def __init__(self, config: OICConnectionConfig) -> None:
+    def __init__(self, config: OICConnectionSettings) -> None:
         """Initialize OIC connection."""
         self.config = config
         self._access_token: str | None = None
@@ -52,7 +52,7 @@ class OICConnection:
             if not auth_result.success:
                 return FlextResult.fail(auth_result.error or "Authentication failed")
 
-            logger.info("Connected to OIC server: %s", self.config.server_url)
+            logger.info("Connected to OIC server: %s", self.config.base_url)
             return FlextResult.ok(None)
 
         except FlextTargetOracleOicAuthenticationError as e:
