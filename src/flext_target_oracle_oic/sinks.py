@@ -6,14 +6,13 @@ from typing import TYPE_CHECKING
 
 import httpx
 from flext_core import get_logger
-from flext_meltano import Sink
+from flext_meltano import Sink, Target
 
 from flext_target_oracle_oic.auth import OICAuthConfig, OICOAuth2Authenticator
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
-    from flext_meltano import Target
 
 # Constants
 HTTP_NOT_FOUND = 404

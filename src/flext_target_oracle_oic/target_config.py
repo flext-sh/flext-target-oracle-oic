@@ -18,7 +18,7 @@ from flext_oracle_oic_ext.ext_client import (
     OICExtensionAuthenticator as OICOAuth2Authenticator,
 )
 from flext_oracle_oic_ext.ext_models import OICAuthConfig
-from pydantic import Field, SecretStr, model_validator
+from pydantic import ConfigDict, Field, SecretStr, model_validator
 
 
 class OICConnectionConfig(FlextValueObject):
@@ -197,11 +197,7 @@ class TargetOracleOICConfig(FlextValueObject):
     Zero tolerance for architectural violations.
     """
 
-    class Config:
-        """Pydantic configuration."""
-
-        env_prefix = "TARGET_ORACLE_OIC_"
-        case_sensitive = False
+    model_config = ConfigDict(env_prefix="TARGET_ORACLE_OIC_", case_sensitive=False)
 
     # Structured configuration using value objects
     auth: OICAuthConfig = Field(
