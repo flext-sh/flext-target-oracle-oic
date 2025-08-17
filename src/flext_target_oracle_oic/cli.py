@@ -14,10 +14,10 @@ import click
 def main(config: str | None = None, *, verbose: bool = False) -> None:
     """Provide CLI entry point for flext-target-oracle-oic."""
     if verbose:
-        click.echo("Starting flext-target-oracle-oic in verbose mode")
+      click.echo("Starting flext-target-oracle-oic in verbose mode")
 
     if config:
-        click.echo(f"Using config file: {config}")
+      click.echo(f"Using config file: {config}")
 
     # Implementation placeholder - integrate with target functionality
     click.echo("flext-target-oracle-oic CLI - Ready")
