@@ -35,432 +35,432 @@ class TestTargetOracleOICE2E:
 
     @pytest.fixture
     def config_path(self) -> str:
-      config_file = Path(__file__).parent.parent / "config.json"
-      if not config_file.exists():
-          # Generate config if it doesn't exist:
-          python_exe = (
-              shutil.which("python3") or shutil.which("python") or sys.executable
-          )
+        config_file = Path(__file__).parent.parent / "config.json"
+        if not config_file.exists():
+            # Generate config if it doesn't exist:
+            python_exe = (
+                shutil.which("python3") or shutil.which("python") or sys.executable
+            )
 
-          async def _run(cmd_list: list[str], cwd: str | None = None) -> int:
-              process = await asyncio.create_subprocess_exec(
-                  *cmd_list,
-                  cwd=cwd,
-                  stdout=asyncio.subprocess.PIPE,
-                  stderr=asyncio.subprocess.PIPE,
-              )
-              await process.communicate()
-              return process.returncode
+            async def _run(cmd_list: list[str], cwd: str | None = None) -> int:
+                process = await asyncio.create_subprocess_exec(
+                    *cmd_list,
+                    cwd=cwd,
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE,
+                )
+                await process.communicate()
+                return process.returncode
 
-          rc = asyncio.run(
-              _run(
-                  [python_exe, "generate_config.py"],
-                  cwd=str(Path(__file__).parent.parent),
-              ),
-          )
-          if rc != 0:
-              msg = "Failed to generate config.json"
-              raise RuntimeError(msg)
-      return str(config_file)
+            rc = asyncio.run(
+                _run(
+                    [python_exe, "generate_config.py"],
+                    cwd=str(Path(__file__).parent.parent),
+                ),
+            )
+            if rc != 0:
+                msg = "Failed to generate config.json"
+                raise RuntimeError(msg)
+        return str(config_file)
 
     @pytest.fixture
     def config(self, config_path: str) -> dict[str, object]:
-      with config_path.open(encoding="utf-8") as f:
-          loaded_config: dict[str, object] = json.load(f)
-          return loaded_config
+        with config_path.open(encoding="utf-8") as f:
+            loaded_config: dict[str, object] = json.load(f)
+            return loaded_config
 
     @pytest.fixture
     def target(self, config: dict[str, object]) -> TargetOracleOIC:
-      return TargetOracleOIC(config=config)
+        return TargetOracleOIC(config=config)
 
     def test_target_initialization(
-      self,
-      target: TargetOracleOIC,
-      config: dict[str, object],
+        self,
+        target: TargetOracleOIC,
+        config: dict[str, object],
     ) -> None:
-      if target.name != "target-oracle-oic":
-          msg: str = f"Expected {'target-oracle-oic'}, got {target.name}"
-          raise AssertionError(msg)
-      assert target.config == config
-      if target.config["base_url"] != config["base_url"]:
-          msg: str = f"Expected {config['base_url']}, got {target.config['base_url']}"
-          raise AssertionError(msg)
+        if target.name != "target-oracle-oic":
+            msg: str = f"Expected {'target-oracle-oic'}, got {target.name}"
+            raise AssertionError(msg)
+        assert target.config == config
+        if target.config["base_url"] != config["base_url"]:
+            msg: str = f"Expected {config['base_url']}, got {target.config['base_url']}"
+            raise AssertionError(msg)
 
     def test_sink_discovery(self, target: TargetOracleOIC) -> None:
-      # Test known sinks
-      if target._get_sink_class("connections") != ConnectionsSink:
-          msg: str = f"Expected {ConnectionsSink}, got {target._get_sink_class('connections')}"
-          raise AssertionError(msg)
-      assert target._get_sink_class("integrations") == IntegrationsSink
-      if target._get_sink_class("packages") != PackagesSink:
-          msg: str = (
-              f"Expected {PackagesSink}, got {target._get_sink_class('packages')}"
-          )
-          raise AssertionError(msg)
-      assert target._get_sink_class("lookups") == LookupsSink
-      # Test unknown stream returns default
-      default_sink = target._get_sink_class("unknown_stream")
-      if default_sink != target.default_sink_class:
-          msg: str = f"Expected {target.default_sink_class}, got {default_sink}"
-          raise AssertionError(msg)
+        # Test known sinks
+        if target._get_sink_class("connections") != ConnectionsSink:
+            msg: str = f"Expected {ConnectionsSink}, got {target._get_sink_class('connections')}"
+            raise AssertionError(msg)
+        assert target._get_sink_class("integrations") == IntegrationsSink
+        if target._get_sink_class("packages") != PackagesSink:
+            msg: str = (
+                f"Expected {PackagesSink}, got {target._get_sink_class('packages')}"
+            )
+            raise AssertionError(msg)
+        assert target._get_sink_class("lookups") == LookupsSink
+        # Test unknown stream returns default
+        default_sink = target._get_sink_class("unknown_stream")
+        if default_sink != target.default_sink_class:
+            msg: str = f"Expected {target.default_sink_class}, got {default_sink}"
+            raise AssertionError(msg)
 
     def test_sink_initialization(self, target: TargetOracleOIC) -> None:
-      # Test each sink type
-      sinks_to_test = [
-          ("connections", ConnectionsSink),
-          ("integrations", IntegrationsSink),
-          ("packages", PackagesSink),
-          ("lookups", LookupsSink),
-      ]
-      for stream_name, sink_class in sinks_to_test:
-          sink = sink_class(
-              target=target,
-              stream_name=stream_name,
-              schema={"properties": {"id": {"type": "string"}}},
-              key_properties=["id"],
-          )
-          if sink.stream_name != stream_name:
-              msg: str = f"Expected {stream_name}, got {sink.stream_name}"
-              raise AssertionError(msg)
-          assert sink.config == target.config
+        # Test each sink type
+        sinks_to_test = [
+            ("connections", ConnectionsSink),
+            ("integrations", IntegrationsSink),
+            ("packages", PackagesSink),
+            ("lookups", LookupsSink),
+        ]
+        for stream_name, sink_class in sinks_to_test:
+            sink = sink_class(
+                target=target,
+                stream_name=stream_name,
+                schema={"properties": {"id": {"type": "string"}}},
+                key_properties=["id"],
+            )
+            if sink.stream_name != stream_name:
+                msg: str = f"Expected {stream_name}, got {sink.stream_name}"
+                raise AssertionError(msg)
+            assert sink.config == target.config
 
     def test_process_singer_messages(
-      self,
-      target: TargetOracleOIC,
-      tmp_path: Path,
+        self,
+        target: TargetOracleOIC,
+        tmp_path: Path,
     ) -> None:
-      # Create test Singer messages
-      messages = [
-          {
-              "type": "SCHEMA",
-              "stream": "connections",
-              "schema": {
-                  "type": "object",
-                  "properties": {
-                      "id": {"type": "string"},
-                      "name": {"type": "string"},
-                  },
-              },
-              "key_properties": ["id"],
-          },
-          {
-              "type": "RECORD",
-              "stream": "connections",
-              "record": {"id": "test-connection-1", "name": "Test Connection"},
-          },
-          {
-              "type": "STATE",
-              "value": {
-                  "bookmarks": {
-                      "connections": {
-                          "replication_key_value": "2024-01-01T00:00:00Z",
-                      },
-                  },
-              },
-          },
-      ]
-      # Write messages to file
-      input_file = tmp_path / "input.jsonl"
-      with input_file.open("w", encoding="utf-8") as f:
-          f.writelines(json.dumps(msg) + "\n" for msg in messages)
-      # Process messages using Singer SDK API
-      with (
-          patch.object(ConnectionsSink, "process_record") as mock_process,
-          patch.object(ConnectionsSink, "client") as mock_client,
-      ):
-          # Mock the HTTP client to avoid actual API calls
-          mock_client.get.return_value.status_code = 404
-          mock_client.post.return_value.status_code = 201
-          # Use the proper Singer SDK listen method with file input
-          with input_file.open(encoding="utf-8") as f:
-              target.listen(file_input=f)
-          # Verify that the record was processed
-          assert mock_process.called, "process_record should have been called"
+        # Create test Singer messages
+        messages = [
+            {
+                "type": "SCHEMA",
+                "stream": "connections",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "id": {"type": "string"},
+                        "name": {"type": "string"},
+                    },
+                },
+                "key_properties": ["id"],
+            },
+            {
+                "type": "RECORD",
+                "stream": "connections",
+                "record": {"id": "test-connection-1", "name": "Test Connection"},
+            },
+            {
+                "type": "STATE",
+                "value": {
+                    "bookmarks": {
+                        "connections": {
+                            "replication_key_value": "2024-01-01T00:00:00Z",
+                        },
+                    },
+                },
+            },
+        ]
+        # Write messages to file
+        input_file = tmp_path / "input.jsonl"
+        with input_file.open("w", encoding="utf-8") as f:
+            f.writelines(json.dumps(msg) + "\n" for msg in messages)
+        # Process messages using Singer SDK API
+        with (
+            patch.object(ConnectionsSink, "process_record") as mock_process,
+            patch.object(ConnectionsSink, "client") as mock_client,
+        ):
+            # Mock the HTTP client to avoid actual API calls
+            mock_client.get.return_value.status_code = 404
+            mock_client.post.return_value.status_code = 201
+            # Use the proper Singer SDK listen method with file input
+            with input_file.open(encoding="utf-8") as f:
+                target.listen(file_input=f)
+            # Verify that the record was processed
+            assert mock_process.called, "process_record should have been called"
 
     def test_authentication_handling(self, target: TargetOracleOIC) -> None:
-      # Get a sink instance
-      sink = ConnectionsSink(
-          target=target,
-          stream_name="connections",
-          schema={"properties": {"id": {"type": "string"}}},
-          key_properties=["id"],
-      )
-      # Test authenticator initialization
-      authenticator = sink.authenticator
-      assert authenticator is not None
-      assert hasattr(authenticator, "auth_headers")
+        # Get a sink instance
+        sink = ConnectionsSink(
+            target=target,
+            stream_name="connections",
+            schema={"properties": {"id": {"type": "string"}}},
+            key_properties=["id"],
+        )
+        # Test authenticator initialization
+        authenticator = sink.authenticator
+        assert authenticator is not None
+        assert hasattr(authenticator, "auth_headers")
 
     def test_live_connection_create(self, target: TargetOracleOIC) -> None:
-      sink = ConnectionsSink(
-          target=target,
-          stream_name="connections",
-          schema={
-              "properties": {
-                  "id": {"type": "string"},
-                  "name": {"type": "string"},
-                  "adapter_type": {"type": "string"},
-              },
-          },
-          key_properties=["id"],
-      )
-      # Test record
-      test_record = {
-          "id": "TEST_CONNECTION_E2E",
-          "name": "E2E Test Connection",
-          "adapter_type": "REST",
-      }
-      # Test that either succeeds or raises HTTP/auth-related exceptions
-      try:
-          # Process the record
-          sink.process_record(test_record, {})
-      except (RuntimeError, ValueError, TypeError) as e:
-          if any(code in str(e) for code in ["401", "403", "404", "500"]):
-              # HTTP errors are expected in test environment without live credentials/instance
-              # This confirms the sink is attempting real API calls as expected
-              pass
-          else:
-              pytest.fail(f"Unexpected error: {e}")
+        sink = ConnectionsSink(
+            target=target,
+            stream_name="connections",
+            schema={
+                "properties": {
+                    "id": {"type": "string"},
+                    "name": {"type": "string"},
+                    "adapter_type": {"type": "string"},
+                },
+            },
+            key_properties=["id"],
+        )
+        # Test record
+        test_record = {
+            "id": "TEST_CONNECTION_E2E",
+            "name": "E2E Test Connection",
+            "adapter_type": "REST",
+        }
+        # Test that either succeeds or raises HTTP/auth-related exceptions
+        try:
+            # Process the record
+            sink.process_record(test_record, {})
+        except (RuntimeError, ValueError, TypeError) as e:
+            if any(code in str(e) for code in ["401", "403", "404", "500"]):
+                # HTTP errors are expected in test environment without live credentials/instance
+                # This confirms the sink is attempting real API calls as expected
+                pass
+            else:
+                pytest.fail(f"Unexpected error: {e}")
 
     def test_integration_import_flow(self, target: TargetOracleOIC) -> None:
-      sink = IntegrationsSink(
-          target=target,
-          stream_name="integrations",
-          schema={
-              "properties": {
-                  "id": {"type": "string"},
-                  "name": {"type": "string"},
-                  "archive_content": {"type": "string"},
-              },
-          },
-          key_properties=["id"],
-      )
-      # Mock the HTTP client to avoid actual API calls
-      with patch.object(sink, "_client") as mock_client:
-          # Mock responses
-          mock_client.get.return_value.status_code = 404  # Integration doesn't exist
-          mock_client.post.return_value.status_code = 201  # Creation successful
-          # Test record with archive content
-          test_record = {
-              "id": "TEST_INTEGRATION_E2E",
-              "name": "E2E Test Integration",
-              "archive_content": "base64_encoded_iar_content_here",
-          }
-          # Process the record
-          sink.process_record(test_record, {})
-          # Verify import endpoint was called
-          mock_client.post.assert_called()
+        sink = IntegrationsSink(
+            target=target,
+            stream_name="integrations",
+            schema={
+                "properties": {
+                    "id": {"type": "string"},
+                    "name": {"type": "string"},
+                    "archive_content": {"type": "string"},
+                },
+            },
+            key_properties=["id"],
+        )
+        # Mock the HTTP client to avoid actual API calls
+        with patch.object(sink, "_client") as mock_client:
+            # Mock responses
+            mock_client.get.return_value.status_code = 404  # Integration doesn't exist
+            mock_client.post.return_value.status_code = 201  # Creation successful
+            # Test record with archive content
+            test_record = {
+                "id": "TEST_INTEGRATION_E2E",
+                "name": "E2E Test Integration",
+                "archive_content": "base64_encoded_iar_content_here",
+            }
+            # Process the record
+            sink.process_record(test_record, {})
+            # Verify import endpoint was called
+            mock_client.post.assert_called()
 
     def test_error_handling(self, target: TargetOracleOIC) -> None:
-      sink = ConnectionsSink(
-          target=target,
-          stream_name="connections",
-          schema={"properties": {"id": {"type": "string"}}},
-          key_properties=["id"],
-      )
-      # Test with invalid record (missing required field)
-      with pytest.raises((ValueError, KeyError, TypeError)):
-          sink.process_record({}, {})
+        sink = ConnectionsSink(
+            target=target,
+            stream_name="connections",
+            schema={"properties": {"id": {"type": "string"}}},
+            key_properties=["id"],
+        )
+        # Test with invalid record (missing required field)
+        with pytest.raises((ValueError, KeyError, TypeError)):
+            sink.process_record({}, {})
 
     def test_config_validation(self) -> None:
-      # Test missing required fields
-      with pytest.raises(ConfigValidationError):
-          TargetOracleOIC(config={})
-      # Test with minimal valid config
-      minimal_config = {
-          "base_url": "https://test.integration.ocp.oraclecloud.com",
-          "oauth_client_id": "test",
-          "oauth_client_secret": "test",
-          "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
-      }
-      target = TargetOracleOIC(config=minimal_config)
-      if target.config != minimal_config:
-          msg: str = f"Expected {minimal_config}, got {target.config}"
-          raise AssertionError(msg)
+        # Test missing required fields
+        with pytest.raises(ConfigValidationError):
+            TargetOracleOIC(config={})
+        # Test with minimal valid config
+        minimal_config = {
+            "base_url": "https://test.integration.ocp.oraclecloud.com",
+            "oauth_client_id": "test",
+            "oauth_client_secret": "test",
+            "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
+        }
+        target = TargetOracleOIC(config=minimal_config)
+        if target.config != minimal_config:
+            msg: str = f"Expected {minimal_config}, got {target.config}"
+            raise AssertionError(msg)
 
     def test_batch_processing(self, target: TargetOracleOIC) -> None:
-      sink = PackagesSink(
-          target=target,
-          stream_name="packages",
-          schema={
-              "properties": {"id": {"type": "string"}, "name": {"type": "string"}},
-          },
-          key_properties=["id"],
-      )
-      # Create batch of test records
-      records = [
-          {
-              "id": f"pkg-{i}",
-              "name": f"Package {i}",
-              "archive_content": f"fake-package-content-{i}",
-          }
-          for i in range(10)
-      ]
-      # Mock the HTTP client properly by patching the underlying _client attribute
-      with patch.object(sink, "_client") as mock_client:
-          mock_client.get.return_value.status_code = 404
-          mock_client.post.return_value.status_code = 201
-          # Process all records
-          for record in records:
-              sink.process_record(record, {})
-          # Verify all records were processed
-          if mock_client.post.call_count < len(records):
-              msg: str = f"Expected {mock_client.post.call_count} >= {len(records)}"
-              raise AssertionError(msg)
+        sink = PackagesSink(
+            target=target,
+            stream_name="packages",
+            schema={
+                "properties": {"id": {"type": "string"}, "name": {"type": "string"}},
+            },
+            key_properties=["id"],
+        )
+        # Create batch of test records
+        records = [
+            {
+                "id": f"pkg-{i}",
+                "name": f"Package {i}",
+                "archive_content": f"fake-package-content-{i}",
+            }
+            for i in range(10)
+        ]
+        # Mock the HTTP client properly by patching the underlying _client attribute
+        with patch.object(sink, "_client") as mock_client:
+            mock_client.get.return_value.status_code = 404
+            mock_client.post.return_value.status_code = 201
+            # Process all records
+            for record in records:
+                sink.process_record(record, {})
+            # Verify all records were processed
+            if mock_client.post.call_count < len(records):
+                msg: str = f"Expected {mock_client.post.call_count} >= {len(records)}"
+                raise AssertionError(msg)
 
     def test_update_vs_create_logic(self, target: TargetOracleOIC) -> None:
-      sink = LookupsSink(
-          target=target,
-          stream_name="lookups",
-          schema={
-              "properties": {
-                  "id": {"type": "string"},
-                  "name": {"type": "string"},
-                  "version": {"type": "string"},
-              },
-          },
-          key_properties=["id"],
-      )
-      test_record = {"id": "test-lookup", "name": "Test Lookup", "version": "1.0"}
-      # Mock client responses
-      with patch.object(sink, "_client") as mock_client:
-          # Test CREATE flow (entity doesn't exist)
-          mock_client.get.return_value.status_code = 404
-          mock_client.post.return_value.status_code = 201
-          sink.process_record(test_record, {})
-          mock_client.post.assert_called()
-          # Reset mocks
-          mock_client.reset_mock()
-          # Test UPDATE flow (entity exists)
-          mock_client.get.return_value.status_code = 200
-          mock_client.get.return_value.json.return_value = {"version": "1.0"}
-          mock_client.put.return_value.status_code = 200
-          sink.process_record(test_record, {})
-          mock_client.put.assert_called()
+        sink = LookupsSink(
+            target=target,
+            stream_name="lookups",
+            schema={
+                "properties": {
+                    "id": {"type": "string"},
+                    "name": {"type": "string"},
+                    "version": {"type": "string"},
+                },
+            },
+            key_properties=["id"],
+        )
+        test_record = {"id": "test-lookup", "name": "Test Lookup", "version": "1.0"}
+        # Mock client responses
+        with patch.object(sink, "_client") as mock_client:
+            # Test CREATE flow (entity doesn't exist)
+            mock_client.get.return_value.status_code = 404
+            mock_client.post.return_value.status_code = 201
+            sink.process_record(test_record, {})
+            mock_client.post.assert_called()
+            # Reset mocks
+            mock_client.reset_mock()
+            # Test UPDATE flow (entity exists)
+            mock_client.get.return_value.status_code = 200
+            mock_client.get.return_value.json.return_value = {"version": "1.0"}
+            mock_client.put.return_value.status_code = 200
+            sink.process_record(test_record, {})
+            mock_client.put.assert_called()
 
     def test_cli_execution(self, config_path: str, tmp_path: Path) -> None:
-      # Create test Singer input
-      singer_input = [
-          {
-              "type": "SCHEMA",
-              "stream": "connections",
-              "schema": {"type": "object", "properties": {"id": {"type": "string"}}},
-              "key_properties": ["id"],
-          },
-          {
-              "type": "RECORD",
-              "stream": "connections",
-              "record": {"id": "test-cli-connection"},
-          },
-      ]
-      input_file = tmp_path / "singer_input.jsonl"
-      with input_file.open("w", encoding="utf-8") as f:
-          f.writelines(json.dumps(msg) + "\n" for msg in singer_input)
-      # Run target via CLI
-      with input_file.open(encoding="utf-8") as f:
-          python_exe = (
-              shutil.which("python3") or shutil.which("python") or sys.executable
-          )
+        # Create test Singer input
+        singer_input = [
+            {
+                "type": "SCHEMA",
+                "stream": "connections",
+                "schema": {"type": "object", "properties": {"id": {"type": "string"}}},
+                "key_properties": ["id"],
+            },
+            {
+                "type": "RECORD",
+                "stream": "connections",
+                "record": {"id": "test-cli-connection"},
+            },
+        ]
+        input_file = tmp_path / "singer_input.jsonl"
+        with input_file.open("w", encoding="utf-8") as f:
+            f.writelines(json.dumps(msg) + "\n" for msg in singer_input)
+        # Run target via CLI
+        with input_file.open(encoding="utf-8") as f:
+            python_exe = (
+                shutil.which("python3") or shutil.which("python") or sys.executable
+            )
 
-          async def _run_cli(
-              cmd_list: list[str],
-              cwd: str | None = None,
-              stdin_data: str | None = None,
-          ) -> tuple[int, str, str]:
-              process = await asyncio.create_subprocess_exec(
-                  *cmd_list,
-                  cwd=cwd,
-                  stdin=asyncio.subprocess.PIPE if stdin_data is not None else None,
-                  stdout=asyncio.subprocess.PIPE,
-                  stderr=asyncio.subprocess.PIPE,
-              )
-              stdout, stderr = await process.communicate(
-                  input=stdin_data.encode() if stdin_data is not None else None,
-              )
-              return process.returncode, stdout.decode(), stderr.decode()
+            async def _run_cli(
+                cmd_list: list[str],
+                cwd: str | None = None,
+                stdin_data: str | None = None,
+            ) -> tuple[int, str, str]:
+                process = await asyncio.create_subprocess_exec(
+                    *cmd_list,
+                    cwd=cwd,
+                    stdin=asyncio.subprocess.PIPE if stdin_data is not None else None,
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE,
+                )
+                stdout, stderr = await process.communicate(
+                    input=stdin_data.encode() if stdin_data is not None else None,
+                )
+                return process.returncode, stdout.decode(), stderr.decode()
 
-          rc, _out, err = asyncio.run(
-              _run_cli(
-                  [
-                      python_exe,
-                      "-m",
-                      "flext_target_oracle_oic",
-                      "--config",
-                      config_path,
-                  ],
-                  cwd=str(Path(__file__).parent.parent),
-                  stdin_data=input_file.read_text(encoding="utf-8"),
-              ),
-          )
-      # Should complete without errors (might fail on actual API calls)
-      # Check that it at least started processing
-      if "target-oracle-oic" in err or rc != 0:
-          msg: str = f"Expected {0}, got {'target-oracle-oic' in err or rc}"
-          raise AssertionError(msg)
+            rc, _out, err = asyncio.run(
+                _run_cli(
+                    [
+                        python_exe,
+                        "-m",
+                        "flext_target_oracle_oic",
+                        "--config",
+                        config_path,
+                    ],
+                    cwd=str(Path(__file__).parent.parent),
+                    stdin_data=input_file.read_text(encoding="utf-8"),
+                ),
+            )
+        # Should complete without errors (might fail on actual API calls)
+        # Check that it at least started processing
+        if "target-oracle-oic" in err or rc != 0:
+            msg: str = f"Expected {0}, got {'target-oracle-oic' in err or rc}"
+            raise AssertionError(msg)
 
     def test_conditional_config_generation(self) -> None:
-      config_path = Path(__file__).parent.parent / "config.json"
-      # If config doesn't exist, it should be generated
-      if not config_path.exists():
-          python_exe = (
-              shutil.which("python3") or shutil.which("python") or sys.executable
-          )
+        config_path = Path(__file__).parent.parent / "config.json"
+        # If config doesn't exist, it should be generated
+        if not config_path.exists():
+            python_exe = (
+                shutil.which("python3") or shutil.which("python") or sys.executable
+            )
 
-          async def _run_input(
-              cmd_list: list[str],
-              cwd: str | None = None,
-              input_text: str = "",
-          ) -> tuple[int, str, str]:
-              process = await asyncio.create_subprocess_exec(
-                  *cmd_list,
-                  cwd=cwd,
-                  stdin=asyncio.subprocess.PIPE,
-                  stdout=asyncio.subprocess.PIPE,
-                  stderr=asyncio.subprocess.PIPE,
-              )
-              stdout, stderr = await process.communicate(input=input_text.encode())
-              return process.returncode, stdout.decode(), stderr.decode()
+            async def _run_input(
+                cmd_list: list[str],
+                cwd: str | None = None,
+                input_text: str = "",
+            ) -> tuple[int, str, str]:
+                process = await asyncio.create_subprocess_exec(
+                    *cmd_list,
+                    cwd=cwd,
+                    stdin=asyncio.subprocess.PIPE,
+                    stdout=asyncio.subprocess.PIPE,
+                    stderr=asyncio.subprocess.PIPE,
+                )
+                stdout, stderr = await process.communicate(input=input_text.encode())
+                return process.returncode, stdout.decode(), stderr.decode()
 
-          rc, _out, _err = asyncio.run(
-              _run_input(
-                  [python_exe, "generate_config.py"],
-                  cwd=str(Path(__file__).parent.parent),
-                  input_text="y\n",
-              ),
-          )
-          if rc != 0:
-              msg: str = f"Expected {0}, got {rc}"
-              raise AssertionError(msg)
-          assert config_path.exists()
-      # Load and validate config
-      with config_path.open(encoding="utf-8") as f:
-          config = json.load(f)
-      # Check required fields
-      if "base_url" not in config:
-          msg: str = f"Expected {'base_url'} in {config}"
-          raise AssertionError(msg)
-      assert "oauth_client_id" in config
-      if "oauth_client_secret" not in config:
-          msg: str = f"Expected {'oauth_client_secret'} in {config}"
-          raise AssertionError(msg)
-      assert "oauth_token_url" in config
-      # Check target-specific fields
-      if "import_mode" not in config:
-          msg: str = f"Expected {'import_mode'} in {config}"
-          raise AssertionError(msg)
-      assert config["import_mode"] in {"create", "update", "create_or_update"}
+            rc, _out, _err = asyncio.run(
+                _run_input(
+                    [python_exe, "generate_config.py"],
+                    cwd=str(Path(__file__).parent.parent),
+                    input_text="y\n",
+                ),
+            )
+            if rc != 0:
+                msg: str = f"Expected {0}, got {rc}"
+                raise AssertionError(msg)
+            assert config_path.exists()
+        # Load and validate config
+        with config_path.open(encoding="utf-8") as f:
+            config = json.load(f)
+        # Check required fields
+        if "base_url" not in config:
+            msg: str = f"Expected {'base_url'} in {config}"
+            raise AssertionError(msg)
+        assert "oauth_client_id" in config
+        if "oauth_client_secret" not in config:
+            msg: str = f"Expected {'oauth_client_secret'} in {config}"
+            raise AssertionError(msg)
+        assert "oauth_token_url" in config
+        # Check target-specific fields
+        if "import_mode" not in config:
+            msg: str = f"Expected {'import_mode'} in {config}"
+            raise AssertionError(msg)
+        assert config["import_mode"] in {"create", "update", "create_or_update"}
 
 
 # Additional test class using Singer SDK test framework
 def get_target_oic_test_class() -> type:
     """Get test class for Singer SDK tests."""
     return get_target_test_class(
-      target_class=TargetOracleOIC,
-      config={
-          "base_url": "https://test.integration.ocp.oraclecloud.com",
-          "oauth_client_id": "test_client",
-          "oauth_client_secret": "test_secret",
-          "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
-      },
+        target_class=TargetOracleOIC,
+        config={
+            "base_url": "https://test.integration.ocp.oraclecloud.com",
+            "oauth_client_id": "test_client",
+            "oauth_client_secret": "test_secret",
+            "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
+        },
     )
 
 
