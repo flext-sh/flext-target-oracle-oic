@@ -21,164 +21,164 @@ class OICBaseSink(Sink):
     """Base sink for Oracle Integration Cloud."""
 
     def __init__(
-      self,
-      target: Target,
-      stream_name: str,
-      schema: dict[str, object],
-      key_properties: Sequence[str] | None = None,
+        self,
+        target: Target,
+        stream_name: str,
+        schema: dict[str, object],
+        key_properties: Sequence[str] | None = None,
     ) -> None:
-      """Initialize base sink with target and stream metadata."""
-      super().__init__(target, stream_name, schema, key_properties)
-      # CRITICAL: Set tap_name for Singer SDK auth compatibility
-      self.tap_name = "target-oracle-oic"  # Required by Singer SDK authenticators
-      self._authenticator: OICOAuth2Authenticator | None = None
-      self._client: httpx.Client | None = None
+        """Initialize base sink with target and stream metadata."""
+        super().__init__(target, stream_name, schema, key_properties)
+        # CRITICAL: Set tap_name for Singer SDK auth compatibility
+        self.tap_name = "target-oracle-oic"  # Required by Singer SDK authenticators
+        self._authenticator: OICOAuth2Authenticator | None = None
+        self._client: httpx.Client | None = None
 
     @property
     def authenticator(self) -> OICOAuth2Authenticator:
-      """Get or create OAuth2 authenticator instance.
+        """Get or create OAuth2 authenticator instance.
 
-      Returns:
-          OICOAuth2Authenticator for API authentication.
+        Returns:
+            OICOAuth2Authenticator for API authentication.
 
-      """
-      if not self._authenticator:
-          # Create OICAuthConfig from sink configuration
-          auth_config = OICAuthConfig(
-              oauth_client_id=self.config.get("oauth_client_id", ""),
-              oauth_client_secret=self.config.get("oauth_client_secret", ""),
-              oauth_token_url=self.config.get("oauth_token_url", ""),
-              oauth_client_aud=self.config.get("oauth_client_aud"),
-              oauth_scope=self.config.get("oauth_scope", ""),
-          )
-          self._authenticator = OICOAuth2Authenticator(auth_config)
-      return self._authenticator
+        """
+        if not self._authenticator:
+            # Create OICAuthConfig from sink configuration
+            auth_config = OICAuthConfig(
+                oauth_client_id=self.config.get("oauth_client_id", ""),
+                oauth_client_secret=self.config.get("oauth_client_secret", ""),
+                oauth_token_url=self.config.get("oauth_token_url", ""),
+                oauth_client_aud=self.config.get("oauth_client_aud"),
+                oauth_scope=self.config.get("oauth_scope", ""),
+            )
+            self._authenticator = OICOAuth2Authenticator(auth_config)
+        return self._authenticator
 
     @property
     def client(self) -> httpx.Client:
-      """Get or create HTTP client with authentication headers.
+        """Get or create HTTP client with authentication headers.
 
-      Returns:
-          Configured httpx.Client for OIC API requests.
+        Returns:
+            Configured httpx.Client for OIC API requests.
 
-      """
-      if not self._client:
-          # Get access token for authentication
-          token_result = self.authenticator.get_access_token()
-          if not token_result.success:
-              msg: str = f"Authentication failed: {token_result.error}"
-              raise RuntimeError(msg)
+        """
+        if not self._client:
+            # Get access token for authentication
+            token_result = self.authenticator.get_access_token()
+            if not token_result.success:
+                msg: str = f"Authentication failed: {token_result.error}"
+                raise RuntimeError(msg)
 
-          # Create client with Bearer token
-          auth_headers = {
-              "Authorization": f"Bearer {token_result.data}",
-              "Content-Type": JSON_MIME,
-              "Accept": JSON_MIME,
-          }
+            # Create client with Bearer token
+            auth_headers = {
+                "Authorization": f"Bearer {token_result.data}",
+                "Content-Type": JSON_MIME,
+                "Accept": JSON_MIME,
+            }
 
-          self._client = httpx.Client(
-              base_url=self.config["base_url"],
-              headers=auth_headers,
-              timeout=30.0,
-          )
-      return self._client
+            self._client = httpx.Client(
+                base_url=self.config["base_url"],
+                headers=auth_headers,
+                timeout=30.0,
+            )
+        return self._client
 
     def preprocess_record(
-      self,
-      record: dict[str, object],
-      _context: dict[str, object] | None,
+        self,
+        record: dict[str, object],
+        _context: dict[str, object] | None,
     ) -> dict[str, object]:
-      """Preprocess record before batch processing.
+        """Preprocess record before batch processing.
 
-      Args:
-          record: Raw record data to preprocess.
-          _context: Optional context information (unused).
+        Args:
+            record: Raw record data to preprocess.
+            _context: Optional context information (unused).
 
-      Returns:
-          Preprocessed record ready for API submission.
+        Returns:
+            Preprocessed record ready for API submission.
 
-      """
-      return record
+        """
+        return record
 
     def process_batch(self, context: dict[str, object]) -> None:
-      """Process batch of records to OIC API.
+        """Process batch of records to OIC API.
 
-      Groups records by operation type and submits in batches
-      respecting OIC API batch size limits.
+        Groups records by operation type and submits in batches
+        respecting OIC API batch size limits.
 
-      Args:
-          context: Batch context containing records and metadata.
+        Args:
+            context: Batch context containing records and metadata.
 
-      """
-      if not context.get("records"):
-          return
-      records_obj = context["records"]
-      records: list[dict[str, object]] = (
-          records_obj if isinstance(records_obj, list) else []
-      )
-      batch_size = min(len(records), 100)  # OIC API batch limit
-      # Group records by operation type for more efficient processing
-      create_records: list[dict[str, object]] = []
-      update_records: list[dict[str, object]] = []
-      for record in records:
-          if self._record_exists(record):
-              update_records.append(record)
-          else:
-              create_records.append(record)
-      # Process creates in batches
-      if create_records:
-          for i in range(0, len(create_records), batch_size):
-              batch = create_records[i : i + batch_size]
-              self._process_create_batch(batch, context)
-      # Process updates in batches
-      if update_records:
-          for i in range(0, len(update_records), batch_size):
-              batch = update_records[i : i + batch_size]
-              self._process_update_batch(batch, context)
+        """
+        if not context.get("records"):
+            return
+        records_obj = context["records"]
+        records: list[dict[str, object]] = (
+            records_obj if isinstance(records_obj, list) else []
+        )
+        batch_size = min(len(records), 100)  # OIC API batch limit
+        # Group records by operation type for more efficient processing
+        create_records: list[dict[str, object]] = []
+        update_records: list[dict[str, object]] = []
+        for record in records:
+            if self._record_exists(record):
+                update_records.append(record)
+            else:
+                create_records.append(record)
+        # Process creates in batches
+        if create_records:
+            for i in range(0, len(create_records), batch_size):
+                batch = create_records[i : i + batch_size]
+                self._process_create_batch(batch, context)
+        # Process updates in batches
+        if update_records:
+            for i in range(0, len(update_records), batch_size):
+                batch = update_records[i : i + batch_size]
+                self._process_update_batch(batch, context)
 
     def _record_exists(self, _record: dict[str, object]) -> bool:
-      # Default implementation - subclasses should override
-      return False
+        # Default implementation - subclasses should override
+        return False
 
     def _process_create_batch(
-      self,
-      records: list[dict[str, object]],
-      context: dict[str, object],
+        self,
+        records: list[dict[str, object]],
+        context: dict[str, object],
     ) -> None:
-      # Default implementation processes records individually
-      # Subclasses should override for true batch operations
-      for record in records:
-          self.process_record(record, context)
+        # Default implementation processes records individually
+        # Subclasses should override for true batch operations
+        for record in records:
+            self.process_record(record, context)
 
     def _process_update_batch(
-      self,
-      records: list[dict[str, object]],
-      context: dict[str, object],
+        self,
+        records: list[dict[str, object]],
+        context: dict[str, object],
     ) -> None:
-      # Default implementation processes records individually
-      # Subclasses should override for true batch operations
-      for record in records:
-          self.process_record(record, context)
+        # Default implementation processes records individually
+        # Subclasses should override for true batch operations
+        for record in records:
+            self.process_record(record, context)
 
     def process_record(
-      self,
-      _record: dict[str, object],
-      _context: dict[str, object],
+        self,
+        _record: dict[str, object],
+        _context: dict[str, object],
     ) -> None:
-      """Process a single record - default implementation for base sink.
+        """Process a single record - default implementation for base sink.
 
-      Args:
-          record: Record data to process.
-          context: Processing context.
+        Args:
+            record: Record data to process.
+            context: Processing context.
 
-      """
-      # Default implementation: log and skip
-      # Subclasses should override this method
-      self.logger.warning(
-          "OICBaseSink.process_record called directly - "
-          "stream '%s' should use a specific sink class",
-          self.stream_name,
-      )
+        """
+        # Default implementation: log and skip
+        # Subclasses should override this method
+        self.logger.warning(
+            "OICBaseSink.process_record called directly - "
+            "stream '%s' should use a specific sink class",
+            self.stream_name,
+        )
 
 
 class ConnectionsSink(OICBaseSink):
@@ -187,59 +187,59 @@ class ConnectionsSink(OICBaseSink):
     name = "connections"
 
     def process_record(
-      self,
-      record: dict[str, object],
-      _context: dict[str, object],
+        self,
+        record: dict[str, object],
+        _context: dict[str, object],
     ) -> None:
-      """Process a connection record.
+        """Process a connection record.
 
-      Creates new connections or updates existing ones based on record ID.
+        Creates new connections or updates existing ones based on record ID.
 
-      Args:
-          record: Connection record data containing id and configuration.
-          _context: Processing context (unused).
+        Args:
+            record: Connection record data containing id and configuration.
+            _context: Processing context (unused).
 
-      """
-      connection_id = str(record.get("id", ""))
-      # Check if connection exists:
-      response = self.client.get(
-          f"/ic/api/integration/v1/connections/{connection_id}",
-      )
-      if response.status_code == HTTP_NOT_FOUND:
-          # Create new connection
-          self._create_connection(record)
-      else:
-          # Update existing connection
-          self._update_connection(connection_id, record)
+        """
+        connection_id = str(record.get("id", ""))
+        # Check if connection exists:
+        response = self.client.get(
+            f"/ic/api/integration/v1/connections/{connection_id}",
+        )
+        if response.status_code == HTTP_NOT_FOUND:
+            # Create new connection
+            self._create_connection(record)
+        else:
+            # Update existing connection
+            self._update_connection(connection_id, record)
 
     def _create_connection(self, record: dict[str, object]) -> None:
-      payload = {
-          "connectionProperties": {
-              "name": record["name"],
-              "identifier": record["id"],
-              "description": record.get("description", ""),
-              "adapterType": record["adapter_type"],
-              "connectionProperties": record.get("properties", {}),
-          },
-      }
-      response = self.client.post(
-          "/ic/api/integration/v1/connections",
-          json=payload,
-      )
-      response.raise_for_status()
+        payload = {
+            "connectionProperties": {
+                "name": record["name"],
+                "identifier": record["id"],
+                "description": record.get("description", ""),
+                "adapterType": record["adapter_type"],
+                "connectionProperties": record.get("properties", {}),
+            },
+        }
+        response = self.client.post(
+            "/ic/api/integration/v1/connections",
+            json=payload,
+        )
+        response.raise_for_status()
 
     def _update_connection(self, connection_id: str, record: dict[str, object]) -> None:
-      payload = {
-          "connectionProperties": {
-              "description": record.get("description", ""),
-              "connectionProperties": record.get("properties", {}),
-          },
-      }
-      response = self.client.put(
-          f"/ic/api/integration/v1/connections/{connection_id}",
-          json=payload,
-      )
-      response.raise_for_status()
+        payload = {
+            "connectionProperties": {
+                "description": record.get("description", ""),
+                "connectionProperties": record.get("properties", {}),
+            },
+        }
+        response = self.client.put(
+            f"/ic/api/integration/v1/connections/{connection_id}",
+            json=payload,
+        )
+        response.raise_for_status()
 
 
 class IntegrationsSink(OICBaseSink):
@@ -248,84 +248,84 @@ class IntegrationsSink(OICBaseSink):
     name = "integrations"
 
     def process_record(
-      self,
-      record: dict[str, object],
-      _context: dict[str, object],
+        self,
+        record: dict[str, object],
+        _context: dict[str, object],
     ) -> None:
-      """Process an integration record.
+        """Process an integration record.
 
-      Imports integrations to OIC with version management.
+        Imports integrations to OIC with version management.
 
-      Args:
-          record: Integration record containing id, version, and integration archive.
-          _context: Processing context (unused).
+        Args:
+            record: Integration record containing id, version, and integration archive.
+            _context: Processing context (unused).
 
-      """
-      integration_id = str(record.get("id", ""))
-      version = str(record.get("version", "01.00.0000"))
-      # Check if integration exists:
-      response = self.client.get(
-          f"/ic/api/integration/v1/integrations/{integration_id}|{version}",
-      )
-      if response.status_code == HTTP_NOT_FOUND:
-          # Create new integration from archive if provided:
-          if "archive_content" in record:
-              self._import_integration(record)
-          else:
-              self._create_integration(record)
-      else:
-          # Update existing integration
-          self._update_integration(integration_id, version, record)
+        """
+        integration_id = str(record.get("id", ""))
+        version = str(record.get("version", "01.00.0000"))
+        # Check if integration exists:
+        response = self.client.get(
+            f"/ic/api/integration/v1/integrations/{integration_id}|{version}",
+        )
+        if response.status_code == HTTP_NOT_FOUND:
+            # Create new integration from archive if provided:
+            if "archive_content" in record:
+                self._import_integration(record)
+            else:
+                self._create_integration(record)
+        else:
+            # Update existing integration
+            self._update_integration(integration_id, version, record)
 
     def _create_integration(self, record: dict[str, object]) -> None:
-      payload = {
-          "name": record["name"],
-          "identifier": record["id"],
-          "description": record.get("description", ""),
-          "pattern": record.get("pattern", "ORCHESTRATION"),
-      }
-      response = self.client.post(
-          "/ic/api/integration/v1/integrations",
-          json=payload,
-      )
-      response.raise_for_status()
+        payload = {
+            "name": record["name"],
+            "identifier": record["id"],
+            "description": record.get("description", ""),
+            "pattern": record.get("pattern", "ORCHESTRATION"),
+        }
+        response = self.client.post(
+            "/ic/api/integration/v1/integrations",
+            json=payload,
+        )
+        response.raise_for_status()
 
     def _import_integration(self, record: dict[str, object]) -> None:
-      archive_content = record.get("archive_content")
-      if isinstance(archive_content, str):
-          archive_content = archive_content.encode()
-      content: bytes = (
-          archive_content
-          if isinstance(archive_content, bytes)
-          else (
-              bytes(archive_content)
-              if isinstance(archive_content, bytearray)
-              else b""
-          )
-      )
-      files: dict[str, tuple[str, bytes, str]] = {
-          "file": ("integration.iar", content, "application/octet-stream"),
-      }
-      response = self.client.post(
-          "/ic/api/integration/v1/integrations/archive",
-          files=files,
-      )
-      response.raise_for_status()
+        archive_content = record.get("archive_content")
+        if isinstance(archive_content, str):
+            archive_content = archive_content.encode()
+        content: bytes = (
+            archive_content
+            if isinstance(archive_content, bytes)
+            else (
+                bytes(archive_content)
+                if isinstance(archive_content, bytearray)
+                else b""
+            )
+        )
+        files: dict[str, tuple[str, bytes, str]] = {
+            "file": ("integration.iar", content, "application/octet-stream"),
+        }
+        response = self.client.post(
+            "/ic/api/integration/v1/integrations/archive",
+            files=files,
+        )
+        response.raise_for_status()
 
     def _update_integration(
-      self,
-      integration_id: str,
-      version: str,
-      record: dict[str, object],
+        self,
+        integration_id: str,
+        version: str,
+        record: dict[str, object],
     ) -> None:
-      payload = {
-          "description": record.get("description", ""),
-      }
-      response = self.client.put(
-          f"/ic/api/integration/v1/integrations/{integration_id}|{version}",
-          json=payload,
-      )
-      response.raise_for_status()
+        payload = {
+            "description": record.get("description", ""),
+        }
+        response = self.client.put(
+            f"/ic/api/integration/v1/integrations/{integration_id}|{version}",
+            json=payload,
+        )
+        response.raise_for_status()
 
 
 class PackagesSink(OICBaseSink):
@@ -334,52 +334,52 @@ class PackagesSink(OICBaseSink):
     name = "packages"
 
     def process_record(
-      self,
-      record: dict[str, object],
-      _context: dict[str, object],
+        self,
+        record: dict[str, object],
+        _context: dict[str, object],
     ) -> None:
-      """Process a package record.
+        """Process a package record.
 
-      Imports package archives to OIC if archive content is provided.
+        Imports package archives to OIC if archive content is provided.
 
-      Args:
-          record: Package record containing id and optional archive_content.
-          _context: Processing context (unused).
+        Args:
+            record: Package record containing id and optional archive_content.
+            _context: Processing context (unused).
 
-      """
-      package_id = str(record.get("id", ""))
-      # Log the package being processed
-      self.logger.info("Processing package: %s", package_id)
-      # Import package if archive content is provided:
-      if "archive_content" in record:
-          self._import_package(record)
-      else:
-          self.logger.warning(
-              "No archive content provided for package %s",
-              package_id,
-          )
+        """
+        package_id = str(record.get("id", ""))
+        # Log the package being processed
+        self.logger.info("Processing package: %s", package_id)
+        # Import package if archive content is provided:
+        if "archive_content" in record:
+            self._import_package(record)
+        else:
+            self.logger.warning(
+                "No archive content provided for package %s",
+                package_id,
+            )
 
     def _import_package(self, record: dict[str, object]) -> None:
-      archive_content = record.get("archive_content")
-      if isinstance(archive_content, str):
-          archive_content = archive_content.encode()
-      pkg_bytes: bytes = (
-          archive_content
-          if isinstance(archive_content, bytes)
-          else (
-              bytes(archive_content)
-              if isinstance(archive_content, bytearray)
-              else b""
-          )
-      )
-      files: dict[str, tuple[str, bytes, str]] = {
-          "file": ("package.iar", pkg_bytes, "application/octet-stream"),
-      }
-      response = self.client.post(
-          "/ic/api/integration/v1/packages/archive",
-          files=files,
-      )
-      response.raise_for_status()
+        archive_content = record.get("archive_content")
+        if isinstance(archive_content, str):
+            archive_content = archive_content.encode()
+        pkg_bytes: bytes = (
+            archive_content
+            if isinstance(archive_content, bytes)
+            else (
+                bytes(archive_content)
+                if isinstance(archive_content, bytearray)
+                else b""
+            )
+        )
+        files: dict[str, tuple[str, bytes, str]] = {
+            "file": ("package.iar", pkg_bytes, "application/octet-stream"),
+        }
+        response = self.client.post(
+            "/ic/api/integration/v1/packages/archive",
+            files=files,
+        )
+        response.raise_for_status()
 
 
 class LookupsSink(OICBaseSink):
@@ -388,49 +388,49 @@ class LookupsSink(OICBaseSink):
     name = "lookups"
 
     def process_record(
-      self,
-      record: dict[str, object],
-      _context: dict[str, object],
+        self,
+        record: dict[str, object],
+        _context: dict[str, object],
     ) -> None:
-      """Process a lookup record.
+        """Process a lookup record.
 
-      Creates new lookups or updates existing ones based on lookup name.
+        Creates new lookups or updates existing ones based on lookup name.
 
-      Args:
-          record: Lookup record containing name and lookup definitions.
-          _context: Processing context (unused).
+        Args:
+            record: Lookup record containing name and lookup definitions.
+            _context: Processing context (unused).
 
-      """
-      lookup_name = str(record.get("name", ""))
-      # Check if lookup exists:
-      response = self.client.get(f"/ic/api/integration/v1/lookups/{lookup_name}")
-      if response.status_code == HTTP_NOT_FOUND:
-          # Create new lookup
-          self._create_lookup(record)
-      else:
-          # Update existing lookup
-          self._update_lookup(lookup_name, record)
+        """
+        lookup_name = str(record.get("name", ""))
+        # Check if lookup exists:
+        response = self.client.get(f"/ic/api/integration/v1/lookups/{lookup_name}")
+        if response.status_code == HTTP_NOT_FOUND:
+            # Create new lookup
+            self._create_lookup(record)
+        else:
+            # Update existing lookup
+            self._update_lookup(lookup_name, record)
 
     def _create_lookup(self, record: dict[str, object]) -> None:
-      payload = {
-          "name": record["name"],
-          "description": record.get("description", ""),
-          "columns": record.get("columns", []),
-          "rows": record.get("rows", []),
-      }
-      response = self.client.post(
-          "/ic/api/integration/v1/lookups",
-          json=payload,
-      )
-      response.raise_for_status()
+        payload = {
+            "name": record["name"],
+            "description": record.get("description", ""),
+            "columns": record.get("columns", []),
+            "rows": record.get("rows", []),
+        }
+        response = self.client.post(
+            "/ic/api/integration/v1/lookups",
+            json=payload,
+        )
+        response.raise_for_status()
 
     def _update_lookup(self, lookup_name: str, record: dict[str, object]) -> None:
-      payload = {
-          "description": record.get("description", ""),
-          "rows": record.get("rows", []),
-      }
-      response = self.client.put(
-          f"/ic/api/integration/v1/lookups/{lookup_name}",
-          json=payload,
-      )
-      response.raise_for_status()
+        payload = {
+            "description": record.get("description", ""),
+            "rows": record.get("rows", []),
+        }
+        response = self.client.put(
+            f"/ic/api/integration/v1/lookups/{lookup_name}",
+            json=payload,
+        )
+        response.raise_for_status()

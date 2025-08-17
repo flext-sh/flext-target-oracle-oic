@@ -12,7 +12,7 @@ from flext_target_oracle_oic.target import TargetOracleOIC
 
 if __name__ == "__main__":
     try:
-      TargetOracleOIC.cli(sys.argv[1:])
+        TargetOracleOIC.cli(sys.argv[1:])
     except SystemExit:
-      # Allow tests to pass even if CLI exits due to missing live endpoints
-      sys.exit(0)
+        # Allow tests to pass even if CLI exits due to missing live endpoints
+        sys.exit(0)
