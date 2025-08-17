@@ -47,8 +47,9 @@ make check                    # Essential checks (lint + type + test)
 make validate                 # Full compliance validation (lint + type + security + test)
 make lint                     # Ruff linting (ALL rules enabled)
 make type-check               # MyPy strict mode type checking
-make security                 # Security scans (bandit + pip-audit + secrets)
+make security                 # Security scans (bandit + pip-audit)
 make test                     # Run tests with 90% coverage requirement
+make fix                      # Auto-fix all formatting and linting issues
 ```
 
 ### Development Setup
@@ -56,7 +57,7 @@ make test                     # Run tests with 90% coverage requirement
 ```bash
 make setup                    # Complete dev setup (install + pre-commit)
 make install                  # Install dependencies with Poetry
-make dev-install              # Development mode setup with pre-commit hooks
+make install-dev              # Install dev dependencies
 make pre-commit               # Setup and run pre-commit hooks
 ```
 
@@ -67,7 +68,8 @@ make test                     # Full test suite with 90% coverage
 make test-unit                # Unit tests only
 make test-integration         # Integration tests only
 make test-singer              # Singer protocol tests
-make coverage                 # Generate detailed coverage report
+make test-fast                # Run tests without coverage
+make coverage-html            # Generate HTML coverage report
 pytest -m unit               # Run unit tests via pytest
 pytest -m integration        # Run integration tests via pytest
 pytest -m e2e                # Run end-to-end tests via pytest
@@ -76,35 +78,36 @@ pytest -m e2e                # Run end-to-end tests via pytest
 ### Singer Target Operations
 
 ```bash
-make target-test              # Test target functionality (--about, --version)
-make target-validate          # Validate target configuration
-make target-schema            # Validate OIC schema
-make target-run               # Run OIC data loading with test fixtures
-make target-run-debug         # Run with debug logging
-make target-dry-run           # Dry-run mode testing
-make sync                     # Sync data to OIC (requires TARGET_CONFIG, TARGET_STATE)
+make test-target              # Test target functionality (--about, --version)
+make validate-target-config   # Validate target configuration
+make load                     # Run target data loading (requires config.json, state.json)
+make dry-run                  # Dry-run mode testing
 ```
 
 ### Oracle OIC Specific Operations
 
 ```bash
-make oic-write-test           # Test OIC write operations
-make oic-endpoint-check       # Test OIC endpoint connectivity
-make oic-auth-test            # Test OAuth2 authentication flow
-make oauth2-test              # Test OAuth2 client credentials flow
-make idcs-test                # Test IDCS token endpoint
-make token-validation         # Test token validation and refresh
+make oic-auth-test            # Test Oracle OIC authentication
+make oic-connect              # Test Oracle OIC connection
+make oic-write-test           # Test Oracle OIC write operations
+make oic-endpoint-check       # Test Oracle OIC endpoints
 ```
 
 ### Build and Maintenance
 
 ```bash
 make build                    # Build distribution packages
+make build-clean              # Clean and build
 make format                   # Auto-format code with ruff
-make fix                      # Auto-fix all formatting and linting issues
 make clean                    # Remove build artifacts and caches
+make clean-all                # Deep clean including venv
+make reset                    # Reset project (clean-all + setup)
 make deps-update              # Update dependencies
+make deps-show                # Show dependency tree
 make deps-audit               # Security audit of dependencies
+make shell                    # Open Python shell
+make diagnose                 # Project diagnostics
+make doctor                   # Health check + diagnostics
 ```
 
 ## Configuration
@@ -190,10 +193,12 @@ poetry run target-oracle-oic --config config.json --validate-config
 ### Debugging Issues
 
 - Check `make diagnose` for system information and project status
-- Use `make target-run-debug` for verbose logging during data loading
-- Examine test fixtures in `tests/fixtures/` for example configurations
+- Use `make dry-run` for testing without actual data loading
+- Examine test fixtures for example configurations
 - Review exception hierarchy in `exceptions.py` for specific error types
 - Use `poetry run pytest --pdb` to debug test failures
+- Set log level to DEBUG in config for verbose logging
+- Use `make oic-auth-test` to verify authentication setup
 
 ## Dependencies
 
@@ -214,6 +219,44 @@ poetry run target-oracle-oic --config config.json --validate-config
 - `mypy`: Static type checking in strict mode
 - `bandit`: Security vulnerability scanning
 - `pre-commit`: Automated quality gate enforcement
+
+## Project Structure
+
+### Key Files and Directories
+
+```
+src/flext_target_oracle_oic/
+├── target.py                 # Main Singer SDK target entry point
+├── sinks.py                  # Core sink implementations (ConnectionsSink, IntegrationsSink, etc.)
+├── sinks_extended.py         # Extended sink functionality
+├── application/
+│   └── orchestrator.py       # Business logic orchestration
+├── auth.py                   # OAuth2 authentication implementation
+├── client.py                 # HTTP client for OIC API
+├── target_client.py          # Target-specific client wrapper
+├── config.py                 # Configuration models
+├── target_config.py          # Target-specific configuration
+├── connection/
+│   ├── config.py             # Connection configuration
+│   └── connection.py         # Connection management
+├── exceptions.py             # Exception hierarchy
+├── target_exceptions.py      # Target-specific exceptions
+├── models.py                 # Data models
+├── target_models.py          # Target-specific models
+├── simple_api.py             # Simplified API interface
+├── cli.py                    # Command-line interface
+├── patterns/
+│   └── oic_patterns.py       # OIC-specific patterns
+└── singer/
+    └── processors.py         # Singer data processors
+```
+
+### Important Configuration Files
+
+- `pyproject.toml` - Project dependencies and build configuration
+- `config.json.example` - Example target configuration
+- `Makefile` - All development commands and quality gates
+- `poetry.lock` - Locked dependency versions
 
 ## Integration with FLEXT Ecosystem
 
