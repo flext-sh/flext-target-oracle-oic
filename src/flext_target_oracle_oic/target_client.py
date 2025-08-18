@@ -556,7 +556,7 @@ class TargetOracleOIC(Target):
 
     # Override config property to return exactly the flat config passed by tests
     @property
-    def config(self) -> dict[str, object]:  # type: ignore[override]
+    def config(self) -> dict[str, object]:
         return self._original_flat_config
 
     def setup(self) -> None:
