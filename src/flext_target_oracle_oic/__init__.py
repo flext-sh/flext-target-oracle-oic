@@ -146,7 +146,7 @@ except Exception:  # pragma: no cover - tolerate missing during partial installs
 
     logger = logging.getLogger(__name__)
 
-    def generate_config() -> dict[str, object]:  # type: ignore[override]
+    def generate_config() -> dict[str, object]:
         """Generate configuration from environment variables."""
         return {
             "base_url": os.getenv(
@@ -172,7 +172,7 @@ except Exception:  # pragma: no cover - tolerate missing during partial installs
             "validate_ssl": os.getenv("OIC_VALIDATE_SSL", "true").lower() == "true",
         }
 
-    def generate_config_main() -> None:  # type: ignore[override]
+    def generate_config_main() -> None:
         """Generate configuration file interactively."""
         config_path = Path("config.json")
         if config_path.exists():
