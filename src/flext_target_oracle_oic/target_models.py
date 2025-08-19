@@ -71,14 +71,14 @@ class OICConnection(ConnectionBase):
         """Validate connection business rules."""
         try:
             if not self.id.strip():
-                return FlextResult.fail("Connection ID cannot be empty")
+                return FlextResult[None].fail("Connection ID cannot be empty")
             if not self.name.strip():
-                return FlextResult.fail("Connection name cannot be empty")
+                return FlextResult[None].fail("Connection name cannot be empty")
             if not self.adapter_type.strip():
-                return FlextResult.fail("Adapter type cannot be empty")
-            return FlextResult.ok(None)
+                return FlextResult[None].fail("Adapter type cannot be empty")
+            return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextResult.fail(f"Connection validation failed: {e}")
+            return FlextResult[None].fail(f"Connection validation failed: {e}")
 
 
 class OICIntegration(IntegrationBase):
@@ -134,17 +134,17 @@ class OICIntegration(IntegrationBase):
         """Validate integration business rules."""
         try:
             if not self.id.strip():
-                return FlextResult.fail("Integration ID cannot be empty")
+                return FlextResult[None].fail("Integration ID cannot be empty")
             if not self.name.strip():
-                return FlextResult.fail("Integration name cannot be empty")
+                return FlextResult[None].fail("Integration name cannot be empty")
 
             # Validate version format
             if not re.match(r"^\d{2}\.\d{2}\.\d{4}$", self.version):
-                return FlextResult.fail(f"Invalid version format: {self.version}")
+                return FlextResult[None].fail(f"Invalid version format: {self.version}")
 
-            return FlextResult.ok(None)
+            return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextResult.fail(f"Integration validation failed: {e}")
+            return FlextResult[None].fail(f"Integration validation failed: {e}")
 
 
 class OICPackage(PackageBase):
@@ -198,17 +198,17 @@ class OICPackage(PackageBase):
         """Validate package business rules."""
         try:
             if not self.id.strip():
-                return FlextResult.fail("Package ID cannot be empty")
+                return FlextResult[None].fail("Package ID cannot be empty")
             if not self.name.strip():
-                return FlextResult.fail("Package name cannot be empty")
+                return FlextResult[None].fail("Package name cannot be empty")
 
             # Validate version format
             if not re.match(r"^\d{2}\.\d{2}\.\d{4}$", self.version):
-                return FlextResult.fail(f"Invalid version format: {self.version}")
+                return FlextResult[None].fail(f"Invalid version format: {self.version}")
 
-            return FlextResult.ok(None)
+            return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextResult.fail(f"Package validation failed: {e}")
+            return FlextResult[None].fail(f"Package validation failed: {e}")
 
 
 class OICLookup(LookupBase):
@@ -245,7 +245,7 @@ class OICLookup(LookupBase):
         try:
             # Check name
             if not self.name.strip():
-                return FlextResult.fail("Lookup name cannot be empty")
+                return FlextResult[None].fail("Lookup name cannot be empty")
 
             # Validate columns structure - columns are already validated by type hints as dict[str, str]
             validation_errors = []
@@ -268,11 +268,11 @@ class OICLookup(LookupBase):
                     )
 
             if validation_errors:
-                return FlextResult.fail("; ".join(validation_errors))
+                return FlextResult[None].fail("; ".join(validation_errors))
 
-            return FlextResult.ok(None)
+            return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextResult.fail(f"Lookup validation failed: {e}")
+            return FlextResult[None].fail(f"Lookup validation failed: {e}")
 
 
 # ===============================================================================
@@ -314,12 +314,12 @@ class OICProject(FlextValueObject):
         """Validate project business rules."""
         try:
             if not self.id.strip():
-                return FlextResult.fail("Project ID cannot be empty")
+                return FlextResult[None].fail("Project ID cannot be empty")
             if not self.name.strip():
-                return FlextResult.fail("Project name cannot be empty")
-            return FlextResult.ok(None)
+                return FlextResult[None].fail("Project name cannot be empty")
+            return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextResult.fail(f"Project validation failed: {e}")
+            return FlextResult[None].fail(f"Project validation failed: {e}")
 
 
 class OICSchedule(FlextValueObject):
@@ -360,17 +360,17 @@ class OICSchedule(FlextValueObject):
         """Validate schedule business rules."""
         try:
             if not self.integration_id.strip():
-                return FlextResult.fail("Integration ID cannot be empty")
+                return FlextResult[None].fail("Integration ID cannot be empty")
 
             # Validate cron expression if CRON type
             if self.schedule_type == "CRON" and not self.schedule_expression:
-                return FlextResult.fail(
+                return FlextResult[None].fail(
                     "CRON schedule type requires schedule expression",
                 )
 
-            return FlextResult.ok(None)
+            return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextResult.fail(f"Schedule validation failed: {e}")
+            return FlextResult[None].fail(f"Schedule validation failed: {e}")
 
 
 class OICIntegrationAction(FlextValueObject):
@@ -404,17 +404,17 @@ class OICIntegrationAction(FlextValueObject):
         """Validate integration action business rules."""
         try:
             if not self.integration_id.strip():
-                return FlextResult.fail("Integration ID cannot be empty")
+                return FlextResult[None].fail("Integration ID cannot be empty")
             if not self.action.strip():
-                return FlextResult.fail("Action cannot be empty")
+                return FlextResult[None].fail("Action cannot be empty")
 
             # Validate version format
             if not re.match(r"^\d{2}\.\d{2}\.\d{4}$", self.version):
-                return FlextResult.fail(f"Invalid version format: {self.version}")
+                return FlextResult[None].fail(f"Invalid version format: {self.version}")
 
-            return FlextResult.ok(None)
+            return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextResult.fail(f"Integration action validation failed: {e}")
+            return FlextResult[None].fail(f"Integration action validation failed: {e}")
 
 
 class OICConnectionAction(FlextValueObject):
@@ -443,12 +443,12 @@ class OICConnectionAction(FlextValueObject):
         """Validate connection action business rules."""
         try:
             if not self.connection_id.strip():
-                return FlextResult.fail("Connection ID cannot be empty")
+                return FlextResult[None].fail("Connection ID cannot be empty")
             if not self.action.strip():
-                return FlextResult.fail("Action cannot be empty")
-            return FlextResult.ok(None)
+                return FlextResult[None].fail("Action cannot be empty")
+            return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextResult.fail(f"Connection action validation failed: {e}")
+            return FlextResult[None].fail(f"Connection action validation failed: {e}")
 
 
 # ===============================================================================
@@ -480,12 +480,12 @@ class OICDataTransformation(FlextValueObject):
         """Validate transformation business rules."""
         try:
             if not self.source_data:
-                return FlextResult.fail("Source data cannot be empty")
+                return FlextResult[None].fail("Source data cannot be empty")
             if not self.target_schema:
-                return FlextResult.fail("Target schema cannot be empty")
-            return FlextResult.ok(None)
+                return FlextResult[None].fail("Target schema cannot be empty")
+            return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextResult.fail(f"Transformation validation failed: {e}")
+            return FlextResult[None].fail(f"Transformation validation failed: {e}")
 
 
 class OICSchemaMapping(FlextValueObject):
@@ -512,12 +512,12 @@ class OICSchemaMapping(FlextValueObject):
         """Validate schema mapping business rules."""
         try:
             if not self.singer_schema:
-                return FlextResult.fail("Singer schema cannot be empty")
+                return FlextResult[None].fail("Singer schema cannot be empty")
             if not self.oic_schema:
-                return FlextResult.fail("OIC schema cannot be empty")
-            return FlextResult.ok(None)
+                return FlextResult[None].fail("OIC schema cannot be empty")
+            return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextResult.fail(f"Schema mapping validation failed: {e}")
+            return FlextResult[None].fail(f"Schema mapping validation failed: {e}")
 
 
 # ===============================================================================
@@ -531,10 +531,12 @@ def create_oic_connection(data: dict[str, object]) -> FlextResult[OICConnection]
         connection = OICConnection.model_validate(data)
         validation = connection.validate_business_rules()
         if not validation.success:
-            return FlextResult.fail(f"Connection validation failed: {validation.error}")
-        return FlextResult.ok(connection)
+            return FlextResult[OICConnection].fail(
+                f"Connection validation failed: {validation.error}"
+            )
+        return FlextResult[OICConnection].ok(connection)
     except Exception as e:
-        return FlextResult.fail(f"Failed to create connection: {e}")
+        return FlextResult[OICConnection].fail(f"Failed to create connection: {e}")
 
 
 def create_oic_integration(data: dict[str, object]) -> FlextResult[OICIntegration]:
@@ -543,12 +545,12 @@ def create_oic_integration(data: dict[str, object]) -> FlextResult[OICIntegratio
         integration = OICIntegration.model_validate(data)
         validation = integration.validate_business_rules()
         if not validation.success:
-            return FlextResult.fail(
+            return FlextResult[OICIntegration].fail(
                 f"Integration validation failed: {validation.error}",
             )
-        return FlextResult.ok(integration)
+        return FlextResult[OICIntegration].ok(integration)
     except Exception as e:
-        return FlextResult.fail(f"Failed to create integration: {e}")
+        return FlextResult[OICIntegration].fail(f"Failed to create integration: {e}")
 
 
 def create_oic_package(data: dict[str, object]) -> FlextResult[OICPackage]:
@@ -557,10 +559,12 @@ def create_oic_package(data: dict[str, object]) -> FlextResult[OICPackage]:
         package = OICPackage.model_validate(data)
         validation = package.validate_business_rules()
         if not validation.success:
-            return FlextResult.fail(f"Package validation failed: {validation.error}")
-        return FlextResult.ok(package)
+            return FlextResult[OICPackage].fail(
+                f"Package validation failed: {validation.error}"
+            )
+        return FlextResult[OICPackage].ok(package)
     except Exception as e:
-        return FlextResult.fail(f"Failed to create package: {e}")
+        return FlextResult[OICPackage].fail(f"Failed to create package: {e}")
 
 
 def create_oic_lookup(data: dict[str, object]) -> FlextResult[OICLookup]:
@@ -569,10 +573,12 @@ def create_oic_lookup(data: dict[str, object]) -> FlextResult[OICLookup]:
         lookup = OICLookup.model_validate(data)
         validation = lookup.validate_business_rules()
         if not validation.success:
-            return FlextResult.fail(f"Lookup validation failed: {validation.error}")
-        return FlextResult.ok(lookup)
+            return FlextResult[OICLookup].fail(
+                f"Lookup validation failed: {validation.error}"
+            )
+        return FlextResult[OICLookup].ok(lookup)
     except Exception as e:
-        return FlextResult.fail(f"Failed to create lookup: {e}")
+        return FlextResult[OICLookup].fail(f"Failed to create lookup: {e}")
 
 
 # ===============================================================================

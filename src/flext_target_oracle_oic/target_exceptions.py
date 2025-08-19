@@ -324,11 +324,11 @@ class FlextTargetOracleOicErrorDetails(FlextValueObject):
         try:
             # Validate error code format
             if not self.error_code or not self.error_code.startswith("ORACLE_OIC"):
-                return FlextResult.fail("Error code must start with 'ORACLE_OIC'")
+                return FlextResult[None].fail("Error code must start with 'ORACLE_OIC'")
 
             # Validate error type is not empty
             if not self.error_type:
-                return FlextResult.fail("Error type cannot be empty")
+                return FlextResult[None].fail("Error type cannot be empty")
 
             # Validate source component is valid
             valid_components = {
@@ -343,13 +343,13 @@ class FlextTargetOracleOicErrorDetails(FlextValueObject):
                 "infrastructure",
             }
             if self.source_component not in valid_components:
-                return FlextResult.fail(
+                return FlextResult[None].fail(
                     f"Invalid source component: {self.source_component}",
                 )
 
-            return FlextResult.ok(None)
+            return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextResult.fail(f"Domain validation failed: {e}")
+            return FlextResult[None].fail(f"Domain validation failed: {e}")
 
 
 # ===============================================================================
@@ -476,7 +476,7 @@ def create_auth_error_result(
         endpoint=endpoint,
         oic_instance=oic_instance,
     )
-    return FlextResult.fail(str(error))
+    return FlextResult[None].fail(str(error))
 
 
 def create_connection_error_result(
@@ -493,7 +493,7 @@ def create_connection_error_result(
         endpoint=endpoint,
         connection_type=connection_type,
     )
-    return FlextResult.fail(str(error))
+    return FlextResult[None].fail(str(error))
 
 
 def create_processing_error_result(
@@ -510,7 +510,7 @@ def create_processing_error_result(
         processing_stage=processing_stage,
         record_count=record_count,
     )
-    return FlextResult.fail(str(error))
+    return FlextResult[None].fail(str(error))
 
 
 def create_validation_error_result(
@@ -529,7 +529,7 @@ def create_validation_error_result(
         integration_name=integration_name,
         entity_type=entity_type,
     )
-    return FlextResult.fail(str(error))
+    return FlextResult[None].fail(str(error))
 
 
 # ===============================================================================

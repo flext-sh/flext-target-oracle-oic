@@ -50,12 +50,12 @@ class OICConnectionConfig(FlextValueObject):
         """Validate connection configuration domain rules."""
         try:
             if not self.base_url.strip():
-                return FlextResult.fail("Base URL cannot be empty")
+                return FlextResult[None].fail("Base URL cannot be empty")
             if self.timeout <= 0:
-                return FlextResult.fail("Timeout must be positive")
-            return FlextResult.ok(None)
+                return FlextResult[None].fail("Timeout must be positive")
+            return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextResult.fail(f"Connection config validation failed: {e}")
+            return FlextResult[None].fail(f"Connection config validation failed: {e}")
 
 
 class OICDeploymentConfig(FlextValueObject):
@@ -96,10 +96,12 @@ class OICDeploymentConfig(FlextValueObject):
         try:
             valid_modes = {"create_only", "update_only", "create_or_update"}
             if self.import_mode not in valid_modes:
-                return FlextResult.fail(f"Invalid import mode: {self.import_mode}")
-            return FlextResult.ok(None)
+                return FlextResult[None].fail(
+                    f"Invalid import mode: {self.import_mode}"
+                )
+            return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextResult.fail(f"Deployment config validation failed: {e}")
+            return FlextResult[None].fail(f"Deployment config validation failed: {e}")
 
 
 class OICProcessingConfig(FlextValueObject):
@@ -141,12 +143,12 @@ class OICProcessingConfig(FlextValueObject):
         """Validate processing configuration domain rules."""
         try:
             if self.batch_size <= 0:
-                return FlextResult.fail("Batch size must be positive")
+                return FlextResult[None].fail("Batch size must be positive")
             if self.max_errors < 0:
-                return FlextResult.fail("Max errors cannot be negative")
-            return FlextResult.ok(None)
+                return FlextResult[None].fail("Max errors cannot be negative")
+            return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextResult.fail(f"Processing config validation failed: {e}")
+            return FlextResult[None].fail(f"Processing config validation failed: {e}")
 
 
 class OICEntityConfig(FlextValueObject):
@@ -184,10 +186,10 @@ class OICEntityConfig(FlextValueObject):
             for field in required_fields:
                 value = getattr(self, field)
                 if not value or not value.strip():
-                    return FlextResult.fail(f"{field} cannot be empty")
-            return FlextResult.ok(None)
+                    return FlextResult[None].fail(f"{field} cannot be empty")
+            return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextResult.fail(f"Entity config validation failed: {e}")
+            return FlextResult[None].fail(f"Entity config validation failed: {e}")
 
 
 class TargetOracleOICConfig(FlextValueObject):
@@ -208,6 +210,8 @@ class TargetOracleOICConfig(FlextValueObject):
             oauth_client_id="",
             oauth_client_secret=SecretStr(""),
             oauth_token_url="",
+            oauth_client_aud="",
+            oauth_scope="",
         ),
         description="Authentication configuration",
     )
@@ -216,15 +220,25 @@ class TargetOracleOICConfig(FlextValueObject):
         description="Connection configuration",
     )
     deployment: OICDeploymentConfig = Field(
-        default_factory=OICDeploymentConfig,
+        default_factory=lambda: OICDeploymentConfig(
+            import_mode="create_or_update",
+            archive_directory="",
+        ),
         description="Deployment configuration",
     )
     processing: OICProcessingConfig = Field(
-        default_factory=OICProcessingConfig,
+        default_factory=lambda: OICProcessingConfig(
+            batch_size=100,
+            max_errors=5,
+        ),
         description="Processing configuration",
     )
     entities: OICEntityConfig = Field(
-        default_factory=OICEntityConfig,
+        default_factory=lambda: OICEntityConfig(
+            integration_identifier_field="code",
+            connection_identifier_field="code",
+            lookup_identifier_field="name",
+        ),
         description="Entity configuration",
     )
 
@@ -293,13 +307,13 @@ class TargetOracleOICConfig(FlextValueObject):
             # Check for first failure
             for section_name, validation_result in validations:
                 if not validation_result.success:
-                    return FlextResult.fail(
+                    return FlextResult[None].fail(
                         f"{section_name} validation failed: {validation_result.error}",
                     )
 
-            return FlextResult.ok(None)
+            return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextResult.fail(f"Configuration validation failed: {e}")
+            return FlextResult[None].fail(f"Configuration validation failed: {e}")
 
     # Backward compatibility with base interface expectations
     def validate_business_rules(self) -> FlextResult[None]:
@@ -312,17 +326,36 @@ class TargetOracleOICConfig(FlextValueObject):
         **overrides: dict[str, object],
     ) -> TargetOracleOICConfig:
         """Create configuration with intelligent defaults."""
-        defaults = {
+        defaults: dict[
+            str,
+            OICAuthConfig
+            | OICConnectionConfig
+            | OICDeploymentConfig
+            | OICProcessingConfig
+            | OICEntityConfig
+            | str,
+        ] = {
             "auth": OICAuthConfig(
                 oauth_client_id="your-client-id",
                 oauth_client_secret=SecretStr("your-client-secret"),  # nosec B106 - Example configuration value
                 oauth_token_url="",
                 oauth_client_aud=None,
+                oauth_scope="",
             ),
             "connection": OICConnectionConfig(),
-            "deployment": OICDeploymentConfig(),
-            "processing": OICProcessingConfig(),
-            "entities": OICEntityConfig(),
+            "deployment": OICDeploymentConfig(
+                import_mode="create_or_update",
+                archive_directory="",
+            ),
+            "processing": OICProcessingConfig(
+                batch_size=100,
+                max_errors=5,
+            ),
+            "entities": OICEntityConfig(
+                integration_identifier_field="code",
+                connection_identifier_field="code",
+                lookup_identifier_field="name",
+            ),
             "project_name": "flext-target-oracle-oic",
             "project_version": "0.9.0",
         }

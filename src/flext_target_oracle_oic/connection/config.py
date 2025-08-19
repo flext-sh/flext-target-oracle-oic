@@ -65,7 +65,7 @@ class OICConnectionSettings(FlextValueObject):
 
     def validate_business_rules(self) -> FlextResult[None]:
         """Validate OIC connection configuration business rules."""
-        errors = []
+        errors: list[str] = []
 
         if not self.base_url:
             errors.append("base_url is required")
@@ -85,8 +85,8 @@ class OICConnectionSettings(FlextValueObject):
             errors.append("max_retries must be non-negative")
 
         if errors:
-            return FlextResult.fail(
+            return FlextResult[None].fail(
                 f"OIC connection config validation failed: {'; '.join(errors)}",
             )
 
-        return FlextResult.ok(None)
+        return FlextResult[None].ok(None)

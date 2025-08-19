@@ -41,12 +41,12 @@ class OICAuthConfig(FlextBaseConfigModel):
         """Validate authentication configuration domain rules."""
         try:
             if not self.oauth_client_id.strip():
-                return FlextResult.fail("OAuth client ID cannot be empty")
+                return FlextResult[None].fail("OAuth client ID cannot be empty")
             if not self.oauth_token_url.strip():
-                return FlextResult.fail("OAuth token URL cannot be empty")
-            return FlextResult.ok(None)
+                return FlextResult[None].fail("OAuth token URL cannot be empty")
+            return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextResult.fail(f"Auth config validation failed: {e}")
+            return FlextResult[None].fail(f"Auth config validation failed: {e}")
 
 
 class OICConnectionConfig(FlextBaseConfigModel):
@@ -78,12 +78,12 @@ class OICConnectionConfig(FlextBaseConfigModel):
         """Validate connection configuration domain rules."""
         try:
             if not self.base_url.strip():
-                return FlextResult.fail("Base URL cannot be empty")
+                return FlextResult[None].fail("Base URL cannot be empty")
             if self.timeout <= 0:
-                return FlextResult.fail("Timeout must be positive")
-            return FlextResult.ok(None)
+                return FlextResult[None].fail("Timeout must be positive")
+            return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextResult.fail(f"Connection config validation failed: {e}")
+            return FlextResult[None].fail(f"Connection config validation failed: {e}")
 
 
 class OICDeploymentConfig(FlextBaseConfigModel):
@@ -124,10 +124,12 @@ class OICDeploymentConfig(FlextBaseConfigModel):
         try:
             valid_modes = {"create_only", "update_only", "create_or_update"}
             if self.import_mode not in valid_modes:
-                return FlextResult.fail(f"Invalid import mode: {self.import_mode}")
-            return FlextResult.ok(None)
+                return FlextResult[None].fail(
+                    f"Invalid import mode: {self.import_mode}"
+                )
+            return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextResult.fail(f"Deployment config validation failed: {e}")
+            return FlextResult[None].fail(f"Deployment config validation failed: {e}")
 
 
 class OICProcessingConfig(FlextBaseConfigModel):
@@ -169,12 +171,12 @@ class OICProcessingConfig(FlextBaseConfigModel):
         """Validate processing configuration domain rules."""
         try:
             if self.batch_size <= 0:
-                return FlextResult.fail("Batch size must be positive")
+                return FlextResult[None].fail("Batch size must be positive")
             if self.max_errors < 0:
-                return FlextResult.fail("Max errors cannot be negative")
-            return FlextResult.ok(None)
+                return FlextResult[None].fail("Max errors cannot be negative")
+            return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextResult.fail(f"Processing config validation failed: {e}")
+            return FlextResult[None].fail(f"Processing config validation failed: {e}")
 
 
 class OICEntityConfig(FlextBaseConfigModel):
@@ -212,10 +214,10 @@ class OICEntityConfig(FlextBaseConfigModel):
             for field in required_fields:
                 value = getattr(self, field)
                 if not value or not value.strip():
-                    return FlextResult.fail(f"{field} cannot be empty")
-            return FlextResult.ok(None)
+                    return FlextResult[None].fail(f"{field} cannot be empty")
+            return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextResult.fail(f"Entity config validation failed: {e}")
+            return FlextResult[None].fail(f"Entity config validation failed: {e}")
 
 
 class TargetOracleOICConfig(FlextBaseConfigModel):
@@ -236,6 +238,7 @@ class TargetOracleOICConfig(FlextBaseConfigModel):
             oauth_client_id="",
             oauth_client_secret=SecretStr(""),
             oauth_token_url="",
+            oauth_client_aud=None,
         ),
         description="Authentication configuration",
     )
@@ -349,13 +352,13 @@ class TargetOracleOICConfig(FlextBaseConfigModel):
             # Check for first failure
             for section_name, validation_result in validations:
                 if not validation_result.success:
-                    return FlextResult.fail(
+                    return FlextResult[None].fail(
                         f"{section_name} validation failed: {validation_result.error}",
                     )
 
-            return FlextResult.ok(None)
+            return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextResult.fail(f"Configuration validation failed: {e}")
+            return FlextResult[None].fail(f"Configuration validation failed: {e}")
 
     # Pydantic/FlextValueObject compatibility: provide business rule validator expected by base class
     def validate_business_rules(self) -> FlextResult[None]:

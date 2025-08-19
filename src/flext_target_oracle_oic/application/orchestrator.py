@@ -36,11 +36,11 @@ class OICTargetOrchestrator:
             required_fields = ["base_url", "oauth_client_id"]
             for field in required_fields:
                 if field not in self.config:
-                    return FlextResult.fail(f"Missing required field: {field}")
+                    return FlextResult[bool].fail(f"Missing required field: {field}")
 
-            return FlextResult.ok(data=True)
+            return FlextResult[bool].ok(True)
         except Exception as e:
-            return FlextResult.fail(f"Configuration validation failed: {e}")
+            return FlextResult[bool].fail(f"Configuration validation failed: {e}")
 
     def setup(self) -> FlextResult[None]:
         """Set up OIC target orchestrator.
@@ -51,10 +51,10 @@ class OICTargetOrchestrator:
         """
         try:
             logger.info("Setting up OIC target orchestrator")
-            return FlextResult.ok(None)
+            return FlextResult[None].ok(None)
         except Exception as e:
             logger.exception("OIC orchestrator setup failed")
-            return FlextResult.fail(f"Setup failed: {e}")
+            return FlextResult[None].fail(f"Setup failed: {e}")
 
     def teardown(self) -> FlextResult[None]:
         """Teardown OIC target orchestrator.
@@ -65,10 +65,10 @@ class OICTargetOrchestrator:
         """
         try:
             logger.info("Tearing down OIC target orchestrator")
-            return FlextResult.ok(None)
+            return FlextResult[None].ok(None)
         except Exception as e:
             logger.exception("OIC orchestrator teardown failed")
-            return FlextResult.fail(f"Teardown failed: {e}")
+            return FlextResult[None].fail(f"Teardown failed: {e}")
 
     def orchestrate_target_pipeline(
         self,
@@ -101,11 +101,13 @@ class OICTargetOrchestrator:
                 "OIC target pipeline completed: %d records processed",
                 processed_count,
             )
-            return FlextResult.ok(result)
+            return FlextResult[dict[str, object]].ok(result)
 
         except Exception as e:
             logger.exception("OIC target pipeline orchestration failed")
-            return FlextResult.fail(f"Pipeline orchestration failed: {e}")
+            return FlextResult[dict[str, object]].fail(
+                f"Pipeline orchestration failed: {e}"
+            )
 
 
 __all__: list[str] = [
