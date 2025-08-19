@@ -41,10 +41,12 @@ def setup_oic_target(
         # Validate configuration
         config.model_validate(config.model_dump())
 
-        return FlextResult.ok(config)
+        return FlextResult[TargetOracleOICConfig].ok(config)
 
     except (RuntimeError, ValueError, TypeError) as e:
-        return FlextResult.fail(f"Failed to set up OIC target: {e}")
+        return FlextResult[TargetOracleOICConfig].fail(
+            f"Failed to set up OIC target: {e}"
+        )
 
 
 def create_development_oic_target_config(**overrides: object) -> TargetOracleOICConfig:
@@ -276,25 +278,25 @@ def validate_oic_target_config(config: TargetOracleOICConfig) -> FlextResult[boo
         # Validate business/domain rules
         domain_result = config.validate_domain_rules()
         if not domain_result.success:
-            return FlextResult.fail(str(domain_result.error))
+            return FlextResult[bool].fail(str(domain_result.error))
 
         # Additional business rule validations
         if not config.connection.base_url:
-            return FlextResult.fail("Base URL is required")
+            return FlextResult[bool].fail("Base URL is required")
 
         if not config.auth.oauth_client_id:
-            return FlextResult.fail("OAuth client ID is required")
+            return FlextResult[bool].fail("OAuth client ID is required")
 
         if not config.auth.oauth_client_secret:
-            return FlextResult.fail("OAuth client secret is required")
+            return FlextResult[bool].fail("OAuth client secret is required")
 
         if not config.auth.oauth_token_url:
-            return FlextResult.fail("OAuth token URL is required")
+            return FlextResult[bool].fail("OAuth token URL is required")
 
-        return FlextResult.ok(data=True)
+        return FlextResult[bool].ok(True)
 
     except (RuntimeError, ValueError, TypeError) as e:
-        return FlextResult.fail(f"Configuration validation failed: {e}")
+        return FlextResult[bool].fail(f"Configuration validation failed: {e}")
 
 
 def create_test_connection_config(**overrides: object) -> TargetOracleOICConfig:

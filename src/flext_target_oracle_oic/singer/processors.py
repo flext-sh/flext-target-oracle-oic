@@ -45,7 +45,7 @@ class OICRecordProcessor:
                     schema,
                 )
                 if not validation_result.success:
-                    return FlextResult.fail(
+                    return FlextResult[dict[str, object]].fail(
                         validation_result.error or "Schema validation failed",
                     )
 
@@ -53,14 +53,14 @@ class OICRecordProcessor:
                 "Successfully processed Singer record for stream: %s",
                 stream_name,
             )
-            return FlextResult.ok(processed_record)
+            return FlextResult[dict[str, object]].ok(processed_record)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception(
                 "Singer record processing failed for stream: %s",
                 stream_name,
             )
-            return FlextResult.fail(f"Record processing failed: {e}")
+            return FlextResult[dict[str, object]].fail(f"Record processing failed: {e}")
 
     def _validate_against_schema(
         self,
@@ -83,14 +83,16 @@ class OICRecordProcessor:
 
             # Type check and convert
             if not isinstance(properties, dict):
-                return FlextResult.fail("Schema properties must be a dictionary")
+                return FlextResult[None].fail("Schema properties must be a dictionary")
             if not isinstance(required_fields, list):
-                return FlextResult.fail("Schema required fields must be a list")
+                return FlextResult[None].fail("Schema required fields must be a list")
 
             # Check required fields
             missing_fields = [field for field in required_fields if field not in record]
             if missing_fields:
-                return FlextResult.fail(f"Missing required fields: {missing_fields}")
+                return FlextResult[None].fail(
+                    f"Missing required fields: {missing_fields}"
+                )
 
             # Validate field types
             for field_name, field_value in record.items():
@@ -105,16 +107,16 @@ class OICRecordProcessor:
                         expected_type = None
 
                     if not self._validate_field_type(field_value, expected_type):
-                        return FlextResult.fail(
+                        return FlextResult[None].fail(
                             f"Field '{field_name}' type mismatch. "
                             f"Expected: {expected_type}, Got: {type(field_value).__name__}",
                         )
 
-            return FlextResult.ok(None)
+            return FlextResult[None].ok(None)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Schema validation failed")
-            return FlextResult.fail(f"Schema validation failed: {e}")
+            return FlextResult[None].fail(f"Schema validation failed: {e}")
 
     def _validate_field_type(self, value: object, expected_type: str | None) -> bool:
         """Validate field value against expected type.
@@ -141,11 +143,7 @@ class OICRecordProcessor:
 
         expected_python_type = type_mapping.get(expected_type)
         if expected_python_type is None:
-            return True  # Unknown type, allow it
-
-        # Type check for MyPy - ensure we have a valid type for isinstance
-        if not isinstance(expected_python_type, (type, tuple)):
-            return True
+            return False  # Unknown type, disallow it
 
         return isinstance(value, expected_python_type)
 
@@ -165,16 +163,19 @@ class OICRecordProcessor:
 
         """
         try:
-            metadata = {
+            metadata: dict[str, object] = {
                 "stream_name": stream_name,
                 "schema_available": schema is not None,
             }
 
             if schema:
-                properties = schema.get("properties", {})
-                properties_count = (
-                    len(properties) if isinstance(properties, dict) else 0
-                )
+                properties_raw = schema.get("properties", {})
+                properties: dict[str, object] = {}
+                if isinstance(properties_raw, dict):
+                    properties = {
+                        k: v for k, v in properties_raw.items() if isinstance(k, str)
+                    }
+                properties_count = len(properties)
                 required_fields = schema.get("required", [])
                 required_fields = (
                     required_fields if isinstance(required_fields, list) else []
@@ -188,11 +189,13 @@ class OICRecordProcessor:
                     },
                 )
 
-            return FlextResult.ok(metadata)
+            return FlextResult[dict[str, object]].ok(metadata)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Stream metadata extraction failed for: %s", stream_name)
-            return FlextResult.fail(f"Metadata extraction failed: {e}")
+            return FlextResult[dict[str, object]].fail(
+                f"Metadata extraction failed: {e}"
+            )
 
     def prepare_batch_records(
         self,
@@ -211,7 +214,7 @@ class OICRecordProcessor:
         """
         try:
             if not records:
-                return FlextResult.ok([])
+                return FlextResult[list[list[dict[str, object]]]].ok([])
 
             batches = []
             for i in range(0, len(records), batch_size):
@@ -223,8 +226,10 @@ class OICRecordProcessor:
                 len(batches),
                 len(records),
             )
-            return FlextResult.ok(batches)
+            return FlextResult[list[list[dict[str, object]]]].ok(batches)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Batch preparation failed")
-            return FlextResult.fail(f"Batch preparation failed: {e}")
+            return FlextResult[list[list[dict[str, object]]]].fail(
+                f"Batch preparation failed: {e}"
+            )
