@@ -215,7 +215,7 @@ class OICConnection:
             response_dict: dict[str, object]
             if isinstance(response_data_obj, dict):
                 # Cast to dict[str, object] for proper typing
-                response_dict = response_data_obj  # type: ignore[assignment]
+                response_dict = response_data_obj
             else:
                 response_dict = {"data": response_data_obj}
 
