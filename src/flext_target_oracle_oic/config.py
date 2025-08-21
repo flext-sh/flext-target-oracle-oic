@@ -360,7 +360,7 @@ class TargetOracleOICConfig(FlextBaseConfigModel):
         except Exception as e:
             return FlextResult[None].fail(f"Configuration validation failed: {e}")
 
-    # Pydantic/FlextValueObject compatibility: provide business rule validator expected by base class
+    # Pydantic/FlextValue compatibility: provide business rule validator expected by base class
     def validate_business_rules(self) -> FlextResult[None]:
         """Alias to validate_domain_rules for business rule validation."""
         return self.validate_domain_rules()

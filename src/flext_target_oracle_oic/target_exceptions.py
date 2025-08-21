@@ -8,7 +8,7 @@ PEP8-compliant exception hierarchy with maximum flext-core composition.
 
 from __future__ import annotations
 
-from flext_core import FlextResult, FlextValueObject
+from flext_core import FlextResult, FlextValue
 from flext_core.exceptions import (
     FlextAuthenticationError,
     FlextConfigurationError,
@@ -308,7 +308,7 @@ class FlextTargetOracleOicAPIError(FlextTargetOracleOicError):
 # ===============================================================================
 
 
-class FlextTargetOracleOicErrorDetails(FlextValueObject):
+class FlextTargetOracleOicErrorDetails(FlextValue):
     """Structured error details using flext-core patterns."""
 
     error_code: str

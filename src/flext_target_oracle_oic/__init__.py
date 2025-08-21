@@ -18,7 +18,7 @@ from __future__ import annotations
 import importlib.metadata
 
 # Core flext-core imports
-from flext_core import FlextResult, FlextValueObject
+from flext_core import FlextResult, FlextValue
 
 # === FLEXT-MELTANO COMPLETE INTEGRATION ===
 # Re-export ALL flext-meltano facilities for full ecosystem integration
@@ -245,7 +245,7 @@ __all__: list[str] = [
     "singer_typing",
     # === CORE RE-EXPORTS ===
     "FlextResult",
-    "FlextValueObject",
+    "FlextValue",
     # === PRIMARY CLASSES ===
     "FlextTargetOracleOic",
     "TargetOracleOIC",
