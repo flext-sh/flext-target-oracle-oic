@@ -6,7 +6,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import FlextError, FlextResult, FlextValueObject
+from flext_core import FlextError, FlextResult, FlextValue
 from flext_core.exceptions import (
     FlextAuthenticationError,
     FlextConfigurationError,
@@ -222,7 +222,7 @@ class FlextTargetOracleOicAPIError(FlextTargetOracleOicError):
         super().__init__(f"Oracle OIC API: {message}", context=context)
 
 
-class FlextTargetOracleOicErrorDetails(FlextValueObject):
+class FlextTargetOracleOicErrorDetails(FlextValue):
     """Structured error details using flext-core patterns."""
 
     error_code: str

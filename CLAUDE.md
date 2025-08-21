@@ -24,7 +24,7 @@ The project follows Clean Architecture principles with flext-core patterns:
 The project heavily uses flext-core patterns:
 
 - `FlextResult<T>` for railway-oriented programming and error handling
-- `FlextValueObject` for configuration objects
+- `FlextValue` for configuration objects
 - `FlextError` hierarchy for structured exception handling
 - Dependency injection via `OICDIContainer`
 - Structured logging with correlation IDs
