@@ -342,7 +342,7 @@ class OICEntryManager:
                     f"Missing required fields: {missing_fields}"
                 )
 
-            return FlextResult[bool].ok(True)
+            return FlextResult[bool].ok(data=True)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Entry validation failed")

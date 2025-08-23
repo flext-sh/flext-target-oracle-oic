@@ -293,7 +293,7 @@ def validate_oic_target_config(config: TargetOracleOICConfig) -> FlextResult[boo
         if not config.auth.oauth_token_url:
             return FlextResult[bool].fail("OAuth token URL is required")
 
-        return FlextResult[bool].ok(True)
+        return FlextResult[bool].ok(data=True)
 
     except (RuntimeError, ValueError, TypeError) as e:
         return FlextResult[bool].fail(f"Configuration validation failed: {e}")
