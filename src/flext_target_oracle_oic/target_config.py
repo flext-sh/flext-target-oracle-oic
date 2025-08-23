@@ -12,14 +12,13 @@ import os
 from pathlib import Path
 
 from flext_core import FlextResult, FlextValue
+from flext_meltano import singer_typing as th
 from flext_oracle_oic_ext.ext_client import (
     OICExtensionAuthenticator as OICOAuth2Authenticator,
 )
 from flext_oracle_oic_ext.ext_models import OICAuthConfig
 from pydantic import Field, SecretStr, model_validator
 from pydantic_settings import SettingsConfigDict
-
-from flext_meltano import singer_typing as th
 
 
 class OICConnectionConfig(FlextValue):
