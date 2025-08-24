@@ -8,13 +8,14 @@ PEP8-compliant exception hierarchy with maximum flext-core composition.
 
 from __future__ import annotations
 
-from flext_core import FlextResult, FlextValue
-from flext_core.exceptions import (
+from flext_core import (
     FlextAuthenticationError,
     FlextConfigurationError,
     FlextConnectionError,
     FlextProcessingError,
+    FlextResult,
     FlextValidationError,
+    FlextValue,
 )
 
 # ===============================================================================

@@ -45,7 +45,6 @@ def main() -> None:
     if config_path.exists():
         response = input("config.json already exists. Overwrite? (y/N): ")
         if response.lower() not in {"y", "yes"}:
-            print("Configuration generation skipped.")
             return
 
     try:
@@ -54,22 +53,14 @@ def main() -> None:
         with config_path.open("w", encoding="utf-8") as f:
             json.dump(config, f, indent=2)
 
-        print("✅ Successfully generated target-oracle-oic configuration")
-        print("📄 Configuration saved to: config.json")
-        print(f"🔧 Configuration includes: {', '.join(config.keys())}")
-
         # Warn about missing required values
         required_fields = ["oauth_client_id", "oauth_client_secret"]
         missing_fields = [field for field in required_fields if not config.get(field)]
 
         if missing_fields:
-            print(
-                f"⚠️  Warning: Missing required environment variables for: {', '.join(missing_fields)}",
-            )
-            print("   Make sure to set OIC_IDCS_CLIENT_ID and OIC_IDCS_CLIENT_SECRET")
+            pass
 
-    except (RuntimeError, ValueError, TypeError) as e:
-        print(f"❌ Error generating configuration: {e}")
+    except (RuntimeError, ValueError, TypeError):
         return
 
 

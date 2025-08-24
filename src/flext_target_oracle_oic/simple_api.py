@@ -262,7 +262,7 @@ def create_migration_oic_target_config(**overrides: object) -> TargetOracleOICCo
     return config
 
 
-def validate_oic_target_config(config: TargetOracleOICConfig) -> FlextResult[bool]:  # noqa: PLR0911
+def validate_oic_target_config(config: TargetOracleOICConfig) -> FlextResult[bool]:
     """Validate OIC target configuration.
 
     Args:

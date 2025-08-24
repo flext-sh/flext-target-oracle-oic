@@ -15,7 +15,7 @@ class OICTypeConverter:
     def __init__(self) -> None:
         """Initialize OIC type converter."""
 
-    def convert_singer_to_oic(  # noqa: PLR0911
+    def convert_singer_to_oic(
         self,
         singer_type: str,
         value: object,

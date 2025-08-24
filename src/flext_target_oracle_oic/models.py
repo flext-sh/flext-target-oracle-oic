@@ -5,4 +5,4 @@ Re-exports domain models for tests that import flext_target_oracle_oic.models di
 
 from __future__ import annotations
 
-from flext_target_oracle_oic.target_models import *  # noqa: F403
+from flext_target_oracle_oic.target_models import *
