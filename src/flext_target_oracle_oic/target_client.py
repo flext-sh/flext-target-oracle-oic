@@ -22,9 +22,12 @@ from flext_target_oracle_oic.target_config import (
     create_singer_config_schema,
 )
 
-# Constants
-HTTP_NOT_FOUND = 404
-JSON_MIME = "application/json"
+# Import centralized constants from flext-core
+from flext_core import FlextConstants
+
+# Use centralized constants to eliminate duplication
+HTTP_NOT_FOUND = FlextConstants.Web.HTTP_NOT_FOUND
+JSON_MIME = FlextConstants.Web.JSON_MIME
 
 logger = get_logger(__name__)
 
