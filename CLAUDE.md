@@ -25,7 +25,7 @@ The project heavily uses flext-core patterns:
 
 - `FlextResult<T>` for railway-oriented programming and error handling
 - `FlextValue` for configuration objects
-- `FlextError` hierarchy for structured exception handling
+- `FlextExceptions.Error` hierarchy for structured exception handling
 - Dependency injection via `OICDIContainer`
 - Structured logging with correlation IDs
 
