@@ -7,19 +7,19 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from flext_core import (
-    FlextExceptions.AuthenticationError,
-    FlextExceptions.ConfigurationError,
-    FlextExceptions.ConnectionError,
-    FlextExceptions.Error,
+    FlextExceptions,
+    FlextExceptions,
+    FlextExceptions,
+    FlextExceptions,
     FlextProcessingError,
     FlextResult,
-    FlextExceptions.ValidationError,
+    FlextExceptions,
     FlextValue,
 )
 
 
 # Base Oracle OIC exception
-class FlextTargetOracleOicError(FlextExceptions.Error):
+class FlextTargetOracleOicError(FlextExceptions):
     """Base exception for Oracle OIC target operations."""
 
     def __init__(
@@ -36,7 +36,7 @@ class FlextTargetOracleOicError(FlextExceptions.Error):
         super().__init__(message, context=context)
 
 
-class FlextTargetOracleOicAuthenticationError(FlextExceptions.AuthenticationError):
+class FlextTargetOracleOicAuthenticationError(FlextExceptions):
     """Oracle OIC authentication errors."""
 
     def __init__(
@@ -107,7 +107,7 @@ class FlextTargetOracleOicTransformationError(FlextProcessingError):
 
 
 # Oracle OIC-specific exceptions that need custom behavior
-class FlextTargetOracleOicConnectionError(FlextExceptions.ConnectionError):
+class FlextTargetOracleOicConnectionError(FlextExceptions):
     """Oracle OIC-specific connection errors."""
 
     def __init__(
@@ -130,7 +130,7 @@ class FlextTargetOracleOicConnectionError(FlextExceptions.ConnectionError):
         )
 
 
-class FlextTargetOracleOicValidationError(FlextExceptions.ValidationError):
+class FlextTargetOracleOicValidationError(FlextExceptions):
     """Oracle OIC-specific validation errors."""
 
     def __init__(
@@ -158,7 +158,7 @@ class FlextTargetOracleOicValidationError(FlextExceptions.ValidationError):
         )
 
 
-class FlextTargetOracleOicConfigurationError(FlextExceptions.ConfigurationError):
+class FlextTargetOracleOicConfigurationError(FlextExceptions):
     """Oracle OIC-specific configuration errors."""
 
     def __init__(
