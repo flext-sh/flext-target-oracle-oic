@@ -9,12 +9,12 @@ PEP8-compliant exception hierarchy with maximum flext-core composition.
 from __future__ import annotations
 
 from flext_core import (
-    FlextAuthenticationError,
-    FlextConfigurationError,
-    FlextConnectionError,
+    FlextExceptions.AuthenticationError,
+    FlextExceptions.ConfigurationError,
+    FlextExceptions.ConnectionError,
     FlextProcessingError,
     FlextResult,
-    FlextValidationError,
+    FlextExceptions.ValidationError,
     FlextValue,
 )
 
@@ -56,7 +56,7 @@ class FlextTargetOracleOicError(Exception):
 # ===============================================================================
 
 
-class FlextTargetOracleOicAuthenticationError(FlextAuthenticationError):
+class FlextTargetOracleOicAuthenticationError(FlextExceptions.AuthenticationError):
     """Oracle OIC authentication errors using flext-core patterns."""
 
     def __init__(
@@ -85,7 +85,7 @@ class FlextTargetOracleOicAuthenticationError(FlextAuthenticationError):
         )
 
 
-class FlextTargetOracleOicConnectionError(FlextConnectionError):
+class FlextTargetOracleOicConnectionError(FlextExceptions.ConnectionError):
     """Oracle OIC connection errors using flext-core patterns."""
 
     def __init__(
@@ -143,7 +143,7 @@ class FlextTargetOracleOicProcessingError(FlextProcessingError):
         )
 
 
-class FlextTargetOracleOicValidationError(FlextValidationError):
+class FlextTargetOracleOicValidationError(FlextExceptions.ValidationError):
     """Oracle OIC validation errors using flext-core patterns."""
 
     def __init__(
@@ -178,7 +178,7 @@ class FlextTargetOracleOicValidationError(FlextValidationError):
         )
 
 
-class FlextTargetOracleOicConfigurationError(FlextConfigurationError):
+class FlextTargetOracleOicConfigurationError(FlextExceptions.ConfigurationError):
     """Oracle OIC configuration errors using flext-core patterns."""
 
     def __init__(

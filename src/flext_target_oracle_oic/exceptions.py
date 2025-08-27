@@ -7,19 +7,19 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from flext_core import (
-    FlextAuthenticationError,
-    FlextConfigurationError,
-    FlextConnectionError,
-    FlextError,
+    FlextExceptions.AuthenticationError,
+    FlextExceptions.ConfigurationError,
+    FlextExceptions.ConnectionError,
+    FlextExceptions.Error,
     FlextProcessingError,
     FlextResult,
-    FlextValidationError,
+    FlextExceptions.ValidationError,
     FlextValue,
 )
 
 
 # Base Oracle OIC exception
-class FlextTargetOracleOicError(FlextError):
+class FlextTargetOracleOicError(FlextExceptions.Error):
     """Base exception for Oracle OIC target operations."""
 
     def __init__(
@@ -36,7 +36,7 @@ class FlextTargetOracleOicError(FlextError):
         super().__init__(message, context=context)
 
 
-class FlextTargetOracleOicAuthenticationError(FlextAuthenticationError):
+class FlextTargetOracleOicAuthenticationError(FlextExceptions.AuthenticationError):
     """Oracle OIC authentication errors."""
 
     def __init__(
@@ -107,7 +107,7 @@ class FlextTargetOracleOicTransformationError(FlextProcessingError):
 
 
 # Oracle OIC-specific exceptions that need custom behavior
-class FlextTargetOracleOicConnectionError(FlextConnectionError):
+class FlextTargetOracleOicConnectionError(FlextExceptions.ConnectionError):
     """Oracle OIC-specific connection errors."""
 
     def __init__(
@@ -130,7 +130,7 @@ class FlextTargetOracleOicConnectionError(FlextConnectionError):
         )
 
 
-class FlextTargetOracleOicValidationError(FlextValidationError):
+class FlextTargetOracleOicValidationError(FlextExceptions.ValidationError):
     """Oracle OIC-specific validation errors."""
 
     def __init__(
@@ -158,7 +158,7 @@ class FlextTargetOracleOicValidationError(FlextValidationError):
         )
 
 
-class FlextTargetOracleOicConfigurationError(FlextConfigurationError):
+class FlextTargetOracleOicConfigurationError(FlextExceptions.ConfigurationError):
     """Oracle OIC-specific configuration errors."""
 
     def __init__(
