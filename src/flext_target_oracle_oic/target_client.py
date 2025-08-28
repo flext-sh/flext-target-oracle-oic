@@ -12,7 +12,9 @@ from collections.abc import Sequence
 from typing import ClassVar
 
 import httpx
-from flext_core import get_logger
+
+# Import centralized constants from flext-core
+from flext_core import FlextConstants, get_logger
 from flext_meltano import Sink, Sink as SinkType, Target
 from flext_oracle_oic_ext.ext_models import OICAuthConfig
 
@@ -21,9 +23,6 @@ from flext_target_oracle_oic.target_config import (
     TargetOracleOICConfig,
     create_singer_config_schema,
 )
-
-# Import centralized constants from flext-core
-from flext_core import FlextConstants
 
 # Use centralized constants to eliminate duplication
 HTTP_NOT_FOUND = FlextConstants.Web.HTTP_NOT_FOUND
