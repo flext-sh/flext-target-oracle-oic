@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 
 import httpx
-from flext_core import get_logger
+from flext_core import FlextLogger
 from flext_meltano import Sink, Target
 
 from flext_target_oracle_oic.auth import OICAuthConfig, OICOAuth2Authenticator
@@ -14,7 +14,7 @@ from flext_target_oracle_oic.auth import OICAuthConfig, OICOAuth2Authenticator
 HTTP_NOT_FOUND = 404
 JSON_MIME = "application/json"
 
-logger = get_logger(__name__)
+logger = FlextLogger(__name__)
 
 
 class OICBaseSink(Sink):

@@ -11,7 +11,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-from flext_core import FlextResult, FlextValue
+from flext_core import FlextResult, FlextModels.Value
 from flext_meltano import singer_typing as th
 from flext_oracle_oic_ext.ext_client import (
     OICExtensionAuthenticator as OICOAuth2Authenticator,
@@ -21,7 +21,7 @@ from pydantic import Field, SecretStr, model_validator
 from pydantic_settings import SettingsConfigDict
 
 
-class OICConnectionConfig(FlextValue):
+class OICConnectionConfig(FlextModels.Value):
     """OIC connection configuration using flext-core patterns."""
 
     base_url: str = Field(
@@ -58,7 +58,7 @@ class OICConnectionConfig(FlextValue):
             return FlextResult[None].fail(f"Connection config validation failed: {e}")
 
 
-class OICDeploymentConfig(FlextValue):
+class OICDeploymentConfig(FlextModels.Value):
     """OIC deployment configuration using flext-core patterns."""
 
     import_mode: str = Field(
@@ -104,7 +104,7 @@ class OICDeploymentConfig(FlextValue):
             return FlextResult[None].fail(f"Deployment config validation failed: {e}")
 
 
-class OICProcessingConfig(FlextValue):
+class OICProcessingConfig(FlextModels.Value):
     """OIC processing configuration using flext-core patterns."""
 
     batch_size: int = Field(
@@ -151,7 +151,7 @@ class OICProcessingConfig(FlextValue):
             return FlextResult[None].fail(f"Processing config validation failed: {e}")
 
 
-class OICEntityConfig(FlextValue):
+class OICEntityConfig(FlextModels.Value):
     """OIC entity configuration using flext-core patterns."""
 
     integration_identifier_field: str = Field(
@@ -192,7 +192,7 @@ class OICEntityConfig(FlextValue):
             return FlextResult[None].fail(f"Entity config validation failed: {e}")
 
 
-class TargetOracleOICConfig(FlextValue):
+class TargetOracleOICConfig(FlextModels.Value):
     """Complete configuration for target-oracle-oic using flext-core patterns.
 
     Uses maximum composition from flext-core and flext-oracle-oic-ext.
