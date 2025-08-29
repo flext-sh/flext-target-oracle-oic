@@ -6,7 +6,7 @@ import json
 
 import requests
 import urllib3
-from flext_core import FlextResult, get_logger
+from flext_core import FlextLogger, FlextResult
 
 from flext_target_oracle_oic.connection.config import OICConnectionSettings
 from flext_target_oracle_oic.exceptions import FlextTargetOracleOicAuthenticationError
@@ -16,7 +16,7 @@ HTTP_OK = 200
 HTTP_BAD_REQUEST = 400
 
 
-logger = get_logger(__name__)
+logger = FlextLogger(__name__)
 
 
 class OICConnection:

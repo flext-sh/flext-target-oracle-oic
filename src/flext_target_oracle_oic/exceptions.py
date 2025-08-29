@@ -10,7 +10,7 @@ from flext_core import (
     FlextExceptions,
     FlextProcessingError,
     FlextResult,
-    FlextValue,
+    FlextModels.Value,
 )
 
 
@@ -220,7 +220,7 @@ class FlextTargetOracleOicAPIError(FlextTargetOracleOicError):
         super().__init__(f"Oracle OIC API: {message}", context=context)
 
 
-class FlextTargetOracleOicErrorDetails(FlextValue):
+class FlextTargetOracleOicErrorDetails(FlextModels.Value):
     """Structured error details using flext-core patterns."""
 
     error_code: str

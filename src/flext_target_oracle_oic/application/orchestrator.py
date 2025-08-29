@@ -6,9 +6,9 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import FlextResult, get_logger
+from flext_core import FlextLogger, FlextResult
 
-logger = get_logger(__name__)
+logger = FlextLogger(__name__)
 
 
 class OICTargetOrchestrator:

@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-from flext_core import FlextResult, FlextValue, get_logger
+from flext_core import FlextResult, FlextModels.Value, FlextLogger
 from pydantic import Field
 
-logger = get_logger(__name__)
+logger = FlextLogger(__name__)
 
 
-class OICConnectionSettings(FlextValue):
+class OICConnectionSettings(FlextModels.Value):
     """Oracle OIC connection settings using flext-core patterns."""
 
     base_url: str = Field(..., description="Oracle OIC base URL")

@@ -14,7 +14,7 @@ from typing import ClassVar
 import httpx
 
 # Import centralized constants from flext-core
-from flext_core import FlextConstants, get_logger
+from flext_core import FlextConstants, FlextLogger
 from flext_meltano import Sink, Sink as SinkType, Target
 from flext_oracle_oic_ext.ext_models import OICAuthConfig
 
@@ -28,7 +28,7 @@ from flext_target_oracle_oic.target_config import (
 HTTP_NOT_FOUND = FlextConstants.Web.HTTP_NOT_FOUND
 JSON_MIME = FlextConstants.Web.JSON_MIME
 
-logger = get_logger(__name__)
+logger = FlextLogger(__name__)
 
 
 # ===============================================================================
