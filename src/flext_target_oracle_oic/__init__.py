@@ -18,7 +18,7 @@ from __future__ import annotations
 import importlib.metadata
 
 # Core flext-core imports
-from flext_core import FlextResult, FlextValue
+from flext_core import FlextResult, FlextValue, get_logger
 
 # === FLEXT-MELTANO COMPLETE INTEGRATION ===
 # Re-export ALL flext-meltano facilities for full ecosystem integration
@@ -142,9 +142,8 @@ except Exception:  # pragma: no cover - tolerate missing during partial installs
     import os
     from pathlib import Path
     import json
-    import logging
 
-    logger = logging.getLogger(__name__)
+    logger = get_logger(__name__)
 
     def generate_config() -> dict[str, object]:
         """Generate configuration from environment variables."""
