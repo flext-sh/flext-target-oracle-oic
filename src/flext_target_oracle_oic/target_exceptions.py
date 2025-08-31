@@ -10,9 +10,8 @@ from __future__ import annotations
 
 from flext_core import (
     FlextExceptions,
-    FlextProcessingError,
+    FlextModels,
     FlextResult,
-    FlextModels.Value,
 )
 
 # ===============================================================================
@@ -111,7 +110,7 @@ class FlextTargetOracleOicConnectionError(FlextExceptions):
         )
 
 
-class FlextTargetOracleOicProcessingError(FlextProcessingError):
+class FlextTargetOracleOicProcessingError(FlextExceptions.ProcessingError):
     """Oracle OIC processing errors using flext-core patterns."""
 
     def __init__(

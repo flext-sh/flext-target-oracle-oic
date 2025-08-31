@@ -11,7 +11,7 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-from flext_core import FlextResult, FlextModels.Value
+from flext_core import FlextModels, FlextResult
 from flext_meltano import singer_typing as th
 from flext_oracle_oic_ext.ext_client import (
     OICExtensionAuthenticator as OICOAuth2Authenticator,

@@ -4,14 +4,14 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from flext_core import FlextConfig.BaseConfigModel, FlextResult
+from flext_core import FlextConfig, FlextResult
 from pydantic import Field, SecretStr, model_validator
 from pydantic_settings import SettingsConfigDict
 
 # Remove duplicate import - use unified OICConnectionConfig from this file
 
 
-class OICAuthConfig(FlextConfig.BaseConfigModel):
+class OICAuthConfig(FlextConfig.BaseModel):
     """OIC authentication configuration using flext-core patterns."""
 
     oauth_client_id: str = Field(
@@ -49,7 +49,7 @@ class OICAuthConfig(FlextConfig.BaseConfigModel):
             return FlextResult[None].fail(f"Auth config validation failed: {e}")
 
 
-class OICConnectionConfig(FlextConfig.BaseConfigModel):
+class OICConnectionConfig(FlextConfig.BaseModel):
     """OIC connection configuration using flext-core patterns."""
 
     base_url: str = Field(
@@ -86,7 +86,7 @@ class OICConnectionConfig(FlextConfig.BaseConfigModel):
             return FlextResult[None].fail(f"Connection config validation failed: {e}")
 
 
-class OICDeploymentConfig(FlextConfig.BaseConfigModel):
+class OICDeploymentConfig(FlextConfig.BaseModel):
     """OIC deployment configuration using flext-core patterns."""
 
     import_mode: str = Field(
@@ -132,7 +132,7 @@ class OICDeploymentConfig(FlextConfig.BaseConfigModel):
             return FlextResult[None].fail(f"Deployment config validation failed: {e}")
 
 
-class OICProcessingConfig(FlextConfig.BaseConfigModel):
+class OICProcessingConfig(FlextConfig.BaseModel):
     """OIC processing configuration using flext-core patterns."""
 
     batch_size: int = Field(
@@ -179,7 +179,7 @@ class OICProcessingConfig(FlextConfig.BaseConfigModel):
             return FlextResult[None].fail(f"Processing config validation failed: {e}")
 
 
-class OICEntityConfig(FlextConfig.BaseConfigModel):
+class OICEntityConfig(FlextConfig.BaseModel):
     """OIC entity configuration using flext-core patterns."""
 
     integration_identifier_field: str = Field(
@@ -220,7 +220,7 @@ class OICEntityConfig(FlextConfig.BaseConfigModel):
             return FlextResult[None].fail(f"Entity config validation failed: {e}")
 
 
-class TargetOracleOICConfig(FlextConfig.BaseConfigModel):
+class TargetOracleOICConfig(FlextConfig.BaseModel):
     """Complete configuration for target-oracle-oic using dependency injection.
 
     Uses dependency injection patterns to access Oracle OIC functionality.
