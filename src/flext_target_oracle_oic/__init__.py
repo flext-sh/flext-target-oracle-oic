@@ -20,34 +20,14 @@ import importlib.metadata
 # Core flext-core imports
 from flext_core import FlextResult, FlextModels, FlextLogger
 
-# === FLEXT-MELTANO COMPLETE INTEGRATION ===
-# Re-export ALL flext-meltano facilities for full ecosystem integration
+# === FLEXT-MELTANO INTEGRATION (ACTUAL EXPORTS) ===
 from flext_meltano import (
-    BatchSink,
-    FlextMeltanoBaseService,
     # Bridge integration
     FlextMeltanoBridge,
     # Configuration and validation
     FlextMeltanoConfig,
-    FlextMeltanoEvent,
-    # Enterprise services from flext-meltano.base
-    FlextMeltanoTargetService,
-    # Authentication patterns
-    OAuthAuthenticator,
-    # Typing definitions
-    PropertiesList,
-    Property,
-    Sink,
-    SQLSink,
-    # Core Singer SDK classes (centralized from flext-meltano)
-    Stream,
-    Tap,
-    Target,
-    create_meltano_target_service,
-    # Testing utilities
-    get_tap_test_class,
-    # Singer typing utilities (centralized)
-    singer_typing,
+    # Core Target class for FLEXT
+    FlextTarget as Target,
 )
 
 # === PEP8 UNIFIED IMPORTS - NEW STRUCTURE ===
@@ -224,24 +204,10 @@ def main() -> None:
 # ===============================================================================
 
 __all__: list[str] = [
-    # === FLEXT-MELTANO COMPLETE RE-EXPORTS ===
-    "BatchSink",
-    "FlextMeltanoBaseService",
+    # === FLEXT-MELTANO RE-EXPORTS ===
     "FlextMeltanoBridge",
     "FlextMeltanoConfig",
-    "FlextMeltanoEvent",
-    "FlextMeltanoTargetService",
-    "OAuthAuthenticator",
-    "PropertiesList",
-    "Property",
-    "Sink",
-    "SQLSink",
-    "Stream",
-    "Tap",
     "Target",
-    "create_meltano_target_service",
-    "get_tap_test_class",
-    "singer_typing",
     # === CORE RE-EXPORTS ===
     "FlextResult",
     "FlextModels",
