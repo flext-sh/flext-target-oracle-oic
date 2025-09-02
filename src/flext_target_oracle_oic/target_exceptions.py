@@ -305,7 +305,7 @@ class FlextTargetOracleOicAPIError(FlextTargetOracleOicError):
 # ===============================================================================
 
 
-class FlextTargetOracleOicErrorDetails(FlextModels.Value):
+class FlextTargetOracleOicErrorDetails(FlextModels):
     """Structured error details using flext-core patterns."""
 
     error_code: str
