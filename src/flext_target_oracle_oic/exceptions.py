@@ -219,7 +219,7 @@ class FlextTargetOracleOicAPIError(FlextTargetOracleOicError):
         super().__init__(f"Oracle OIC API: {message}", context=context)
 
 
-class FlextTargetOracleOicErrorDetails(FlextModels.Value):
+class FlextTargetOracleOicErrorDetails(FlextModels):
     """Structured error details using flext-core patterns."""
 
     error_code: str

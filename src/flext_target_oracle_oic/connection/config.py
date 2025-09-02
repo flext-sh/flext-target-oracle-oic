@@ -8,7 +8,7 @@ from pydantic import Field
 logger = FlextLogger(__name__)
 
 
-class OICConnectionSettings(FlextModels.Value):
+class OICConnectionSettings(FlextModels):
     """Oracle OIC connection settings using flext-core patterns."""
 
     base_url: str = Field(..., description="Oracle OIC base URL")

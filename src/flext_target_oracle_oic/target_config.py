@@ -21,7 +21,7 @@ from pydantic import Field, SecretStr, model_validator
 from pydantic_settings import SettingsConfigDict
 
 
-class OICConnectionConfig(FlextModels.Value):
+class OICConnectionConfig(FlextModels):
     """OIC connection configuration using flext-core patterns."""
 
     base_url: str = Field(
@@ -58,7 +58,7 @@ class OICConnectionConfig(FlextModels.Value):
             return FlextResult[None].fail(f"Connection config validation failed: {e}")
 
 
-class OICDeploymentConfig(FlextModels.Value):
+class OICDeploymentConfig(FlextModels):
     """OIC deployment configuration using flext-core patterns."""
 
     import_mode: str = Field(
@@ -104,7 +104,7 @@ class OICDeploymentConfig(FlextModels.Value):
             return FlextResult[None].fail(f"Deployment config validation failed: {e}")
 
 
-class OICProcessingConfig(FlextModels.Value):
+class OICProcessingConfig(FlextModels):
     """OIC processing configuration using flext-core patterns."""
 
     batch_size: int = Field(
@@ -151,7 +151,7 @@ class OICProcessingConfig(FlextModels.Value):
             return FlextResult[None].fail(f"Processing config validation failed: {e}")
 
 
-class OICEntityConfig(FlextModels.Value):
+class OICEntityConfig(FlextModels):
     """OIC entity configuration using flext-core patterns."""
 
     integration_identifier_field: str = Field(
@@ -192,7 +192,7 @@ class OICEntityConfig(FlextModels.Value):
             return FlextResult[None].fail(f"Entity config validation failed: {e}")
 
 
-class TargetOracleOICConfig(FlextModels.Value):
+class TargetOracleOICConfig(FlextModels):
     """Complete configuration for target-oracle-oic using flext-core patterns.
 
     Uses maximum composition from flext-core and flext-oracle-oic-ext.

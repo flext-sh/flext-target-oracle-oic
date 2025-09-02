@@ -18,8 +18,8 @@ from flext_oracle_oic_ext.ext_models import (
 )
 from pydantic import Field
 
-LookupBase = FlextModels.Value  # These models don't exist in ext_models
-PackageBase = FlextModels.Value
+LookupBase = FlextModels  # These models don't exist in ext_models
+PackageBase = FlextModels
 
 
 # ===============================================================================
@@ -280,7 +280,7 @@ class OICLookup(LookupBase):
 # ===============================================================================
 
 
-class OICProject(FlextModels.Value):
+class OICProject(FlextModels):
     """Oracle Integration Cloud project model using flext-core patterns."""
 
     id: str = Field(
@@ -322,7 +322,7 @@ class OICProject(FlextModels.Value):
             return FlextResult[None].fail(f"Project validation failed: {e}")
 
 
-class OICSchedule(FlextModels.Value):
+class OICSchedule(FlextModels):
     """Oracle Integration Cloud schedule model using flext-core patterns."""
 
     integration_id: str = Field(
@@ -373,7 +373,7 @@ class OICSchedule(FlextModels.Value):
             return FlextResult[None].fail(f"Schedule validation failed: {e}")
 
 
-class OICIntegrationAction(FlextModels.Value):
+class OICIntegrationAction(FlextModels):
     """Oracle Integration Cloud integration action model using flext-core patterns."""
 
     integration_id: str = Field(
@@ -417,7 +417,7 @@ class OICIntegrationAction(FlextModels.Value):
             return FlextResult[None].fail(f"Integration action validation failed: {e}")
 
 
-class OICConnectionAction(FlextModels.Value):
+class OICConnectionAction(FlextModels):
     """Oracle Integration Cloud connection action model using flext-core patterns."""
 
     connection_id: str = Field(
@@ -456,7 +456,7 @@ class OICConnectionAction(FlextModels.Value):
 # ===============================================================================
 
 
-class OICDataTransformation(FlextModels.Value):
+class OICDataTransformation(FlextModels):
     """Data transformation model for OIC records using flext-core patterns."""
 
     source_data: dict[str, object] = Field(
@@ -488,7 +488,7 @@ class OICDataTransformation(FlextModels.Value):
             return FlextResult[None].fail(f"Transformation validation failed: {e}")
 
 
-class OICSchemaMapping(FlextModels.Value):
+class OICSchemaMapping(FlextModels):
     """Schema mapping model for Singer to OIC transformation using flext-core patterns."""
 
     singer_schema: dict[str, object] = Field(

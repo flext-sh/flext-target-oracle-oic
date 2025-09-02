@@ -244,7 +244,7 @@ __all__: list[str] = [
     "singer_typing",
     # === CORE RE-EXPORTS ===
     "FlextResult",
-    "FlextModels.Value",
+    "FlextModels",
     # === PRIMARY CLASSES ===
     "FlextTargetOracleOic",
     "TargetOracleOIC",

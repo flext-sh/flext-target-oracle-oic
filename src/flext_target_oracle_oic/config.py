@@ -4,14 +4,14 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from flext_core import FlextConfig, FlextResult
+from flext_core import FlextModels, FlextResult
 from pydantic import Field, SecretStr, model_validator
 from pydantic_settings import SettingsConfigDict
 
 # Remove duplicate import - use unified OICConnectionConfig from this file
 
 
-class OICAuthConfig(FlextConfig.BaseModel):
+class OICAuthConfig(FlextModels.BaseConfig):
     """OIC authentication configuration using flext-core patterns."""
 
     oauth_client_id: str = Field(
@@ -49,7 +49,7 @@ class OICAuthConfig(FlextConfig.BaseModel):
             return FlextResult[None].fail(f"Auth config validation failed: {e}")
 
 
-class OICConnectionConfig(FlextConfig.BaseModel):
+class OICConnectionConfig(FlextModels.BaseConfig):
     """OIC connection configuration using flext-core patterns."""
 
     base_url: str = Field(
@@ -86,7 +86,7 @@ class OICConnectionConfig(FlextConfig.BaseModel):
             return FlextResult[None].fail(f"Connection config validation failed: {e}")
 
 
-class OICDeploymentConfig(FlextConfig.BaseModel):
+class OICDeploymentConfig(FlextModels.BaseConfig):
     """OIC deployment configuration using flext-core patterns."""
 
     import_mode: str = Field(
@@ -132,7 +132,7 @@ class OICDeploymentConfig(FlextConfig.BaseModel):
             return FlextResult[None].fail(f"Deployment config validation failed: {e}")
 
 
-class OICProcessingConfig(FlextConfig.BaseModel):
+class OICProcessingConfig(FlextModels.BaseConfig):
     """OIC processing configuration using flext-core patterns."""
 
     batch_size: int = Field(
@@ -179,7 +179,7 @@ class OICProcessingConfig(FlextConfig.BaseModel):
             return FlextResult[None].fail(f"Processing config validation failed: {e}")
 
 
-class OICEntityConfig(FlextConfig.BaseModel):
+class OICEntityConfig(FlextModels.BaseConfig):
     """OIC entity configuration using flext-core patterns."""
 
     integration_identifier_field: str = Field(
@@ -220,7 +220,7 @@ class OICEntityConfig(FlextConfig.BaseModel):
             return FlextResult[None].fail(f"Entity config validation failed: {e}")
 
 
-class TargetOracleOICConfig(FlextConfig.BaseModel):
+class TargetOracleOICConfig(FlextModels.BaseConfig):
     """Complete configuration for target-oracle-oic using dependency injection.
 
     Uses dependency injection patterns to access Oracle OIC functionality.
@@ -360,7 +360,7 @@ class TargetOracleOICConfig(FlextConfig.BaseModel):
         except Exception as e:
             return FlextResult[None].fail(f"Configuration validation failed: {e}")
 
-    # Pydantic/FlextModels.Value compatibility: provide business rule validator expected by base class
+    # Pydantic/FlextModels compatibility: provide business rule validator expected by base class
     def validate_business_rules(self) -> FlextResult[None]:
         """Alias to validate_domain_rules for business rule validation."""
         return self.validate_domain_rules()
