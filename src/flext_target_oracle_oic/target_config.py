@@ -11,14 +11,24 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
+# Replace singer_typing import with direct typing
+# Skip flext-oracle-oic-ext import - not available
+# from flext_oracle_oic_ext.ext_client import (
+#     OICExtensionAuthenticator as OICOAuth2Authenticator,
+# )
+from typing import Any as OICOAuth2Authenticator
+
 from flext_core import FlextModels, FlextResult
-from flext_meltano import singer_typing as th
-from flext_oracle_oic_ext.ext_client import (
-    OICExtensionAuthenticator as OICOAuth2Authenticator,
-)
-from flext_oracle_oic_ext.ext_models import OICAuthConfig
-from pydantic import Field, SecretStr, model_validator
+from pydantic import BaseModel, Field, SecretStr, model_validator
 from pydantic_settings import SettingsConfigDict
+
+
+class OICAuthConfig(BaseModel):
+    oauth_client_id: str = ""
+    oauth_client_secret: SecretStr = SecretStr("")
+    oauth_token_url: str = ""
+    oauth_client_aud: str | None = None
+    oauth_scope: str = ""
 
 
 class OICConnectionConfig(FlextModels):
@@ -370,49 +380,42 @@ def create_singer_config_schema() -> dict[str, object]:
     This schema aligns with tests which provide flat configuration keys:
     - base_url, oauth_client_id, oauth_client_secret, oauth_token_url, oauth_client_aud
     """
-    properties = th.PropertiesList(
-        th.Property(
-            "base_url",
-            th.StringType,
-            description="Oracle OIC base URL",
-        ),
-        th.Property(
-            "oauth_client_id",
-            th.StringType,
-            description="OAuth2 client ID",
-        ),
-        th.Property(
-            "oauth_client_secret",
-            th.StringType,
-            description="OAuth2 client secret",
-            secret=True,
-        ),
-        th.Property(
-            "oauth_token_url",
-            th.StringType,
-            description="OAuth2 token URL",
-        ),
-        th.Property(
-            "oauth_client_aud",
-            th.StringType,
-            description="OAuth2 client audience",
-        ),
-        th.Property(
-            "import_mode",
-            th.StringType,
-            allowed_values=["create", "update", "create_or_update"],
-            default="create_or_update",
-            description="Import mode for integrations",
-        ),
-        th.Property(
-            "activate_integrations",
-            th.BooleanType,
-            default=False,
-            description="Automatically activate integrations after import",
-        ),
-    )
+    properties = {
+        "base_url": {
+            "type": "string",
+            "description": "Oracle OIC base URL",
+        },
+        "oauth_client_id": {
+            "type": "string",
+            "description": "OAuth2 client ID",
+        },
+        "oauth_client_secret": {
+            "type": "string",
+            "description": "OAuth2 client secret",
+            "secret": True,
+        },
+        "oauth_token_url": {
+            "type": "string",
+            "description": "OAuth2 token URL",
+        },
+        "oauth_client_aud": {
+            "type": "string",
+            "description": "OAuth2 client audience",
+        },
+        "import_mode": {
+            "type": "string",
+            "allowed_values": ["create", "update", "create_or_update"],
+            "default": "create_or_update",
+            "description": "Import mode for integrations",
+        },
+        "activate_integrations": {
+            "type": "boolean",
+            "default": False,
+            "description": "Automatically activate integrations after import",
+        },
+    }
 
-    schema = properties.to_dict()
+    schema = {"properties": properties}
     # Required minimal fields used in tests
     schema["required"] = [
         "base_url",
