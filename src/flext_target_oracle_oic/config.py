@@ -11,7 +11,7 @@ from pydantic_settings import SettingsConfigDict
 # Remove duplicate import - use unified OICConnectionConfig from this file
 
 
-class OICAuthConfig(FlextModels.BaseConfig):
+class OICAuthConfig(FlextModels.Config):
     """OIC authentication configuration using flext-core patterns."""
 
     oauth_client_id: str = Field(
@@ -49,7 +49,7 @@ class OICAuthConfig(FlextModels.BaseConfig):
             return FlextResult[None].fail(f"Auth config validation failed: {e}")
 
 
-class OICConnectionConfig(FlextModels.BaseConfig):
+class OICConnectionConfig(FlextModels.Config):
     """OIC connection configuration using flext-core patterns."""
 
     base_url: str = Field(
@@ -86,7 +86,7 @@ class OICConnectionConfig(FlextModels.BaseConfig):
             return FlextResult[None].fail(f"Connection config validation failed: {e}")
 
 
-class OICDeploymentConfig(FlextModels.BaseConfig):
+class OICDeploymentConfig(FlextModels.Config):
     """OIC deployment configuration using flext-core patterns."""
 
     import_mode: str = Field(
@@ -132,7 +132,7 @@ class OICDeploymentConfig(FlextModels.BaseConfig):
             return FlextResult[None].fail(f"Deployment config validation failed: {e}")
 
 
-class OICProcessingConfig(FlextModels.BaseConfig):
+class OICProcessingConfig(FlextModels.Config):
     """OIC processing configuration using flext-core patterns."""
 
     batch_size: int = Field(
@@ -179,7 +179,7 @@ class OICProcessingConfig(FlextModels.BaseConfig):
             return FlextResult[None].fail(f"Processing config validation failed: {e}")
 
 
-class OICEntityConfig(FlextModels.BaseConfig):
+class OICEntityConfig(FlextModels.Config):
     """OIC entity configuration using flext-core patterns."""
 
     integration_identifier_field: str = Field(
@@ -220,7 +220,7 @@ class OICEntityConfig(FlextModels.BaseConfig):
             return FlextResult[None].fail(f"Entity config validation failed: {e}")
 
 
-class TargetOracleOICConfig(FlextModels.BaseConfig):
+class TargetOracleOICConfig(FlextModels.Config):
     """Complete configuration for target-oracle-oic using dependency injection.
 
     Uses dependency injection patterns to access Oracle OIC functionality.
