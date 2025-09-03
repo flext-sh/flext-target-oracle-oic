@@ -16,7 +16,7 @@ from pathlib import Path
 # from flext_oracle_oic_ext.ext_client import (
 #     OICExtensionAuthenticator as OICOAuth2Authenticator,
 # )
-from typing import Any as OICOAuth2Authenticator
+from typing import object as OICOAuth2Authenticator
 
 from flext_core import FlextModels, FlextResult
 from pydantic import BaseModel, Field, SecretStr, model_validator
