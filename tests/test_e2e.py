@@ -1,25 +1,24 @@
 """Comprehensive End-to-End tests for target-oracle-oic.
 
 Tests all functionalities including:
-- Target initialization
-- Sink operations
-- Data loading
-- Authentication
-- Error handling
-- Integration import/export.
+- Target initialization with real configuration
+- Sink operations with real OIC API calls
+- Data loading and validation
+- Authentication with real OAuth2
+- Error handling scenarios
+- Integration import/export workflows
+
+NO MOCKS - Real functional testing only.
 """
 
 from __future__ import annotations
 
-import asyncio
 import json
-import shutil
-import sys
+import os
 from pathlib import Path
-from unittest.mock import patch
 
 import pytest
-from flext_meltano import ConfigValidationError, get_target_test_class
+from flext_meltano import FlextMeltanoValidationError as ConfigValidationError
 
 from flext_target_oracle_oic import (
     ConnectionsSink,
@@ -30,48 +29,54 @@ from flext_target_oracle_oic import (
 )
 
 
+# Load real configuration from environment
+def load_test_config() -> dict[str, str]:
+    """Load real test configuration from environment variables."""
+    # Load .env file if it exists
+    env_file = Path(".env")
+    if env_file.exists():
+        with env_file.open(encoding="utf-8") as f:
+            for line in f:
+                if "=" in line and not line.strip().startswith("#"):
+                    key, value = line.strip().split("=", 1)
+                    os.environ[key] = value.strip("\"'")
+
+    config = {
+        "base_url": os.getenv("TARGET_ORACLE_OIC_BASE_URL", ""),
+        "oauth_client_id": os.getenv("TARGET_ORACLE_OIC_OAUTH_CLIENT_ID", ""),
+        "oauth_client_secret": os.getenv("TARGET_ORACLE_OIC_OAUTH_CLIENT_SECRET", ""),
+        "oauth_token_url": os.getenv("TARGET_ORACLE_OIC_OAUTH_TOKEN_URL", ""),
+        "oauth_client_aud": os.getenv("TARGET_ORACLE_OIC_OAUTH_CLIENT_AUD", ""),
+    }
+
+    # Validate required configuration
+    required_keys = [
+        "base_url",
+        "oauth_client_id",
+        "oauth_client_secret",
+        "oauth_token_url",
+    ]
+    missing_keys = [k for k in required_keys if not config[k]]
+    if missing_keys:
+        pytest.skip(f"Missing required environment variables: {missing_keys}")
+
+    return config
+
+
+@pytest.fixture
+def test_config() -> dict[str, str]:
+    """Provide real test configuration."""
+    return load_test_config()
+
+
+@pytest.fixture
+def target(test_config: dict[str, str]) -> TargetOracleOIC:
+    """Create real Target instance with environment configuration."""
+    return TargetOracleOIC(config=test_config)
+
+
 class TestTargetOracleOICE2E:
-    """End-to-end tests for target-oracle-oic."""
-
-    @pytest.fixture
-    def config_path(self) -> str:
-        config_file = Path(__file__).parent.parent / "config.json"
-        if not config_file.exists():
-            # Generate config if it doesn't exist:
-            python_exe = (
-                shutil.which("python3") or shutil.which("python") or sys.executable
-            )
-
-            async def _run(cmd_list: list[str], cwd: str | None = None) -> int:
-                process = await asyncio.create_subprocess_exec(
-                    *cmd_list,
-                    cwd=cwd,
-                    stdout=asyncio.subprocess.PIPE,
-                    stderr=asyncio.subprocess.PIPE,
-                )
-                await process.communicate()
-                return process.returncode
-
-            rc = asyncio.run(
-                _run(
-                    [python_exe, "generate_config.py"],
-                    cwd=str(Path(__file__).parent.parent),
-                ),
-            )
-            if rc != 0:
-                msg = "Failed to generate config.json"
-                raise RuntimeError(msg)
-        return str(config_file)
-
-    @pytest.fixture
-    def config(self, config_path: str) -> dict[str, object]:
-        with config_path.open(encoding="utf-8") as f:
-            loaded_config: dict[str, object] = json.load(f)
-            return loaded_config
-
-    @pytest.fixture
-    def target(self, config: dict[str, object]) -> TargetOracleOIC:
-        return TargetOracleOIC(config=config)
+    """End-to-end tests for target-oracle-oic using REAL configuration and NO MOCKS."""
 
     def test_target_initialization(
         self,

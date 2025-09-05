@@ -14,7 +14,7 @@ from flext_core import (
 
 
 # Base Oracle OIC exception
-class FlextTargetOracleOicError(FlextExceptions):
+class FlextTargetOracleOicError(Exception):
     """Base exception for Oracle OIC target operations."""
 
     def __init__(
@@ -28,10 +28,12 @@ class FlextTargetOracleOicError(FlextExceptions):
         if details:
             context.update(details)
 
-        super().__init__(message, context=context)
+        self.message = message
+        self.details = context or {}
+        super().__init__(message)
 
 
-class FlextTargetOracleOicAuthenticationError(FlextExceptions):
+class FlextTargetOracleOicAuthenticationError(FlextExceptions._AuthenticationError):
     """Oracle OIC authentication errors."""
 
     def __init__(
@@ -50,11 +52,12 @@ class FlextTargetOracleOicAuthenticationError(FlextExceptions):
 
         super().__init__(
             f"Oracle OIC auth: {message}",
-            context=context,
+            auth_method=auth_method,
+            **context,
         )
 
 
-class FlextTargetOracleOicProcessingError(FlextExceptions.ProcessingError):
+class FlextTargetOracleOicProcessingError(FlextExceptions._ProcessingError):
     """Oracle OIC processing errors."""
 
     def __init__(
@@ -73,11 +76,13 @@ class FlextTargetOracleOicProcessingError(FlextExceptions.ProcessingError):
 
         super().__init__(
             f"Oracle OIC processing: {message}",
-            context=context,
+            operation=processing_stage,
+            business_rule=None,
+            **context,
         )
 
 
-class FlextTargetOracleOicTransformationError(FlextExceptions.ProcessingError):
+class FlextTargetOracleOicTransformationError(FlextExceptions._ProcessingError):
     """Oracle OIC transformation errors."""
 
     def __init__(
@@ -97,12 +102,14 @@ class FlextTargetOracleOicTransformationError(FlextExceptions.ProcessingError):
 
         super().__init__(
             f"Oracle OIC transformation: {message}",
-            context=context,
+            operation=transformation_type,
+            business_rule=None,
+            **context,
         )
 
 
 # Oracle OIC-specific exceptions that need custom behavior
-class FlextTargetOracleOicConnectionError(FlextExceptions):
+class FlextTargetOracleOicConnectionError(FlextExceptions._ConnectionError):
     """Oracle OIC-specific connection errors."""
 
     def __init__(
@@ -121,11 +128,13 @@ class FlextTargetOracleOicConnectionError(FlextExceptions):
 
         super().__init__(
             f"Oracle OIC connection: {message}",
-            context=context,
+            service=oic_instance or "Oracle OIC",
+            endpoint=endpoint,
+            **context,
         )
 
 
-class FlextTargetOracleOicValidationError(FlextExceptions):
+class FlextTargetOracleOicValidationError(FlextExceptions._ValidationError):
     """Oracle OIC-specific validation errors."""
 
     def __init__(
@@ -149,11 +158,14 @@ class FlextTargetOracleOicValidationError(FlextExceptions):
 
         super().__init__(
             f"Oracle OIC validation: {message}",
-            context=context,
+            field=field,
+            value=value,
+            validation_details=validation_details or None,
+            **context,
         )
 
 
-class FlextTargetOracleOicConfigurationError(FlextExceptions):
+class FlextTargetOracleOicConfigurationError(FlextExceptions._ConfigurationError):
     """Oracle OIC-specific configuration errors."""
 
     def __init__(
@@ -172,7 +184,9 @@ class FlextTargetOracleOicConfigurationError(FlextExceptions):
 
         super().__init__(
             f"Oracle OIC config: {message}",
-            context=context,
+            config_key=config_key,
+            config_file=None,
+            **context,
         )
 
 
@@ -193,7 +207,7 @@ class FlextTargetOracleOicInfrastructureError(FlextTargetOracleOicError):
         if service is not None:
             context["service"] = service
 
-        super().__init__(f"Oracle OIC infrastructure: {message}", context=context)
+        super().__init__(f"Oracle OIC infrastructure: {message}", details=context)
 
 
 class FlextTargetOracleOicAPIError(FlextTargetOracleOicError):
@@ -216,7 +230,7 @@ class FlextTargetOracleOicAPIError(FlextTargetOracleOicError):
         if response_body is not None:
             context["response_body"] = response_body[:500]  # Truncate long responses
 
-        super().__init__(f"Oracle OIC API: {message}", context=context)
+        super().__init__(f"Oracle OIC API: {message}", details=context)
 
 
 class FlextTargetOracleOicErrorDetails(FlextModels):

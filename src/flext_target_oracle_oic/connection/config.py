@@ -58,7 +58,7 @@ class OICConnectionSettings(FlextModels):
     def from_dict(cls, data: dict[str, object]) -> OICConnectionSettings:
         """Create configuration from dictionary using modern Pydantic patterns."""
         try:
-            return cls.model_validate(data)
+            return cls(**data)
         except Exception:
             logger.exception("Failed to create OICConnectionSettings from dict")
             raise

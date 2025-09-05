@@ -528,7 +528,7 @@ class OICSchemaMapping(FlextModels):
 def create_oic_connection(data: dict[str, object]) -> FlextResult[OICConnection]:
     """Create OIC connection from data dictionary."""
     try:
-        connection = OICConnection.model_validate(data)
+        connection = OICConnection(**data)
         validation = connection.validate_business_rules()
         if not validation.success:
             return FlextResult[OICConnection].fail(
@@ -542,7 +542,7 @@ def create_oic_connection(data: dict[str, object]) -> FlextResult[OICConnection]
 def create_oic_integration(data: dict[str, object]) -> FlextResult[OICIntegration]:
     """Create OIC integration from data dictionary."""
     try:
-        integration = OICIntegration.model_validate(data)
+        integration = OICIntegration(**data)
         validation = integration.validate_business_rules()
         if not validation.success:
             return FlextResult[OICIntegration].fail(
@@ -556,7 +556,7 @@ def create_oic_integration(data: dict[str, object]) -> FlextResult[OICIntegratio
 def create_oic_package(data: dict[str, object]) -> FlextResult[OICPackage]:
     """Create OIC package from data dictionary."""
     try:
-        package = OICPackage.model_validate(data)
+        package = OICPackage(**data)
         validation = package.validate_business_rules()
         if not validation.success:
             return FlextResult[OICPackage].fail(
@@ -570,7 +570,7 @@ def create_oic_package(data: dict[str, object]) -> FlextResult[OICPackage]:
 def create_oic_lookup(data: dict[str, object]) -> FlextResult[OICLookup]:
     """Create OIC lookup from data dictionary."""
     try:
-        lookup = OICLookup.model_validate(data)
+        lookup = OICLookup(**data)
         validation = lookup.validate_business_rules()
         if not validation.success:
             return FlextResult[OICLookup].fail(
