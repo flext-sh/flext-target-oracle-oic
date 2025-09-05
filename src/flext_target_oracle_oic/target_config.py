@@ -11,19 +11,22 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
+from flext_core import FlextModels, FlextResult
+from pydantic import BaseModel, Field, SecretStr, model_validator
+from pydantic_settings import SettingsConfigDict
+
 # Replace singer_typing import with direct typing
 # Skip flext-oracle-oic-ext import - not available
 # from flext_oracle_oic_ext.ext_client import (
 #     OICExtensionAuthenticator as OICOAuth2Authenticator,
 # )
-from typing import object as OICOAuth2Authenticator
-
-from flext_core import FlextModels, FlextResult
-from pydantic import BaseModel, Field, SecretStr, model_validator
-from pydantic_settings import SettingsConfigDict
+# OICOAuth2Authenticator not available - using object as placeholder
+OICOAuth2Authenticator = object
 
 
 class OICAuthConfig(BaseModel):
+    """OIC authentication configuration model."""
+
     oauth_client_id: str = ""
     oauth_client_secret: SecretStr = SecretStr("")
     oauth_token_url: str = ""
@@ -230,25 +233,15 @@ class TargetOracleOICConfig(FlextModels):
         description="Connection configuration",
     )
     deployment: OICDeploymentConfig = Field(
-        default_factory=lambda: OICDeploymentConfig(
-            import_mode="create_or_update",
-            archive_directory="",
-        ),
+        default_factory=OICDeploymentConfig,
         description="Deployment configuration",
     )
     processing: OICProcessingConfig = Field(
-        default_factory=lambda: OICProcessingConfig(
-            batch_size=100,
-            max_errors=5,
-        ),
+        default_factory=OICProcessingConfig,
         description="Processing configuration",
     )
     entities: OICEntityConfig = Field(
-        default_factory=lambda: OICEntityConfig(
-            integration_identifier_field="code",
-            connection_identifier_field="code",
-            lookup_identifier_field="name",
-        ),
+        default_factory=OICEntityConfig,
         description="Entity configuration",
     )
 
@@ -333,44 +326,36 @@ class TargetOracleOICConfig(FlextModels):
     @classmethod
     def create_with_defaults(
         cls,
-        **overrides: dict[str, object],
+        **overrides: object,
     ) -> TargetOracleOICConfig:
         """Create configuration with intelligent defaults."""
-        defaults: dict[
-            str,
-            OICAuthConfig
-            | OICConnectionConfig
-            | OICDeploymentConfig
-            | OICProcessingConfig
-            | OICEntityConfig
-            | str,
-        ] = {
-            "auth": OICAuthConfig(
-                oauth_client_id="your-client-id",
-                oauth_client_secret=SecretStr("your-client-secret"),  # nosec B106 - Example configuration value
-                oauth_token_url="",
-                oauth_client_aud=None,
-                oauth_scope="",
-            ),
-            "connection": OICConnectionConfig(),
-            "deployment": OICDeploymentConfig(
-                import_mode="create_or_update",
-                archive_directory="",
-            ),
-            "processing": OICProcessingConfig(
-                batch_size=100,
-                max_errors=5,
-            ),
-            "entities": OICEntityConfig(
-                integration_identifier_field="code",
-                connection_identifier_field="code",
-                lookup_identifier_field="name",
-            ),
+        defaults: dict[str, object] = {
+            "auth": {
+                "oauth_client_id": "your-client-id",
+                "oauth_client_secret": "your-client-secret",  # nosec B106 - Example configuration value
+                "oauth_token_url": "",
+                "oauth_client_aud": None,
+                "oauth_scope": "",
+            },
+            "connection": {},
+            "deployment": {
+                "import_mode": "create_or_update",
+                "archive_directory": "",
+            },
+            "processing": {
+                "batch_size": 100,
+                "max_errors": 5,
+            },
+            "entities": {
+                "integration_identifier_field": "code",
+                "connection_identifier_field": "code",
+                "lookup_identifier_field": "name",
+            },
             "project_name": "flext-target-oracle-oic",
             "project_version": "0.9.0",
         }
         defaults.update(overrides)
-        return cls.model_validate(defaults)
+        return cls(**defaults)
 
 
 # Singer SDK configuration schema creation
@@ -415,21 +400,22 @@ def create_singer_config_schema() -> dict[str, object]:
         },
     }
 
-    schema = {"properties": properties}
+    schema: dict[str, object] = {"properties": properties}
     # Required minimal fields used in tests
-    schema["required"] = [
+    required_fields: list[str] = [
         "base_url",
         "oauth_client_id",
         "oauth_client_secret",
         "oauth_token_url",
     ]
+    schema["required"] = required_fields
     return schema
 
 
 # Configuration factory functions
 def create_config_from_dict(config_dict: dict[str, object]) -> TargetOracleOICConfig:
     """Create configuration from dictionary with validation."""
-    return TargetOracleOICConfig.model_validate(config_dict)
+    return TargetOracleOICConfig(**config_dict)
 
 
 def create_config_with_env_overrides(
@@ -458,7 +444,7 @@ def create_config_with_env_overrides(
                 config[section] = section_obj
             section_obj[field] = os.environ[env_key]
 
-    return TargetOracleOICConfig.model_validate(config)
+    return TargetOracleOICConfig(**config)
 
 
 # Export configuration classes

@@ -6,7 +6,7 @@ from collections.abc import Sequence
 
 import httpx
 from flext_core import FlextLogger
-from flext_meltano import Sink, Target
+from singer_sdk import Sink, Target
 
 from flext_target_oracle_oic.auth import OICAuthConfig, OICOAuth2Authenticator
 

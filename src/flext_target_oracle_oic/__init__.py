@@ -26,8 +26,8 @@ from flext_meltano import (
     FlextMeltanoBridge,
     # Configuration and validation
     FlextMeltanoConfig,
-    # Core Target class for FLEXT
-    FlextTarget as Target,
+    # Target abstractions
+    FlextTargetAbstractions,
 )
 
 # === PEP8 UNIFIED IMPORTS - NEW STRUCTURE ===

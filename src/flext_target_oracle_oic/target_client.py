@@ -12,11 +12,9 @@ from collections.abc import Sequence
 from typing import ClassVar
 
 import httpx
-
-# Import centralized constants from flext-core
 from flext_core import FlextConstants, FlextLogger
-from flext_meltano import Sink, Sink as SinkType, Target
 from flext_oracle_oic_ext.ext_models import OICAuthConfig
+from singer_sdk import Sink, Target
 
 from flext_target_oracle_oic.target_config import (
     OICOAuth2Authenticator,
@@ -601,7 +599,7 @@ class TargetOracleOIC(Target):
         | None = None,  # kept for interface compatibility, not used
         schema: dict[str, object] | None = None,
         key_properties: Sequence[str] | None = None,
-    ) -> SinkType:
+    ) -> Sink:
         """Get appropriate sink for the given stream."""
         _ = record
         # Return existing sink if it exists

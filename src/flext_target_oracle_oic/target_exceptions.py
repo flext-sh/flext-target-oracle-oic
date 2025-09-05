@@ -52,7 +52,7 @@ class FlextTargetOracleOicError(Exception):
 # ===============================================================================
 
 
-class FlextTargetOracleOicAuthenticationError(FlextExceptions):
+class FlextTargetOracleOicAuthenticationError(FlextExceptions._AuthenticationError):
     """Oracle OIC authentication errors using flext-core patterns."""
 
     def __init__(
@@ -77,11 +77,12 @@ class FlextTargetOracleOicAuthenticationError(FlextExceptions):
         # Use proper flext-core initialization
         super().__init__(
             f"Oracle OIC auth: {message}",
-            context=context,
+            auth_method=auth_method,
+            **context,
         )
 
 
-class FlextTargetOracleOicConnectionError(FlextExceptions):
+class FlextTargetOracleOicConnectionError(FlextExceptions._ConnectionError):
     """Oracle OIC connection errors using flext-core patterns."""
 
     def __init__(
@@ -106,11 +107,13 @@ class FlextTargetOracleOicConnectionError(FlextExceptions):
         # Use proper flext-core initialization
         super().__init__(
             f"Oracle OIC connection: {message}",
-            context=context,
+            service=oic_instance or "Oracle OIC",
+            endpoint=endpoint,
+            **context,
         )
 
 
-class FlextTargetOracleOicProcessingError(FlextExceptions.ProcessingError):
+class FlextTargetOracleOicProcessingError(FlextExceptions._ProcessingError):
     """Oracle OIC processing errors using flext-core patterns."""
 
     def __init__(
@@ -135,11 +138,13 @@ class FlextTargetOracleOicProcessingError(FlextExceptions.ProcessingError):
         # Use proper flext-core initialization
         super().__init__(
             f"Oracle OIC processing: {message}",
-            context=context,
+            operation=processing_stage,
+            business_rule=None,
+            **context,
         )
 
 
-class FlextTargetOracleOicValidationError(FlextExceptions):
+class FlextTargetOracleOicValidationError(FlextExceptions._ValidationError):
     """Oracle OIC validation errors using flext-core patterns."""
 
     def __init__(
@@ -156,25 +161,30 @@ class FlextTargetOracleOicValidationError(FlextExceptions):
         validation_details: dict[str, object] = {}
         context = kwargs.copy()
 
-        if field is not None:
-            validation_details["field"] = field
-        if value is not None:
-            validation_details["value"] = str(value)[:100]  # Truncate long values
         if integration_name is not None:
             context["integration_name"] = integration_name
         if entity_type is not None:
             context["entity_type"] = entity_type
+
+        # Prepare validation details for flext-core
+        if field is not None:
+            validation_details["field"] = field
+        if value is not None:
+            validation_details["value"] = str(value)[:100]  # Truncate long values
+        if validation_details:
+            context.update(validation_details)
 
         # Use proper flext-core initialization
         super().__init__(
             f"Oracle OIC validation: {message}",
             field=field,
             value=value,
-            context=context,
+            validation_details=validation_details or None,
+            **context,
         )
 
 
-class FlextTargetOracleOicConfigurationError(FlextExceptions):
+class FlextTargetOracleOicConfigurationError(FlextExceptions._ConfigurationError):
     """Oracle OIC configuration errors using flext-core patterns."""
 
     def __init__(
@@ -189,8 +199,6 @@ class FlextTargetOracleOicConfigurationError(FlextExceptions):
         """Initialize Oracle OIC configuration error with context."""
         context = kwargs.copy()
 
-        if config_key is not None:
-            context["config_key"] = config_key
         if config_section is not None:
             context["config_section"] = config_section
         if integration_name is not None:
@@ -199,7 +207,9 @@ class FlextTargetOracleOicConfigurationError(FlextExceptions):
         # Use proper flext-core initialization
         super().__init__(
             f"Oracle OIC config: {message}",
-            context=context,
+            config_key=config_key,
+            config_file=config_section,  # Map config_section to config_file for flext-core
+            **context,
         )
 
 

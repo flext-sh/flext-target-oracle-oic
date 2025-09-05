@@ -5,8 +5,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import ClassVar
 
-from flext_meltano import Sink, Target, singer_typing as th
-from flext_meltano.common_schemas import create_oauth2_api_tap_schema
+from singer_sdk import Sink, Target, typing as th
 
 from flext_target_oracle_oic.application import OICTargetOrchestrator
 from flext_target_oracle_oic.sinks import (
@@ -70,8 +69,38 @@ class TargetOracleOIC(Target):
             description="Automatically activate integrations after import",
         ),
     )
-    config_jsonschema: ClassVar = create_oauth2_api_tap_schema(
-        additional_properties=_additional_properties,
+    config_jsonschema: ClassVar = th.PropertiesList(
+        th.Property(
+            "base_url",
+            th.StringType,
+            required=True,
+            description="Oracle OIC base URL",
+        ),
+        th.Property(
+            "oauth_client_id",
+            th.StringType,
+            required=True,
+            description="OAuth2 client ID",
+        ),
+        th.Property(
+            "oauth_client_secret",
+            th.StringType,
+            required=True,
+            secret=True,
+            description="OAuth2 client secret",
+        ),
+        th.Property(
+            "oauth_token_url",
+            th.StringType,
+            required=True,
+            description="OAuth2 token URL",
+        ),
+        th.Property(
+            "oauth_client_aud",
+            th.StringType,
+            description="OAuth2 client audience",
+        ),
+        *_additional_properties,
     ).to_dict()
 
     def __init__(
