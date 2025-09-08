@@ -1,4 +1,8 @@
-"""Test exception hierarchy for FlextTargetOracleOic."""
+"""Test exception hierarchy for FlextTargetOracleOic.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+"""
 
 import pytest
 from pydantic_core import ValidationError

@@ -1,3 +1,11 @@
+"""Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT.
+"""
+
+from __future__ import annotations
+
+from flext_core import FlextTypes
+
 """Target Oracle OIC Exceptions - Factory pattern using flext-core exceptions.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
@@ -6,7 +14,6 @@ SPDX-License-Identifier: MIT
 PEP8-compliant exception hierarchy with maximum flext-core composition.
 """
 
-from __future__ import annotations
 
 from flext_core import (
     FlextExceptions,
@@ -26,7 +33,7 @@ class FlextTargetOracleOicError(Exception):
         self,
         message: str = "Oracle OIC target error",
         *,
-        details: dict[str, object] | None = None,
+        details: FlextTypes.Core.Dict | None = None,
         integration_name: str | None = None,
         oic_instance: str | None = None,
         **kwargs: object,
@@ -158,7 +165,7 @@ class FlextTargetOracleOicValidationError(FlextExceptions._ValidationError):
         **kwargs: object,
     ) -> None:
         """Initialize Oracle OIC validation error with context."""
-        validation_details: dict[str, object] = {}
+        validation_details: FlextTypes.Core.Dict = {}
         context = kwargs.copy()
 
         if integration_name is not None:
@@ -226,8 +233,8 @@ class FlextTargetOracleOicTransformationError(FlextTargetOracleOicError):
         message: str = "Oracle OIC transformation failed",
         *,
         transformation_type: str | None = None,
-        input_schema: dict[str, object] | None = None,
-        output_schema: dict[str, object] | None = None,
+        input_schema: FlextTypes.Core.Dict | None = None,
+        output_schema: FlextTypes.Core.Dict | None = None,
         **kwargs: object,
     ) -> None:
         """Initialize Oracle OIC transformation error with context."""
@@ -320,7 +327,7 @@ class FlextTargetOracleOicErrorDetails(FlextModels):
 
     error_code: str
     error_type: str
-    context: dict[str, object]
+    context: FlextTypes.Core.Dict
     timestamp: str
     source_component: str
     integration_name: str | None = None
@@ -543,7 +550,7 @@ def create_validation_error_result(
 # EXPORTS
 # ===============================================================================
 
-__all__: list[str] = [
+__all__: FlextTypes.Core.StringList = [
     "FlextTargetOracleOicAPIError",
     "FlextTargetOracleOicAuthenticationError",
     "FlextTargetOracleOicConfigurationError",

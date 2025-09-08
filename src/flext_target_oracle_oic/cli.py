@@ -3,9 +3,19 @@
 Provides a small, typed Click command that delegates output formatting to
 flext-cli abstractions (Rich console via FlextCliHelper) and loads a standard
 FlextCliContext for consistent behavior across the ecosystem.
+
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
+
+"""
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+"""
+
 
 import uuid
 

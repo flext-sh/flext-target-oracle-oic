@@ -1,10 +1,17 @@
+"""Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT.
+"""
+
+from __future__ import annotations
+
+from flext_core import FlextTypes
+
 """Oracle OIC exceptions using flext-core patterns.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 """
 
-from __future__ import annotations
 
 from flext_core import (
     FlextExceptions,
@@ -20,7 +27,7 @@ class FlextTargetOracleOicError(Exception):
     def __init__(
         self,
         message: str = "Oracle OIC target error",
-        details: dict[str, object] | None = None,
+        details: FlextTypes.Core.Dict | None = None,
         **kwargs: object,
     ) -> None:
         """Initialize exception with message and optional details."""
@@ -89,7 +96,7 @@ class FlextTargetOracleOicTransformationError(FlextExceptions._ProcessingError):
         self,
         message: str = "Oracle OIC transformation failed",
         transformation_type: str | None = None,
-        input_data: dict[str, object] | None = None,
+        input_data: FlextTypes.Core.Dict | None = None,
         **kwargs: object,
     ) -> None:
         """Initialize Oracle OIC transformation error with context."""
@@ -146,7 +153,7 @@ class FlextTargetOracleOicValidationError(FlextExceptions._ValidationError):
         **kwargs: object,
     ) -> None:
         """Initialize Oracle OIC validation error with context."""
-        validation_details: dict[str, object] = {}
+        validation_details: FlextTypes.Core.Dict = {}
         if field is not None:
             validation_details["field"] = field
         if value is not None:
@@ -238,7 +245,7 @@ class FlextTargetOracleOicErrorDetails(FlextModels):
 
     error_code: str
     error_type: str
-    context: dict[str, object]
+    context: FlextTypes.Core.Dict
     timestamp: str
     source_component: str
 

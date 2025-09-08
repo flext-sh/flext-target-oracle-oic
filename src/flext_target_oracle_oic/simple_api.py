@@ -2,9 +2,21 @@
 
 MIGRATED TO FLEXT-CORE:
 Provides enterprise-ready setup utilities with FlextResult pattern support.
+
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
+
+from flext_core import FlextTypes
+
+"""
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+"""
+
 
 from os import getenv
 
@@ -369,7 +381,7 @@ def create_test_connection_config(**overrides: object) -> TargetOracleOICConfig:
 
 
 # Export convenience functions
-__all__: list[str] = [
+__all__: FlextTypes.Core.StringList = [
     "FlextResult",
     "create_development_oic_target_config",
     "create_migration_oic_target_config",

@@ -9,16 +9,26 @@ Tests all functionalities including:
 - Integration import/export workflows
 
 NO MOCKS - Real functional testing only.
+
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
 
+import asyncio
 import json
 import os
+import shutil
+import sys
 from pathlib import Path
+from unittest.mock import patch
 
 import pytest
+from flext_core import FlextTypes
 from flext_meltano import FlextMeltanoValidationError as ConfigValidationError
+from singer_sdk.testing import get_target_test_class
 
 from flext_target_oracle_oic import (
     ConnectionsSink,
@@ -30,7 +40,7 @@ from flext_target_oracle_oic import (
 
 
 # Load real configuration from environment
-def load_test_config() -> dict[str, str]:
+def load_test_config() -> FlextTypes.Core.Headers:
     """Load real test configuration from environment variables."""
     # Load .env file if it exists
     env_file = Path(".env")
@@ -64,13 +74,13 @@ def load_test_config() -> dict[str, str]:
 
 
 @pytest.fixture
-def test_config() -> dict[str, str]:
+def test_config() -> FlextTypes.Core.Headers:
     """Provide real test configuration."""
     return load_test_config()
 
 
 @pytest.fixture
-def target(test_config: dict[str, str]) -> TargetOracleOIC:
+def target(test_config: FlextTypes.Core.Headers) -> TargetOracleOIC:
     """Create real Target instance with environment configuration."""
     return TargetOracleOIC(config=test_config)
 
@@ -81,7 +91,7 @@ class TestTargetOracleOICE2E:
     def test_target_initialization(
         self,
         target: TargetOracleOIC,
-        config: dict[str, object],
+        config: FlextTypes.Core.Dict,
     ) -> None:
         if target.name != "target-oracle-oic":
             msg: str = f"Expected {'target-oracle-oic'}, got {target.name}"
@@ -367,7 +377,7 @@ class TestTargetOracleOICE2E:
             )
 
             async def _run_cli(
-                cmd_list: list[str],
+                cmd_list: FlextTypes.Core.StringList,
                 cwd: str | None = None,
                 stdin_data: str | None = None,
             ) -> tuple[int, str, str]:
@@ -411,7 +421,7 @@ class TestTargetOracleOICE2E:
             )
 
             async def _run_input(
-                cmd_list: list[str],
+                cmd_list: FlextTypes.Core.StringList,
                 cwd: str | None = None,
                 input_text: str = "",
             ) -> tuple[int, str, str]:

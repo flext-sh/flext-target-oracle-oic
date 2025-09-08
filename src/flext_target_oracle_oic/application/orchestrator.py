@@ -1,10 +1,17 @@
+"""Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT.
+"""
+
+from __future__ import annotations
+
+from flext_core import FlextTypes
+
 """Oracle OIC Target Orchestrator using flext-core patterns.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 """
 
-from __future__ import annotations
 
 from flext_core import FlextLogger, FlextResult
 
@@ -14,11 +21,14 @@ logger = FlextLogger(__name__)
 class OICTargetOrchestrator:
     """Oracle OIC Target Orchestrator for FLEXT ecosystem integration."""
 
-    def __init__(self, config: dict[str, object] | None = None) -> None:
+    def __init__(self, config: FlextTypes.Core.Dict | None = None) -> None:
         """Initialize OIC target orchestrator.
 
         Args:
             config: Configuration dictionary
+
+        Returns:
+            object: Description of return value.
 
         """
         self.config = config or {}
@@ -72,8 +82,8 @@ class OICTargetOrchestrator:
 
     def orchestrate_target_pipeline(
         self,
-        records: list[dict[str, object]],
-    ) -> FlextResult[dict[str, object]]:
+        records: list[FlextTypes.Core.Dict],
+    ) -> FlextResult[FlextTypes.Core.Dict]:
         """Orchestrate OIC target pipeline execution.
 
         Args:
@@ -101,15 +111,15 @@ class OICTargetOrchestrator:
                 "OIC target pipeline completed: %d records processed",
                 processed_count,
             )
-            return FlextResult[dict[str, object]].ok(result)
+            return FlextResult[FlextTypes.Core.Dict].ok(result)
 
         except Exception as e:
             logger.exception("OIC target pipeline orchestration failed")
-            return FlextResult[dict[str, object]].fail(
+            return FlextResult[FlextTypes.Core.Dict].fail(
                 f"Pipeline orchestration failed: {e}"
             )
 
 
-__all__: list[str] = [
+__all__: FlextTypes.Core.StringList = [
     "OICTargetOrchestrator",
 ]

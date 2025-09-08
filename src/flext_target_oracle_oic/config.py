@@ -1,12 +1,33 @@
-"""Configuration for target-oracle-oic using flext-core patterns."""
+"""Configuration for target-oracle-oic using flext-core patterns.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
+
+from flext_core import FlextTypes
+
+"""
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+"""
+
 
 from pathlib import Path
 
 from flext_core import FlextModels, FlextResult
 from pydantic import Field, SecretStr, model_validator
 from pydantic_settings import SettingsConfigDict
+
+# Remove duplicate import - use unified OICConnectionConfig from this file
+
+
+class OICAuthConfig(FlextModels.Config):
+    """OIC authentication configuration using flext-core patterns."""
+
+
+from flext_core import FlextModels
 
 # Remove duplicate import - use unified OICConnectionConfig from this file
 
@@ -194,7 +215,7 @@ class OICEntityConfig(FlextModels.Config):
         "name",
         description="Field name to use as lookup identifier",
     )
-    identifier_fields: dict[str, str] = Field(
+    identifier_fields: FlextTypes.Core.Headers = Field(
         default_factory=lambda: {
             "integrations": "code",
             "connections": "code",
@@ -283,7 +304,7 @@ class TargetOracleOICConfig(FlextModels.Config):
     )
 
     # Custom transformation rules
-    transformation_rules: list[dict[str, object]] = Field(
+    transformation_rules: list[FlextTypes.Core.Dict] = Field(
         default_factory=list,
         description="Custom transformation rules",
     )
@@ -325,7 +346,7 @@ class TargetOracleOICConfig(FlextModels.Config):
 
         return self
 
-    def get_oauth_headers(self) -> dict[str, str]:
+    def get_oauth_headers(self) -> FlextTypes.Core.Headers:
         """Get OAuth headers for API requests."""
         # Return authentication headers directly - no duplication
         return {
@@ -368,7 +389,7 @@ class TargetOracleOICConfig(FlextModels.Config):
     @classmethod
     def create_with_defaults(
         cls,
-        **overrides: dict[str, object],
+        **overrides: FlextTypes.Core.Dict,
     ) -> TargetOracleOICConfig:
         """Create configuration with intelligent defaults."""
         defaults = {
@@ -413,7 +434,7 @@ class TargetOracleOICConfig(FlextModels.Config):
 
 
 # Export configuration classes
-__all__: list[str] = [
+__all__: FlextTypes.Core.StringList = [
     "OICAuthConfig",
     "OICConnectionConfig",
     "OICDeploymentConfig",
