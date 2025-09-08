@@ -1,19 +1,17 @@
+"""Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT.
+"""
+
+from __future__ import annotations
+from flext_core import FlextTypes
+
+
 """FlextTargetOracleOic - Oracle Integration Cloud Target using flext-core patterns.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
-
-PEP8-compliant Oracle Integration Cloud target following flext-core architecture:
-- Maximum composition from flext-core, flext-meltano, and flext-oracle-oic-ext
-- Unified target_config.py for configuration management
-- Unified target_client.py for target/loader/plugin functionality
-- Unified target_models.py for all OIC data models
-- Unified target_exceptions.py for error handling
-- Zero tolerance for architectural violations
-- 100% backward compatibility maintained
 """
 
-from __future__ import annotations
 
 import importlib.metadata
 
@@ -125,7 +123,7 @@ except Exception:  # pragma: no cover - tolerate missing during partial installs
 
     logger = FlextLogger(__name__)
 
-    def generate_config() -> dict[str, object]:
+    def generate_config() -> FlextTypes.Core.Dict:
         """Generate configuration from environment variables."""
         return {
             "base_url": os.getenv(
@@ -203,7 +201,7 @@ def main() -> None:
 # EXPORTS - PEP8 ORGANIZED
 # ===============================================================================
 
-__all__: list[str] = [
+__all__: FlextTypes.Core.StringList = [
     # === FLEXT-MELTANO RE-EXPORTS ===
     "FlextMeltanoBridge",
     "FlextMeltanoConfig",

@@ -2,8 +2,6 @@
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
-
-PEP8-compliant configuration management with maximum flext-core composition.
 """
 
 from __future__ import annotations
@@ -11,16 +9,10 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
-from flext_core import FlextModels, FlextResult
+from flext_core import FlextModels, FlextResult, FlextTypes
 from pydantic import BaseModel, Field, SecretStr, model_validator
 from pydantic_settings import SettingsConfigDict
 
-# Replace singer_typing import with direct typing
-# Skip flext-oracle-oic-ext import - not available
-# from flext_oracle_oic_ext.ext_client import (
-#     OICExtensionAuthenticator as OICOAuth2Authenticator,
-# )
-# OICOAuth2Authenticator not available - using object as placeholder
 OICOAuth2Authenticator = object
 
 
@@ -179,7 +171,7 @@ class OICEntityConfig(FlextModels):
         "name",
         description="Field name to use as lookup identifier",
     )
-    identifier_fields: dict[str, str] = Field(
+    identifier_fields: FlextTypes.Core.Headers = Field(
         default_factory=lambda: {
             "integrations": "code",
             "connections": "code",
@@ -246,7 +238,7 @@ class TargetOracleOICConfig(FlextModels):
     )
 
     # Custom transformation rules
-    transformation_rules: list[dict[str, object]] = Field(
+    transformation_rules: list[FlextTypes.Core.Dict] = Field(
         default_factory=list,
         description="Custom transformation rules",
     )
@@ -329,7 +321,7 @@ class TargetOracleOICConfig(FlextModels):
         **overrides: object,
     ) -> TargetOracleOICConfig:
         """Create configuration with intelligent defaults."""
-        defaults: dict[str, object] = {
+        defaults: FlextTypes.Core.Dict = {
             "auth": {
                 "oauth_client_id": "your-client-id",
                 "oauth_client_secret": "your-client-secret",  # nosec B106 - Example configuration value
@@ -359,11 +351,14 @@ class TargetOracleOICConfig(FlextModels):
 
 
 # Singer SDK configuration schema creation
-def create_singer_config_schema() -> dict[str, object]:
+def create_singer_config_schema() -> FlextTypes.Core.Dict:
     """Create Singer SDK compatible configuration schema using target field names.
 
     This schema aligns with tests which provide flat configuration keys:
     - base_url, oauth_client_id, oauth_client_secret, oauth_token_url, oauth_client_aud
+        Returns:
+            FlextTypes.Core.Dict:: Description of return value.
+
     """
     properties = {
         "base_url": {
@@ -400,9 +395,9 @@ def create_singer_config_schema() -> dict[str, object]:
         },
     }
 
-    schema: dict[str, object] = {"properties": properties}
+    schema: FlextTypes.Core.Dict = {"properties": properties}
     # Required minimal fields used in tests
-    required_fields: list[str] = [
+    required_fields: FlextTypes.Core.StringList = [
         "base_url",
         "oauth_client_id",
         "oauth_client_secret",
@@ -413,16 +408,16 @@ def create_singer_config_schema() -> dict[str, object]:
 
 
 # Configuration factory functions
-def create_config_from_dict(config_dict: dict[str, object]) -> TargetOracleOICConfig:
+def create_config_from_dict(config_dict: FlextTypes.Core.Dict) -> TargetOracleOICConfig:
     """Create configuration from dictionary with validation."""
     return TargetOracleOICConfig(**config_dict)
 
 
 def create_config_with_env_overrides(
-    base_config: dict[str, object] | None = None,
+    base_config: FlextTypes.Core.Dict | None = None,
 ) -> TargetOracleOICConfig:
     """Create configuration with environment variable overrides."""
-    config: dict[str, object] = dict(base_config) if base_config else {}
+    config: FlextTypes.Core.Dict = dict(base_config) if base_config else {}
 
     # Override with environment variables
     env_mappings = {
@@ -448,7 +443,7 @@ def create_config_with_env_overrides(
 
 
 # Export configuration classes
-__all__: list[str] = [
+__all__: FlextTypes.Core.StringList = [
     "OICAuthConfig",
     "OICConnectionConfig",
     "OICDeploymentConfig",

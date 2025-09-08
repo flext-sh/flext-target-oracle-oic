@@ -1,8 +1,13 @@
-"""Tests for target-oracle-oic with enterprise-grade validation."""
+"""Tests for target-oracle-oic with enterprise-grade validation.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 
 import pytest
+from flext_core import FlextTypes
 from flext_meltano import ConfigValidationError
 
 from flext_target_oracle_oic import ConnectionsSink, IntegrationsSink, TargetOracleOIC
@@ -12,7 +17,7 @@ class TestTargetOracleOIC:
     """Test cases for TargetOracleOIC with proper enterprise validation."""
 
     @pytest.fixture
-    def valid_config(self) -> dict[str, str]:
+    def valid_config(self) -> FlextTypes.Core.Headers:
         return {
             "base_url": "https://test-instance-region.integration.ocp.oraclecloud.com",
             "oauth_client_id": "test_client_id_12345",
@@ -23,7 +28,7 @@ class TestTargetOracleOIC:
 
     def test_target_initialization_with_valid_config(
         self,
-        valid_config: dict[str, str],
+        valid_config: FlextTypes.Core.Headers,
     ) -> None:
         target = TargetOracleOIC(config=valid_config)
         if target.name != "target-oracle-oic":

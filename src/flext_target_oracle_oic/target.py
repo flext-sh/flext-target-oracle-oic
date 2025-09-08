@@ -1,10 +1,15 @@
-"""Oracle Integration Cloud target implementation."""
+"""Oracle Integration Cloud target implementation.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 
 from collections.abc import Sequence
 from typing import ClassVar
 
+from flext_core import FlextTypes
 from singer_sdk import Sink, Target, typing as th
 
 from flext_target_oracle_oic.application import OICTargetOrchestrator
@@ -18,32 +23,7 @@ from flext_target_oracle_oic.sinks import (
 
 
 class TargetOracleOIC(Target):
-    """Oracle Integration Cloud (OIC) target for Singer.
-
-    This target handles data integration with Oracle Integration Cloud,
-    supporting OAuth2 authentication and integration artifact management.
-    Key features:
-    - OAuth2 authentication with OIC
-    - Secure integration artifact upload
-    - Configurable import modes (create, update, create_or_update)
-    - Automatic integration activation
-    - Comprehensive error handling and retry logic
-    Configuration:
-    - base_url: OIC instance base URL
-    - oauth_client_id: OAuth2 client ID
-    - oauth_client_secret: OAuth2 client secret
-    - oauth_token_url: OAuth2 token endpoint URL
-    - oauth_client_aud: OAuth2 client audience (optional)
-    - import_mode: Integration import mode
-    - activate_integrations: Auto-activate after import
-    Usage:
-      target = TargetOracleOIC(config={
-          "base_url": "https://your-oic-instance.com",
-          "oauth_client_id": "your_client_id",
-          "oauth_client_secret": "your_client_secret",
-          "oauth_token_url": "https://identity.oraclecloud.com/oauth2/v1/token"
-      })
-    """
+    """Oracle Integration Cloud (OIC) target for Singer."""
 
     name = "target-oracle-oic"
     # Use Singer SDK default configuration (will define custom later if needed)
@@ -106,7 +86,7 @@ class TargetOracleOIC(Target):
     def __init__(
         self,
         *,
-        config: dict[str, object] | None = None,
+        config: FlextTypes.Core.Dict | None = None,
         parse_env_config: bool = False,
         validate_config: bool = True,
         **_kwargs: object,
@@ -142,11 +122,14 @@ class TargetOracleOIC(Target):
                 )
             self._orchestrator = None
 
-    def _process_schema_message(self, message_dict: dict[str, object]) -> None:
+    def _process_schema_message(self, message_dict: FlextTypes.Core.Dict) -> None:
         """Process a schema message by creating and registering the appropriate sink.
 
         Args:
             message_dict: The schema message dictionary.
+
+        Returns:
+            object: Description of return value.
 
         """
         # Ensure sink is created and registered for this stream
@@ -154,7 +137,7 @@ class TargetOracleOIC(Target):
         schema_obj = message_dict["schema"]
         if not isinstance(schema_obj, dict):
             return
-        schema: dict[str, object] = schema_obj
+        schema: FlextTypes.Core.Dict = schema_obj
         key_properties_obj = message_dict.get("key_properties", [])
         key_properties: Sequence[str] | None = (
             key_properties_obj if isinstance(key_properties_obj, list) else None
@@ -167,9 +150,9 @@ class TargetOracleOIC(Target):
         self,
         stream_name: str,
         *,
-        record: dict[str, object]
+        record: FlextTypes.Core.Dict
         | None = None,  # kept for interface compatibility, not used
-        schema: dict[str, object] | None = None,
+        schema: FlextTypes.Core.Dict | None = None,
         key_properties: Sequence[str] | None = None,
     ) -> Sink:
         """Get appropriate sink for the given stream.

@@ -1,3 +1,11 @@
+"""Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT.
+"""
+
+from __future__ import annotations
+
+from flext_core import FlextTypes
+
 """Target Oracle OIC Models - Centralized data models using flext-core patterns.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
@@ -6,7 +14,6 @@ SPDX-License-Identifier: MIT
 PEP8-compliant data models with maximum flext-core and flext-oracle-oic-ext composition.
 """
 
-from __future__ import annotations
 
 import re
 from datetime import datetime
@@ -49,7 +56,7 @@ class OICConnection(ConnectionBase):
         description="Connection adapter type",
         min_length=1,
     )
-    properties: dict[str, object] = Field(
+    properties: FlextTypes.Core.Dict = Field(
         default_factory=dict,
         description="Connection properties",
     )
@@ -117,7 +124,7 @@ class OICIntegration(IntegrationBase):
         None,
         description="Integration archive content",
     )
-    connections: list[str] = Field(
+    connections: FlextTypes.Core.StringList = Field(
         default_factory=list,
         description="List of connection IDs used by this integration",
     )
@@ -173,15 +180,15 @@ class OICPackage(PackageBase):
         None,
         description="Package archive content",
     )
-    integrations: list[str] = Field(
+    integrations: FlextTypes.Core.StringList = Field(
         default_factory=list,
         description="List of integration IDs in this package",
     )
-    connections: list[str] = Field(
+    connections: FlextTypes.Core.StringList = Field(
         default_factory=list,
         description="List of connection IDs in this package",
     )
-    lookups: list[str] = Field(
+    lookups: FlextTypes.Core.StringList = Field(
         default_factory=list,
         description="List of lookup names in this package",
     )
@@ -223,11 +230,11 @@ class OICLookup(LookupBase):
         default="",
         description="Lookup description",
     )
-    columns: list[dict[str, str]] = Field(
+    columns: list[FlextTypes.Core.Headers] = Field(
         default_factory=list,
         description="Lookup column definitions",
     )
-    rows: list[dict[str, object]] = Field(
+    rows: list[FlextTypes.Core.Dict] = Field(
         default_factory=list,
         description="Lookup row data",
     )
@@ -247,7 +254,7 @@ class OICLookup(LookupBase):
             if not self.name.strip():
                 return FlextResult[None].fail("Lookup name cannot be empty")
 
-            # Validate columns structure - columns are already validated by type hints as dict[str, str]
+            # Validate columns structure - columns are already validated by type hints as FlextTypes.Core.Headers
             validation_errors = []
             validation_errors.extend(
                 [
@@ -257,7 +264,7 @@ class OICLookup(LookupBase):
                 ],
             )
 
-            # Validate rows have valid column references - rows are already validated by type hints as dict[str, object]
+            # Validate rows have valid column references - rows are already validated by type hints as FlextTypes.Core.Dict
             if self.columns and self.rows:
                 column_names = {col["name"] for col in self.columns}
                 for row in self.rows:
@@ -297,7 +304,7 @@ class OICProject(FlextModels):
         default="",
         description="Project description",
     )
-    folders: list[dict[str, object]] = Field(
+    folders: list[FlextTypes.Core.Dict] = Field(
         default_factory=list,
         description="Project folders",
     )
@@ -391,7 +398,7 @@ class OICIntegrationAction(FlextModels):
         description="Action to perform",
         pattern="^(activate|deactivate|test|clone)$",
     )
-    parameters: dict[str, object] = Field(
+    parameters: FlextTypes.Core.Dict = Field(
         default_factory=dict,
         description="Action parameters",
     )
@@ -430,7 +437,7 @@ class OICConnectionAction(FlextModels):
         description="Action to perform",
         pattern="^(test|refresh_metadata)$",
     )
-    parameters: dict[str, object] = Field(
+    parameters: FlextTypes.Core.Dict = Field(
         default_factory=dict,
         description="Action parameters",
     )
@@ -459,19 +466,19 @@ class OICConnectionAction(FlextModels):
 class OICDataTransformation(FlextModels):
     """Data transformation model for OIC records using flext-core patterns."""
 
-    source_data: dict[str, object] = Field(
+    source_data: FlextTypes.Core.Dict = Field(
         ...,
         description="Source data to transform",
     )
-    target_schema: dict[str, object] = Field(
+    target_schema: FlextTypes.Core.Dict = Field(
         ...,
         description="Target OIC schema",
     )
-    transformation_rules: list[dict[str, object]] = Field(
+    transformation_rules: list[FlextTypes.Core.Dict] = Field(
         default_factory=list,
         description="Transformation rules to apply",
     )
-    transformed_data: dict[str, object] = Field(
+    transformed_data: FlextTypes.Core.Dict = Field(
         default_factory=dict,
         description="Transformed data result",
     )
@@ -491,19 +498,19 @@ class OICDataTransformation(FlextModels):
 class OICSchemaMapping(FlextModels):
     """Schema mapping model for Singer to OIC transformation using flext-core patterns."""
 
-    singer_schema: dict[str, object] = Field(
+    singer_schema: FlextTypes.Core.Dict = Field(
         ...,
         description="Singer schema definition",
     )
-    oic_schema: dict[str, object] = Field(
+    oic_schema: FlextTypes.Core.Dict = Field(
         ...,
         description="OIC schema definition",
     )
-    field_mappings: dict[str, str] = Field(
+    field_mappings: FlextTypes.Core.Headers = Field(
         default_factory=dict,
         description="Field mappings from Singer to OIC",
     )
-    type_conversions: dict[str, str] = Field(
+    type_conversions: FlextTypes.Core.Headers = Field(
         default_factory=dict,
         description="Type conversions from Singer to OIC",
     )
@@ -525,7 +532,7 @@ class OICSchemaMapping(FlextModels):
 # ===============================================================================
 
 
-def create_oic_connection(data: dict[str, object]) -> FlextResult[OICConnection]:
+def create_oic_connection(data: FlextTypes.Core.Dict) -> FlextResult[OICConnection]:
     """Create OIC connection from data dictionary."""
     try:
         connection = OICConnection(**data)
@@ -539,7 +546,7 @@ def create_oic_connection(data: dict[str, object]) -> FlextResult[OICConnection]
         return FlextResult[OICConnection].fail(f"Failed to create connection: {e}")
 
 
-def create_oic_integration(data: dict[str, object]) -> FlextResult[OICIntegration]:
+def create_oic_integration(data: FlextTypes.Core.Dict) -> FlextResult[OICIntegration]:
     """Create OIC integration from data dictionary."""
     try:
         integration = OICIntegration(**data)
@@ -553,7 +560,7 @@ def create_oic_integration(data: dict[str, object]) -> FlextResult[OICIntegratio
         return FlextResult[OICIntegration].fail(f"Failed to create integration: {e}")
 
 
-def create_oic_package(data: dict[str, object]) -> FlextResult[OICPackage]:
+def create_oic_package(data: FlextTypes.Core.Dict) -> FlextResult[OICPackage]:
     """Create OIC package from data dictionary."""
     try:
         package = OICPackage(**data)
@@ -567,7 +574,7 @@ def create_oic_package(data: dict[str, object]) -> FlextResult[OICPackage]:
         return FlextResult[OICPackage].fail(f"Failed to create package: {e}")
 
 
-def create_oic_lookup(data: dict[str, object]) -> FlextResult[OICLookup]:
+def create_oic_lookup(data: FlextTypes.Core.Dict) -> FlextResult[OICLookup]:
     """Create OIC lookup from data dictionary."""
     try:
         lookup = OICLookup(**data)
@@ -585,7 +592,7 @@ def create_oic_lookup(data: dict[str, object]) -> FlextResult[OICLookup]:
 # EXPORTS
 # ===============================================================================
 
-__all__: list[str] = [
+__all__: FlextTypes.Core.StringList = [
     "OICConnection",
     "OICConnectionAction",
     "OICDataTransformation",
