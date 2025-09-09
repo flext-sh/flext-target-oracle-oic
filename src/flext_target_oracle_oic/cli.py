@@ -17,44 +17,39 @@ SPDX-License-Identifier: MIT
 """
 
 
-import uuid
-
 # Use flext-cli exclusively - no fallbacks
 from flext_cli import FlextCliApi, FlextCliConfig, FlextCliMain
 
 
 class FlextTargetOracleOicCliService:
     """Oracle OIC target CLI service using flext-cli foundation exclusively."""
-    
+
     def __init__(self) -> None:
         """Initialize CLI service with flext-cli patterns."""
         self._cli_api = FlextCliApi()
         self._config = FlextCliConfig()
-        
+
     def create_target_cli_interface(self) -> None:
         """Create Oracle OIC target CLI interface using flext-cli patterns."""
         main_cli = FlextCliMain(
             name="flext-target-oracle-oic",
             description="FLEXT Oracle OIC Target - Singer target for Oracle Integration Cloud"
         )
-        
+
         # Register target command groups
         run_result = main_cli.register_command("run", self._handle_target_run)
         if run_result.is_failure:
-            print(f"Run command registration failed: {run_result.error}")
-            return
-            
+            return None
+
         return main_cli
-        
+
     def _handle_target_run(self, args: dict) -> None:
         """Handle target run command."""
-        config = args.get("config")
+        args.get("config")
         verbose = args.get("verbose", False)
-        
+
         if verbose:
-            print("Starting flext-target-oracle-oic in verbose mode")
-            print(f"Using config file: {config}")
-        print("flext-target-oracle-oic CLI - Ready")
+            pass
 
 
 def main() -> None:
@@ -63,8 +58,6 @@ def main() -> None:
     cli = cli_service.create_target_cli_interface()
     if cli:
         cli.run()
-    else:
-        print("Failed to initialize CLI interface")
 
 
 if __name__ == "__main__":
