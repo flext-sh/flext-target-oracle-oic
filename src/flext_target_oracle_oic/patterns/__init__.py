@@ -3,8 +3,8 @@ SPDX-License-Identifier: MIT.
 """
 
 from __future__ import annotations
-from flext_core import FlextTypes
 
+from flext_core import FlextTypes
 
 """Oracle OIC patterns using flext-core patterns."""
 """
