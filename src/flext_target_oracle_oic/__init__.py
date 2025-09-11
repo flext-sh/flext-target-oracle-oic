@@ -3,8 +3,8 @@ SPDX-License-Identifier: MIT.
 """
 
 from __future__ import annotations
-from flext_core import FlextTypes
 
+from flext_core import FlextTypes
 
 """FlextTargetOracleOic - Oracle Integration Cloud Target using flext-core patterns.
 
@@ -16,7 +16,7 @@ SPDX-License-Identifier: MIT
 import importlib.metadata
 
 # Core flext-core imports
-from flext_core import FlextResult, FlextModels, FlextLogger
+from flext_core import FlextLogger, FlextModels, FlextResult
 
 # === FLEXT-MELTANO INTEGRATION (ACTUAL EXPORTS) ===
 from flext_meltano import (
@@ -24,8 +24,52 @@ from flext_meltano import (
     FlextMeltanoBridge,
     # Configuration and validation
     FlextMeltanoConfig,
-    # Target abstractions
-    FlextTargetAbstractions,
+)
+
+# === BACKWARD COMPATIBILITY IMPORTS ===
+# Import legacy modules for 100% backward compatibility (optional)
+from flext_target_oracle_oic.application import OICTargetOrchestrator
+from flext_target_oracle_oic.cli import main as cli_main
+from flext_target_oracle_oic.client import OICClient
+from flext_target_oracle_oic.connection import (
+    OICConnection as LegacyOICConnection,
+    OICConnectionSettings as LegacyOICConnectionSettings,
+)
+
+# Unified data models
+from flext_target_oracle_oic.models import (
+    OICConnection,
+    OICConnectionAction,
+    OICDataTransformation,
+    OICIntegration,
+    OICIntegrationAction,
+    OICLookup,
+    OICPackage,
+    OICProject,
+    OICSchedule,
+    OICSchemaMapping,
+    create_oic_connection,
+    create_oic_integration,
+    create_oic_lookup,
+    create_oic_package,
+)
+from flext_target_oracle_oic.patterns import (
+    OICDataTransformer,
+    OICEntryManager,
+    OICSchemaMapper,
+    OICTypeConverter,
+)
+from flext_target_oracle_oic.singer import OICRecordProcessor
+
+# Unified client implementation (target + loader + plugin)
+from flext_target_oracle_oic.target_client import (
+    ConnectionsSink,
+    IntegrationsSink,
+    LookupsSink,
+    OICBaseSink,
+    PackagesSink,
+    TargetOracleOIC,
+    main as client_main,
 )
 
 # === PEP8 UNIFIED IMPORTS - NEW STRUCTURE ===
@@ -41,35 +85,6 @@ from flext_target_oracle_oic.target_config import (
     create_config_from_dict,
     create_config_with_env_overrides,
     create_singer_config_schema,
-)
-
-# Unified client implementation (target + loader + plugin)
-from flext_target_oracle_oic.target_client import (
-    ConnectionsSink,
-    IntegrationsSink,
-    LookupsSink,
-    OICBaseSink,
-    PackagesSink,
-    TargetOracleOIC,
-    main as client_main,
-)
-
-# Unified data models
-from flext_target_oracle_oic.models import (
-    OICConnection,
-    OICConnectionAction,
-    OICDataTransformation,
-    OICIntegration,
-    OICIntegrationAction,
-    OICLookup,
-    OICPackage,
-    OICProject,
-    OICSchemaMapping,
-    OICSchedule,
-    create_oic_connection,
-    create_oic_integration,
-    create_oic_lookup,
-    create_oic_package,
 )
 
 # Unified exception handling (factory pattern)
@@ -92,23 +107,6 @@ from flext_target_oracle_oic.target_exceptions import (
     create_validation_error,
 )
 
-# === BACKWARD COMPATIBILITY IMPORTS ===
-# Import legacy modules for 100% backward compatibility (optional)
-from flext_target_oracle_oic.application import OICTargetOrchestrator
-from flext_target_oracle_oic.cli import main as cli_main
-from flext_target_oracle_oic.client import OICClient
-from flext_target_oracle_oic.connection import OICConnection as LegacyOICConnection
-from flext_target_oracle_oic.connection import (
-    OICConnectionSettings as LegacyOICConnectionSettings,
-)
-from flext_target_oracle_oic.patterns import (
-    OICDataTransformer,
-    OICEntryManager,
-    OICSchemaMapper,
-    OICTypeConverter,
-)
-from flext_target_oracle_oic.singer import OICRecordProcessor
-
 # Local re-export of script functions to satisfy tests expecting them at package root
 try:  # pragma: no cover - simple import shim
     from flext_target_oracle_oic.scripts.generate_config import (
@@ -117,9 +115,9 @@ try:  # pragma: no cover - simple import shim
     )
 except Exception:  # pragma: no cover - tolerate missing during partial installs
     # Provide fallback which mirrors scripts/generate_config.py behavior
+    import json
     import os
     from pathlib import Path
-    import json
 
     logger = FlextLogger(__name__)
 
@@ -202,52 +200,21 @@ def main() -> None:
 # ===============================================================================
 
 __all__: FlextTypes.Core.StringList = [
+    # === UNIFIED CLIENT (SINKS) ===
+    "ConnectionsSink",
     # === FLEXT-MELTANO RE-EXPORTS ===
     "FlextMeltanoBridge",
     "FlextMeltanoConfig",
-    "Target",
+    "FlextModels",
     # === CORE RE-EXPORTS ===
     "FlextResult",
-    "FlextModels",
     # === PRIMARY CLASSES ===
     "FlextTargetOracleOic",
-    "TargetOracleOIC",
-    # === UNIFIED CONFIGURATION ===
-    "FlextTargetOracleOicConfig",  # Backward compatibility alias
-    "OICAuthConfig",
-    "OICConnectionConfig",
-    "OICDeploymentConfig",
-    "OICEntityConfig",
-    "OICOAuth2Authenticator",
-    "OICProcessingConfig",
-    "TargetOracleOICConfig",
-    "create_config_from_dict",
-    "create_config_with_env_overrides",
-    "create_singer_config_schema",
-    # === UNIFIED CLIENT (SINKS) ===
-    "ConnectionsSink",
-    "IntegrationsSink",
-    "LookupsSink",
-    "OICBaseSink",
-    "PackagesSink",
-    # === UNIFIED MODELS ===
-    "OICConnection",
-    "OICConnectionAction",
-    "OICDataTransformation",
-    "OICIntegration",
-    "OICIntegrationAction",
-    "OICLookup",
-    "OICPackage",
-    "OICProject",
-    "OICSchemaMapping",
-    "OICSchedule",
-    "create_oic_connection",
-    "create_oic_integration",
-    "create_oic_lookup",
-    "create_oic_package",
     # === UNIFIED EXCEPTIONS ===
     "FlextTargetOracleOicAPIError",
     "FlextTargetOracleOicAuthenticationError",
+    # === UNIFIED CONFIGURATION ===
+    "FlextTargetOracleOicConfig",  # Backward compatibility alias
     "FlextTargetOracleOicConfigurationError",
     "FlextTargetOracleOicConnectionError",
     "FlextTargetOracleOicError",
@@ -257,27 +224,62 @@ __all__: FlextTypes.Core.StringList = [
     "FlextTargetOracleOicResult",
     "FlextTargetOracleOicTransformationError",
     "FlextTargetOracleOicValidationError",
-    "create_api_error",
-    "create_authentication_error",
-    "create_configuration_error",
-    "create_connection_error",
-    "create_processing_error",
-    "create_validation_error",
+    "IntegrationsSink",
+    "LegacyOICConnection",
+    "LegacyOICConnectionSettings",
+    "LookupsSink",
+    "OICAuthConfig",
+    "OICBaseSink",
     # === BACKWARD COMPATIBILITY (LEGACY) ===
     "OICClient",  # May be None if legacy not available
+    # === UNIFIED MODELS ===
+    "OICConnection",
+    "OICConnectionAction",
+    "OICConnectionConfig",
+    "OICDataTransformation",
     "OICDataTransformer",  # May be None if legacy not available
+    "OICDeploymentConfig",
+    "OICEntityConfig",
     "OICEntryManager",  # May be None if legacy not available
+    "OICIntegration",
+    "OICIntegrationAction",
+    "OICLookup",
+    "OICOAuth2Authenticator",
+    "OICPackage",
+    "OICProcessingConfig",
+    "OICProject",
     "OICRecordProcessor",  # May be None if legacy not available
+    "OICSchedule",
     "OICSchemaMapper",  # May be None if legacy not available
+    "OICSchemaMapping",
     "OICTargetOrchestrator",  # May be None if legacy not available
     "OICTypeConverter",  # May be None if legacy not available
+    "PackagesSink",
+    "Target",
+    "TargetOracleOIC",
+    "TargetOracleOICConfig",
     # === METADATA ===
     "__version__",
     "__version_info__",
-    "main",
+    "cli_main",
+    "client_main",
+    "create_api_error",
+    "create_authentication_error",
+    "create_config_from_dict",
+    "create_config_with_env_overrides",
+    "create_configuration_error",
+    "create_connection_error",
+    "create_oic_connection",
+    "create_oic_integration",
+    "create_oic_lookup",
+    "create_oic_package",
+    "create_processing_error",
+    "create_singer_config_schema",
+    "create_validation_error",
     # === SCRIPT UTILITIES ===
     "generate_config",
     "generate_config_main",
+    "main",
 ]
 
 
