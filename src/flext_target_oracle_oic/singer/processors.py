@@ -104,7 +104,6 @@ class OICRecordProcessor:
             properties = schema.get("properties", {})
             required_fields = schema.get("required", [])
 
-            # Type check and convert
             if not isinstance(properties, dict):
                 return FlextResult[None].fail("Schema properties must be a dictionary")
             if not isinstance(required_fields, list):

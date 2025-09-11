@@ -33,7 +33,7 @@ class FlextTargetOracleOicCliService:
         """Create Oracle OIC target CLI interface using flext-cli patterns."""
         main_cli = FlextCliMain(
             name="flext-target-oracle-oic",
-            description="FLEXT Oracle OIC Target - Singer target for Oracle Integration Cloud"
+            description="FLEXT Oracle OIC Target - Singer target for Oracle Integration Cloud",
         )
 
         # Register target command groups

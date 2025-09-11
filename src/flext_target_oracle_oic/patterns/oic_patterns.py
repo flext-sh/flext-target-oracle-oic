@@ -97,7 +97,6 @@ class OICDataTransformer:
                 # OIC-specific attribute naming (camelCase convention)
                 oic_key = self._normalize_oic_attribute_name(key)
 
-                # Type conversion
                 if schema and isinstance(schema, dict):
                     properties = schema.get("properties", {})
                     if isinstance(properties, dict):
