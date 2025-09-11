@@ -318,7 +318,7 @@ class SchedulesSink(OICBaseSink):
             "enabled": record.get("enabled", True),
             "timezone": record.get("timezone", "UTC"),
         }
-        # Simple schedule
+
         if payload["scheduleType"] == "SIMPLE":
             payload.update(
                 {
