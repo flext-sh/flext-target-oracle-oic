@@ -1,26 +1,14 @@
 """Simple API for FLEXT target-oracle-oic setup and configuration.
 
-MIGRATED TO FLEXT-CORE:
-Provides enterprise-ready setup utilities with FlextResult pattern support.
-
-
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
 
-from flext_core import FlextTypes
-
-"""
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-"""
-
-
 from os import getenv
 
-from flext_core import FlextResult
+from flext_core import FlextResult, FlextTypes
 from pydantic import SecretStr
 
 from flext_target_oracle_oic.config import (

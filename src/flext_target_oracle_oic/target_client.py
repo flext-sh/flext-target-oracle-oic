@@ -1,25 +1,16 @@
-"""Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT.
-"""
-
-from __future__ import annotations
-
-from flext_core import FlextTypes
-
 """Target Oracle OIC Client - Unified target, loader and plugin implementation.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
-
-PEP8-compliant client implementation with maximum flext-core and flext-meltano composition.
 """
 
+from __future__ import annotations
 
 from collections.abc import Sequence
 from typing import ClassVar
 
 import httpx
-from flext_core import FlextConstants, FlextLogger
+from flext_core import FlextConstants, FlextLogger, FlextTypes
 from flext_oracle_oic_ext.ext_models import OICAuthConfig
 from singer_sdk import Sink, Target
 

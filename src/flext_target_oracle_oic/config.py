@@ -6,30 +6,10 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import FlextTypes
-
-"""
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-"""
-
-
 from pathlib import Path
 
-from flext_core import FlextModels, FlextResult
-from pydantic import Field, SecretStr, model_validator
-from pydantic_settings import SettingsConfigDict
-
-# Remove duplicate import - use unified OICConnectionConfig from this file
-
-
-class OICAuthConfig(FlextModels.Config):
-    """OIC authentication configuration using flext-core patterns."""
-
-
-from flext_core import FlextModels
-
-# Remove duplicate import - use unified OICConnectionConfig from this file
+from flext_core import FlextModels, FlextResult, FlextTypes
+from pydantic import Field, SecretStr, SettingsConfigDict, model_validator
 
 
 class OICAuthConfig(FlextModels.Config):
