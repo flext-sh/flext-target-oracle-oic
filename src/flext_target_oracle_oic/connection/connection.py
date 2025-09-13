@@ -6,19 +6,11 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import FlextTypes
-
-"""
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-"""
-
-
 import json
 
 import requests
 import urllib3
-from flext_core import FlextLogger, FlextResult
+from flext_core import FlextLogger, FlextResult, FlextTypes
 
 from flext_target_oracle_oic.connection.config import OICConnectionSettings
 from flext_target_oracle_oic.exceptions import FlextTargetOracleOicAuthenticationError

@@ -6,35 +6,13 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import FlextTypes
-
-"""
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-"""
-
-
 from collections.abc import Sequence
 
 import httpx
-from flext_core import FlextLogger
+from flext_core import FlextLogger, FlextTypes
 from singer_sdk import Sink, Target
 
 from flext_target_oracle_oic.auth import OICAuthConfig, OICOAuth2Authenticator
-
-# Constants
-HTTP_NOT_FOUND = 404
-JSON_MIME = "application/json"
-
-logger = FlextLogger(__name__)
-
-
-class OICBaseSink(Sink):
-    """Base sink for Oracle Integration Cloud."""
-
-
-from flext_core import FlextLogger
-from singer_sdk import Sink
 
 # Constants
 HTTP_NOT_FOUND = 404

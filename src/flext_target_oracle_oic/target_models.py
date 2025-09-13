@@ -1,24 +1,15 @@
-"""Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT.
-"""
-
-from __future__ import annotations
-
-from flext_core import FlextTypes
-
 """Target Oracle OIC Models - Centralized data models using flext-core patterns.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
-
-PEP8-compliant data models with maximum flext-core and flext-oracle-oic-ext composition.
 """
 
+from __future__ import annotations
 
 import re
 from datetime import datetime
 
-from flext_core import FlextModels, FlextResult
+from flext_core import FlextModels, FlextResult, FlextTypes
 from flext_oracle_oic_ext.ext_models import (
     OICConnectionInfo as ConnectionBase,
     OICIntegrationInfo as IntegrationBase,

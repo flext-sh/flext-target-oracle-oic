@@ -1,17 +1,12 @@
-"""Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT.
+"""Oracle OIC patterns using flext-core patterns.
+
+Copyright (c) 2025 FLEXT Team. All rights reserved.
+SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
 
 from flext_core import FlextTypes
-
-"""Oracle OIC patterns using flext-core patterns."""
-"""
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-"""
-
 
 from flext_target_oracle_oic.patterns.oic_patterns import (
     OICDataTransformer,

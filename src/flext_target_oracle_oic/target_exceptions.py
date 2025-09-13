@@ -1,11 +1,3 @@
-"""Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT.
-"""
-
-from __future__ import annotations
-
-from flext_core import FlextTypes
-
 """Target Oracle OIC Exceptions - Factory pattern using flext-core exceptions.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
@@ -14,11 +6,13 @@ SPDX-License-Identifier: MIT
 PEP8-compliant exception hierarchy with maximum flext-core composition.
 """
 
+from __future__ import annotations
 
 from flext_core import (
     FlextExceptions,
     FlextModels,
     FlextResult,
+    FlextTypes,
 )
 
 # ===============================================================================

@@ -11,13 +11,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-"""
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-"""
-
-
-# Use flext-cli exclusively - no fallbacks
 from flext_cli import FlextCliApi, FlextCliConfig, FlextCliMain
 
 
