@@ -15,15 +15,6 @@ logger = FlextLogger(__name__)
 class OICConnectionSettings(FlextModels):
     """Oracle OIC connection settings using flext-core patterns."""
 
-
-from flext_core import FlextLogger, FlextModels
-
-logger = FlextLogger(__name__)
-
-
-class OICConnectionSettings(FlextModels):
-    """Oracle OIC connection settings using flext-core patterns."""
-
     base_url: str = Field(..., description="Oracle OIC base URL")
     client_id: str = Field(..., description="OAuth2 client ID")
     client_secret: str = Field(..., description="OAuth2 client secret", repr=False)
