@@ -25,6 +25,7 @@ class TestFlextTargetOracleOicError:
     """Test base exception class."""
 
     def test_basic_exception(self) -> None:
+        """Test method."""
         """Test basic exception creation."""
         exception = FlextTargetOracleOicError("Test error")
         if str(exception) != "Test error":
@@ -36,6 +37,7 @@ class TestFlextTargetOracleOicError:
             raise AssertionError(msg)
 
     def test_exception_with_details(self) -> None:
+        """Test method."""
         """Test exception with details."""
         details = {"component": "connection", "operation": "authenticate"}
         exception = FlextTargetOracleOicError("Test error", details)
@@ -44,6 +46,7 @@ class TestFlextTargetOracleOicError:
             raise AssertionError(msg)
 
     def test_exception_inheritance(self) -> None:
+        """Test method."""
         """Test exception inheritance from Exception."""
         exception = FlextTargetOracleOicError("Test error")
         assert isinstance(exception, Exception)
@@ -53,6 +56,7 @@ class TestSpecificExceptions:
     """Test specific exception classes."""
 
     def test_connection_error(self) -> None:
+        """Test method."""
         """Test connection error."""
         error = FlextTargetOracleOicConnectionError("Connection failed")
         assert isinstance(error, FlextTargetOracleOicError)
@@ -61,6 +65,7 @@ class TestSpecificExceptions:
             raise AssertionError(msg)
 
     def test_authentication_error(self) -> None:
+        """Test method."""
         """Test authentication error."""
         error = FlextTargetOracleOicAuthenticationError("Auth failed")
         assert isinstance(error, FlextTargetOracleOicError)
@@ -69,6 +74,7 @@ class TestSpecificExceptions:
             raise AssertionError(msg)
 
     def test_validation_error(self) -> None:
+        """Test method."""
         """Test validation error."""
         error = FlextTargetOracleOicValidationError("Validation failed")
         assert isinstance(error, FlextTargetOracleOicError)
@@ -77,6 +83,7 @@ class TestSpecificExceptions:
             raise AssertionError(msg)
 
     def test_transformation_error(self) -> None:
+        """Test method."""
         """Test transformation error."""
         error = FlextTargetOracleOicTransformationError("Transform failed")
         assert isinstance(error, FlextTargetOracleOicError)
@@ -85,6 +92,7 @@ class TestSpecificExceptions:
             raise AssertionError(msg)
 
     def test_processing_error(self) -> None:
+        """Test method."""
         """Test processing error."""
         error = FlextTargetOracleOicProcessingError("Processing failed")
         assert isinstance(error, FlextTargetOracleOicError)
@@ -93,6 +101,7 @@ class TestSpecificExceptions:
             raise AssertionError(msg)
 
     def test_configuration_error(self) -> None:
+        """Test method."""
         """Test configuration error."""
         error = FlextTargetOracleOicConfigurationError("Config failed")
         assert isinstance(error, FlextTargetOracleOicError)
@@ -101,6 +110,7 @@ class TestSpecificExceptions:
             raise AssertionError(msg)
 
     def test_infrastructure_error(self) -> None:
+        """Test method."""
         """Test infrastructure error."""
         error = FlextTargetOracleOicInfrastructureError("Infrastructure failed")
         assert isinstance(error, FlextTargetOracleOicError)
@@ -109,6 +119,7 @@ class TestSpecificExceptions:
             raise AssertionError(msg)
 
     def test_api_error(self) -> None:
+        """Test method."""
         """Test API error."""
         error = FlextTargetOracleOicAPIError("API failed", 500)
         assert isinstance(error, FlextTargetOracleOicError)
@@ -118,6 +129,7 @@ class TestSpecificExceptions:
         assert error.status_code == 500
 
     def test_api_error_without_status_code(self) -> None:
+        """Test method."""
         """Test API error without status code."""
         error = FlextTargetOracleOicAPIError("API failed")
         assert error.status_code is None
@@ -127,6 +139,7 @@ class TestFlextTargetOracleOicErrorDetails:
     """Test error details value object."""
 
     def test_error_details_creation(self) -> None:
+        """Test method."""
         """Test error details creation."""
         details = FlextTargetOracleOicErrorDetails(
             error_code="OIC001",
@@ -151,6 +164,7 @@ class TestFlextTargetOracleOicErrorDetails:
             raise AssertionError(msg)
 
     def test_error_details_immutability(self) -> None:
+        """Test method."""
         """Test that error details are immutable."""
         details = FlextTargetOracleOicErrorDetails(
             error_code="OIC001",
@@ -164,6 +178,7 @@ class TestFlextTargetOracleOicErrorDetails:
             details.error_code = "OIC002"
 
     def test_error_details_validation_success(self) -> None:
+        """Test method."""
         """Test successful validation."""
         details = FlextTargetOracleOicErrorDetails(
             error_code="OIC001",
@@ -177,6 +192,7 @@ class TestFlextTargetOracleOicErrorDetails:
         details.validate_domain_rules()
 
     def test_error_details_validation_invalid_error_code(self) -> None:
+        """Test method."""
         """Test validation with invalid error code."""
         details = FlextTargetOracleOicErrorDetails(
             error_code="INVALID",
@@ -190,6 +206,7 @@ class TestFlextTargetOracleOicErrorDetails:
             details.validate_domain_rules()
 
     def test_error_details_validation_empty_error_type(self) -> None:
+        """Test method."""
         """Test validation with empty error type."""
         details = FlextTargetOracleOicErrorDetails(
             error_code="OIC001",
@@ -203,6 +220,7 @@ class TestFlextTargetOracleOicErrorDetails:
             details.validate_domain_rules()
 
     def test_error_details_validation_invalid_source_component(self) -> None:
+        """Test method."""
         """Test validation with invalid source component."""
         details = FlextTargetOracleOicErrorDetails(
             error_code="OIC001",

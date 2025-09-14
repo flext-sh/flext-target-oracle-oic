@@ -19,6 +19,7 @@ class TestGenerateConfig:
     """Test generate_config functionality."""
 
     def test_generate_config_basic(self) -> None:
+        """Test method."""
         """Test basic config generation."""
         # Set required environment variables
         env_vars = {
@@ -54,6 +55,7 @@ class TestGenerateConfig:
                 )
 
     def test_generate_config_defaults(self) -> None:
+        """Test method."""
         """Test default values in config."""
         with patch.dict(os.environ, {}, clear=True):
             config = generate_config()

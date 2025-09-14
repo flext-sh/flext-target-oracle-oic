@@ -18,6 +18,7 @@ class TestTargetOracleOIC:
 
     @pytest.fixture
     def valid_config(self) -> FlextTypes.Core.Headers:
+        """Create valid configuration for testing."""
         return {
             "base_url": "https://test-instance-region.integration.ocp.oraclecloud.com",
             "oauth_client_id": "test_client_id_12345",
@@ -30,6 +31,7 @@ class TestTargetOracleOIC:
         self,
         valid_config: FlextTypes.Core.Headers,
     ) -> None:
+        """Test target initialization with valid configuration."""
         target = TargetOracleOIC(config=valid_config)
         if target.name != "target-oracle-oic":
             msg: str = f"Expected {'target-oracle-oic'}, got {target.name}"
@@ -37,6 +39,7 @@ class TestTargetOracleOIC:
         assert target.config == valid_config
 
     def test_target_initialization_fails_with_invalid_config(self) -> None:
+        """Test method."""
         invalid_config = {
             "base_url": "https://test.integration.ocp.oraclecloud.com",
             # Missing required OAuth2 credentials
@@ -45,6 +48,7 @@ class TestTargetOracleOIC:
             TargetOracleOIC(config=invalid_config)
 
     def test_get_sink_mapping(self) -> None:
+        """Test method."""
         config = {
             "base_url": "https://test.integration.ocp.oraclecloud.com",
             "oauth_client_id": "test_client",
@@ -65,6 +69,7 @@ class TestTargetOracleOIC:
             raise AssertionError(msg)
 
     def test_config_schema(self) -> None:
+        """Test method."""
         schema = TargetOracleOIC.config_jsonschema
         assert isinstance(schema, dict)
         if "properties" not in schema:
