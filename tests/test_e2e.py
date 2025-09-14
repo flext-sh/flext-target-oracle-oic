@@ -10,7 +10,6 @@ Tests all functionalities including:
 
 NO MOCKS - Real functional testing only.
 
-
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 """
@@ -93,6 +92,7 @@ class TestTargetOracleOICE2E:
         target: TargetOracleOIC,
         config: FlextTypes.Core.Dict,
     ) -> None:
+        """Test target initialization with valid configuration."""
         if target.name != "target-oracle-oic":
             msg: str = f"Expected {'target-oracle-oic'}, got {target.name}"
             raise AssertionError(msg)
@@ -102,6 +102,7 @@ class TestTargetOracleOICE2E:
             raise AssertionError(msg)
 
     def test_sink_discovery(self, target: TargetOracleOIC) -> None:
+        """Test method."""
         # Test known sinks
         if target._get_sink_class("connections") != ConnectionsSink:
             msg: str = f"Expected {ConnectionsSink}, got {target._get_sink_class('connections')}"
@@ -120,6 +121,7 @@ class TestTargetOracleOICE2E:
             raise AssertionError(msg)
 
     def test_sink_initialization(self, target: TargetOracleOIC) -> None:
+        """Test method."""
         # Test each sink type
         sinks_to_test = [
             ("connections", ConnectionsSink),
@@ -144,6 +146,7 @@ class TestTargetOracleOICE2E:
         target: TargetOracleOIC,
         tmp_path: Path,
     ) -> None:
+        """Test processing Singer messages end-to-end."""
         # Create test Singer messages
         messages = [
             {
@@ -193,6 +196,7 @@ class TestTargetOracleOICE2E:
             assert mock_process.called, "process_record should have been called"
 
     def test_authentication_handling(self, target: TargetOracleOIC) -> None:
+        """Test method."""
         # Get a sink instance
         sink = ConnectionsSink(
             target=target,
@@ -206,6 +210,7 @@ class TestTargetOracleOICE2E:
         assert hasattr(authenticator, "auth_headers")
 
     def test_live_connection_create(self, target: TargetOracleOIC) -> None:
+        """Test method."""
         sink = ConnectionsSink(
             target=target,
             stream_name="connections",
@@ -237,6 +242,7 @@ class TestTargetOracleOICE2E:
                 pytest.fail(f"Unexpected error: {e}")
 
     def test_integration_import_flow(self, target: TargetOracleOIC) -> None:
+        """Test method."""
         sink = IntegrationsSink(
             target=target,
             stream_name="integrations",
@@ -266,6 +272,7 @@ class TestTargetOracleOICE2E:
             mock_client.post.assert_called()
 
     def test_error_handling(self, target: TargetOracleOIC) -> None:
+        """Test method."""
         sink = ConnectionsSink(
             target=target,
             stream_name="connections",
@@ -277,6 +284,7 @@ class TestTargetOracleOICE2E:
             sink.process_record({}, {})
 
     def test_config_validation(self) -> None:
+        """Test method."""
         # Test missing required fields
         with pytest.raises(ConfigValidationError):
             TargetOracleOIC(config={})
@@ -293,6 +301,7 @@ class TestTargetOracleOICE2E:
             raise AssertionError(msg)
 
     def test_batch_processing(self, target: TargetOracleOIC) -> None:
+        """Test method."""
         sink = PackagesSink(
             target=target,
             stream_name="packages",
@@ -323,6 +332,7 @@ class TestTargetOracleOICE2E:
                 raise AssertionError(msg)
 
     def test_update_vs_create_logic(self, target: TargetOracleOIC) -> None:
+        """Test method."""
         sink = LookupsSink(
             target=target,
             stream_name="lookups",
@@ -353,6 +363,7 @@ class TestTargetOracleOICE2E:
             mock_client.put.assert_called()
 
     def test_cli_execution(self, config_path: str, tmp_path: Path) -> None:
+        """Test method."""
         # Create test Singer input
         singer_input = [
             {
@@ -413,6 +424,7 @@ class TestTargetOracleOICE2E:
             raise AssertionError(msg)
 
     def test_conditional_config_generation(self) -> None:
+        """Test method."""
         config_path = Path(__file__).parent.parent / "config.json"
         # If config doesn't exist, it should be generated
         if not config_path.exists():

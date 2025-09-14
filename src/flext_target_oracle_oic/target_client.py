@@ -560,11 +560,11 @@ class TargetOracleOIC(Target):
     # Override config property to return exactly the flat config passed by tests
     @property
     def config(self) -> FlextTypes.Core.Dict:
+        """Return the original flat configuration."""
         return self._original_flat_config
 
     def setup(self) -> None:
-        """Set up the target with validation."""
-        # Validate configuration using flext-core patterns
+        """Set up the target client."""
         validation_result = self.oic_config.validate_domain_rules()
         if not validation_result.success:
             error_msg = f"Configuration validation failed: {validation_result.error}"
