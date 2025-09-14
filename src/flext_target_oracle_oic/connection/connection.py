@@ -26,20 +26,6 @@ logger = FlextLogger(__name__)
 class OICConnection:
     """Oracle OIC connection using flext-core patterns."""
 
-
-from flext_core import FlextLogger
-
-# Constants
-HTTP_OK = 200
-HTTP_BAD_REQUEST = 400
-
-
-logger = FlextLogger(__name__)
-
-
-class OICConnection:
-    """Oracle OIC connection using flext-core patterns."""
-
     def __init__(self, config: OICConnectionSettings) -> None:
         """Initialize OIC connection."""
         self.config = config

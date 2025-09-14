@@ -6,16 +6,9 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import FlextTypes
+import json
 
-logger = FlextLogger(__name__)
-
-
-class OICTypeConverter:
-    """Convert data types for OIC storage using flext-core patterns."""
-
-
-from flext_core import FlextLogger
+from flext_core import FlextLogger, FlextResult, FlextTypes
 
 logger = FlextLogger(__name__)
 

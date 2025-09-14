@@ -49,10 +49,8 @@ from flext_target_oracle_oic.patterns import (
     OICTargetPattern,
     OICTypeConverter,
 )
-from flext_target_oracle_oic.scripts.generate_config import (
-    generate_config as generate_config,
-    main as generate_config_main,
-)
+
+# Scripts imports removed - scripts are not part of the package structure
 from flext_target_oracle_oic.singer import OICRecordProcessor
 from flext_target_oracle_oic.target_client import (
     ConnectionsSink,
@@ -207,7 +205,6 @@ __all__: FlextTypes.Core.StringList = [
     "create_singer_config_schema",
     "create_validation_error",
     # === SCRIPT UTILITIES ===
-    "generate_config",
-    "generate_config_main",
+    # Script functions removed - not part of package structure
     "main",
 ]

@@ -55,14 +55,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-    # Fallback path: no flext-cli available; use raw console
-    if verbose:
-        console.print("Starting flext-target-oracle-oic in verbose mode")
-    if config:
-        console.print(f"Using config file: {config}")
-    console.print("flext-target-oracle-oic CLI - Ready")
-
-
-if __name__ == "__main__":  # pragma: no cover - script entry
-    main()
