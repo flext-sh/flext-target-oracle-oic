@@ -8,9 +8,9 @@ from __future__ import annotations
 
 from os import getenv
 
-from flext_core import FlextResult, FlextTypes
 from pydantic import SecretStr
 
+from flext_core import FlextResult, FlextTypes
 from flext_target_oracle_oic.config import (
     OICAuthConfig,
     OICConnectionConfig,

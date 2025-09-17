@@ -14,7 +14,6 @@ from flext_meltano import (
     FlextMeltanoConfig,
     Target,
 )
-
 from flext_target_oracle_oic.application import OICTargetOrchestrator
 from flext_target_oracle_oic.cli import main as cli_main
 from flext_target_oracle_oic.client import OICClient

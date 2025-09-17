@@ -9,9 +9,9 @@ from __future__ import annotations
 from collections.abc import Sequence
 
 import httpx
-from flext_core import FlextLogger, FlextTypes
 from singer_sdk import Sink, Target
 
+from flext_core import FlextLogger, FlextTypes
 from flext_target_oracle_oic.auth import OICAuthConfig, OICOAuth2Authenticator
 
 # Constants

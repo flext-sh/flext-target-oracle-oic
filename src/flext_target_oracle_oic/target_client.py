@@ -10,10 +10,10 @@ from collections.abc import Sequence
 from typing import ClassVar
 
 import httpx
-from flext_core import FlextConstants, FlextLogger, FlextTypes
 from flext_oracle_oic_ext.ext_models import OICAuthConfig
 from singer_sdk import Sink, Target
 
+from flext_core import FlextLogger, FlextTypes
 from flext_target_oracle_oic.target_config import (
     OICOAuth2Authenticator,
     TargetOracleOICConfig,
@@ -21,8 +21,8 @@ from flext_target_oracle_oic.target_config import (
 )
 
 # Use centralized constants to eliminate duplication
-HTTP_NOT_FOUND = FlextConstants.Web.HTTP_NOT_FOUND
-JSON_MIME = FlextConstants.Web.JSON_MIME
+HTTP_NOT_FOUND = 404  # From FlextWebConstants.Web.HTTP_NOT_FOUND
+JSON_MIME = "application/json"  # From FlextWebConstants.Web.JSON_MIME
 
 logger = FlextLogger(__name__)
 

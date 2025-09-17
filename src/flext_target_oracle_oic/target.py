@@ -9,9 +9,9 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import ClassVar
 
-from flext_core import FlextTypes
 from singer_sdk import Sink, Target, typing as th
 
+from flext_core import FlextTypes
 from flext_target_oracle_oic.application import OICTargetOrchestrator
 from flext_target_oracle_oic.sinks import (
     ConnectionsSink,
