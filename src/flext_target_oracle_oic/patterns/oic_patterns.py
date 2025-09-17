@@ -174,7 +174,10 @@ class OICSchemaMapper:
                     if oic_type_result.success:
                         # Ensure we have a string type
                         mapped_type = oic_type_result.data
-                        oic_schema[oic_name] = mapped_type
+                        if mapped_type is not None:
+                            oic_schema[oic_name] = mapped_type
+                        else:
+                            oic_schema[oic_name] = "string"  # Fallback
                     else:
                         oic_schema[oic_name] = "string"  # Fallback
 

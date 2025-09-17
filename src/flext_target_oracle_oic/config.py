@@ -6,10 +6,10 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from pathlib import Path
+from pydantic import Field, SecretStr, model_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from flext_core import FlextModels, FlextResult, FlextTypes
-from pydantic import Field, SecretStr, SettingsConfigDict, model_validator
 
 
 class OICAuthConfig(FlextModels.Config):
@@ -221,7 +221,7 @@ class OICEntityConfig(FlextModels.Config):
             return FlextResult[None].fail(f"Entity config validation failed: {e}")
 
 
-class TargetOracleOICConfig(FlextModels.Config):
+class TargetOracleOICConfig(BaseSettings):
     """Complete configuration for target-oracle-oic using dependency injection.
 
     Uses dependency injection patterns to access Oracle OIC functionality.
@@ -303,14 +303,13 @@ class TargetOracleOICConfig(FlextModels.Config):
     def validate_configuration(self) -> TargetOracleOICConfig:
         """Validate complete configuration using dependency injection."""
         msg: str = ""  # Declare msg here
-        # Validate archive directory if provided
+        # Use centralized FlextModels validation instead of duplicate path logic
         if self.deployment.archive_directory:
-            archive_path = Path(self.deployment.archive_directory)
-            if not archive_path.exists():
-                msg = f"Archive directory does not exist: {archive_path}"
-                raise ValueError(msg)
-            if not archive_path.is_dir():
-                msg = f"Archive path is not a directory: {archive_path}"
+            validation_result = FlextModels.create_validated_directory_path(
+                self.deployment.archive_directory
+            )
+            if validation_result.is_failure:
+                msg = f"Archive directory validation failed: {validation_result.error}"
                 raise ValueError(msg)
 
         # Validate each configuration section

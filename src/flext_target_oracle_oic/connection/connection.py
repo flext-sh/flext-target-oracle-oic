@@ -10,8 +10,8 @@ import json
 
 import requests
 import urllib3
-from flext_core import FlextLogger, FlextResult, FlextTypes
 
+from flext_core import FlextLogger, FlextResult, FlextTypes
 from flext_target_oracle_oic.connection.config import OICConnectionSettings
 from flext_target_oracle_oic.exceptions import FlextTargetOracleOicAuthenticationError
 

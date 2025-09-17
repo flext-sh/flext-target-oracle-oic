@@ -137,7 +137,7 @@ class OICRecordProcessor:
         if expected_type is None or value is None:
             return True
 
-        type_mapping = {
+        type_mapping: dict[str, type | tuple[type, ...]] = {
             "string": str,
             "integer": int,
             "number": (int, float),

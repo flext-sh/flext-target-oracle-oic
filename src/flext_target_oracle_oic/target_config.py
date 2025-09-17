@@ -7,11 +7,11 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import os
-from pathlib import Path
 
-from flext_core import FlextModels, FlextResult, FlextTypes
 from pydantic import BaseModel, Field, SecretStr, model_validator
 from pydantic_settings import SettingsConfigDict
+
+from flext_core import FlextModels, FlextResult, FlextTypes
 
 OICOAuth2Authenticator = object
 
@@ -258,14 +258,13 @@ class TargetOracleOICConfig(FlextModels):
         """Validate complete configuration."""
         msg: str = ""
 
-        # Validate archive directory if provided
+        # Use centralized FlextModels validation instead of duplicate path logic
         if self.deployment.archive_directory:
-            archive_path = Path(self.deployment.archive_directory)
-            if not archive_path.exists():
-                msg = f"Archive directory does not exist: {archive_path}"
-                raise ValueError(msg)
-            if not archive_path.is_dir():
-                msg = f"Archive path is not a directory: {archive_path}"
+            validation_result = FlextModels.create_validated_directory_path(
+                self.deployment.archive_directory
+            )
+            if validation_result.is_failure:
+                msg = f"Archive directory validation failed: {validation_result.error}"
                 raise ValueError(msg)
 
         # Validate each configuration section
