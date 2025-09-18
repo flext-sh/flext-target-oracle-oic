@@ -1,8 +1,18 @@
 # CLAUDE.md - FLEXT Target Oracle OIC Comprehensive Quality Refactoring
 
-**Hierarchy**: PROJECT - Specific to flext-target-oracle-oic Singer target for Oracle Integration Cloud  
-**Last Update**: 2025-01-XX  
+**Hierarchy**: PROJECT - Specific to flext-target-oracle-oic Singer target for Oracle Integration Cloud
+**Last Update**: 2025-01-XX
 **Parent**: [FLEXT Workspace CLAUDE.md](../CLAUDE.md)
+
+## 🔗 MCP SERVER INTEGRATION
+
+| MCP Server | Purpose | Status |
+|------------|---------|--------|
+| **serena** | Singer target codebase analysis and Oracle OIC loading patterns | **ACTIVE** |
+| **sequential-thinking** | Oracle OIC data loading and Singer protocol architecture | **ACTIVE** |
+| **github** | Singer ecosystem integration and Oracle OIC target PRs | **ACTIVE** |
+
+**Usage**: `claude mcp list` for available servers, leverage for Singer-specific development patterns and Oracle OIC loading analysis.
 
 ---
 
