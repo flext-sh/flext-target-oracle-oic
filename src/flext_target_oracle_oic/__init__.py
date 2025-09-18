@@ -129,19 +129,16 @@ __all__: FlextTypes.Core.StringList = [
     "FlextTargetOracleOICError",
     "FlextTargetOracleOICValidationError",
     # === PRIMARY CLASSES ===
-    "FlextTargetOracleOic",
     # === UNIFIED EXCEPTIONS ===
     "FlextTargetOracleOicAPIError",
     "FlextTargetOracleOicAuthenticationError",
     # === UNIFIED CONFIGURATION ===
-    "FlextTargetOracleOicConfig",  # Backward compatibility alias
     "FlextTargetOracleOicConfigurationError",
     "FlextTargetOracleOicConnectionError",
     "FlextTargetOracleOicError",
     "FlextTargetOracleOicErrorDetails",
     "FlextTargetOracleOicInfrastructureError",
     "FlextTargetOracleOicProcessingError",
-    "FlextTargetOracleOicResult",
     "FlextTargetOracleOicTransformationError",
     "FlextTargetOracleOicValidationError",
     "IntegrationsSink",
