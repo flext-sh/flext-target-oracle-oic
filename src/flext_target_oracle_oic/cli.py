@@ -36,7 +36,7 @@ class FlextTargetOracleOicCliService:
 
         return main_cli
 
-    def _handle_target_run(self, args: dict) -> None:
+    def _handle_target_run(self, args: dict[str, object]) -> None:
         """Handle target run command."""
         args.get("config")
         verbose = args.get("verbose", False)
