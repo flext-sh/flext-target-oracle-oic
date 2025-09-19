@@ -239,7 +239,7 @@ class ConnectionsSink(OICBaseSink):
         response.raise_for_status()
 
     def _update_connection(
-        self, connection_id: str, record: FlextTypes.Core.Dict
+        self, connection_id: str, record: FlextTypes.Core.Dict,
     ) -> None:
         payload = {
             "connectionProperties": {

@@ -65,7 +65,7 @@ class OICRecordProcessor:
                 stream_name,
             )
             return FlextResult[FlextTypes.Core.Dict].fail(
-                f"Record processing failed: {e}"
+                f"Record processing failed: {e}",
             )
 
     def _validate_against_schema(
@@ -96,7 +96,7 @@ class OICRecordProcessor:
             missing_fields = [field for field in required_fields if field not in record]
             if missing_fields:
                 return FlextResult[None].fail(
-                    f"Missing required fields: {missing_fields}"
+                    f"Missing required fields: {missing_fields}",
                 )
 
             # Validate field types
@@ -199,7 +199,7 @@ class OICRecordProcessor:
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Stream metadata extraction failed for: %s", stream_name)
             return FlextResult[FlextTypes.Core.Dict].fail(
-                f"Metadata extraction failed: {e}"
+                f"Metadata extraction failed: {e}",
             )
 
     def prepare_batch_records(
@@ -236,5 +236,5 @@ class OICRecordProcessor:
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Batch preparation failed")
             return FlextResult[list[list[FlextTypes.Core.Dict]]].fail(
-                f"Batch preparation failed: {e}"
+                f"Batch preparation failed: {e}",
             )

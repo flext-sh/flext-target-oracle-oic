@@ -50,7 +50,7 @@ class OICConnection:
             auth_result = self._authenticate()
             if not auth_result.success:
                 return FlextResult[None].fail(
-                    auth_result.error or "Authentication failed"
+                    auth_result.error or "Authentication failed",
                 )
 
             logger.info("Connected to OIC server: %s", self.config.base_url)
@@ -136,7 +136,7 @@ class OICConnection:
                 connect_result = self.connect()
                 if not connect_result.success:
                     return FlextResult[bool].fail(
-                        connect_result.error or "Connection failed"
+                        connect_result.error or "Connection failed",
                     )
 
             # Test with simple API call
@@ -160,7 +160,7 @@ class OICConnection:
                 return FlextResult[bool].ok(data=True)
 
             return FlextResult[bool].fail(
-                f"Connection test failed: {response.status_code}"
+                f"Connection test failed: {response.status_code}",
             )
 
         except (RuntimeError, ValueError, TypeError) as e:
@@ -180,20 +180,20 @@ class OICConnection:
                 connect_result = self.connect()
                 if not connect_result.success:
                     return FlextResult[FlextTypes.Core.Dict].fail(
-                        connect_result.error or "Connection failed"
+                        connect_result.error or "Connection failed",
                     )
 
             url = f"{self.config.build_api_base_url()}/{endpoint.lstrip('/')}"
             if not self._access_token:
                 return FlextResult[FlextTypes.Core.Dict].fail(
-                    "No access token available"
+                    "No access token available",
                 )
             headers = self.config.get_api_headers(self._access_token)
 
             # Make request
             if not self._session:
                 return FlextResult[FlextTypes.Core.Dict].fail(
-                    "No active session available"
+                    "No active session available",
                 )
 
             # Prepare params as strings to satisfy typing

@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_cli import FlextCliApi, FlextCliConfig, FlextCliMain
+from flext_cli import FlextCliApi, FlextCliConfigs, FlextCliMain
 
 
 class FlextTargetOracleOicCliService:
@@ -20,7 +20,7 @@ class FlextTargetOracleOicCliService:
     def __init__(self) -> None:
         """Initialize CLI service with flext-cli patterns."""
         self._cli_api = FlextCliApi()
-        self._config = FlextCliConfig()
+        self._config = FlextCliConfigs()
 
     def create_target_cli_interface(self) -> None:
         """Create Oracle OIC target CLI interface using flext-cli patterns."""

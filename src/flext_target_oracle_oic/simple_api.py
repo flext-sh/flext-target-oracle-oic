@@ -45,7 +45,7 @@ def setup_oic_target(
 
     except (RuntimeError, ValueError, TypeError) as e:
         return FlextResult[TargetOracleOICConfig].fail(
-            f"Failed to set up OIC target: {e}"
+            f"Failed to set up OIC target: {e}",
         )
 
 

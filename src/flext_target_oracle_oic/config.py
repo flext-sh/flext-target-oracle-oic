@@ -126,7 +126,7 @@ class OICDeploymentConfig(FlextModels.Config):
             valid_modes = {"create_only", "update_only", "create_or_update"}
             if self.import_mode not in valid_modes:
                 return FlextResult[None].fail(
-                    f"Invalid import mode: {self.import_mode}"
+                    f"Invalid import mode: {self.import_mode}",
                 )
             return FlextResult[None].ok(None)
         except Exception as e:
@@ -306,7 +306,7 @@ class TargetOracleOICConfig(BaseSettings):
         # Use centralized FlextModels validation instead of duplicate path logic
         if self.deployment.archive_directory:
             validation_result = FlextModels.create_validated_directory_path(
-                self.deployment.archive_directory
+                self.deployment.archive_directory,
             )
             if validation_result.is_failure:
                 msg = f"Archive directory validation failed: {validation_result.error}"
