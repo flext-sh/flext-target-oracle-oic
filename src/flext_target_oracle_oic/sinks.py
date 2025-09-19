@@ -8,9 +8,9 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 
-import httpx
 from singer_sdk import Sink, Target
 
+from flext_api import FlextApiClient
 from flext_core import FlextLogger, FlextTypes
 from flext_target_oracle_oic.auth import OICAuthConfig, OICOAuth2Authenticator
 
@@ -36,7 +36,7 @@ class OICBaseSink(Sink):
         # CRITICAL: Set tap_name for Singer SDK auth compatibility
         self.tap_name = "target-oracle-oic"  # Required by Singer SDK authenticators
         self._authenticator: OICOAuth2Authenticator | None = None
-        self._client: httpx.Client | None = None
+        self._client: FlextApiClient | None = None
 
     @property
     def authenticator(self) -> OICOAuth2Authenticator:
@@ -59,11 +59,11 @@ class OICBaseSink(Sink):
         return self._authenticator
 
     @property
-    def client(self) -> httpx.Client:
+    def client(self) -> FlextApiClient:
         """Get or create HTTP client with authentication headers.
 
         Returns:
-            Configured httpx.Client for OIC API requests.
+            Configured FlextApiClient for OIC API requests.
 
         """
         if not self._client:
@@ -80,9 +80,9 @@ class OICBaseSink(Sink):
                 "Accept": JSON_MIME,
             }
 
-            self._client = httpx.Client(
+            self._client = FlextApiClient(
                 base_url=self.config["base_url"],
-                headers=auth_headers,
+                default_headers=auth_headers,
                 timeout=30.0,
             )
         return self._client
