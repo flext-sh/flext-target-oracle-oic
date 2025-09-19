@@ -230,7 +230,8 @@ class IntegrationsSink(OICBaseSink):
             json_data = {str(k): str(v) for k, v in payload.items()}
 
             response_result = await self.client.post(
-                "/ic/api/integration/v1/integrations", json=json_data,
+                "/ic/api/integration/v1/integrations",
+                json=json_data,
             )
 
             if response_result.is_failure:
@@ -277,7 +278,8 @@ class IntegrationsSink(OICBaseSink):
             json_data = {str(k): str(v) for k, v in payload.items()}
 
             response_result = await self.client.post(
-                "/ic/api/integration/v1/packages/archive/import", json=json_data,
+                "/ic/api/integration/v1/packages/archive/import",
+                json=json_data,
             )
 
             if response_result.is_failure:

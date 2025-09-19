@@ -67,7 +67,7 @@ strict = true
 check_untyped_defs = true
 disallow_any_decorated = false
 disallow_any_explicit = true
-disallow_any_expr = false          # Too restrictive for real-world usage
+disallow_any_expr = false           # Too restrictive for real-world usage
 disallow_any_generics = true
 disallow_any_unimported = true
 disallow_incomplete_defs = true
@@ -221,7 +221,6 @@ flext-core = { path = "../flext-core", develop = true }
 flext-meltano = { path = "../flext-meltano", develop = true }
 flext-oracle-oic-ext = { path = "../flext-oracle-oic-ext", develop = true }
 flext-observability = { path = "../flext-observability", develop = true }
-
 
 
 [tool.poetry.group.dev.dependencies]
