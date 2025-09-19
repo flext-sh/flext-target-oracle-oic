@@ -531,7 +531,7 @@ def create_oic_connection(data: FlextTypes.Core.Dict) -> FlextResult[OICConnecti
         validation = connection.validate_business_rules()
         if not validation.success:
             return FlextResult[OICConnection].fail(
-                f"Connection validation failed: {validation.error}"
+                f"Connection validation failed: {validation.error}",
             )
         return FlextResult[OICConnection].ok(connection)
     except Exception as e:
@@ -559,7 +559,7 @@ def create_oic_package(data: FlextTypes.Core.Dict) -> FlextResult[OICPackage]:
         validation = package.validate_business_rules()
         if not validation.success:
             return FlextResult[OICPackage].fail(
-                f"Package validation failed: {validation.error}"
+                f"Package validation failed: {validation.error}",
             )
         return FlextResult[OICPackage].ok(package)
     except Exception as e:
@@ -573,7 +573,7 @@ def create_oic_lookup(data: FlextTypes.Core.Dict) -> FlextResult[OICLookup]:
         validation = lookup.validate_business_rules()
         if not validation.success:
             return FlextResult[OICLookup].fail(
-                f"Lookup validation failed: {validation.error}"
+                f"Lookup validation failed: {validation.error}",
             )
         return FlextResult[OICLookup].ok(lookup)
     except Exception as e:

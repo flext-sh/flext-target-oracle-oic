@@ -109,7 +109,7 @@ class OICTargetOrchestrator:
         except Exception as e:
             logger.exception("OIC target pipeline orchestration failed")
             return FlextResult[FlextTypes.Core.Dict].fail(
-                f"Pipeline orchestration failed: {e}"
+                f"Pipeline orchestration failed: {e}",
             )
 
 

@@ -102,7 +102,7 @@ class OICDataTransformer:
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("OIC record transformation failed")
             return FlextResult[FlextTypes.Core.Dict].fail(
-                f"Record transformation failed: {e}"
+                f"Record transformation failed: {e}",
             )
 
     def _normalize_oic_attribute_name(self, name: str) -> str:
@@ -139,7 +139,7 @@ class OICDataTransformer:
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("OIC payload preparation failed")
             return FlextResult[FlextTypes.Core.Dict].fail(
-                f"Payload preparation failed: {e}"
+                f"Payload preparation failed: {e}",
             )
 
 
@@ -186,7 +186,7 @@ class OICSchemaMapper:
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("OIC schema mapping failed")
             return FlextResult[FlextTypes.Core.Headers].fail(
-                f"Schema mapping failed: {e}"
+                f"Schema mapping failed: {e}",
             )
 
     def _normalize_attribute_name(self, name: str) -> str:
@@ -257,7 +257,7 @@ class OICEntryManager:
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Integration entry preparation failed")
             return FlextResult[FlextTypes.Core.Dict].fail(
-                f"Integration entry preparation failed: {e}"
+                f"Integration entry preparation failed: {e}",
             )
 
     def prepare_connection_entry(
@@ -280,7 +280,7 @@ class OICEntryManager:
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Connection entry preparation failed")
             return FlextResult[FlextTypes.Core.Dict].fail(
-                f"Connection entry preparation failed: {e}"
+                f"Connection entry preparation failed: {e}",
             )
 
     def prepare_package_entry(
@@ -303,7 +303,7 @@ class OICEntryManager:
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Package entry preparation failed")
             return FlextResult[FlextTypes.Core.Dict].fail(
-                f"Package entry preparation failed: {e}"
+                f"Package entry preparation failed: {e}",
             )
 
     def prepare_lookup_entry(
@@ -325,7 +325,7 @@ class OICEntryManager:
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Lookup entry preparation failed")
             return FlextResult[FlextTypes.Core.Dict].fail(
-                f"Lookup entry preparation failed: {e}"
+                f"Lookup entry preparation failed: {e}",
             )
 
     def validate_entry_structure(
@@ -347,7 +347,7 @@ class OICEntryManager:
 
             if missing_fields:
                 return FlextResult[bool].fail(
-                    f"Missing required fields: {missing_fields}"
+                    f"Missing required fields: {missing_fields}",
                 )
 
             return FlextResult[bool].ok(data=True)

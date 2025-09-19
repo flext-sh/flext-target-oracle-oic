@@ -18,6 +18,7 @@ from flext_target_oracle_oic.target_config import create_singer_config_schema
 
 # Use centralized constants to eliminate duplication
 HTTP_NOT_FOUND = 404  # From FlextWebConstants.Web.HTTP_NOT_FOUND
+HTTP_BAD_REQUEST = 400  # HTTP client error status threshold
 HTTP_ERROR_STATUS_THRESHOLD = 400  # HTTP error status threshold
 JSON_MIME = "application/json"  # From FlextWebConstants.Web.JSON_MIME
 
@@ -229,26 +230,26 @@ class IntegrationsSink(OICBaseSink):
             json_data = {str(k): str(v) for k, v in payload.items()}
 
             response_result = await self.client.post(
-                "/ic/api/integration/v1/integrations", json=json_data
+                "/ic/api/integration/v1/integrations", json=json_data,
             )
 
             if response_result.is_failure:
                 msg = f"Integration creation failed: {response_result.error}"
                 raise ValueError(
-                    msg
+                    msg,
                 )
 
             response = response_result.unwrap()
-            if response.status_code >= 400:
+            if response.status_code >= HTTP_ERROR_STATUS_THRESHOLD:
                 msg = f"Integration creation failed with status {response.status_code}"
                 raise ValueError(
-                    msg
+                    msg,
                 )
 
             self.logger.info(f"Created integration: {record['id']}")
 
-        except Exception as e:
-            self.logger.exception(f"Failed to create integration: {e}")
+        except Exception:
+            self.logger.exception("Failed to create integration")
             raise
 
     async def _import_integration(self, record: FlextTypes.Core.Dict) -> None:
@@ -276,26 +277,26 @@ class IntegrationsSink(OICBaseSink):
             json_data = {str(k): str(v) for k, v in payload.items()}
 
             response_result = await self.client.post(
-                "/ic/api/integration/v1/packages/archive/import", json=json_data
+                "/ic/api/integration/v1/packages/archive/import", json=json_data,
             )
 
             if response_result.is_failure:
                 msg = f"Integration import failed: {response_result.error}"
                 raise ValueError(
-                    msg
+                    msg,
                 )
 
             response = response_result.unwrap()
-            if response.status_code >= 400:
+            if response.status_code >= HTTP_ERROR_STATUS_THRESHOLD:
                 msg = f"Integration import failed with status {response.status_code}"
                 raise ValueError(
-                    msg
+                    msg,
                 )
 
             self.logger.info(f"Imported integration package: {package_file}")
 
-        except Exception as e:
-            self.logger.exception(f"Failed to import integration: {e}")
+        except Exception:
+            self.logger.exception("Failed to import integration")
             raise
 
     async def _update_integration(
@@ -317,7 +318,7 @@ class IntegrationsSink(OICBaseSink):
 
             if not payload:
                 self.logger.warning(
-                    f"No updatable fields provided for integration {integration_id}"
+                    f"No updatable fields provided for integration {integration_id}",
                 )
                 return
 
@@ -332,20 +333,20 @@ class IntegrationsSink(OICBaseSink):
             if response_result.is_failure:
                 msg = f"Integration update failed: {response_result.error}"
                 raise ValueError(
-                    msg
+                    msg,
                 )
 
             response = response_result.unwrap()
-            if response.status_code >= 400:
+            if response.status_code >= HTTP_ERROR_STATUS_THRESHOLD:
                 msg = f"Integration update failed with status {response.status_code}"
                 raise ValueError(
-                    msg
+                    msg,
                 )
 
             self.logger.info(f"Updated integration: {integration_id}")
 
-        except Exception as e:
-            self.logger.exception(f"Failed to update integration: {e}")
+        except Exception:
+            self.logger.exception("Failed to update integration")
             raise
 
 

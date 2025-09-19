@@ -160,7 +160,7 @@ class CertificatesSink(OICBaseSink):
         response.raise_for_status()
 
     def _update_certificate(
-        self, cert_alias: str, record: FlextTypes.Core.Dict
+        self, cert_alias: str, record: FlextTypes.Core.Dict,
     ) -> None:
         # Certificates can only be replaced, not updated
         # Delete and recreate if needed:
@@ -284,7 +284,7 @@ class SchedulesSink(OICBaseSink):
             self._update_schedule(integration_id, record)
 
     def _create_schedule(
-        self, integration_id: str, record: FlextTypes.Core.Dict
+        self, integration_id: str, record: FlextTypes.Core.Dict,
     ) -> None:
         payload = self._build_schedule_payload(record)
         response = self.client.post(
@@ -294,7 +294,7 @@ class SchedulesSink(OICBaseSink):
         response.raise_for_status()
 
     def _update_schedule(
-        self, integration_id: str, record: FlextTypes.Core.Dict
+        self, integration_id: str, record: FlextTypes.Core.Dict,
     ) -> None:
         payload = self._build_schedule_payload(record)
         response = self.client.put(
@@ -304,7 +304,7 @@ class SchedulesSink(OICBaseSink):
         response.raise_for_status()
 
     def _build_schedule_payload(
-        self, record: FlextTypes.Core.Dict
+        self, record: FlextTypes.Core.Dict,
     ) -> FlextTypes.Core.Dict:
         payload = {
             "scheduleType": record.get("scheduleType", "SIMPLE"),
