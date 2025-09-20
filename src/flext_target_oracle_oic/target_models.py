@@ -9,13 +9,13 @@ from __future__ import annotations
 import re
 from datetime import datetime
 
-from pydantic import Field
-
-from flext_core import FlextModels, FlextResult, FlextTypes
 from flext_oracle_oic_ext.ext_models import (
     OICConnectionInfo as ConnectionBase,
     OICIntegrationInfo as IntegrationBase,
 )
+from pydantic import Field
+
+from flext_core import FlextModels, FlextResult, FlextTypes
 
 LookupBase = FlextModels  # These models don't exist in ext_models
 PackageBase = FlextModels
