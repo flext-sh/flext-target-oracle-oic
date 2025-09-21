@@ -9,7 +9,7 @@ from __future__ import annotations
 from pydantic import Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-from flext_core import FlextModels, FlextResult, FlextTypes
+from flext_core import FlextConstants, FlextModels, FlextResult, FlextTypes
 
 
 class OICAuthConfig(FlextModels.Config):
@@ -59,13 +59,13 @@ class OICConnectionConfig(FlextModels.Config):
         pattern=r"^https://.*\.integration\.ocp\.oraclecloud\.com$",
     )
     timeout: int = Field(
-        default=30,
+        default=FlextConstants.Network.DEFAULT_TIMEOUT,
         description="Request timeout in seconds",
         gt=0,
         le=300,
     )
     max_retries: int = Field(
-        default=3,
+        default=FlextConstants.Reliability.MAX_RETRY_ATTEMPTS,
         description="Maximum number of retries",
         ge=0,
         le=10,

@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from pydantic import Field
 
-from flext_core import FlextLogger, FlextModels, FlextResult, FlextTypes
+from flext_core import FlextConstants, FlextLogger, FlextModels, FlextResult, FlextTypes
 
 logger = FlextLogger(__name__)
 
@@ -30,8 +30,16 @@ class OICConnectionSettings(FlextModels):
         repr=False,
     )
     use_oauth2: bool = Field(default=True, description="Use OAuth2 authentication")
-    timeout: int = Field(default=30, description="Request timeout in seconds", gt=0)
-    max_retries: int = Field(default=3, description="Maximum number of retries", ge=0)
+    timeout: int = Field(
+        default=FlextConstants.Network.DEFAULT_TIMEOUT,
+        description="Request timeout in seconds",
+        gt=0,
+    )
+    max_retries: int = Field(
+        default=FlextConstants.Reliability.MAX_RETRY_ATTEMPTS,
+        description="Maximum number of retries",
+        ge=0,
+    )
     verify_ssl: bool = Field(default=True, description="Verify SSL certificates")
 
     def build_auth_url(self) -> str:
