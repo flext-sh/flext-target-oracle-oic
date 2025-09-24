@@ -14,7 +14,7 @@ logger = FlextLogger(__name__)
 class OICRecordProcessor:
     """Process Singer records for OIC using flext-core patterns."""
 
-    def __init__(self) -> None:
+    def __init__(self: object) -> None:
         """Initialize OIC record processor."""
 
     def process_singer_record(
@@ -84,8 +84,8 @@ class OICRecordProcessor:
 
         """
         try:
-            properties = schema.get("properties", {})
-            required_fields = schema.get("required", [])
+            properties: dict[str, object] = schema.get("properties", {})
+            required_fields: list[object] = schema.get("required", [])
 
             if not isinstance(properties, dict):
                 return FlextResult[None].fail("Schema properties must be a dictionary")
@@ -174,14 +174,14 @@ class OICRecordProcessor:
             }
 
             if schema:
-                properties_raw = schema.get("properties", {})
+                properties_raw: dict[str, object] = schema.get("properties", {})
                 properties: FlextTypes.Core.Dict = {}
                 if isinstance(properties_raw, dict):
                     properties = {
                         k: v for k, v in properties_raw.items() if isinstance(k, str)
                     }
                 properties_count = len(properties)
-                required_fields = schema.get("required", [])
+                required_fields: list[object] = schema.get("required", [])
                 required_fields = (
                     required_fields if isinstance(required_fields, list) else []
                 )

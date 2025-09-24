@@ -24,10 +24,10 @@ class OICTargetOrchestrator:
             object: Description of return value.
 
         """
-        self.config = config or {}
+        self.config: dict[str, object] = config or {}
         logger.debug("Initialized OIC target orchestrator")
 
-    def validate_configuration(self) -> FlextResult[bool]:
+    def validate_configuration(self: object) -> FlextResult[bool]:
         """Validate OIC target configuration.
 
         Returns:
@@ -45,7 +45,7 @@ class OICTargetOrchestrator:
         except Exception as e:
             return FlextResult[bool].fail(f"Configuration validation failed: {e}")
 
-    def setup(self) -> FlextResult[None]:
+    def setup(self: object) -> FlextResult[None]:
         """Set up OIC target orchestrator.
 
         Returns:
@@ -59,7 +59,7 @@ class OICTargetOrchestrator:
             logger.exception("OIC orchestrator setup failed")
             return FlextResult[None].fail(f"Setup failed: {e}")
 
-    def teardown(self) -> FlextResult[None]:
+    def teardown(self: object) -> FlextResult[None]:
         """Teardown OIC target orchestrator.
 
         Returns:

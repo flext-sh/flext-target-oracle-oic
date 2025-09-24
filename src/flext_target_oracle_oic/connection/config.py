@@ -8,7 +8,13 @@ from __future__ import annotations
 
 from pydantic import Field
 
-from flext_core import FlextConstants, FlextLogger, FlextModels, FlextResult, FlextTypes
+from flext_core import (
+    FlextConstants,
+    FlextLogger,
+    FlextModels,
+    FlextResult,
+    FlextTypes,
+)
 
 logger = FlextLogger(__name__)
 
@@ -42,17 +48,17 @@ class OICConnectionSettings(FlextModels):
     )
     verify_ssl: bool = Field(default=True, description="Verify SSL certificates")
 
-    def build_auth_url(self) -> str:
+    def build_auth_url(self: object) -> str:
         """Build OAuth2 authentication URL."""
         url = self.base_url.rstrip("/")
         return f"{url}/oauth2/v1/token"
 
-    def build_api_base_url(self) -> str:
+    def build_api_base_url(self: object) -> str:
         """Build OIC API base URL."""
         url = self.base_url.rstrip("/")
         return f"{url}/ic/api/integration/v1"
 
-    def get_auth_headers(self) -> FlextTypes.Core.Headers:
+    def get_auth_headers(self: object) -> FlextTypes.Core.Headers:
         """Get authentication headers."""
         return {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -76,7 +82,7 @@ class OICConnectionSettings(FlextModels):
             logger.exception("Failed to create OICConnectionSettings from dict")
             raise
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self: object) -> FlextResult[None]:
         """Validate OIC connection configuration business rules."""
         errors: FlextTypes.Core.StringList = []
 

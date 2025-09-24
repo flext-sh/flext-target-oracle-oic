@@ -16,7 +16,7 @@ logger = FlextLogger(__name__)
 class OICTypeConverter:
     """Convert data types for OIC storage using flext-core patterns."""
 
-    def __init__(self) -> None:
+    def __init__(self: object) -> None:
         """Initialize OIC type converter."""
 
     def convert_singer_to_oic(
@@ -81,9 +81,9 @@ class OICDataTransformer:
                 oic_key = self._normalize_oic_attribute_name(key)
 
                 if schema and isinstance(schema, dict):
-                    properties = schema.get("properties", {})
+                    properties: dict[str, object] = schema.get("properties", {})
                     if isinstance(properties, dict):
-                        prop_def = properties.get(key, {})
+                        prop_def: dict[str, object] = properties.get(key, {})
                     singer_type = prop_def.get("type", "string")
 
                     convert_result = self.type_converter.convert_singer_to_oic(
@@ -146,7 +146,7 @@ class OICDataTransformer:
 class OICSchemaMapper:
     """Map Singer schemas to OIC schemas using flext-core patterns."""
 
-    def __init__(self) -> None:
+    def __init__(self: object) -> None:
         """Initialize OIC schema mapper."""
 
     def map_singer_schema_to_oic(
@@ -157,7 +157,7 @@ class OICSchemaMapper:
         """Map Singer schema to OIC resource definitions."""
         try:
             oic_schema: FlextTypes.Core.Headers = {}
-            properties = schema.get("properties", {})
+            properties: dict[str, object] = schema.get("properties", {})
 
             if isinstance(properties, dict):
                 for prop_name, prop_def in properties.items():
@@ -230,7 +230,7 @@ class OICSchemaMapper:
 class OICEntryManager:
     """Manage OIC entries using flext-core patterns."""
 
-    def __init__(self) -> None:
+    def __init__(self: object) -> None:
         """Initialize OIC entry manager."""
 
     def prepare_integration_entry(
@@ -342,7 +342,7 @@ class OICEntryManager:
                 "lookup": ["name", "lookupType"],
             }
 
-            required = required_fields.get(entry_type, [])
+            required: list[object] = required_fields.get(entry_type, [])
             missing_fields = [field for field in required if field not in entry]
 
             if missing_fields:

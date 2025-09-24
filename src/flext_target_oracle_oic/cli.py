@@ -11,26 +11,29 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_cli import FlextCliApi, FlextCliConfigs, FlextCliMain
+from flext_cli import FlextCliApi, FlextCliCommands, FlextCliConfigs
+from flext_core import FlextResult
 
 
 class FlextTargetOracleOicCliService:
     """Oracle OIC target CLI service using flext-cli foundation exclusively."""
 
-    def __init__(self) -> None:
+    def __init__(self: object) -> None:
         """Initialize CLI service with flext-cli patterns."""
         self._cli_api = FlextCliApi()
-        self._config = FlextCliConfigs()
+        self._config: dict[str, object] = FlextCliConfigs()
 
-    def create_target_cli_interface(self) -> None:
+    def create_target_cli_interface(self: object) -> None:
         """Create Oracle OIC target CLI interface using flext-cli patterns."""
-        main_cli = FlextCliMain(
+        main_cli = FlextCliCommands(
             name="flext-target-oracle-oic",
             description="FLEXT Oracle OIC Target - Singer target for Oracle Integration Cloud",
         )
 
         # Register target command groups
-        run_result = main_cli.register_command("run", self._handle_target_run)
+        run_result: FlextResult[object] = main_cli.register_command(
+            "run", self._handle_target_run
+        )
         if run_result.is_failure:
             return None
 

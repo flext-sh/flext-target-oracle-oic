@@ -11,7 +11,7 @@ from typing import ClassVar
 
 from singer_sdk import Sink, Target, typing as th
 
-from flext_core import FlextTypes
+from flext_core import FlextResult, FlextTypes
 from flext_target_oracle_oic.application import OICTargetOrchestrator
 from flext_target_oracle_oic.sinks import (
     ConnectionsSink,
@@ -101,20 +101,20 @@ class TargetOracleOIC(Target):
         # Initialize the orchestrator for modular architecture
         self._orchestrator: OICTargetOrchestrator | None = None
 
-    def setup(self) -> None:
+    def setup(self: object) -> None:
         """Set up the target orchestrator."""
         if self._orchestrator is None:
             self._orchestrator = OICTargetOrchestrator(
                 dict(self.config) if self.config else None,
             )
-            setup_result = self._orchestrator.setup()
+            setup_result: FlextResult[object] = self._orchestrator.setup()
             if not setup_result.success:
                 self.logger.error("Orchestrator setup failed: %s", setup_result.error)
 
-    def teardown(self) -> None:
+    def teardown(self: object) -> None:
         """Teardown the target orchestrator."""
         if self._orchestrator:
-            teardown_result = self._orchestrator.teardown()
+            teardown_result: FlextResult[object] = self._orchestrator.teardown()
             if not teardown_result.success:
                 self.logger.warning(
                     "Orchestrator teardown failed: %s",
@@ -138,7 +138,7 @@ class TargetOracleOIC(Target):
         if not isinstance(schema_obj, dict):
             return
         schema: FlextTypes.Core.Dict = schema_obj
-        key_properties_obj = message_dict.get("key_properties", [])
+        key_properties_obj: list[object] = message_dict.get("key_properties", [])
         key_properties: Sequence[str] | None = (
             key_properties_obj if isinstance(key_properties_obj, list) else None
         )

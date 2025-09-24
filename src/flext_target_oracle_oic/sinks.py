@@ -11,7 +11,7 @@ from collections.abc import Sequence
 from singer_sdk import Sink, Target
 
 from flext_api import FlextApiClient
-from flext_core import FlextLogger, FlextTypes
+from flext_core import FlextLogger, FlextResult, FlextTypes
 from flext_target_oracle_oic.auth import OICAuthConfig, OICOAuth2Authenticator
 
 # Constants
@@ -39,7 +39,7 @@ class OICBaseSink(Sink):
         self._client: FlextApiClient | None = None
 
     @property
-    def authenticator(self) -> OICOAuth2Authenticator:
+    def authenticator(self: object) -> OICOAuth2Authenticator:
         """Get or create OAuth2 authenticator instance.
 
         Returns:
@@ -59,7 +59,7 @@ class OICBaseSink(Sink):
         return self._authenticator
 
     @property
-    def client(self) -> FlextApiClient:
+    def client(self: object) -> FlextApiClient:
         """Get or create HTTP client with authentication headers.
 
         Returns:
@@ -68,7 +68,7 @@ class OICBaseSink(Sink):
         """
         if not self._client:
             # Get access token for authentication
-            token_result = self.authenticator.get_access_token()
+            token_result: FlextResult[object] = self.authenticator.get_access_token()
             if not token_result.success:
                 msg: str = f"Authentication failed: {token_result.error}"
                 raise RuntimeError(msg)

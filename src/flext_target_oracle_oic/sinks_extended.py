@@ -10,7 +10,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import FlextTypes
+from flext_core import FlextResult, FlextTypes
 from flext_target_oracle_oic.sinks import OICBaseSink
 
 # Constants
@@ -219,7 +219,7 @@ class ProjectsSink(OICBaseSink):
         # Create folders if provided:
         if "folders" in record:
             project_id_var = str(record.get("id", ""))
-            folders = record.get("folders", [])
+            folders: list[object] = record.get("folders", [])
             if isinstance(folders, list):
                 for folder in folders:
                     if isinstance(folder, dict):
@@ -415,7 +415,7 @@ class MonitoringConfigSink(OICBaseSink):
             _context: Record context (unused).
 
         """
-        config_type = record.get("configType", "alerts")
+        config_type: dict[str, object] = record.get("configType", "alerts")
         if config_type == "alerts":
             self._configure_alerts(record)
         elif config_type == "metrics":
@@ -523,7 +523,7 @@ class IntegrationActionsSink(OICBaseSink):
         version: str,
         record: FlextTypes.Core.Dict,
     ) -> None:
-        test_payload = record.get("testPayload", {})
+        test_payload: dict[str, object] = record.get("testPayload", {})
         response = self.client.post(
             f"/ic/api/integration/v1/integrations/{integration_id}|{version}/test",
             json=test_payload,
@@ -582,7 +582,7 @@ class ConnectionActionsSink(OICBaseSink):
         )
         response.raise_for_status()
         # Get test results
-        result = response.json()
+        result: FlextResult[object] = response.json()
         if result.get("status") != "SUCCESS":
             self.logger.warning(
                 "Connection test failed for %s: %s",

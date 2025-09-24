@@ -53,7 +53,9 @@ class FlextTargetOracleOicError(Exception):
 # ===============================================================================
 
 
-class FlextTargetOracleOicAuthenticationError(FlextExceptions._AuthenticationError):
+class FlextTargetOracleOicAuthenticationError(
+    FlextExceptions.ModuleBaseError.ModuleAuthenticationError
+):
     """Oracle OIC authentication errors using flext-core patterns."""
 
     def __init__(
@@ -83,7 +85,9 @@ class FlextTargetOracleOicAuthenticationError(FlextExceptions._AuthenticationErr
         )
 
 
-class FlextTargetOracleOicConnectionError(FlextExceptions._ConnectionError):
+class FlextTargetOracleOicConnectionError(
+    FlextExceptions.ModuleBaseError.ModuleConnectionError
+):
     """Oracle OIC connection errors using flext-core patterns."""
 
     def __init__(
@@ -114,7 +118,9 @@ class FlextTargetOracleOicConnectionError(FlextExceptions._ConnectionError):
         )
 
 
-class FlextTargetOracleOicProcessingError(FlextExceptions._ProcessingError):
+class FlextTargetOracleOicProcessingError(
+    FlextExceptions.ModuleBaseError.ModuleProcessingError
+):
     """Oracle OIC processing errors using flext-core patterns."""
 
     def __init__(
@@ -145,7 +151,9 @@ class FlextTargetOracleOicProcessingError(FlextExceptions._ProcessingError):
         )
 
 
-class FlextTargetOracleOicValidationError(FlextExceptions._ValidationError):
+class FlextTargetOracleOicValidationError(
+    FlextExceptions.ModuleBaseError.ModuleValidationError
+):
     """Oracle OIC validation errors using flext-core patterns."""
 
     def __init__(
@@ -185,7 +193,9 @@ class FlextTargetOracleOicValidationError(FlextExceptions._ValidationError):
         )
 
 
-class FlextTargetOracleOicConfigurationError(FlextExceptions._ConfigurationError):
+class FlextTargetOracleOicConfigurationError(
+    FlextExceptions.ModuleBaseError.ModuleConfigurationError
+):
     """Oracle OIC configuration errors using flext-core patterns."""
 
     def __init__(
@@ -238,11 +248,11 @@ class FlextTargetOracleOicTransformationError(FlextTargetOracleOicError):
             context["transformation_type"] = transformation_type
         if input_schema is not None:
             # Include minimal schema info for debugging
-            properties = input_schema.get("properties", {})
+            properties: dict[str, object] = input_schema.get("properties", {})
             if isinstance(properties, dict):
                 context["input_schema_keys"] = list(properties.keys())
         if output_schema is not None:
-            properties = output_schema.get("properties", {})
+            properties: dict[str, object] = output_schema.get("properties", {})
             if isinstance(properties, dict):
                 context["output_schema_keys"] = list(properties.keys())
 
@@ -327,7 +337,7 @@ class FlextTargetOracleOicErrorDetails(FlextModels):
     integration_name: str | None = None
     oic_instance: str | None = None
 
-    def validate_domain_rules(self) -> FlextResult[None]:
+    def validate_domain_rules(self: object) -> FlextResult[None]:
         """Validate domain-specific business rules."""
         try:
             # Validate error code format

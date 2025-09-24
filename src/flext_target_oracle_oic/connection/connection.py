@@ -28,11 +28,11 @@ class OICConnection:
 
     def __init__(self, config: OICConnectionSettings) -> None:
         """Initialize OIC connection."""
-        self.config = config
+        self.config: dict[str, object] = config
         self._access_token: str | None = None
         self._session: requests.Session | None = None
 
-    def connect(self) -> FlextResult[None]:
+    def connect(self: object) -> FlextResult[None]:
         """Establish OIC connection with OAuth2 authentication."""
         try:
             if self._session:
@@ -47,7 +47,7 @@ class OICConnection:
                 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
             # Authenticate and get access token
-            auth_result = self._authenticate()
+            auth_result: FlextResult[object] = self._authenticate()
             if not auth_result.success:
                 return FlextResult[None].fail(
                     auth_result.error or "Authentication failed",
@@ -63,7 +63,7 @@ class OICConnection:
             logger.exception("OIC connection failed")
             return FlextResult[None].fail(f"Connection failed: {e}")
 
-    def disconnect(self) -> FlextResult[None]:
+    def disconnect(self: object) -> FlextResult[None]:
         """Close OIC connection."""
         try:
             if self._session:
@@ -78,7 +78,7 @@ class OICConnection:
             logger.exception("OIC disconnect failed")
             return FlextResult[None].fail(f"Disconnect failed: {e}")
 
-    def _authenticate(self) -> FlextResult[str]:
+    def _authenticate(self: object) -> FlextResult[str]:
         """Authenticate with OAuth2 and get access token."""
         try:
             if not self._session:
@@ -117,7 +117,7 @@ class OICConnection:
                     f"Authentication failed: {response.status_code} - {response.text}",
                 )
 
-            token_data = response.json()
+            token_data: dict[str, object] = response.json()
             self._access_token = token_data.get("access_token")
 
             if not self._access_token:
@@ -129,11 +129,11 @@ class OICConnection:
             logger.exception("OIC authentication failed")
             return FlextResult[str].fail(f"Authentication failed: {e}")
 
-    def test_connection(self) -> FlextResult[bool]:
+    def test_connection(self: object) -> FlextResult[bool]:
         """Test OIC connection."""
         try:
             if not self._session or not self._access_token:
-                connect_result = self.connect()
+                connect_result: FlextResult[object] = self.connect()
                 if not connect_result.success:
                     return FlextResult[bool].fail(
                         connect_result.error or "Connection failed",
@@ -177,7 +177,7 @@ class OICConnection:
         """Make authenticated request to OIC API."""
         try:
             if not self._session or not self._access_token:
-                connect_result = self.connect()
+                connect_result: FlextResult[object] = self.connect()
                 if not connect_result.success:
                     return FlextResult[FlextTypes.Core.Dict].fail(
                         connect_result.error or "Connection failed",
@@ -232,6 +232,6 @@ class OICConnection:
             return FlextResult[FlextTypes.Core.Dict].fail(f"API request failed: {e}")
 
     @property
-    def is_connected(self) -> bool:
+    def is_connected(self: object) -> bool:
         """Check if connection is active."""
         return self._session is not None and self._access_token is not None

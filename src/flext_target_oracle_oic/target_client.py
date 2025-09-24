@@ -12,7 +12,7 @@ from typing import ClassVar
 from singer_sdk import Sink, Target
 
 from flext_api import FlextApiClient
-from flext_core import FlextLogger, FlextTypes
+from flext_core import FlextLogger, FlextResult, FlextTypes
 from flext_target_oracle_oic.config import TargetOracleOICConfig
 from flext_target_oracle_oic.target_config import create_singer_config_schema
 
@@ -49,7 +49,7 @@ class OICBaseSink(Sink):
         self._client: FlextApiClient | None = None
 
     @property
-    def oic_config(self) -> TargetOracleOICConfig:
+    def oic_config(self: object) -> TargetOracleOICConfig:
         """Get unified OIC configuration."""
         if not self._oic_config:
             self._oic_config = TargetOracleOICConfig.model_validate(
@@ -58,7 +58,7 @@ class OICBaseSink(Sink):
         return self._oic_config
 
     @property
-    def client(self) -> FlextApiClient:
+    def client(self: object) -> FlextApiClient:
         """Get or create HTTP client with authentication headers.
 
         Returns:
@@ -227,7 +227,7 @@ class IntegrationsSink(OICBaseSink):
             }
 
             # Convert payload to string dict for FlextApiClient compatibility
-            json_data = {str(k): str(v) for k, v in payload.items()}
+            json_data: dict[str, object] = {str(k): str(v) for k, v in payload.items()}
 
             response_result = await self.client.post(
                 "/ic/api/integration/v1/integrations",
@@ -275,7 +275,7 @@ class IntegrationsSink(OICBaseSink):
                 payload["importOptions"] = str(record["importOptions"])
 
             # Convert payload to string dict for FlextApiClient compatibility
-            json_data = {str(k): str(v) for k, v in payload.items()}
+            json_data: dict[str, object] = {str(k): str(v) for k, v in payload.items()}
 
             response_result = await self.client.post(
                 "/ic/api/integration/v1/packages/archive/import",
@@ -325,7 +325,7 @@ class IntegrationsSink(OICBaseSink):
                 return
 
             # Convert payload to string dict for FlextApiClient compatibility
-            json_data = {str(k): str(v) for k, v in payload.items()}
+            json_data: dict[str, object] = {str(k): str(v) for k, v in payload.items()}
 
             response_result = await self.client.put(
                 f"/ic/api/integration/v1/integrations/{integration_id}|{version}",
@@ -429,7 +429,7 @@ class TargetOracleOIC(Target):
         # Preserve the flat config exactly as received for test expectations
         self._original_flat_config: FlextTypes.Core.Dict = dict(config or {})
         # Map legacy flat config into unified model-compatible structure to satisfy tests
-        normalized_config = dict(config or {})
+        normalized_config: dict[str, object] = dict(config or {})
         if (
             normalized_config
             and "auth" not in normalized_config
@@ -439,7 +439,7 @@ class TargetOracleOIC(Target):
             )
         ):
             # Preserve flat keys for Singer validation; also inject nested structure for our usage
-            normalized_config = dict(normalized_config)
+            normalized_config: dict[str, object] = dict(normalized_config)
             normalized_config.setdefault("auth", {})
             normalized_config.setdefault("connection", {})
             auth_section = normalized_config["auth"]
@@ -483,7 +483,7 @@ class TargetOracleOIC(Target):
         self._oic_config: TargetOracleOICConfig | None = None
 
     @property
-    def oic_config(self) -> TargetOracleOICConfig:
+    def oic_config(self: object) -> TargetOracleOICConfig:
         """Get unified OIC configuration."""
         if not self._oic_config:
             self._oic_config = TargetOracleOICConfig.model_validate(
@@ -493,13 +493,13 @@ class TargetOracleOIC(Target):
 
     # Override config property to return exactly the flat config passed by tests
     @property
-    def config(self) -> FlextTypes.Core.Dict:
+    def config(self: object) -> FlextTypes.Core.Dict:
         """Return the original flat configuration."""
         return self._original_flat_config
 
-    def setup(self) -> None:
+    def setup(self: object) -> None:
         """Set up the target client."""
-        validation_result = self.oic_config.validate_domain_rules()
+        validation_result: FlextResult[object] = self.oic_config.validate_domain_rules()
         if not validation_result.success:
             error_msg = f"Configuration validation failed: {validation_result.error}"
             self.logger.error(
@@ -508,7 +508,7 @@ class TargetOracleOIC(Target):
             )
             raise ValueError(error_msg)
 
-    def teardown(self) -> None:
+    def teardown(self: object) -> None:
         """Teardown the target."""
 
     def _process_schema_message(self, message_dict: FlextTypes.Core.Dict) -> None:
@@ -519,7 +519,7 @@ class TargetOracleOIC(Target):
         if not isinstance(schema_obj, dict):
             return
         schema: FlextTypes.Core.Dict = schema_obj
-        key_props_obj = message_dict.get("key_properties", [])
+        key_props_obj: list[object] = message_dict.get("key_properties", [])
         key_properties: Sequence[str] | None = (
             key_props_obj if isinstance(key_props_obj, list) else None
         )

@@ -7,9 +7,9 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from pydantic import Field, SecretStr, model_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import SettingsConfigDict
 
-from flext_core import FlextConstants, FlextModels, FlextResult, FlextTypes
+from flext_core import FlextConfig, FlextConstants, FlextModels, FlextResult, FlextTypes
 
 
 class OICAuthConfig(FlextModels.Config):
@@ -38,7 +38,7 @@ class OICAuthConfig(FlextModels.Config):
         description="OAuth2 scope for Oracle OIC access",
     )
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self: object) -> FlextResult[None]:
         """Validate authentication configuration domain rules."""
         try:
             if not self.oauth_client_id.strip():
@@ -75,7 +75,7 @@ class OICConnectionConfig(FlextModels.Config):
         description="Verify SSL certificates",
     )
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self: object) -> FlextResult[None]:
         """Validate connection configuration domain rules."""
         try:
             if not self.base_url.strip():
@@ -120,7 +120,7 @@ class OICDeploymentConfig(FlextModels.Config):
         description="Enable audit trail logging",
     )
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self: object) -> FlextResult[None]:
         """Validate deployment configuration domain rules."""
         try:
             valid_modes = {"create_only", "update_only", "create_or_update"}
@@ -168,7 +168,7 @@ class OICProcessingConfig(FlextModels.Config):
         description="Validate and transform without actually loading data",
     )
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self: object) -> FlextResult[None]:
         """Validate processing configuration domain rules."""
         try:
             if self.batch_size <= 0:
@@ -204,7 +204,7 @@ class OICEntityConfig(FlextModels.Config):
         description="Identifier fields per entity type",
     )
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self: object) -> FlextResult[None]:
         """Validate entity configuration domain rules."""
         try:
             required_fields = [
@@ -221,7 +221,7 @@ class OICEntityConfig(FlextModels.Config):
             return FlextResult[None].fail(f"Entity config validation failed: {e}")
 
 
-class TargetOracleOICConfig(BaseSettings):
+class TargetOracleOICConfig(FlextConfig):
     """Complete configuration for target-oracle-oic using dependency injection.
 
     Uses dependency injection patterns to access Oracle OIC functionality.
@@ -300,7 +300,7 @@ class TargetOracleOICConfig(BaseSettings):
     )
 
     @model_validator(mode="after")
-    def validate_configuration(self) -> TargetOracleOICConfig:
+    def validate_configuration(self: object) -> TargetOracleOICConfig:
         """Validate complete configuration using dependency injection."""
         msg: str = ""  # Declare msg here
         # Use centralized FlextModels validation instead of duplicate path logic
@@ -325,7 +325,7 @@ class TargetOracleOICConfig(BaseSettings):
 
         return self
 
-    def get_oauth_headers(self) -> FlextTypes.Core.Headers:
+    def get_oauth_headers(self: object) -> FlextTypes.Core.Headers:
         """Get OAuth headers for API requests."""
         # Return authentication headers directly - no duplication
         return {
@@ -337,7 +337,7 @@ class TargetOracleOICConfig(BaseSettings):
         """Get identifier field for entity type."""
         return self.entities.identifier_fields.get(entity_type, "id")
 
-    def validate_domain_rules(self) -> FlextResult[None]:
+    def validate_domain_rules(self: object) -> FlextResult[None]:
         """Validate configuration domain rules."""
         try:
             # Validate each section - collect all validations first
@@ -361,7 +361,7 @@ class TargetOracleOICConfig(BaseSettings):
             return FlextResult[None].fail(f"Configuration validation failed: {e}")
 
     # Pydantic/FlextModels compatibility: provide business rule validator expected by base class
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self: object) -> FlextResult[None]:
         """Alias to validate_domain_rules for business rule validation."""
         return self.validate_domain_rules()
 

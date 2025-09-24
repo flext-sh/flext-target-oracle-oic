@@ -66,7 +66,7 @@ class OICConnection(ConnectionBase):
         description="Last update timestamp",
     )
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self: object) -> FlextResult[None]:
         """Validate connection business rules."""
         try:
             if not self.id.strip():
@@ -129,7 +129,7 @@ class OICIntegration(IntegrationBase):
         description="Last update timestamp",
     )
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self: object) -> FlextResult[None]:
         """Validate integration business rules."""
         try:
             if not self.id.strip():
@@ -193,7 +193,7 @@ class OICPackage(PackageBase):
         description="Last update timestamp",
     )
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self: object) -> FlextResult[None]:
         """Validate package business rules."""
         try:
             if not self.id.strip():
@@ -239,7 +239,7 @@ class OICLookup(LookupBase):
         description="Last update timestamp",
     )
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self: object) -> FlextResult[None]:
         """Validate lookup business rules."""
         try:
             # Check name
@@ -247,7 +247,7 @@ class OICLookup(LookupBase):
                 return FlextResult[None].fail("Lookup name cannot be empty")
 
             # Validate columns structure - columns are already validated by type hints as FlextTypes.Core.Headers
-            validation_errors = []
+            validation_errors: list[str] = []
             validation_errors.extend(
                 [
                     "Column must have a name"
@@ -309,7 +309,7 @@ class OICProject(FlextModels):
         description="Last update timestamp",
     )
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self: object) -> FlextResult[None]:
         """Validate project business rules."""
         try:
             if not self.id.strip():
@@ -355,7 +355,7 @@ class OICSchedule(FlextModels):
         description="Schedule enabled status",
     )
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self: object) -> FlextResult[None]:
         """Validate schedule business rules."""
         try:
             if not self.integration_id.strip():
@@ -399,7 +399,7 @@ class OICIntegrationAction(FlextModels):
         description="Action execution timestamp",
     )
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self: object) -> FlextResult[None]:
         """Validate integration action business rules."""
         try:
             if not self.integration_id.strip():
@@ -438,7 +438,7 @@ class OICConnectionAction(FlextModels):
         description="Action execution timestamp",
     )
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self: object) -> FlextResult[None]:
         """Validate connection action business rules."""
         try:
             if not self.connection_id.strip():
@@ -475,7 +475,7 @@ class OICDataTransformation(FlextModels):
         description="Transformed data result",
     )
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self: object) -> FlextResult[None]:
         """Validate transformation business rules."""
         try:
             if not self.source_data:
@@ -507,7 +507,7 @@ class OICSchemaMapping(FlextModels):
         description="Type conversions from Singer to OIC",
     )
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self: object) -> FlextResult[None]:
         """Validate schema mapping business rules."""
         try:
             if not self.singer_schema:
