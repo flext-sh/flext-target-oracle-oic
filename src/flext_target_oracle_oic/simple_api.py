@@ -36,7 +36,7 @@ def setup_oic_target(
     try:
         if config is None:
             # Create with intelligent defaults
-            config = TargetOracleOICConfig.create_with_defaults()
+            config: dict[str, object] = TargetOracleOICConfig.create_with_defaults()
 
         # Validate configuration
         config.model_validate(config.model_dump())
@@ -96,7 +96,7 @@ def create_development_oic_target_config(**overrides: object) -> TargetOracleOIC
         ignore_transformation_errors=True,
     )
 
-    config = TargetOracleOICConfig(
+    config: dict[str, object] = TargetOracleOICConfig(
         auth=auth_config,
         connection=connection_config,
         deployment=deployment_config,
@@ -113,9 +113,9 @@ def create_development_oic_target_config(**overrides: object) -> TargetOracleOIC
 
     # Apply overrides
     if overrides:
-        config_dict = config.model_dump()
+        config_dict: dict[str, object] = config.model_dump()
         config_dict.update(overrides)
-        config = TargetOracleOICConfig.model_validate(config_dict)
+        config: dict[str, object] = TargetOracleOICConfig.model_validate(config_dict)
 
     return config
 
@@ -167,7 +167,7 @@ def create_production_oic_target_config(**overrides: object) -> TargetOracleOICC
         ignore_transformation_errors=False,
     )
 
-    config = TargetOracleOICConfig(
+    config: dict[str, object] = TargetOracleOICConfig(
         auth=auth_config,
         connection=connection_config,
         deployment=deployment_config,
@@ -184,9 +184,9 @@ def create_production_oic_target_config(**overrides: object) -> TargetOracleOICC
 
     # Apply overrides
     if overrides:
-        config_dict = config.model_dump()
+        config_dict: dict[str, object] = config.model_dump()
         config_dict.update(overrides)
-        config = TargetOracleOICConfig.model_validate(config_dict)
+        config: dict[str, object] = TargetOracleOICConfig.model_validate(config_dict)
 
     return config
 
@@ -238,7 +238,7 @@ def create_migration_oic_target_config(**overrides: object) -> TargetOracleOICCo
         ignore_transformation_errors=True,
     )
 
-    config = TargetOracleOICConfig(
+    config: dict[str, object] = TargetOracleOICConfig(
         auth=auth_config,
         connection=connection_config,
         deployment=deployment_config,
@@ -255,9 +255,9 @@ def create_migration_oic_target_config(**overrides: object) -> TargetOracleOICCo
 
     # Apply overrides
     if overrides:
-        config_dict = config.model_dump()
+        config_dict: dict[str, object] = config.model_dump()
         config_dict.update(overrides)
-        config = TargetOracleOICConfig.model_validate(config_dict)
+        config: dict[str, object] = TargetOracleOICConfig.model_validate(config_dict)
 
     return config
 
@@ -276,7 +276,7 @@ def validate_oic_target_config(config: TargetOracleOICConfig) -> FlextResult[boo
         # Validate using Pydantic model validation
         config.model_validate(config.model_dump())
         # Validate business/domain rules
-        domain_result = config.validate_domain_rules()
+        domain_result: FlextResult[object] = config.validate_domain_rules()
         if not domain_result.success:
             return FlextResult[bool].fail(str(domain_result.error))
 
@@ -336,7 +336,7 @@ def create_test_connection_config(**overrides: object) -> TargetOracleOICConfig:
         ignore_transformation_errors=True,
     )
 
-    config = TargetOracleOICConfig(
+    config: dict[str, object] = TargetOracleOICConfig(
         auth=auth_config,
         connection=connection_config,
         deployment=OICDeploymentConfig(
@@ -361,9 +361,9 @@ def create_test_connection_config(**overrides: object) -> TargetOracleOICConfig:
 
     # Apply overrides
     if overrides:
-        config_dict = config.model_dump()
+        config_dict: dict[str, object] = config.model_dump()
         config_dict.update(overrides)
-        config = TargetOracleOICConfig(**config_dict)
+        config: dict[str, object] = TargetOracleOICConfig(**config_dict)
 
     return config
 

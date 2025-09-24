@@ -51,7 +51,7 @@ class OICConnectionConfig(FlextModels):
         description="Verify SSL certificates",
     )
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self: object) -> FlextResult[None]:
         """Validate connection configuration domain rules."""
         try:
             if not self.base_url.strip():
@@ -96,7 +96,7 @@ class OICDeploymentConfig(FlextModels):
         description="Enable audit trail logging",
     )
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self: object) -> FlextResult[None]:
         """Validate deployment configuration domain rules."""
         try:
             valid_modes = {"create_only", "update_only", "create_or_update"}
@@ -144,7 +144,7 @@ class OICProcessingConfig(FlextModels):
         description="Validate and transform without actually loading data",
     )
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self: object) -> FlextResult[None]:
         """Validate processing configuration domain rules."""
         try:
             if self.batch_size <= 0:
@@ -180,7 +180,7 @@ class OICEntityConfig(FlextModels):
         description="Identifier fields per entity type",
     )
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self: object) -> FlextResult[None]:
         """Validate entity configuration domain rules."""
         try:
             required_fields = [
@@ -254,7 +254,7 @@ class TargetOracleOICConfig(FlextModels):
     )
 
     @model_validator(mode="after")
-    def validate_configuration(self) -> TargetOracleOICConfig:
+    def validate_configuration(self: object) -> TargetOracleOICConfig:
         """Validate complete configuration."""
         msg: str = ""
 
@@ -287,7 +287,7 @@ class TargetOracleOICConfig(FlextModels):
         """Get identifier field for entity type."""
         return self.entities.identifier_fields.get(entity_type, "id")
 
-    def validate_domain_rules(self) -> FlextResult[None]:
+    def validate_domain_rules(self: object) -> FlextResult[None]:
         """Validate configuration domain rules."""
         try:
             # Validate each section - collect all validations first
@@ -310,7 +310,7 @@ class TargetOracleOICConfig(FlextModels):
             return FlextResult[None].fail(f"Configuration validation failed: {e}")
 
     # Backward compatibility with base interface expectations
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self: object) -> FlextResult[None]:
         """Alias to domain rules validation for compatibility."""
         return self.validate_domain_rules()
 

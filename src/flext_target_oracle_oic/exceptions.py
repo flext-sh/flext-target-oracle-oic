@@ -15,7 +15,7 @@ from flext_core import (
 
 
 # Base Oracle OIC exception
-class FlextTargetOracleOicError(Exception):
+class FlextTargetOracleOicError(FlextExceptions.Error):
     """Base exception for Oracle OIC target operations."""
 
     def __init__(
@@ -34,7 +34,7 @@ class FlextTargetOracleOicError(Exception):
         super().__init__(message)
 
 
-class FlextTargetOracleOicAuthenticationError(FlextExceptions._AuthenticationError):
+class FlextTargetOracleOicAuthenticationError(FlextExceptions.AuthenticationError):
     """Oracle OIC authentication errors."""
 
     def __init__(
@@ -58,7 +58,7 @@ class FlextTargetOracleOicAuthenticationError(FlextExceptions._AuthenticationErr
         )
 
 
-class FlextTargetOracleOicProcessingError(FlextExceptions._ProcessingError):
+class FlextTargetOracleOicProcessingError(FlextExceptions.ProcessingError):
     """Oracle OIC processing errors."""
 
     def __init__(
@@ -83,7 +83,7 @@ class FlextTargetOracleOicProcessingError(FlextExceptions._ProcessingError):
         )
 
 
-class FlextTargetOracleOicTransformationError(FlextExceptions._ProcessingError):
+class FlextTargetOracleOicTransformationError(FlextExceptions.ProcessingError):
     """Oracle OIC transformation errors."""
 
     def __init__(
@@ -110,7 +110,7 @@ class FlextTargetOracleOicTransformationError(FlextExceptions._ProcessingError):
 
 
 # Oracle OIC-specific exceptions that need custom behavior
-class FlextTargetOracleOicConnectionError(FlextExceptions._ConnectionError):
+class FlextTargetOracleOicConnectionError(FlextExceptions.ConnectionError):
     """Oracle OIC-specific connection errors."""
 
     def __init__(
@@ -135,7 +135,7 @@ class FlextTargetOracleOicConnectionError(FlextExceptions._ConnectionError):
         )
 
 
-class FlextTargetOracleOicValidationError(FlextExceptions._ValidationError):
+class FlextTargetOracleOicValidationError(FlextExceptions.ValidationError):
     """Oracle OIC-specific validation errors."""
 
     def __init__(
@@ -166,7 +166,7 @@ class FlextTargetOracleOicValidationError(FlextExceptions._ValidationError):
         )
 
 
-class FlextTargetOracleOicConfigurationError(FlextExceptions._ConfigurationError):
+class FlextTargetOracleOicConfigurationError(FlextExceptions.ConfigurationError):
     """Oracle OIC-specific configuration errors."""
 
     def __init__(
@@ -243,7 +243,7 @@ class FlextTargetOracleOicErrorDetails(FlextModels):
     timestamp: str
     source_component: str
 
-    def validate_domain_rules(self) -> FlextResult[None]:
+    def validate_domain_rules(self: object) -> FlextResult[None]:
         """Validate domain-specific business rules."""
         try:
             # Validate error code format
