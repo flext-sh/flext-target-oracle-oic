@@ -93,7 +93,7 @@ class OICDeploymentConfig(FlextModels.Config):
     import_mode: str = Field(
         "create_or_update",
         description="Import mode: create_only, update_only, or create_or_update",
-        pattern="^(create_only|update_only|create_or_update)$",
+        pattern="^(Union[Union[create_only, update_only], create_or_update])$",
     )
     activate_integrations: bool = Field(
         default=False,
