@@ -108,7 +108,8 @@ class FlextTargetOracleOICModels(FlextModels):
             result = FlextModels.create_validated_http_url(v)
             if result.is_failure:
                 raise ValueError(result.error)
-            return result.unwrap()
+            # Convert FlextModels.Url back to string for Pydantic
+            return str(result.unwrap())
 
         @field_validator("oauth_grant_type")
         @classmethod
@@ -188,7 +189,8 @@ class FlextTargetOracleOICModels(FlextModels):
             result = FlextModels.create_validated_http_url(v)
             if result.is_failure:
                 raise ValueError(result.error)
-            return result.unwrap()
+            # Convert FlextModels.Url back to string for Pydantic
+            return str(result.unwrap())
 
         @computed_field
         def api_base_url(self) -> str:

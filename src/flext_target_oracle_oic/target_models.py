@@ -55,7 +55,7 @@ class OICConnection(ConnectionBase):
     status: str = Field(
         default="active",
         description="Connection status",
-        pattern="^(active|inactive|error)$",
+        pattern="^(Union[Union[active, inactive], error])$",
     )
     created_at: datetime | None = Field(
         None,
@@ -105,12 +105,12 @@ class OICIntegration(IntegrationBase):
     pattern: str = Field(
         default="ORCHESTRATION",
         description="Integration pattern",
-        pattern="^(ORCHESTRATION|MAP_MY_DATA|PUBLISH_TO_OIC|SUBSCRIBE_TO_OIC)$",
+        pattern="^(Union[Union[ORCHESTRATION, MAP_MY_DATA], PUBLISH_TO_OIC]|SUBSCRIBE_TO_OIC)$",
     )
     status: str = Field(
         default="configured",
         description="Integration status",
-        pattern="^(configured|activated|error)$",
+        pattern="^(Union[Union[configured, activated], error])$",
     )
     archive_content: bytes | None = Field(
         None,
@@ -332,7 +332,7 @@ class OICSchedule(FlextModels):
     schedule_type: str = Field(
         default="ONCE",
         description="Schedule type",
-        pattern="^(ONCE|RECURRING|CRON)$",
+        pattern="^(Union[Union[ONCE, RECURRING], CRON])$",
     )
     schedule_expression: str = Field(
         default="",
@@ -388,7 +388,7 @@ class OICIntegrationAction(FlextModels):
     action: str = Field(
         ...,
         description="Action to perform",
-        pattern="^(activate|deactivate|test|clone)$",
+        pattern="^(Union[Union[activate, deactivate], test]|clone)$",
     )
     parameters: FlextTypes.Core.Dict = Field(
         default_factory=dict,
@@ -427,7 +427,7 @@ class OICConnectionAction(FlextModels):
     action: str = Field(
         ...,
         description="Action to perform",
-        pattern="^(test|refresh_metadata)$",
+        pattern="^(Union[test, refresh_metadata])$",
     )
     parameters: FlextTypes.Core.Dict = Field(
         default_factory=dict,
