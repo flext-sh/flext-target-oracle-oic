@@ -7,6 +7,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import json
+from typing import override
 
 import requests
 import urllib3
@@ -26,6 +27,7 @@ logger = FlextLogger(__name__)
 class OICConnection:
     """Oracle OIC connection using flext-core patterns."""
 
+    @override
     def __init__(self, config: OICConnectionSettings) -> None:
         """Initialize OIC connection."""
         self.config: dict[str, object] = config
@@ -223,7 +225,7 @@ class OICConnection:
                 # Cast to FlextTypes.Core.Dict for proper typing
                 response_dict = response_data_obj
             else:
-                response_dict = {"data": response_data_obj}
+                response_dict = {"data": "response_data_obj"}
 
             return FlextResult[FlextTypes.Core.Dict].ok(response_dict)
 

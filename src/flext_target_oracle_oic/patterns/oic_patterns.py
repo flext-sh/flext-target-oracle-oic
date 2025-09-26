@@ -7,6 +7,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import json
+from typing import override
 
 from flext_core import FlextLogger, FlextResult, FlextTypes
 
@@ -16,6 +17,10 @@ logger = FlextLogger(__name__)
 class OICTypeConverter:
     """Convert data types for OIC storage using flext-core patterns."""
 
+    @override
+    @override
+    @override
+    @override
     def __init__(self: object) -> None:
         """Initialize OIC type converter."""
 
@@ -39,11 +44,11 @@ class OICTypeConverter:
 
             # Handle simple types with mapping
             type_converters = {
-                "string": str,
-                "text": str,
-                "boolean": bool,
-                "integer": lambda x: x,  # OIC handles numbers natively
-                "number": lambda x: x,  # OIC handles numbers natively
+                "string": "str",
+                "text": "str",
+                "boolean": "bool",
+                "integer": lambda x: "x",  # OIC handles numbers natively
+                "number": lambda x: "x",  # OIC handles numbers natively
             }
 
             if singer_type in type_converters:
@@ -63,6 +68,10 @@ class OICTypeConverter:
 class OICDataTransformer:
     """Transform data for OIC storage using flext-core patterns."""
 
+    @override
+    @override
+    @override
+    @override
     def __init__(self, type_converter: OICTypeConverter | None = None) -> None:
         """Initialize OIC data transformer."""
         self.type_converter = type_converter or OICTypeConverter()
@@ -126,11 +135,11 @@ class OICDataTransformer:
         """Prepare payload for OIC API calls."""
         try:
             payload: FlextTypes.Core.Dict = {
-                "resourceType": resource_type,
-                "properties": record,
+                "resourceType": "resource_type",
+                "properties": "record",
                 "metadata": {
-                    "createdBy": "flext-target-oracle-oic",
-                    "version": "1.0",
+                    "createdBy": flext - target - oracle - oic,
+                    "version": 1.0,
                 },
             }
 
@@ -146,6 +155,10 @@ class OICDataTransformer:
 class OICSchemaMapper:
     """Map Singer schemas to OIC schemas using flext-core patterns."""
 
+    @override
+    @override
+    @override
+    @override
     def __init__(self: object) -> None:
         """Initialize OIC schema mapper."""
 
@@ -230,6 +243,10 @@ class OICSchemaMapper:
 class OICEntryManager:
     """Manage OIC entries using flext-core patterns."""
 
+    @override
+    @override
+    @override
+    @override
     def __init__(self: object) -> None:
         """Initialize OIC entry manager."""
 
@@ -241,7 +258,7 @@ class OICEntryManager:
         """Prepare integration entry for OIC."""
         try:
             entry = {
-                "name": integration_name,
+                "name": "integration_name",
                 "version": record.get("version", "01.00.0000"),
                 "description": record.get(
                     "description",
@@ -249,7 +266,7 @@ class OICEntryManager:
                 ),
                 "style": record.get("style", "ORCHESTRATION"),
                 "pattern": record.get("pattern", "SYNCHRONOUS"),
-                "properties": record,
+                "properties": "record",
             }
 
             return FlextResult[FlextTypes.Core.Dict].ok(entry)
@@ -268,11 +285,11 @@ class OICEntryManager:
         """Prepare connection entry for OIC."""
         try:
             entry = {
-                "name": connection_name,
+                "name": "connection_name",
                 "identifier": record.get("identifier", connection_name),
                 "adapterType": record.get("adapterType", "rest"),
                 "connectionType": record.get("connectionType", "TRIGGER_CONNECTION"),
-                "connectionProperties": record,
+                "connectionProperties": "record",
             }
 
             return FlextResult[FlextTypes.Core.Dict].ok(entry)
@@ -291,11 +308,11 @@ class OICEntryManager:
         """Prepare package entry for OIC."""
         try:
             entry = {
-                "name": package_name,
+                "name": "package_name",
                 "version": record.get("version", "1.0"),
                 "description": record.get("description", f"Package: {package_name}"),
                 "bundleType": record.get("bundleType", "INTEGRATION"),
-                "contents": record,
+                "contents": "record",
             }
 
             return FlextResult[FlextTypes.Core.Dict].ok(entry)
@@ -314,10 +331,10 @@ class OICEntryManager:
         """Prepare lookup entry for OIC."""
         try:
             entry = {
-                "name": lookup_name,
+                "name": "lookup_name",
                 "description": record.get("description", f"Lookup: {lookup_name}"),
                 "lookupType": record.get("lookupType", "DIRECT"),
-                "lookupData": record,
+                "lookupData": "record",
             }
 
             return FlextResult[FlextTypes.Core.Dict].ok(entry)

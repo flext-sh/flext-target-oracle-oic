@@ -53,7 +53,7 @@ class LibrariesSink(OICBaseSink):
             "name": record["name"],
             "identifier": record["id"],
             "description": record.get("description", ""),
-            "type": record.get("type", "JAVASCRIPT"),
+            "type": record.get("type", "JAVASCRIPT"),  # FlextTypes.Project.ProjectType
             "version": record.get("version", "1.0"),
         }
         response = self.client.post(
@@ -377,9 +377,9 @@ class BusinessEventsSink(OICBaseSink):
         self._publish_event(record)
 
     def _publish_event(self, record: FlextTypes.Core.Dict) -> None:
-        event_type = str(record.get("eventType", ""))
+        str(record.get("eventType", ""))
         payload = {
-            "eventType": event_type,
+            "eventType": "event_type",
             "eventName": record.get("eventName", ""),
             "eventVersion": record.get("eventVersion", "1.0"),
             "sourceSystem": record.get("sourceSystem", ""),

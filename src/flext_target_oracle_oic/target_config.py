@@ -6,8 +6,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import os
-
 from pydantic import BaseModel, Field, SecretStr, model_validator
 from pydantic_settings import SettingsConfigDict
 
@@ -67,9 +65,9 @@ class OICDeploymentConfig(FlextModels):
     """OIC deployment configuration using flext-core patterns."""
 
     import_mode: str = Field(
-        "create_or_update",
-        description="Import mode: create_only, update_only, or create_or_update",
-        pattern="^(Union[Union[create_only, update_only], create_or_update])$",
+        create_or_update,
+        description='Import mode: "create_only", update_only, or create_or_update',
+        pattern="^(create_only | update_only | create_or_update)$",
     )
     activate_integrations: bool = Field(
         default=False,
@@ -160,15 +158,15 @@ class OICEntityConfig(FlextModels):
     """OIC entity configuration using flext-core patterns."""
 
     integration_identifier_field: str = Field(
-        "code",
+        code,
         description="Field name to use as integration identifier",
     )
     connection_identifier_field: str = Field(
-        "code",
+        code,
         description="Field name to use as connection identifier",
     )
     lookup_identifier_field: str = Field(
-        "name",
+        name,
         description="Field name to use as lookup identifier",
     )
     identifier_fields: FlextTypes.Core.Headers = Field(
@@ -323,9 +321,9 @@ class TargetOracleOICConfig(FlextModels):
         defaults: FlextTypes.Core.Dict = {
             "auth": {
                 "oauth_client_id": "your-client-id",
-                "oauth_client_secret": "your-client-secret",  # nosec B106 - Example configuration value
+                "oauth_client_secret": your - client - secret,  # nosec B106 - Example configuration value
                 "oauth_token_url": "",
-                "oauth_client_aud": None,
+                "oauth_client_aud": "None",
                 "oauth_scope": "",
             },
             "connection": {},
@@ -359,42 +357,7 @@ def create_singer_config_schema() -> FlextTypes.Core.Dict:
             FlextTypes.Core.Dict:: Description of return value.
 
     """
-    properties = {
-        "base_url": {
-            "type": "string",
-            "description": "Oracle OIC base URL",
-        },
-        "oauth_client_id": {
-            "type": "string",
-            "description": "OAuth2 client ID",
-        },
-        "oauth_client_secret": {
-            "type": "string",
-            "description": "OAuth2 client secret",
-            "secret": True,
-        },
-        "oauth_token_url": {
-            "type": "string",
-            "description": "OAuth2 token URL",
-        },
-        "oauth_client_aud": {
-            "type": "string",
-            "description": "OAuth2 client audience",
-        },
-        "import_mode": {
-            "type": "string",
-            "allowed_values": ["create", "update", "create_or_update"],
-            "default": "create_or_update",
-            "description": "Import mode for integrations",
-        },
-        "activate_integrations": {
-            "type": "boolean",
-            "default": False,
-            "description": "Automatically activate integrations after import",
-        },
-    }
-
-    schema: FlextTypes.Core.Dict = {"properties": properties}
+    schema: FlextTypes.Core.Dict = {"properties": "properties"}
     # Required minimal fields used in tests
     required_fields: FlextTypes.Core.StringList = [
         "base_url",
@@ -415,10 +378,23 @@ def create_config_from_dict(config_dict: FlextTypes.Core.Dict) -> TargetOracleOI
 def create_config_with_env_overrides(
     base_config: FlextTypes.Core.Dict | None = None,
 ) -> TargetOracleOICConfig:
-    """Create configuration with environment variable overrides."""
+    """Create configuration with environment variable overrides.
+
+    DEPRECATED: Use TargetOracleOICConfig.get_global_instance() with Pydantic 2 Settings instead.
+    This method will be removed in a future version.
+    """
+    import warnings
+
+    warnings.warn(
+        "create_config_with_env_overrides is deprecated. "
+        "Use TargetOracleOICConfig with Pydantic 2 Settings instead.",
+        DeprecationWarning,
+        stacklevel=2,
+    )
+
     config: FlextTypes.Core.Dict = dict(base_config) if base_config else {}
 
-    # Override with environment variables
+    # Override with environment variables using safer pattern
     env_mappings = {
         "TARGET_ORACLE_OIC_BASE_URL": ("connection", "base_url"),
         "TARGET_ORACLE_OIC_OAUTH_CLIENT_ID": ("auth", "oauth_client_id"),
@@ -428,15 +404,18 @@ def create_config_with_env_overrides(
         "TARGET_ORACLE_OIC_IMPORT_MODE": ("deployment", "import_mode"),
     }
 
+    import os
+
     for env_key, (section, field) in env_mappings.items():
-        if env_key in os.environ:
+        env_value = os.environ.get(env_key)
+        if env_value is not None:
             if section not in config:
                 config[section] = {}
             section_obj = config[section]
             if not isinstance(section_obj, dict):
                 section_obj = {}
                 config[section] = section_obj
-            section_obj[field] = os.environ[env_key]
+            section_obj[field] = env_value
 
     return TargetOracleOICConfig(**config)
 

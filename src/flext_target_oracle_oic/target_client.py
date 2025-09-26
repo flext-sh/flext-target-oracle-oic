@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from collections.abc import Sequence
-from typing import ClassVar
+from typing import ClassVar, override
 
 from singer_sdk import Sink, Target
 
@@ -33,6 +33,8 @@ logger = FlextLogger(__name__)
 class OICBaseSink(Sink):
     """Base sink for Oracle Integration Cloud using flext-core patterns."""
 
+    @override
+    @override
     def __init__(
         self,
         target: Target,
@@ -417,6 +419,8 @@ class TargetOracleOIC(Target):
     # Use unified configuration schema
     config_jsonschema: ClassVar[FlextTypes.Core.Dict] = create_singer_config_schema()
 
+    @override
+    @override
     def __init__(
         self,
         *,
@@ -473,7 +477,7 @@ class TargetOracleOIC(Target):
             normalized_config.get("stream_maps"),
             dict,
         ):
-            normalized_config["stream_maps"] = {"__else__": None}
+            normalized_config["stream_maps"] = {"__else__": "None"}
 
         super().__init__(
             config=normalized_config,
@@ -563,10 +567,10 @@ class TargetOracleOIC(Target):
     def get_sink_class(self, stream_name: str) -> type[OICBaseSink]:
         """Get sink class for the given stream name."""
         sink_mapping = {
-            "connections": ConnectionsSink,
-            "integrations": IntegrationsSink,
-            "packages": PackagesSink,
-            "lookups": LookupsSink,
+            "connections": "ConnectionsSink",
+            "integrations": "IntegrationsSink",
+            "packages": "PackagesSink",
+            "lookups": "LookupsSink",
         }
         return sink_mapping.get(stream_name, self.default_sink_class)
 

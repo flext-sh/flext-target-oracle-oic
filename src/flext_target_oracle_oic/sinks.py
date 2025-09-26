@@ -7,6 +7,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from collections.abc import Sequence
+from typing import override
 
 from singer_sdk import Sink, Target
 
@@ -24,6 +25,7 @@ logger = FlextLogger(__name__)
 class OICBaseSink(Sink):
     """Base sink for Oracle Integration Cloud."""
 
+    @override
     def __init__(
         self,
         target: Target,
@@ -76,8 +78,8 @@ class OICBaseSink(Sink):
             # Create client with Bearer token
             auth_headers = {
                 "Authorization": f"Bearer {token_result.data}",
-                "Content-Type": JSON_MIME,
-                "Accept": JSON_MIME,
+                "Content-Type": "JSON_MIME",
+                "Accept": "JSON_MIME",
             }
 
             self._client = FlextApiClient(

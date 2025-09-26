@@ -44,8 +44,8 @@ class FlextTargetOracleOICModels(FlextModels):
             use_enum_values=True,
             arbitrary_types_allowed=True,
             validate_return=True,
-            ser_json_timedelta="iso8601",
-            ser_json_bytes="base64",
+            ser_json_timedelta=iso8601,
+            ser_json_bytes=base64,
             serialize_by_alias=True,
             populate_by_name=True,
             str_strip_whitespace=True,
@@ -54,9 +54,9 @@ class FlextTargetOracleOICModels(FlextModels):
             validate_default=True,
             # Custom encoders for complex types
             json_encoders={
-                Path: str,
+                Path: "str",
                 datetime: lambda dt: dt.isoformat(),
-                Decimal: float,
+                Decimal: "float",
             },
         )
 
@@ -91,7 +91,7 @@ class FlextTargetOracleOICModels(FlextModels):
             max_length=500,
         )
         oauth_grant_type: str = Field(
-            default="client_credentials",
+            default=client_credentials,
             description="OAuth grant type",
         )
         token_expiry_buffer: int = Field(
@@ -154,7 +154,7 @@ class FlextTargetOracleOICModels(FlextModels):
             max_length=500,
         )
         api_version: str = Field(
-            default="v1",
+            default=v1,
             description="API version",
             min_length=1,
             max_length=10,
@@ -211,7 +211,7 @@ class FlextTargetOracleOICModels(FlextModels):
         """Enhanced Oracle OIC deployment configuration model."""
 
         import_mode: Literal["create", "update", "create_or_update", "replace"] = Field(
-            default="create_or_update",
+            default=create_or_update,
             description="Import mode for deployments",
         )
         activate_integrations: bool = Field(
@@ -352,19 +352,19 @@ class FlextTargetOracleOICModels(FlextModels):
         """Enhanced Oracle OIC entity configuration model."""
 
         integration_identifier_field: str = Field(
-            default="code",
+            default=code,
             description="Integration identifier field",
             min_length=1,
             max_length=100,
         )
         connection_identifier_field: str = Field(
-            default="code",
+            default=code,
             description="Connection identifier field",
             min_length=1,
             max_length=100,
         )
         lookup_identifier_field: str = Field(
-            default="name",
+            default=name,
             description="Lookup identifier field",
             min_length=1,
             max_length=100,
@@ -440,7 +440,7 @@ class FlextTargetOracleOICModels(FlextModels):
             min_length=1,
         )
         operation: Literal["CREATE", "UPDATE", "DELETE", "UPSERT"] = Field(
-            default="CREATE",
+            default=CREATE,
             description="Database operation type",
         )
         timestamp: datetime = Field(
@@ -529,7 +529,7 @@ class FlextTargetOracleOICModels(FlextModels):
         )
         status: Literal["PENDING", "PROCESSING", "COMPLETED", "FAILED", "CANCELLED"] = (
             Field(
-                default="PENDING",
+                default=PENDING,
                 description="Batch processing status",
             )
         )
@@ -612,7 +612,7 @@ class FlextTargetOracleOICModels(FlextModels):
         )
         status: Literal["PENDING", "RUNNING", "COMPLETED", "FAILED", "CANCELLED"] = (
             Field(
-                default="PENDING",
+                default=PENDING,
                 description="Operation status",
             )
         )

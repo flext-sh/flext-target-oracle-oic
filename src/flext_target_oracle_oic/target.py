@@ -7,18 +7,14 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from collections.abc import Sequence
-from typing import ClassVar
+from typing import ClassVar, override
 
 from singer_sdk import Sink, Target, typing as th
 
 from flext_core import FlextResult, FlextTypes
 from flext_target_oracle_oic.application import OICTargetOrchestrator
 from flext_target_oracle_oic.sinks import (
-    ConnectionsSink,
-    IntegrationsSink,
-    LookupsSink,
     OICBaseSink,
-    PackagesSink,
 )
 
 
@@ -39,7 +35,7 @@ class TargetOracleOIC(Target):
             "import_mode",
             th.StringType,
             allowed_values=["create", "update", "create_or_update"],
-            default="create_or_update",
+            default=create_or_update,
             description="Import mode for integrations",
         ),
         th.Property(
@@ -83,6 +79,7 @@ class TargetOracleOIC(Target):
         *_additional_properties,
     ).to_dict()
 
+    @override
     def __init__(
         self,
         *,
@@ -198,10 +195,10 @@ class TargetOracleOIC(Target):
 
         """
         sink_mapping = {
-            "connections": ConnectionsSink,
-            "integrations": IntegrationsSink,
-            "packages": PackagesSink,
-            "lookups": LookupsSink,
+            "connections": "ConnectionsSink",
+            "integrations": "IntegrationsSink",
+            "packages": "PackagesSink",
+            "lookups": "LookupsSink",
         }
         return sink_mapping.get(stream_name, self.default_sink_class)
 

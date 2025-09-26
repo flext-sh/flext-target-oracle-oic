@@ -101,8 +101,8 @@ class TestTargetOracleOICE2E:
             msg: str = f"Expected {config['base_url']}, got {target.config['base_url']}"
             raise AssertionError(msg)
 
-    def test_self(self, target: TargetOracleOIC) -> None:
-        """Test method."""
+    def test_sink_class_mapping(self, target: TargetOracleOIC) -> None:
+        """Test sink class mapping for known streams."""
         # Test known sinks
         if target._get_sink_class("connections") != ConnectionsSink:
             msg: str = f"Expected {ConnectionsSink}, got {target._get_sink_class('connections')}"
@@ -120,8 +120,8 @@ class TestTargetOracleOICE2E:
             msg: str = f"Expected {target.default_sink_class}, got {default_sink}"
             raise AssertionError(msg)
 
-    def test_self(self, target: TargetOracleOIC) -> None:
-        """Test method."""
+    def test_sink_initialization(self, target: TargetOracleOIC) -> None:
+        """Test sink initialization for each stream type."""
         # Test each sink type
         sinks_to_test = [
             ("connections", ConnectionsSink),
@@ -195,8 +195,8 @@ class TestTargetOracleOICE2E:
             # Verify that the record was processed
             assert mock_process.called, "process_record should have been called"
 
-    def test_self(self, target: TargetOracleOIC) -> None:
-        """Test method."""
+    def test_sink_authenticator_setup(self, target: TargetOracleOIC) -> None:
+        """Test sink authenticator initialization."""
         # Get a sink instance
         sink = ConnectionsSink(
             target=target,
@@ -209,8 +209,8 @@ class TestTargetOracleOICE2E:
         assert authenticator is not None
         assert hasattr(authenticator, "auth_headers")
 
-    def test_self(self, target: TargetOracleOIC) -> None:
-        """Test method."""
+    def test_connections_sink_record_processing(self, target: TargetOracleOIC) -> None:
+        """Test connections sink record processing."""
         sink = ConnectionsSink(
             target=target,
             stream_name="connections",
@@ -241,8 +241,8 @@ class TestTargetOracleOICE2E:
             else:
                 pytest.fail(f"Unexpected error: {e}")
 
-    def test_self(self, target: TargetOracleOIC) -> None:
-        """Test method."""
+    def test_integrations_sink_record_processing(self, target: TargetOracleOIC) -> None:
+        """Test integrations sink record processing."""
         sink = IntegrationsSink(
             target=target,
             stream_name="integrations",
@@ -271,8 +271,8 @@ class TestTargetOracleOICE2E:
             # Verify import endpoint was called
             mock_client.post.assert_called()
 
-    def test_self(self, target: TargetOracleOIC) -> None:
-        """Test method."""
+    def test_connections_sink_validation(self, target: TargetOracleOIC) -> None:
+        """Test connections sink record validation."""
         sink = ConnectionsSink(
             target=target,
             stream_name="connections",
@@ -300,8 +300,8 @@ class TestTargetOracleOICE2E:
             msg: str = f"Expected {minimal_config}, got {target.config}"
             raise AssertionError(msg)
 
-    def test_self(self, target: TargetOracleOIC) -> None:
-        """Test method."""
+    def test_packages_sink_record_processing(self, target: TargetOracleOIC) -> None:
+        """Test packages sink record processing."""
         sink = PackagesSink(
             target=target,
             stream_name="packages",
@@ -331,8 +331,8 @@ class TestTargetOracleOICE2E:
                 msg: str = f"Expected {mock_client.post.call_count} >= {len(records)}"
                 raise AssertionError(msg)
 
-    def test_self(self, target: TargetOracleOIC) -> None:
-        """Test method."""
+    def test_lookups_sink_record_processing(self, target: TargetOracleOIC) -> None:
+        """Test lookups sink record processing."""
         sink = LookupsSink(
             target=target,
             stream_name="lookups",
@@ -362,8 +362,8 @@ class TestTargetOracleOICE2E:
             sink.process_record(test_record, {})
             mock_client.put.assert_called()
 
-    def test_self(self, config_path: str, tmp_path: Path) -> None:
-        """Test method."""
+    def test_cli_integration(self, config_path: str, tmp_path: Path) -> None:
+        """Test CLI integration with Singer input."""
         # Create test Singer input
         singer_input = [
             {

@@ -6,15 +6,15 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import FlextTypes
 from flext_target_oracle_oic.patterns.oic_patterns import (
     OICDataTransformer,
     OICEntryManager,
     OICSchemaMapper,
     OICTypeConverter,
 )
+from flext_target_oracle_oic.typings import FlextTargetOracleOicTypes
 
-__all__: FlextTypes.Core.StringList = [
+__all__: FlextTargetOracleOicTypes.Core.StringList = [
     "OICDataTransformer",
     "OICEntryManager",
     "OICSchemaMapper",

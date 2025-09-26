@@ -91,9 +91,9 @@ class OICDeploymentConfig(FlextModels.Config):
     """OIC deployment configuration using flext-core patterns."""
 
     import_mode: str = Field(
-        "create_or_update",
-        description="Import mode: create_only, update_only, or create_or_update",
-        pattern="^(Union[Union[create_only, update_only], create_or_update])$",
+        create_or_update,
+        description='Import mode: "create_only", update_only, or create_or_update',
+        pattern="^(create_only | update_only | create_or_update)$",
     )
     activate_integrations: bool = Field(
         default=False,
@@ -184,15 +184,15 @@ class OICEntityConfig(FlextModels.Config):
     """OIC entity configuration using flext-core patterns."""
 
     integration_identifier_field: str = Field(
-        "code",
+        code,
         description="Field name to use as integration identifier",
     )
     connection_identifier_field: str = Field(
-        "code",
+        code,
         description="Field name to use as connection identifier",
     )
     lookup_identifier_field: str = Field(
-        "name",
+        name,
         description="Field name to use as lookup identifier",
     )
     identifier_fields: FlextTypes.Core.Headers = Field(
@@ -251,7 +251,7 @@ class TargetOracleOICConfig(FlextConfig):
     )
     deployment: OICDeploymentConfig = Field(
         default_factory=lambda: OICDeploymentConfig(
-            import_mode="create_or_update",
+            import_mode=create_or_update,
             activate_integrations=False,
             validate_connections=True,
             archive_directory=None,
@@ -275,9 +275,9 @@ class TargetOracleOICConfig(FlextConfig):
     )
     entities: OICEntityConfig = Field(
         default_factory=lambda: OICEntityConfig(
-            integration_identifier_field="code",
-            connection_identifier_field="code",
-            lookup_identifier_field="name",
+            integration_identifier_field=code,
+            connection_identifier_field=code,
+            lookup_identifier_field=name,
             identifier_fields={},
         ),
         description="Entity configuration",
@@ -382,7 +382,7 @@ class TargetOracleOICConfig(FlextConfig):
                 base_url="https://your-instance.integration.ocp.oraclecloud.com",
             ),
             "deployment": OICDeploymentConfig(
-                import_mode="create_or_update",
+                import_mode=create_or_update,
                 activate_integrations=False,
                 validate_connections=True,
                 archive_directory=None,
@@ -400,9 +400,9 @@ class TargetOracleOICConfig(FlextConfig):
                 dry_run_mode=False,
             ),
             "entities": OICEntityConfig(
-                integration_identifier_field="code",
-                connection_identifier_field="code",
-                lookup_identifier_field="name",
+                integration_identifier_field=code,
+                connection_identifier_field=code,
+                lookup_identifier_field=name,
                 identifier_fields={},
             ),
             "project_name": "flext-target-oracle-oic",
