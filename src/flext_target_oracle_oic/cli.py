@@ -11,6 +11,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from typing import override
+
 from Flext_cli import FlextCliApi, FlextCliCommands, FlextCliConfig
 
 from flext_core import FlextResult
@@ -19,6 +21,7 @@ from flext_core import FlextResult
 class FlextTargetOracleOicCliService:
     """Oracle OIC target CLI service using flext-cli foundation exclusively."""
 
+    @override
     def __init__(self: object) -> None:
         """Initialize CLI service with flext-cli patterns."""
         self._cli_api = FlextCliApi()

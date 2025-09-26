@@ -77,7 +77,7 @@ def create_development_oic_target_config(**overrides: object) -> TargetOracleOIC
     )
 
     deployment_config = OICDeploymentConfig(
-        import_mode="create_or_update",
+        import_mode=create_or_update,
         activate_integrations=False,
         validate_connections=True,
         rollback_on_failure=True,
@@ -102,9 +102,9 @@ def create_development_oic_target_config(**overrides: object) -> TargetOracleOIC
         deployment=deployment_config,
         processing=processing_config,
         entities=OICEntityConfig(
-            integration_identifier_field="code",
-            connection_identifier_field="code",
-            lookup_identifier_field="name",
+            integration_identifier_field=code,
+            connection_identifier_field=code,
+            lookup_identifier_field=name,
             identifier_fields={},
         ),
         project_name="flext-target-oracle-oic-dev",
@@ -148,7 +148,7 @@ def create_production_oic_target_config(**overrides: object) -> TargetOracleOICC
     )
 
     deployment_config = OICDeploymentConfig(
-        import_mode="create_or_update",
+        import_mode=create_or_update,
         activate_integrations=True,
         validate_connections=True,
         rollback_on_failure=True,
@@ -173,9 +173,9 @@ def create_production_oic_target_config(**overrides: object) -> TargetOracleOICC
         deployment=deployment_config,
         processing=processing_config,
         entities=OICEntityConfig(
-            integration_identifier_field="code",
-            connection_identifier_field="code",
-            lookup_identifier_field="name",
+            integration_identifier_field=code,
+            connection_identifier_field=code,
+            lookup_identifier_field=name,
             identifier_fields={},
         ),
         project_name="flext-data.targets.flext-data.targets.flext-target-oracle-oic",
@@ -219,7 +219,7 @@ def create_migration_oic_target_config(**overrides: object) -> TargetOracleOICCo
     )
 
     deployment_config = OICDeploymentConfig(
-        import_mode="create_or_update",
+        import_mode=create_or_update,
         activate_integrations=False,
         validate_connections=True,
         rollback_on_failure=False,  # Continue processing on errors during migration
@@ -244,9 +244,9 @@ def create_migration_oic_target_config(**overrides: object) -> TargetOracleOICCo
         deployment=deployment_config,
         processing=processing_config,
         entities=OICEntityConfig(
-            integration_identifier_field="code",
-            connection_identifier_field="code",
-            lookup_identifier_field="name",
+            integration_identifier_field=code,
+            connection_identifier_field=code,
+            lookup_identifier_field=name,
             identifier_fields={},
         ),
         project_name="flext-data.targets.flext-data.targets.flext-target-oracle-oic-migration",
@@ -340,7 +340,7 @@ def create_test_connection_config(**overrides: object) -> TargetOracleOICConfig:
         auth=auth_config,
         connection=connection_config,
         deployment=OICDeploymentConfig(
-            import_mode="create_or_update",
+            import_mode=create_or_update,
             activate_integrations=False,
             validate_connections=True,
             rollback_on_failure=True,
@@ -350,9 +350,9 @@ def create_test_connection_config(**overrides: object) -> TargetOracleOICConfig:
         ),
         processing=processing_config,
         entities=OICEntityConfig(
-            integration_identifier_field="code",
-            connection_identifier_field="code",
-            lookup_identifier_field="name",
+            integration_identifier_field=code,
+            connection_identifier_field=code,
+            lookup_identifier_field=name,
             identifier_fields={},
         ),
         project_name="flext-data.targets.flext-data.targets.flext-target-oracle-oic-test",

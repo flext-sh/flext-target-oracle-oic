@@ -6,6 +6,8 @@ SPDX-License-Identifier: MIT.
 
 from __future__ import annotations
 
+from typing import override
+
 from flext_core import (
     FlextExceptions,
     FlextModels,
@@ -18,6 +20,15 @@ from flext_core import (
 class FlextTargetOracleOicError(FlextExceptions.Error):
     """Base exception for Oracle OIC target operations."""
 
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
     def __init__(
         self,
         message: str = "Oracle OIC target error",
@@ -37,6 +48,15 @@ class FlextTargetOracleOicError(FlextExceptions.Error):
 class FlextTargetOracleOicAuthenticationError(FlextExceptions.AuthenticationError):
     """Oracle OIC authentication errors."""
 
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
     def __init__(
         self,
         message: str = "Oracle OIC authentication failed",
@@ -61,6 +81,15 @@ class FlextTargetOracleOicAuthenticationError(FlextExceptions.AuthenticationErro
 class FlextTargetOracleOicProcessingError(FlextExceptions.ProcessingError):
     """Oracle OIC processing errors."""
 
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
     def __init__(
         self,
         message: str = "Oracle OIC processing failed",
@@ -86,6 +115,15 @@ class FlextTargetOracleOicProcessingError(FlextExceptions.ProcessingError):
 class FlextTargetOracleOicTransformationError(FlextExceptions.ProcessingError):
     """Oracle OIC transformation errors."""
 
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
     def __init__(
         self,
         message: str = "Oracle OIC transformation failed",
@@ -113,6 +151,15 @@ class FlextTargetOracleOicTransformationError(FlextExceptions.ProcessingError):
 class FlextTargetOracleOicConnectionError(FlextExceptions.ConnectionError):
     """Oracle OIC-specific connection errors."""
 
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
     def __init__(
         self,
         message: str = "Oracle OIC connection failed",
@@ -138,6 +185,15 @@ class FlextTargetOracleOicConnectionError(FlextExceptions.ConnectionError):
 class FlextTargetOracleOicValidationError(FlextExceptions.ValidationError):
     """Oracle OIC-specific validation errors."""
 
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
     def __init__(
         self,
         message: str = "Oracle OIC validation failed",
@@ -169,6 +225,15 @@ class FlextTargetOracleOicValidationError(FlextExceptions.ValidationError):
 class FlextTargetOracleOicConfigurationError(FlextExceptions.ConfigurationError):
     """Oracle OIC-specific configuration errors."""
 
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
     def __init__(
         self,
         message: str = "Oracle OIC configuration error",
@@ -194,6 +259,15 @@ class FlextTargetOracleOicConfigurationError(FlextExceptions.ConfigurationError)
 class FlextTargetOracleOicInfrastructureError(FlextTargetOracleOicError):
     """Oracle OIC infrastructure errors."""
 
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
     def __init__(
         self,
         message: str = "Oracle OIC infrastructure error",
@@ -214,6 +288,15 @@ class FlextTargetOracleOicInfrastructureError(FlextTargetOracleOicError):
 class FlextTargetOracleOicAPIError(FlextTargetOracleOicError):
     """Oracle OIC API-specific errors."""
 
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
+    @override
     def __init__(
         self,
         message: str = "Oracle OIC API error",

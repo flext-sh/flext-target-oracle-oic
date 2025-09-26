@@ -6,6 +6,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from typing import override
+
 from flext_core import FlextLogger, FlextResult, FlextTypes
 
 logger = FlextLogger(__name__)
@@ -14,6 +16,7 @@ logger = FlextLogger(__name__)
 class OICTargetOrchestrator:
     """Oracle OIC Target Orchestrator for FLEXT ecosystem integration."""
 
+    @override
     def __init__(self, config: FlextTypes.Core.Dict | None = None) -> None:
         """Initialize OIC target orchestrator.
 
@@ -96,7 +99,7 @@ class OICTargetOrchestrator:
                 processed_count += 1
 
             result = {
-                "processed_records": processed_count,
+                "processed_records": "processed_count",
                 "status": "completed",
             }
 

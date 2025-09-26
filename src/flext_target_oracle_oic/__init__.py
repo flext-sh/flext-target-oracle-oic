@@ -8,19 +8,18 @@ from __future__ import annotations
 
 import importlib.metadata
 
-from flext_core import FlextModels, FlextResult, FlextTypes
+from singer_sdk import Target
+
+from flext_core import FlextModels, FlextResult
 from flext_meltano import (
     FlextMeltanoBridge,
     FlextMeltanoConfig,
-    Target,
 )
 from flext_target_oracle_oic.application import OICTargetOrchestrator
 from flext_target_oracle_oic.cli import main as cli_main
 from flext_target_oracle_oic.client import OICClient
 from flext_target_oracle_oic.connection import (
     OICConnection as LegacyOICConnection,
-    OICConnectionManager,
-    OICConnectionPool,
     OICConnectionSettings as LegacyOICConnectionSettings,
 )
 from flext_target_oracle_oic.models import (
@@ -34,18 +33,11 @@ from flext_target_oracle_oic.models import (
     OICProject,
     OICSchedule,
     OICSchemaMapping,
-    OICTargetModel,
-    OICTargetRecord,
-    create_oic_connection,
-    create_oic_integration,
-    create_oic_lookup,
-    create_oic_package,
 )
 from flext_target_oracle_oic.patterns import (
     OICDataTransformer,
     OICEntryManager,
     OICSchemaMapper,
-    OICTargetPattern,
     OICTypeConverter,
 )
 
@@ -53,17 +45,14 @@ from flext_target_oracle_oic.patterns import (
 from flext_target_oracle_oic.singer import OICRecordProcessor
 from flext_target_oracle_oic.target_client import (
     ConnectionsSink,
-    FlextTargetOracleOIC,
     IntegrationsSink,
     LookupsSink,
     OICBaseSink,
-    OICTargetClient,
     PackagesSink,
     TargetOracleOIC,
     main as client_main,
 )
 from flext_target_oracle_oic.target_config import (
-    FlextTargetOracleOICConfig,
     OICAuthConfig,
     OICConnectionConfig,
     OICDeploymentConfig,
@@ -79,15 +68,12 @@ from flext_target_oracle_oic.target_exceptions import (
     FlextTargetOracleOicAPIError,
     FlextTargetOracleOicAuthenticationError,
     FlextTargetOracleOicConfigurationError,
-    FlextTargetOracleOICConnectionError,
     FlextTargetOracleOicConnectionError,
-    FlextTargetOracleOICError,
     FlextTargetOracleOicError,
     FlextTargetOracleOicErrorDetails,
     FlextTargetOracleOicInfrastructureError,
     FlextTargetOracleOicProcessingError,
     FlextTargetOracleOicTransformationError,
-    FlextTargetOracleOICValidationError,
     FlextTargetOracleOicValidationError,
     create_api_error,
     create_authentication_error,
@@ -95,6 +81,12 @@ from flext_target_oracle_oic.target_exceptions import (
     create_connection_error,
     create_processing_error,
     create_validation_error,
+)
+from flext_target_oracle_oic.target_models import (
+    create_oic_connection,
+    create_oic_integration,
+    create_oic_lookup,
+    create_oic_package,
 )
 
 # Version information
@@ -109,12 +101,13 @@ __version_info__ = tuple(int(x) for x in __version__.split(".") if x.isdigit())
 # Import main classes and aliases from dedicated modules
 # Import main function from CLI module
 from flext_target_oracle_oic.cli import main
+from flext_target_oracle_oic.typings import FlextTargetOracleOicTypes
 
 # ===============================================================================
 # EXPORTS - PEP8 ORGANIZED
 # ===============================================================================
 
-__all__: FlextTypes.Core.StringList = [
+__all__: FlextTargetOracleOicTypes.Core.StringList = [
     # === UNIFIED CLIENT (SINKS) ===
     "ConnectionsSink",
     # === FLEXT-MELTANO RE-EXPORTS ===
@@ -123,11 +116,6 @@ __all__: FlextTypes.Core.StringList = [
     "FlextModels",
     # === CORE RE-EXPORTS ===
     "FlextResult",
-    "FlextTargetOracleOIC",
-    "FlextTargetOracleOICConfig",
-    "FlextTargetOracleOICConnectionError",
-    "FlextTargetOracleOICError",
-    "FlextTargetOracleOICValidationError",
     # === PRIMARY CLASSES ===
     # === UNIFIED EXCEPTIONS ===
     "FlextTargetOracleOicAPIError",
@@ -154,8 +142,6 @@ __all__: FlextTypes.Core.StringList = [
     "OICConnectionAction",
     "OICConnectionConfig",
     # === CONNECTION MANAGEMENT ===
-    "OICConnectionManager",
-    "OICConnectionPool",
     "OICDataTransformation",
     "OICDataTransformer",  # May be None if legacy not available
     "OICDeploymentConfig",
@@ -172,11 +158,7 @@ __all__: FlextTypes.Core.StringList = [
     "OICSchedule",
     "OICSchemaMapper",  # May be None if legacy not available
     "OICSchemaMapping",
-    "OICTargetClient",
-    "OICTargetModel",
     "OICTargetOrchestrator",  # May be None if legacy not available
-    "OICTargetPattern",
-    "OICTargetRecord",
     "OICTypeConverter",  # May be None if legacy not available
     "PackagesSink",
     "Target",

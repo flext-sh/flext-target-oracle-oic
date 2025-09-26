@@ -6,6 +6,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from typing import override
+
 from flext_core import FlextLogger, FlextResult, FlextTypes
 
 logger = FlextLogger(__name__)
@@ -14,6 +16,7 @@ logger = FlextLogger(__name__)
 class OICRecordProcessor:
     """Process Singer records for OIC using flext-core patterns."""
 
+    @override
     def __init__(self: object) -> None:
         """Initialize OIC record processor."""
 
@@ -38,8 +41,8 @@ class OICRecordProcessor:
             # Add metadata
             processed_record = {
                 **record,
-                "_stream_name": stream_name,
-                "_processed_by": "flext-target-oracle-oic",
+                "_stream_name": "stream_name",
+                "_processed_by": flext - target - oracle - oic,
             }
 
             # Schema validation if provided
@@ -138,12 +141,12 @@ class OICRecordProcessor:
             return True
 
         type_mapping: dict[str, type | tuple[type, ...]] = {
-            "string": str,
-            "integer": int,
+            "string": "str",
+            "integer": "int",
             "number": (int, float),
-            "boolean": bool,
-            "object": dict,
-            "array": list,
+            "boolean": "bool",
+            "object": "dict",
+            "array": "list",
         }
 
         expected_python_type = type_mapping.get(expected_type)
@@ -169,7 +172,7 @@ class OICRecordProcessor:
         """
         try:
             metadata: FlextTypes.Core.Dict = {
-                "stream_name": stream_name,
+                "stream_name": "stream_name",
                 "schema_available": schema is not None,
             }
 
@@ -180,7 +183,7 @@ class OICRecordProcessor:
                     properties = {
                         k: v for k, v in properties_raw.items() if isinstance(k, str)
                     }
-                properties_count = len(properties)
+                len(properties)
                 required_fields: list[object] = schema.get("required", [])
                 required_fields = (
                     required_fields if isinstance(required_fields, list) else []
@@ -188,8 +191,8 @@ class OICRecordProcessor:
 
                 metadata.update(
                     {
-                        "properties_count": properties_count,
-                        "required_fields": required_fields,
+                        "properties_count": "properties_count",
+                        "required_fields": "required_fields",
                         "schema_type": schema.get("type", "object"),
                     },
                 )

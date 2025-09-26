@@ -6,9 +6,9 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import FlextTypes
 from flext_target_oracle_oic.application.orchestrator import OICTargetOrchestrator
+from flext_target_oracle_oic.typings import FlextTargetOracleOicTypes
 
-__all__: FlextTypes.Core.StringList = [
+__all__: FlextTargetOracleOicTypes.Core.StringList = [
     "OICTargetOrchestrator",
 ]
