@@ -61,16 +61,16 @@ class OICConnectionSettings(FlextModels):
     def get_auth_headers(self: object) -> FlextTypes.Core.Headers:
         """Get authentication headers."""
         return {
-            "Content-Type": application / x - www - form - urlencoded,
-            "Accept": application / json,
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Accept": "application/json",
         }
 
     def get_api_headers(self, access_token: str) -> FlextTypes.Core.Headers:
         """Get API request headers with authentication."""
         return {
             "Authorization": f"Bearer {access_token}",
-            "Content-Type": application / json,
-            "Accept": application / json,
+            "Content-Type": "application/json",
+            "Accept": "application/json",
         }
 
     @classmethod

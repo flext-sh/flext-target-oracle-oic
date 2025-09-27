@@ -12,7 +12,7 @@ from pydantic_settings import SettingsConfigDict
 from flext_core import FlextConfig, FlextConstants, FlextModels, FlextResult, FlextTypes
 
 
-class OICAuthConfig(FlextModels.Config):
+class OICAuthConfig(FlextConfig):
     """OIC authentication configuration using flext-core patterns."""
 
     oauth_client_id: str = Field(
@@ -50,7 +50,7 @@ class OICAuthConfig(FlextModels.Config):
             return FlextResult[None].fail(f"Auth config validation failed: {e}")
 
 
-class OICConnectionConfig(FlextModels.Config):
+class OICConnectionConfig(FlextConfig):
     """OIC connection configuration using flext-core patterns."""
 
     base_url: str = Field(
@@ -87,7 +87,7 @@ class OICConnectionConfig(FlextModels.Config):
             return FlextResult[None].fail(f"Connection config validation failed: {e}")
 
 
-class OICDeploymentConfig(FlextModels.Config):
+class OICDeploymentConfig(FlextConfig):
     """OIC deployment configuration using flext-core patterns."""
 
     import_mode: str = Field(
@@ -133,7 +133,7 @@ class OICDeploymentConfig(FlextModels.Config):
             return FlextResult[None].fail(f"Deployment config validation failed: {e}")
 
 
-class OICProcessingConfig(FlextModels.Config):
+class OICProcessingConfig(FlextConfig):
     """OIC processing configuration using flext-core patterns."""
 
     batch_size: int = Field(
@@ -180,19 +180,19 @@ class OICProcessingConfig(FlextModels.Config):
             return FlextResult[None].fail(f"Processing config validation failed: {e}")
 
 
-class OICEntityConfig(FlextModels.Config):
+class OICEntityConfig(FlextConfig):
     """OIC entity configuration using flext-core patterns."""
 
     integration_identifier_field: str = Field(
-        code,
+        default="integration_id",
         description="Field name to use as integration identifier",
     )
     connection_identifier_field: str = Field(
-        code,
+        default="connection_id",
         description="Field name to use as connection identifier",
     )
     lookup_identifier_field: str = Field(
-        name,
+        default="lookup_id",
         description="Field name to use as lookup identifier",
     )
     identifier_fields: FlextTypes.Core.Headers = Field(
@@ -275,9 +275,9 @@ class TargetOracleOICConfig(FlextConfig):
     )
     entities: OICEntityConfig = Field(
         default_factory=lambda: OICEntityConfig(
-            integration_identifier_field=code,
-            connection_identifier_field=code,
-            lookup_identifier_field=name,
+            integration_identifier_field="integration_id",
+            connection_identifier_field="connection_id",
+            lookup_identifier_field="lookup_id",
             identifier_fields={},
         ),
         description="Entity configuration",

@@ -23,6 +23,7 @@ from flext_target_oracle_oic.connection import (
     OICConnectionSettings as LegacyOICConnectionSettings,
 )
 from flext_target_oracle_oic.models import (
+    FlextTargetOracleOicModels,
     OICConnection,
     OICConnectionAction,
     OICDataTransformation,
@@ -88,6 +89,7 @@ from flext_target_oracle_oic.target_models import (
     create_oic_lookup,
     create_oic_package,
 )
+from flext_target_oracle_oic.utilities import FlextTargetOracleOicUtilities
 
 # Version information
 try:
@@ -126,8 +128,12 @@ __all__: FlextTargetOracleOicTypes.Core.StringList = [
     "FlextTargetOracleOicError",
     "FlextTargetOracleOicErrorDetails",
     "FlextTargetOracleOicInfrastructureError",
+    # === STANDARDIZED PATTERNS ===
+    "FlextTargetOracleOicModels",
+    "FlextTargetOracleOicModels",
     "FlextTargetOracleOicProcessingError",
     "FlextTargetOracleOicTransformationError",
+    "FlextTargetOracleOicUtilities",
     "FlextTargetOracleOicValidationError",
     "IntegrationsSink",
     "LegacyOICConnection",
