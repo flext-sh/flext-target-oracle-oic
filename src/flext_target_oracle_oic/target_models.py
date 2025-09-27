@@ -53,7 +53,7 @@ class OICConnection(ConnectionBase):
         description="Connection properties",
     )
     status: str = Field(
-        default=active,
+        default="active",
         description="Connection status",
         pattern="^(active | inactive | error)$",
     )
@@ -103,12 +103,12 @@ class OICIntegration(IntegrationBase):
         pattern=r"^\d{2}\.\d{2}\.\d{4}$",
     )
     pattern: str = Field(
-        default=ORCHESTRATION,
+        default="ORCHESTRATION",
         description="Integration pattern",
         pattern="^(ORCHESTRATION | MAP_MY_DATA | PUBLISH_TO_OIC|SUBSCRIBE_TO_OIC)$",
     )
     status: str = Field(
-        default=configured,
+        default="configured",
         description="Integration status",
         pattern="^(configured | activated | error)$",
     )

@@ -138,7 +138,7 @@ class OICDataTransformer:
                 "resourceType": "resource_type",
                 "properties": "record",
                 "metadata": {
-                    "createdBy": flext - target - oracle - oic,
+                    "createdBy": "flext-target-oracle-oic",
                     "version": 1.0,
                 },
             }
