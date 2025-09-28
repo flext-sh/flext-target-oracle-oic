@@ -34,7 +34,6 @@ class OICBaseSink(Sink):
     """Base sink for Oracle Integration Cloud using flext-core patterns."""
 
     @override
-    @override
     def __init__(
         self,
         target: Target,
@@ -419,7 +418,6 @@ class TargetOracleOIC(Target):
     # Use unified configuration schema
     config_jsonschema: ClassVar[FlextTypes.Core.Dict] = create_singer_config_schema()
 
-    @override
     @override
     def __init__(
         self,

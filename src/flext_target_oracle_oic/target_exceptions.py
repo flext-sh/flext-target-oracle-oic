@@ -28,12 +28,6 @@ class FlextTargetOracleOicError(Exception):
     @override
     @override
     @override
-    @override
-    @override
-    @override
-    @override
-    @override
-    @override
     def __init__(
         self,
         message: str = "Oracle OIC target error",
@@ -72,12 +66,6 @@ class FlextTargetOracleOicAuthenticationError(
     @override
     @override
     @override
-    @override
-    @override
-    @override
-    @override
-    @override
-    @override
     def __init__(
         self,
         message: str = "Oracle OIC authentication failed",
@@ -110,12 +98,6 @@ class FlextTargetOracleOicConnectionError(
 ):
     """Oracle OIC connection errors using flext-core patterns."""
 
-    @override
-    @override
-    @override
-    @override
-    @override
-    @override
     @override
     @override
     @override
@@ -155,12 +137,6 @@ class FlextTargetOracleOicProcessingError(
     @override
     @override
     @override
-    @override
-    @override
-    @override
-    @override
-    @override
-    @override
     def __init__(
         self,
         message: str = "Oracle OIC processing failed",
@@ -194,12 +170,6 @@ class FlextTargetOracleOicValidationError(
 ):
     """Oracle OIC validation errors using flext-core patterns."""
 
-    @override
-    @override
-    @override
-    @override
-    @override
-    @override
     @override
     @override
     @override
@@ -248,12 +218,6 @@ class FlextTargetOracleOicConfigurationError(
     @override
     @override
     @override
-    @override
-    @override
-    @override
-    @override
-    @override
-    @override
     def __init__(
         self,
         message: str = "Oracle OIC configuration error",
@@ -288,12 +252,6 @@ class FlextTargetOracleOicConfigurationError(
 class FlextTargetOracleOicTransformationError(FlextTargetOracleOicError):
     """Oracle OIC transformation errors using flext-core patterns."""
 
-    @override
-    @override
-    @override
-    @override
-    @override
-    @override
     @override
     @override
     @override
@@ -333,12 +291,6 @@ class FlextTargetOracleOicInfrastructureError(FlextTargetOracleOicError):
     @override
     @override
     @override
-    @override
-    @override
-    @override
-    @override
-    @override
-    @override
     def __init__(
         self,
         message: str = "Oracle OIC infrastructure error",
@@ -367,12 +319,6 @@ class FlextTargetOracleOicInfrastructureError(FlextTargetOracleOicError):
 class FlextTargetOracleOicAPIError(FlextTargetOracleOicError):
     """Oracle OIC API-specific errors using flext-core patterns."""
 
-    @override
-    @override
-    @override
-    @override
-    @override
-    @override
     @override
     @override
     @override
