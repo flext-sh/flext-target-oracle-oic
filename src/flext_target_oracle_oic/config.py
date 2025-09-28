@@ -6,6 +6,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from typing import Self
+
 from pydantic import Field, SecretStr, model_validator
 from pydantic_settings import SettingsConfigDict
 
@@ -91,9 +93,9 @@ class OICDeploymentConfig(FlextConfig):
     """OIC deployment configuration using flext-core patterns."""
 
     import_mode: str = Field(
-        create_or_update,
-        description='Import mode: "create_only", update_only, or create_or_update',
-        pattern="^(create_only | update_only | create_or_update)$",
+        "create_or_update",
+        description='Import mode: "create_only", "update_only", or "create_or_update"',
+        pattern="^(create_only|update_only|create_or_update)$",
     )
     activate_integrations: bool = Field(
         default=False,
@@ -231,6 +233,11 @@ class TargetOracleOICConfig(FlextConfig):
     model_config = SettingsConfigDict(
         env_prefix="TARGET_ORACLE_OIC_",
         case_sensitive=False,
+        extra="ignore",
+        str_strip_whitespace=True,
+        validate_assignment=True,
+        arbitrary_types_allowed=True,
+        frozen=False,
     )
 
     # Structured configuration using value objects
@@ -251,7 +258,7 @@ class TargetOracleOICConfig(FlextConfig):
     )
     deployment: OICDeploymentConfig = Field(
         default_factory=lambda: OICDeploymentConfig(
-            import_mode=create_or_update,
+            import_mode="create_or_update",
             activate_integrations=False,
             validate_connections=True,
             archive_directory=None,
@@ -366,6 +373,73 @@ class TargetOracleOICConfig(FlextConfig):
         return self.validate_domain_rules()
 
     @classmethod
+    def get_global_instance(cls) -> Self:
+        """Get the global singleton instance using enhanced FlextConfig pattern."""
+        return cls.get_or_create_shared_instance(project_name="flext-target-oracle-oic")
+
+    @classmethod
+    def create_for_development(cls, **overrides: object) -> Self:
+        """Create configuration for development environment."""
+        dev_overrides: dict[str, object] = {
+            "processing": OICProcessingConfig(
+                batch_size=10,  # Smaller batches for development
+                enable_validation=True,
+                validation_strict_mode=True,
+                dry_run_mode=True,
+            ),
+            "deployment": OICDeploymentConfig(
+                import_mode="create_or_update",
+                activate_integrations=False,
+                validate_connections=True,
+            ),
+            **overrides,
+        }
+        return cls.get_or_create_shared_instance(
+            project_name="flext-target-oracle-oic", **dev_overrides
+        )
+
+    @classmethod
+    def create_for_production(cls, **overrides: object) -> Self:
+        """Create configuration for production environment."""
+        prod_overrides: dict[str, object] = {
+            "processing": OICProcessingConfig(
+                batch_size=100,
+                enable_validation=True,
+                validation_strict_mode=False,
+                dry_run_mode=False,
+            ),
+            "deployment": OICDeploymentConfig(
+                import_mode="create_or_update",
+                activate_integrations=True,
+                validate_connections=True,
+                rollback_on_failure=True,
+            ),
+            **overrides,
+        }
+        return cls.get_or_create_shared_instance(
+            project_name="flext-target-oracle-oic", **prod_overrides
+        )
+
+    @classmethod
+    def create_for_testing(cls, **overrides: object) -> Self:
+        """Create configuration for testing environment."""
+        test_overrides: dict[str, object] = {
+            "processing": OICProcessingConfig(
+                batch_size=5,
+                enable_validation=True,
+                validation_strict_mode=True,
+                dry_run_mode=True,
+            ),
+            "connection": OICConnectionConfig(
+                base_url="https://test-instance.integration.ocp.oraclecloud.com",
+            ),
+            **overrides,
+        }
+        return cls.get_or_create_shared_instance(
+            project_name="flext-target-oracle-oic", **test_overrides
+        )
+
+    @classmethod
     def create_with_defaults(
         cls,
         **overrides: FlextTypes.Core.Dict,
@@ -382,7 +456,7 @@ class TargetOracleOICConfig(FlextConfig):
                 base_url="https://your-instance.integration.ocp.oraclecloud.com",
             ),
             "deployment": OICDeploymentConfig(
-                import_mode=create_or_update,
+                import_mode="create_or_update",
                 activate_integrations=False,
                 validate_connections=True,
                 archive_directory=None,
@@ -400,9 +474,9 @@ class TargetOracleOICConfig(FlextConfig):
                 dry_run_mode=False,
             ),
             "entities": OICEntityConfig(
-                integration_identifier_field=code,
-                connection_identifier_field=code,
-                lookup_identifier_field=name,
+                integration_identifier_field="code",
+                connection_identifier_field="code",
+                lookup_identifier_field="name",
                 identifier_fields={},
             ),
             "project_name": "flext-target-oracle-oic",
