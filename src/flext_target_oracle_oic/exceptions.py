@@ -21,8 +21,6 @@ class FlextTargetOracleOicError(FlextExceptions.Error):
     """Base exception for Oracle OIC target operations."""
 
     @override
-    @override
-    @override
     def __init__(
         self,
         message: str = "Oracle OIC target error",
@@ -42,8 +40,6 @@ class FlextTargetOracleOicError(FlextExceptions.Error):
 class FlextTargetOracleOicAuthenticationError(FlextExceptions.AuthenticationError):
     """Oracle OIC authentication errors."""
 
-    @override
-    @override
     @override
     def __init__(
         self,
@@ -70,8 +66,6 @@ class FlextTargetOracleOicProcessingError(FlextExceptions.ProcessingError):
     """Oracle OIC processing errors."""
 
     @override
-    @override
-    @override
     def __init__(
         self,
         message: str = "Oracle OIC processing failed",
@@ -97,8 +91,6 @@ class FlextTargetOracleOicProcessingError(FlextExceptions.ProcessingError):
 class FlextTargetOracleOicTransformationError(FlextExceptions.ProcessingError):
     """Oracle OIC transformation errors."""
 
-    @override
-    @override
     @override
     def __init__(
         self,
@@ -128,8 +120,6 @@ class FlextTargetOracleOicConnectionError(FlextExceptions.ConnectionError):
     """Oracle OIC-specific connection errors."""
 
     @override
-    @override
-    @override
     def __init__(
         self,
         message: str = "Oracle OIC connection failed",
@@ -155,8 +145,6 @@ class FlextTargetOracleOicConnectionError(FlextExceptions.ConnectionError):
 class FlextTargetOracleOicValidationError(FlextExceptions.ValidationError):
     """Oracle OIC-specific validation errors."""
 
-    @override
-    @override
     @override
     def __init__(
         self,
@@ -190,8 +178,6 @@ class FlextTargetOracleOicConfigurationError(FlextExceptions.ConfigurationError)
     """Oracle OIC-specific configuration errors."""
 
     @override
-    @override
-    @override
     def __init__(
         self,
         message: str = "Oracle OIC configuration error",
@@ -218,8 +204,6 @@ class FlextTargetOracleOicInfrastructureError(FlextTargetOracleOicError):
     """Oracle OIC infrastructure errors."""
 
     @override
-    @override
-    @override
     def __init__(
         self,
         message: str = "Oracle OIC infrastructure error",
@@ -240,8 +224,6 @@ class FlextTargetOracleOicInfrastructureError(FlextTargetOracleOicError):
 class FlextTargetOracleOicAPIError(FlextTargetOracleOicError):
     """Oracle OIC API-specific errors."""
 
-    @override
-    @override
     @override
     def __init__(
         self,
@@ -272,7 +254,7 @@ class FlextTargetOracleOicErrorDetails(FlextModels):
     timestamp: str
     source_component: str
 
-    def validate_domain_rules(self: object) -> FlextResult[None]:
+    def validate_domain_rules(self) -> FlextResult[None]:
         """Validate domain-specific business rules."""
         try:
             # Validate error code format
