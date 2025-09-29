@@ -13,7 +13,8 @@ from singer_sdk import Sink, Target
 
 from flext_api import FlextApiClient
 from flext_core import FlextLogger, FlextResult, FlextTypes
-from flext_target_oracle_oic.auth import OICAuthConfig, OICOAuth2Authenticator
+from flext_target_oracle_oic.config import TargetOracleOICConfig
+from flext_target_oracle_oic.target_config import OICOAuth2Authenticator
 
 # Constants
 HTTP_NOT_FOUND = 404
@@ -49,15 +50,18 @@ class OICBaseSink(Sink):
 
         """
         if not self._authenticator:
-            # Create OICAuthConfig from sink configuration
-            auth_config = OICAuthConfig(
+            # Create TargetOracleOICConfig from sink configuration
+            config = TargetOracleOICConfig(
                 oauth_client_id=self.config.get("oauth_client_id", ""),
                 oauth_client_secret=self.config.get("oauth_client_secret", ""),
                 oauth_token_url=self.config.get("oauth_token_url", ""),
                 oauth_client_aud=self.config.get("oauth_client_aud"),
                 oauth_scope=self.config.get("oauth_scope", ""),
+                base_url=self.config.get(
+                    "base_url", "https://default.integration.ocp.oraclecloud.com"
+                ),
             )
-            self._authenticator = OICOAuth2Authenticator(auth_config)
+            self._authenticator = OICOAuth2Authenticator(config)
         return self._authenticator
 
     @property

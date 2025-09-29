@@ -6,17 +6,90 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Self
+from typing import Self, TypedDict
 
-from pydantic import Field, SecretStr, model_validator
+from pydantic import Field, SecretStr, computed_field, field_validator, model_validator
 from pydantic_settings import SettingsConfigDict
 
 from flext_core import FlextConfig, FlextConstants, FlextModels, FlextResult, FlextTypes
 
 
-class OICAuthConfig(FlextConfig):
-    """OIC authentication configuration using flext-core patterns."""
+class TargetOracleOICConfig(FlextConfig):
+    """Single flat Config class for target-oracle-oic extending FlextConfig.
 
+    Follows standardized FLEXT Config pattern:
+    - Single flat class extending FlextConfig
+    - Uses Pydantic 2 Settings with SettingsConfigDict
+    - Uses SecretStr for sensitive data
+    - Implements singleton pattern with inverse dependency injection
+    - All fields with defaults from constants
+    - Uses TypedDict structures for validation helpers
+    """
+
+    # TypedDict structures for configuration validation
+    class AuthConfigDict(TypedDict):
+        """Authentication configuration dictionary structure."""
+
+        oauth_client_id: str
+        oauth_client_secret: str  # Note: will be SecretStr in actual fields
+        oauth_token_url: str
+        oauth_client_aud: str | None
+        oauth_scope: str
+
+    class ConnectionConfigDict(TypedDict):
+        """Connection configuration dictionary structure."""
+
+        base_url: str
+        timeout: int
+        max_retries: int
+        verify_ssl: bool
+
+    class DeploymentConfigDict(TypedDict):
+        """Deployment configuration dictionary structure."""
+
+        import_mode: str
+        activate_integrations: bool
+        validate_connections: bool
+        archive_directory: str | None
+        rollback_on_failure: bool
+        enable_versioning: bool
+        audit_trail: bool
+
+    class ProcessingConfigDict(TypedDict):
+        """Processing configuration dictionary structure."""
+
+        batch_size: int
+        enable_validation: bool
+        validation_strict_mode: bool
+        skip_missing_connections: bool
+        max_errors: int
+        ignore_transformation_errors: bool
+        dry_run_mode: bool
+
+    class EntityConfigDict(TypedDict):
+        """Entity configuration dictionary structure."""
+
+        integration_identifier_field: str
+        connection_identifier_field: str
+        lookup_identifier_field: str
+        identifier_fields: dict[str, str]
+
+    model_config = SettingsConfigDict(
+        env_prefix="TARGET_ORACLE_OIC_",
+        case_sensitive=False,
+        extra="allow",
+        str_strip_whitespace=True,
+        validate_assignment=True,
+        arbitrary_types_allowed=True,
+        frozen=False,
+        # Enhanced Pydantic 2.11+ features
+        json_schema_extra={
+            "title": "Target Oracle OIC Configuration",
+            "description": "Enterprise Oracle OIC target configuration extending FlextConfig",
+        },
+    )
+
+    # Authentication configuration fields
     oauth_client_id: str = Field(
         ...,
         description="OAuth2 client ID for Oracle OIC authentication",
@@ -40,21 +113,7 @@ class OICAuthConfig(FlextConfig):
         description="OAuth2 scope for Oracle OIC access",
     )
 
-    def validate_business_rules(self: object) -> FlextResult[None]:
-        """Validate authentication configuration domain rules."""
-        try:
-            if not self.oauth_client_id.strip():
-                return FlextResult[None].fail("OAuth client ID cannot be empty")
-            if not self.oauth_token_url.strip():
-                return FlextResult[None].fail("OAuth token URL cannot be empty")
-            return FlextResult[None].ok(None)
-        except Exception as e:
-            return FlextResult[None].fail(f"Auth config validation failed: {e}")
-
-
-class OICConnectionConfig(FlextConfig):
-    """OIC connection configuration using flext-core patterns."""
-
+    # Connection configuration fields
     base_url: str = Field(
         ...,
         description="Oracle OIC base URL",
@@ -77,21 +136,7 @@ class OICConnectionConfig(FlextConfig):
         description="Verify SSL certificates",
     )
 
-    def validate_business_rules(self: object) -> FlextResult[None]:
-        """Validate connection configuration domain rules."""
-        try:
-            if not self.base_url.strip():
-                return FlextResult[None].fail("Base URL cannot be empty")
-            if self.timeout <= 0:
-                return FlextResult[None].fail("Timeout must be positive")
-            return FlextResult[None].ok(None)
-        except Exception as e:
-            return FlextResult[None].fail(f"Connection config validation failed: {e}")
-
-
-class OICDeploymentConfig(FlextConfig):
-    """OIC deployment configuration using flext-core patterns."""
-
+    # Deployment configuration fields
     import_mode: str = Field(
         "create_or_update",
         description='Import mode: "create_only", "update_only", or "create_or_update"',
@@ -122,24 +167,9 @@ class OICDeploymentConfig(FlextConfig):
         description="Enable audit trail logging",
     )
 
-    def validate_business_rules(self: object) -> FlextResult[None]:
-        """Validate deployment configuration domain rules."""
-        try:
-            valid_modes = {"create_only", "update_only", "create_or_update"}
-            if self.import_mode not in valid_modes:
-                return FlextResult[None].fail(
-                    f"Invalid import mode: {self.import_mode}",
-                )
-            return FlextResult[None].ok(None)
-        except Exception as e:
-            return FlextResult[None].fail(f"Deployment config validation failed: {e}")
-
-
-class OICProcessingConfig(FlextConfig):
-    """OIC processing configuration using flext-core patterns."""
-
+    # Processing configuration fields
     batch_size: int = Field(
-        100,
+        FlextConstants.Performance.BatchProcessing.DEFAULT_SIZE // 10,
         description="Batch size for bulk operations",
         gt=0,
         le=1000,
@@ -157,7 +187,7 @@ class OICProcessingConfig(FlextConfig):
         description="Skip integrations with missing connections",
     )
     max_errors: int = Field(
-        10,
+        FlextConstants.Reliability.MAX_RETRY_ATTEMPTS * 3 + 1,
         description="Maximum number of errors before stopping",
         ge=0,
     )
@@ -170,21 +200,7 @@ class OICProcessingConfig(FlextConfig):
         description="Validate and transform without actually loading data",
     )
 
-    def validate_business_rules(self: object) -> FlextResult[None]:
-        """Validate processing configuration domain rules."""
-        try:
-            if self.batch_size <= 0:
-                return FlextResult[None].fail("Batch size must be positive")
-            if self.max_errors < 0:
-                return FlextResult[None].fail("Max errors cannot be negative")
-            return FlextResult[None].ok(None)
-        except Exception as e:
-            return FlextResult[None].fail(f"Processing config validation failed: {e}")
-
-
-class OICEntityConfig(FlextConfig):
-    """OIC entity configuration using flext-core patterns."""
-
+    # Entity configuration fields
     integration_identifier_field: str = Field(
         default="integration_id",
         description="Field name to use as integration identifier",
@@ -206,97 +222,11 @@ class OICEntityConfig(FlextConfig):
         description="Identifier fields per entity type",
     )
 
-    def validate_business_rules(self: object) -> FlextResult[None]:
-        """Validate entity configuration domain rules."""
-        try:
-            required_fields = [
-                "integration_identifier_field",
-                "connection_identifier_field",
-                "lookup_identifier_field",
-            ]
-            for field in required_fields:
-                value = getattr(self, field)
-                if not value or not value.strip():
-                    return FlextResult[None].fail(f"{field} cannot be empty")
-            return FlextResult[None].ok(None)
-        except Exception as e:
-            return FlextResult[None].fail(f"Entity config validation failed: {e}")
-
-
-class TargetOracleOICConfig(FlextConfig):
-    """Complete configuration for target-oracle-oic using dependency injection.
-
-    Uses dependency injection patterns to access Oracle OIC functionality.
-    Zero tolerance for architectural violations.
-    """
-
-    model_config = SettingsConfigDict(
-        env_prefix="TARGET_ORACLE_OIC_",
-        case_sensitive=False,
-        extra="ignore",
-        str_strip_whitespace=True,
-        validate_assignment=True,
-        arbitrary_types_allowed=True,
-        frozen=False,
-    )
-
-    # Structured configuration using value objects
-    auth: OICAuthConfig = Field(
-        default_factory=lambda: OICAuthConfig(
-            oauth_client_id="",
-            oauth_client_secret=SecretStr(""),
-            oauth_token_url="",
-            oauth_client_aud=None,
-        ),
-        description="Authentication configuration",
-    )
-    connection: OICConnectionConfig = Field(
-        default_factory=lambda: OICConnectionConfig(
-            base_url="https://your-instance.integration.ocp.oraclecloud.com",
-        ),
-        description="Connection configuration",
-    )
-    deployment: OICDeploymentConfig = Field(
-        default_factory=lambda: OICDeploymentConfig(
-            import_mode="create_or_update",
-            activate_integrations=False,
-            validate_connections=True,
-            archive_directory=None,
-            rollback_on_failure=True,
-            enable_versioning=True,
-            audit_trail=True,
-        ),
-        description="Deployment configuration",
-    )
-    processing: OICProcessingConfig = Field(
-        default_factory=lambda: OICProcessingConfig(
-            batch_size=100,
-            enable_validation=True,
-            validation_strict_mode=False,
-            skip_missing_connections=False,
-            max_errors=10,
-            ignore_transformation_errors=True,
-            dry_run_mode=False,
-        ),
-        description="Processing configuration",
-    )
-    entities: OICEntityConfig = Field(
-        default_factory=lambda: OICEntityConfig(
-            integration_identifier_field="integration_id",
-            connection_identifier_field="connection_id",
-            lookup_identifier_field="lookup_id",
-            identifier_fields={},
-        ),
-        description="Entity configuration",
-    )
-
-    # Custom transformation rules
+    # Additional configuration fields
     transformation_rules: list[FlextTypes.Core.Dict] = Field(
         default_factory=list,
         description="Custom transformation rules",
     )
-
-    # Project identification
     project_name: str = Field(
         default="flext-target-oracle-oic",
         description="Project name",
@@ -306,35 +236,155 @@ class TargetOracleOICConfig(FlextConfig):
         description="Project version",
     )
 
+    # Field validators
+    @field_validator("oauth_client_id")
+    @classmethod
+    def validate_oauth_client_id(cls, v: str) -> str:
+        """Validate OAuth client ID."""
+        if not v.strip():
+            msg = "OAuth client ID cannot be empty"
+            raise ValueError(msg)
+        return v.strip()
+
+    @field_validator("oauth_token_url")
+    @classmethod
+    def validate_oauth_token_url(cls, v: str) -> str:
+        """Validate OAuth token URL."""
+        if not v.strip():
+            msg = "OAuth token URL cannot be empty"
+            raise ValueError(msg)
+        if not v.startswith(("http://", "https://")):
+            msg = "OAuth token URL must start with http:// or https://"
+            raise ValueError(msg)
+        return v.strip()
+
+    @field_validator("base_url")
+    @classmethod
+    def validate_base_url(cls, v: str) -> str:
+        """Validate Oracle OIC base URL."""
+        if not v.strip():
+            msg = "Base URL cannot be empty"
+            raise ValueError(msg)
+        return v.strip()
+
+    @field_validator("import_mode")
+    @classmethod
+    def validate_import_mode(cls, v: str) -> str:
+        """Validate import mode."""
+        valid_modes = {"create_only", "update_only", "create_or_update"}
+        if v not in valid_modes:
+            msg = f"Invalid import mode: {v}. Must be one of: {', '.join(sorted(valid_modes))}"
+            raise ValueError(msg)
+        return v
+
+    # Model validator
     @model_validator(mode="after")
-    def validate_configuration(self: object) -> TargetOracleOICConfig:
-        """Validate complete configuration using dependency injection."""
-        msg: str = ""  # Declare msg here
-        # Use centralized FlextModels validation instead of duplicate path logic
-        if self.deployment.archive_directory:
+    def validate_configuration(self) -> Self:
+        """Validate complete configuration."""
+        # Validate archive directory if provided
+        if self.archive_directory:
             validation_result = FlextModels.create_validated_directory_path(
-                self.deployment.archive_directory,
+                self.archive_directory,
             )
             if validation_result.is_failure:
                 msg = f"Archive directory validation failed: {validation_result.error}"
                 raise ValueError(msg)
 
-        # Validate each configuration section
-        auth_validation = self.auth.validate_business_rules()
-        if not auth_validation.success:
-            msg = f"Auth validation failed: {auth_validation.error}"
+        # Validate timeout
+        if self.timeout <= 0:
+            msg = "Timeout must be positive"
             raise ValueError(msg)
 
-        connection_validation = self.connection.validate_business_rules()
-        if not connection_validation.success:
-            msg = f"Connection validation failed: {connection_validation.error}"
+        # Validate batch size
+        if self.batch_size <= 0:
+            msg = "Batch size must be positive"
             raise ValueError(msg)
+
+        # Validate max errors
+        if self.max_errors < 0:
+            msg = "Max errors cannot be negative"
+            raise ValueError(msg)
+
+        # Validate identifier fields
+        required_identifier_fields = [
+            "integration_identifier_field",
+            "connection_identifier_field",
+            "lookup_identifier_field",
+        ]
+        for field_name in required_identifier_fields:
+            value = getattr(self, field_name)
+            if not value or not value.strip():
+                msg = f"{field_name} cannot be empty"
+                raise ValueError(msg)
 
         return self
 
-    def get_oauth_headers(self: object) -> FlextTypes.Core.Headers:
+    # Computed fields
+    @computed_field
+    @property
+    def auth_config(self) -> AuthConfigDict:
+        """Get authentication configuration as dictionary."""
+        return {
+            "oauth_client_id": self.oauth_client_id,
+            "oauth_client_secret": self.oauth_client_secret.get_secret_value(),
+            "oauth_token_url": self.oauth_token_url,
+            "oauth_client_aud": self.oauth_client_aud,
+            "oauth_scope": self.oauth_scope,
+        }
+
+    @computed_field
+    @property
+    def connection_config(self) -> ConnectionConfigDict:
+        """Get connection configuration as dictionary."""
+        return {
+            "base_url": self.base_url,
+            "timeout": self.timeout,
+            "max_retries": self.max_retries,
+            "verify_ssl": self.verify_ssl,
+        }
+
+    @computed_field
+    @property
+    def deployment_config(self) -> DeploymentConfigDict:
+        """Get deployment configuration as dictionary."""
+        return {
+            "import_mode": self.import_mode,
+            "activate_integrations": self.activate_integrations,
+            "validate_connections": self.validate_connections,
+            "archive_directory": self.archive_directory,
+            "rollback_on_failure": self.rollback_on_failure,
+            "enable_versioning": self.enable_versioning,
+            "audit_trail": self.audit_trail,
+        }
+
+    @computed_field
+    @property
+    def processing_config(self) -> ProcessingConfigDict:
+        """Get processing configuration as dictionary."""
+        return {
+            "batch_size": self.batch_size,
+            "enable_validation": self.enable_validation,
+            "validation_strict_mode": self.validation_strict_mode,
+            "skip_missing_connections": self.skip_missing_connections,
+            "max_errors": self.max_errors,
+            "ignore_transformation_errors": self.ignore_transformation_errors,
+            "dry_run_mode": self.dry_run_mode,
+        }
+
+    @computed_field
+    @property
+    def entity_config(self) -> EntityConfigDict:
+        """Get entity configuration as dictionary."""
+        return {
+            "integration_identifier_field": self.integration_identifier_field,
+            "connection_identifier_field": self.connection_identifier_field,
+            "lookup_identifier_field": self.lookup_identifier_field,
+            "identifier_fields": self.identifier_fields,
+        }
+
+    # Utility methods
+    def get_oauth_headers(self) -> FlextTypes.Core.Headers:
         """Get OAuth headers for API requests."""
-        # Return authentication headers directly - no duplication
         return {
             "Content-Type": "application/x-www-form-urlencoded",
             "Accept": "application/json",
@@ -342,56 +392,72 @@ class TargetOracleOICConfig(FlextConfig):
 
     def get_entity_identifier_field(self, entity_type: str) -> str:
         """Get identifier field for entity type."""
-        return self.entities.identifier_fields.get(entity_type, "id")
+        return self.identifier_fields.get(entity_type, "id")
 
-    def validate_domain_rules(self: object) -> FlextResult[None]:
-        """Validate configuration domain rules."""
+    def get_oauth_client_secret_value(self) -> str:
+        """Get the actual OAuth client secret value (safely extract from SecretStr)."""
+        return self.oauth_client_secret.get_secret_value()
+
+    def validate_business_rules(self) -> FlextResult[None]:
+        """Validate configuration business rules."""
         try:
-            # Validate each section - collect all validations first
-            validations = [
-                ("Auth", self.auth.validate_business_rules()),
-                ("Connection", self.connection.validate_business_rules()),
-                ("Deployment", self.deployment.validate_business_rules()),
-                ("Processing", self.processing.validate_business_rules()),
-                ("Entities", self.entities.validate_business_rules()),
-            ]
+            # Validate authentication configuration
+            if not self.oauth_client_id.strip():
+                return FlextResult[None].fail("OAuth client ID cannot be empty")
+            if not self.oauth_token_url.strip():
+                return FlextResult[None].fail("OAuth token URL cannot be empty")
 
-            # Check for first failure
-            for section_name, validation_result in validations:
-                if not validation_result.success:
-                    return FlextResult[None].fail(
-                        f"{section_name} validation failed: {validation_result.error}",
-                    )
+            # Validate connection configuration
+            if not self.base_url.strip():
+                return FlextResult[None].fail("Base URL cannot be empty")
+            if self.timeout <= 0:
+                return FlextResult[None].fail("Timeout must be positive")
+
+            # Validate deployment configuration
+            valid_modes = {"create_only", "update_only", "create_or_update"}
+            if self.import_mode not in valid_modes:
+                return FlextResult[None].fail(
+                    f"Invalid import mode: {self.import_mode}"
+                )
+
+            # Validate processing configuration
+            if self.batch_size <= 0:
+                return FlextResult[None].fail("Batch size must be positive")
+            if self.max_errors < 0:
+                return FlextResult[None].fail("Max errors cannot be negative")
+
+            # Validate entity configuration
+            required_fields = [
+                "integration_identifier_field",
+                "connection_identifier_field",
+                "lookup_identifier_field",
+            ]
+            for field in required_fields:
+                value = getattr(self, field)
+                if not value or not value.strip():
+                    return FlextResult[None].fail(f"{field} cannot be empty")
 
             return FlextResult[None].ok(None)
         except Exception as e:
             return FlextResult[None].fail(f"Configuration validation failed: {e}")
 
-    # Pydantic/FlextModels compatibility: provide business rule validator expected by base class
-    def validate_business_rules(self: object) -> FlextResult[None]:
-        """Alias to validate_domain_rules for business rule validation."""
-        return self.validate_domain_rules()
-
+    # Singleton pattern methods
     @classmethod
     def get_global_instance(cls) -> Self:
         """Get the global singleton instance using enhanced FlextConfig pattern."""
         return cls.get_or_create_shared_instance(project_name="flext-target-oracle-oic")
 
     @classmethod
-    def create_for_development(cls, **overrides: object) -> Self:
+    def create_for_development(cls, **overrides: FlextTypes.Core.Value) -> Self:
         """Create configuration for development environment."""
-        dev_overrides: dict[str, object] = {
-            "processing": OICProcessingConfig(
-                batch_size=10,  # Smaller batches for development
-                enable_validation=True,
-                validation_strict_mode=True,
-                dry_run_mode=True,
-            ),
-            "deployment": OICDeploymentConfig(
-                import_mode="create_or_update",
-                activate_integrations=False,
-                validate_connections=True,
-            ),
+        dev_overrides: dict[str, FlextTypes.Core.Value] = {
+            "batch_size": FlextConstants.Performance.BatchProcessing.DEFAULT_SIZE
+            // 100,  # Smaller batches for development
+            "enable_validation": True,
+            "validation_strict_mode": True,
+            "dry_run_mode": True,
+            "activate_integrations": False,
+            "validate_connections": True,
             **overrides,
         }
         return cls.get_or_create_shared_instance(
@@ -399,21 +465,16 @@ class TargetOracleOICConfig(FlextConfig):
         )
 
     @classmethod
-    def create_for_production(cls, **overrides: object) -> Self:
+    def create_for_production(cls, **overrides: FlextTypes.Core.Value) -> Self:
         """Create configuration for production environment."""
-        prod_overrides: dict[str, object] = {
-            "processing": OICProcessingConfig(
-                batch_size=100,
-                enable_validation=True,
-                validation_strict_mode=False,
-                dry_run_mode=False,
-            ),
-            "deployment": OICDeploymentConfig(
-                import_mode="create_or_update",
-                activate_integrations=True,
-                validate_connections=True,
-                rollback_on_failure=True,
-            ),
+        prod_overrides: dict[str, FlextTypes.Core.Value] = {
+            "batch_size": FlextConstants.Performance.BatchProcessing.DEFAULT_SIZE // 10,
+            "enable_validation": True,
+            "validation_strict_mode": False,
+            "dry_run_mode": False,
+            "activate_integrations": True,
+            "validate_connections": True,
+            "rollback_on_failure": True,
             **overrides,
         }
         return cls.get_or_create_shared_instance(
@@ -421,77 +482,23 @@ class TargetOracleOICConfig(FlextConfig):
         )
 
     @classmethod
-    def create_for_testing(cls, **overrides: object) -> Self:
+    def create_for_testing(cls, **overrides: FlextTypes.Core.Value) -> Self:
         """Create configuration for testing environment."""
-        test_overrides: dict[str, object] = {
-            "processing": OICProcessingConfig(
-                batch_size=5,
-                enable_validation=True,
-                validation_strict_mode=True,
-                dry_run_mode=True,
-            ),
-            "connection": OICConnectionConfig(
-                base_url="https://test-instance.integration.ocp.oraclecloud.com",
-            ),
+        test_overrides: dict[str, FlextTypes.Core.Value] = {
+            "batch_size": FlextConstants.Performance.BatchProcessing.DEFAULT_SIZE
+            // 200,
+            "enable_validation": True,
+            "validation_strict_mode": True,
+            "dry_run_mode": True,
+            "base_url": "https://test-instance.integration.ocp.oraclecloud.com",
             **overrides,
         }
         return cls.get_or_create_shared_instance(
             project_name="flext-target-oracle-oic", **test_overrides
         )
 
-    @classmethod
-    def create_with_defaults(
-        cls,
-        **overrides: FlextTypes.Core.Dict,
-    ) -> TargetOracleOICConfig:
-        """Create configuration with intelligent defaults."""
-        defaults = {
-            "auth": OICAuthConfig(
-                oauth_client_id="your-client-id",
-                oauth_client_secret=SecretStr("your-client-secret"),  # nosec B106 - Example configuration value
-                oauth_token_url="",
-                oauth_client_aud=None,
-            ),
-            "connection": OICConnectionConfig(
-                base_url="https://your-instance.integration.ocp.oraclecloud.com",
-            ),
-            "deployment": OICDeploymentConfig(
-                import_mode="create_or_update",
-                activate_integrations=False,
-                validate_connections=True,
-                archive_directory=None,
-                rollback_on_failure=True,
-                enable_versioning=True,
-                audit_trail=True,
-            ),
-            "processing": OICProcessingConfig(
-                batch_size=100,
-                enable_validation=True,
-                validation_strict_mode=False,
-                skip_missing_connections=False,
-                max_errors=10,
-                ignore_transformation_errors=True,
-                dry_run_mode=False,
-            ),
-            "entities": OICEntityConfig(
-                integration_identifier_field="code",
-                connection_identifier_field="code",
-                lookup_identifier_field="name",
-                identifier_fields={},
-            ),
-            "project_name": "flext-target-oracle-oic",
-            "project_version": "0.9.0",
-        }
-        defaults.update(overrides)
-        return cls.model_validate(defaults)
 
-
-# Export configuration classes
+# Export configuration class (single class only)
 __all__: FlextTypes.Core.StringList = [
-    "OICAuthConfig",
-    "OICConnectionConfig",
-    "OICDeploymentConfig",
-    "OICEntityConfig",
-    "OICProcessingConfig",
     "TargetOracleOICConfig",
 ]
