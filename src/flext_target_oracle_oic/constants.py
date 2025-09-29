@@ -16,30 +16,38 @@ class FlextTargetOracleOicConstants(FlextConstants):
 
     Enhanced Oracle OIC Target constants extending FlextConstants with
     comprehensive organization, validation limits, and security considerations.
+
+    Composes with FlextOracleOicExtConstants to avoid duplication and ensure consistency.
     """
 
+    # Import Oracle OIC Extension constants from flext-oracle-oic-ext (composition pattern)
+    from flext_oracle_oic_ext.constants import FlextOracleOicExtConstants
+
     # Project identification (Final attributes inherited from FlextConstants)
-    # PROJECT_PREFIX, PROJECT_NAME inherited from FlextConstants
     PROJECT_VERSION: Final[str] = "1.0.0"
     PROJECT_DESCRIPTION: Final[str] = "Oracle OIC target for FLEXT data pipeline"
 
     class OracleOic:
         """Oracle OIC specific constants with comprehensive configuration."""
 
-        # Connection defaults
-        DEFAULT_TIMEOUT: Final[int] = 30
-        DEFAULT_MAX_RETRIES: Final[int] = 3
-        DEFAULT_BATCH_SIZE: Final[int] = 100
+        # Connection defaults from FlextOracleOicExtConstants
+        DEFAULT_TIMEOUT: Final[int] = FlextOracleOicExtConstants.OIC.DEFAULT_TIMEOUT
+        DEFAULT_MAX_RETRIES: Final[int] = (
+            FlextOracleOicExtConstants.OIC.DEFAULT_MAX_RETRIES
+        )
+        DEFAULT_BATCH_SIZE: Final[int] = (
+            FlextOracleOicExtConstants.OIC.DEFAULT_PAGE_SIZE
+        )
         DEFAULT_CONNECTION_POOL_SIZE: Final[int] = 10
         DEFAULT_CONNECTION_POOL_MAX: Final[int] = 20
 
         # Connection limits
-        MIN_TIMEOUT: Final[int] = 1
-        MAX_TIMEOUT: Final[int] = 3600
-        MIN_MAX_RETRIES: Final[int] = 0
-        MAX_MAX_RETRIES: Final[int] = 10
-        MIN_BATCH_SIZE: Final[int] = 1
-        MAX_BATCH_SIZE: Final[int] = 10000
+        MIN_TIMEOUT: Final[int] = FlextOracleOicExtConstants.OIC.MIN_REQUEST_TIMEOUT
+        MAX_TIMEOUT: Final[int] = FlextOracleOicExtConstants.OIC.MAX_REQUEST_TIMEOUT
+        MIN_MAX_RETRIES: Final[int] = FlextOracleOicExtConstants.OIC.MIN_MAX_RETRIES
+        MAX_MAX_RETRIES: Final[int] = FlextOracleOicExtConstants.OIC.MAX_MAX_RETRIES
+        MIN_BATCH_SIZE: Final[int] = FlextOracleOicExtConstants.OIC.MIN_PAGE_SIZE
+        MAX_BATCH_SIZE: Final[int] = FlextOracleOicExtConstants.OIC.MAX_PAGE_SIZE
         MIN_CONNECTION_POOL_SIZE: Final[int] = 1
         MAX_CONNECTION_POOL_SIZE: Final[int] = 100
         MIN_CONNECTION_POOL_MAX: Final[int] = 1
@@ -52,13 +60,19 @@ class FlextTargetOracleOicConstants(FlextConstants):
         MAX_TOKEN_URL_LENGTH: Final[int] = 500
         MAX_SCOPE_LENGTH: Final[int] = 500
 
-        # API configuration
-        DEFAULT_API_VERSION: Final[str] = "v1"
-        SUPPORTED_API_VERSIONS: Final[list[str]] = ["v1", "v2"]
+        # API configuration from FlextOracleOicExtConstants
+        DEFAULT_API_VERSION: Final[str] = (
+            FlextOracleOicExtConstants.OIC.DEFAULT_API_VERSION
+        )
+        SUPPORTED_API_VERSIONS: Final[list[str]] = (
+            FlextOracleOicExtConstants.OIC.SUPPORTED_API_VERSIONS
+        )
 
         # SSL configuration
-        DEFAULT_SSL_VERIFY: Final[bool] = True
-        DEFAULT_SSL_TIMEOUT: Final[int] = 30
+        DEFAULT_SSL_VERIFY: Final[bool] = (
+            FlextOracleOicExtConstants.OIC.DEFAULT_VERIFY_SSL
+        )
+        DEFAULT_SSL_TIMEOUT: Final[int] = FlextOracleOicExtConstants.OIC.DEFAULT_TIMEOUT
 
     class OAuth:
         """OAuth configuration constants."""
@@ -80,19 +94,25 @@ class FlextTargetOracleOicConstants(FlextConstants):
         # Default grant type
         DEFAULT_GRANT_TYPE: Final[str] = GRANT_TYPE_CLIENT_CREDENTIALS
 
-        # Token configuration
+        # Token configuration from FlextOracleOicExtConstants
         DEFAULT_TOKEN_EXPIRY_BUFFER: Final[int] = 300  # 5 minutes
-        MIN_TOKEN_EXPIRY_BUFFER: Final[int] = 0
-        MAX_TOKEN_EXPIRY_BUFFER: Final[int] = 3600  # 1 hour
+        MIN_TOKEN_EXPIRY_BUFFER: Final[int] = (
+            FlextOracleOicExtConstants.Auth.MIN_TOKEN_EXPIRY_SECONDS
+        )
+        MAX_TOKEN_EXPIRY_BUFFER: Final[int] = (
+            FlextOracleOicExtConstants.Auth.MAX_TOKEN_EXPIRY_SECONDS
+        )
 
         # OAuth endpoints
         DEFAULT_TOKEN_ENDPOINT: Final[str] = "/oauth2/v1/token"
         DEFAULT_AUTHORIZATION_ENDPOINT: Final[str] = "/oauth2/v1/authorize"
 
-        # OAuth headers
-        CONTENT_TYPE_FORM_URLENCODED: Final[str] = "application/x-www-form-urlencoded"
-        CONTENT_TYPE_JSON: Final[str] = "application/json"
-        ACCEPT_JSON: Final[str] = "application/json"
+        # OAuth headers from FlextOracleOicExtConstants
+        CONTENT_TYPE_FORM_URLENCODED: Final[str] = (
+            FlextOracleOicExtConstants.API.CONTENT_TYPE_FORM
+        )
+        CONTENT_TYPE_JSON: Final[str] = FlextOracleOicExtConstants.API.CONTENT_TYPE_JSON
+        ACCEPT_JSON: Final[str] = FlextOracleOicExtConstants.API.CONTENT_TYPE_JSON
 
     class EntityTypes:
         """OIC entity type constants."""
@@ -173,9 +193,11 @@ class FlextTargetOracleOicConstants(FlextConstants):
             CLEANUP,
         }
 
-        # Operation status
+        # Operation status from FlextOracleOicExtConstants
         STATUS_PENDING: Final[str] = "PENDING"
-        STATUS_RUNNING: Final[str] = "RUNNING"
+        STATUS_RUNNING: Final[str] = (
+            FlextOracleOicExtConstants.Integration.STATUS_RUNNING
+        )
         STATUS_COMPLETED: Final[str] = "COMPLETED"
         STATUS_FAILED: Final[str] = "FAILED"
         STATUS_CANCELLED: Final[str] = "CANCELLED"

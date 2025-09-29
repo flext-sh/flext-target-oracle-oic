@@ -18,6 +18,7 @@ from flext_meltano import (
 from flext_target_oracle_oic.application import OICTargetOrchestrator
 from flext_target_oracle_oic.cli import main as cli_main
 from flext_target_oracle_oic.client import OICClient
+from flext_target_oracle_oic.config import TargetOracleOICConfig
 from flext_target_oracle_oic.connection import (
     OICConnection as LegacyOICConnection,
     OICConnectionSettings as LegacyOICConnectionSettings,
@@ -41,6 +42,7 @@ from flext_target_oracle_oic.patterns import (
     OICSchemaMapper,
     OICTypeConverter,
 )
+from flext_target_oracle_oic.protocols import FlextTargetOracleOicProtocols
 
 # Scripts imports removed - scripts are not part of the package structure
 from flext_target_oracle_oic.singer import OICRecordProcessor
@@ -54,13 +56,7 @@ from flext_target_oracle_oic.target_client import (
     main as client_main,
 )
 from flext_target_oracle_oic.target_config import (
-    OICAuthConfig,
-    OICConnectionConfig,
-    OICDeploymentConfig,
-    OICEntityConfig,
     OICOAuth2Authenticator,
-    OICProcessingConfig,
-    TargetOracleOICConfig,
     create_config_from_dict,
     create_config_with_env_overrides,
     create_singer_config_schema,
@@ -130,8 +126,8 @@ __all__: FlextTargetOracleOicTypes.Core.StringList = [
     "FlextTargetOracleOicInfrastructureError",
     # === STANDARDIZED PATTERNS ===
     "FlextTargetOracleOicModels",
-    "FlextTargetOracleOicModels",
     "FlextTargetOracleOicProcessingError",
+    "FlextTargetOracleOicProtocols",
     "FlextTargetOracleOicTransformationError",
     "FlextTargetOracleOicUtilities",
     "FlextTargetOracleOicValidationError",
@@ -139,26 +135,21 @@ __all__: FlextTargetOracleOicTypes.Core.StringList = [
     "LegacyOICConnection",
     "LegacyOICConnectionSettings",
     "LookupsSink",
-    "OICAuthConfig",
     "OICBaseSink",
     # === BACKWARD COMPATIBILITY (LEGACY) ===
     "OICClient",  # May be None if legacy not available
     # === UNIFIED MODELS ===
     "OICConnection",
     "OICConnectionAction",
-    "OICConnectionConfig",
     # === CONNECTION MANAGEMENT ===
     "OICDataTransformation",
     "OICDataTransformer",  # May be None if legacy not available
-    "OICDeploymentConfig",
-    "OICEntityConfig",
     "OICEntryManager",  # May be None if legacy not available
     "OICIntegration",
     "OICIntegrationAction",
     "OICLookup",
     "OICOAuth2Authenticator",
     "OICPackage",
-    "OICProcessingConfig",
     "OICProject",
     "OICRecordProcessor",  # May be None if legacy not available
     "OICSchedule",
