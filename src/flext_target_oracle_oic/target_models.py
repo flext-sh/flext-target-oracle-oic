@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import re
-from datetime import datetime
+from datetime import UTC, datetime
 
 from flext_oracle_oic_ext.ext_models import (
     OICConnectionInfo as ConnectionBase,
