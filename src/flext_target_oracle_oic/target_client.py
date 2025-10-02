@@ -216,7 +216,7 @@ class IntegrationsSink(OICBaseSink):
         # Simplified implementation - detailed OIC operations will be handled by flext-oracle-oic-ext
         # For now, just log the record to maintain Singer SDK compatibility
 
-    async def _create_integration(self, record: FlextTypes.Core.Dict) -> None:
+    def _create_integration(self, record: FlextTypes.Core.Dict) -> None:
         """Create new integration in OIC."""
         try:
             # Prepare creation payload - convert to string dict for FlextApiClient compatibility
@@ -230,7 +230,7 @@ class IntegrationsSink(OICBaseSink):
             # Convert payload to string dict for FlextApiClient compatibility
             json_data: dict[str, object] = {str(k): str(v) for k, v in payload.items()}
 
-            response_result = await self.client.post(
+            response_result = self.client.post(
                 "/ic/api/integration/v1/integrations",
                 json=json_data,
             )
@@ -254,7 +254,7 @@ class IntegrationsSink(OICBaseSink):
             self.logger.exception("Failed to create integration")
             raise
 
-    async def _import_integration(self, record: FlextTypes.Core.Dict) -> None:
+    def _import_integration(self, record: FlextTypes.Core.Dict) -> None:
         """Import integration package into OIC."""
         try:
             package_file = record.get("package_file")
@@ -278,7 +278,7 @@ class IntegrationsSink(OICBaseSink):
             # Convert payload to string dict for FlextApiClient compatibility
             json_data: dict[str, object] = {str(k): str(v) for k, v in payload.items()}
 
-            response_result = await self.client.post(
+            response_result = self.client.post(
                 "/ic/api/integration/v1/packages/archive/import",
                 json=json_data,
             )
@@ -302,7 +302,7 @@ class IntegrationsSink(OICBaseSink):
             self.logger.exception("Failed to import integration")
             raise
 
-    async def _update_integration(
+    def _update_integration(
         self,
         integration_id: str,
         version: str,
@@ -328,7 +328,7 @@ class IntegrationsSink(OICBaseSink):
             # Convert payload to string dict for FlextApiClient compatibility
             json_data: dict[str, object] = {str(k): str(v) for k, v in payload.items()}
 
-            response_result = await self.client.put(
+            response_result = self.client.put(
                 f"/ic/api/integration/v1/integrations/{integration_id}|{version}",
                 json=json_data,
             )

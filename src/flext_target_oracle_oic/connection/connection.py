@@ -30,7 +30,7 @@ class OICConnection:
     @override
     def __init__(self, config: OICConnectionSettings) -> None:
         """Initialize OIC connection."""
-        self.config: dict[str, object] = config
+        self.config: OICConnectionSettings = config
         self._access_token: str | None = None
         self._session: requests.Session | None = None
 
