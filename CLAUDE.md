@@ -4,13 +4,25 @@
 **Last Update**: 2025-01-XX
 **Parent**: [FLEXT Workspace CLAUDE.md](../CLAUDE.md)
 
-## 🔗 MCP SERVER INTEGRATION
+## 📋 DOCUMENT STRUCTURE & REFERENCES
 
-| MCP Server              | Purpose                                                         | Status     |
-| ----------------------- | --------------------------------------------------------------- | ---------- |
-| **serena**              | Singer target codebase analysis and Oracle OIC loading patterns | **ACTIVE** |
-| **sequential-thinking** | Oracle OIC data loading and Singer protocol architecture        | **ACTIVE** |
-| **github**              | Singer ecosystem integration and Oracle OIC target PRs          | **ACTIVE** |
+**Quick Links**:
+- **[~/.claude/commands/flext.md](~/.claude/commands/flext.md)**: Optimization command for module refactoring (USE with `/flext` command)
+- **[../CLAUDE.md](../CLAUDE.md)**: FLEXT ecosystem standards and domain library rules
+
+**CRITICAL INTEGRATION DEPENDENCIES**:
+- **flext-meltano**: MANDATORY for ALL Singer operations (ZERO TOLERANCE for direct singer-sdk without flext-meltano)
+- **flext-oracle-oic-ext**: MANDATORY for ALL Oracle OIC operations (ZERO TOLERANCE for direct OAuth2/httpx imports)
+- **flext-core**: Foundation patterns (FlextResult, FlextService, FlextContainer)
+
+## 🔗 MCP SERVER INTEGRATION (MANDATORY)
+
+| MCP Server              | Purpose                                                         | Status          |
+| ----------------------- | --------------------------------------------------------------- | --------------- |
+| **serena-flext**        | Semantic code analysis, symbol manipulation, refactoring        | **MANDATORY**   |
+| **sequential-thinking** | Oracle OIC data loading and Singer protocol architecture        | **RECOMMENDED** |
+| **context7**            | Third-party library documentation (Singer SDK, Oracle OIC)      | **RECOMMENDED** |
+| **github**              | Repository operations and Singer ecosystem PRs                  | **ACTIVE**      |
 
 **Usage**: `claude mcp list` for available servers, leverage for Singer-specific development patterns and Oracle OIC loading analysis.
 

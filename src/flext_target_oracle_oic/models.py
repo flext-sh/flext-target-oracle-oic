@@ -683,7 +683,7 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
 
         @staticmethod
         def create_integration_deployment_payload(
-            integration_id: str, package_data: bytes, activate: bool = True
+            integration_id: str, package_data: bytes, *, activate: bool = True
         ) -> FlextResult[dict]:
             """Create deployment payload for Oracle OIC integration."""
             if not integration_id or not package_data:
