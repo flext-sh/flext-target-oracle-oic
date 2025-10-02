@@ -44,8 +44,8 @@ class OICTypeConverter:
                 "string": "str",
                 "text": "str",
                 "boolean": "bool",
-                "integer": lambda x: "x",  # OIC handles numbers natively
-                "number": lambda x: "x",  # OIC handles numbers natively
+                "integer": lambda: "x",  # OIC handles numbers natively
+                "number": lambda: "x",  # OIC handles numbers natively
             }
 
             if singer_type in type_converters:
@@ -123,14 +123,14 @@ class OICDataTransformer:
 
     def prepare_oic_payload(
         self,
-        record: FlextTypes.Core.Dict,
-        resource_type: str,
+        _record: FlextTypes.Core.Dict,
+        _resource_type: str,
     ) -> FlextResult[FlextTypes.Core.Dict]:
         """Prepare payload for OIC API calls."""
         try:
             payload: FlextTypes.Core.Dict = {
-                "resourceType": "resource_type",
-                "properties": "record",
+                "resourceType": _resource_type,
+                "properties": _record,
                 "metadata": {
                     "createdBy": "flext-target-oracle-oic",
                     "version": 1.0,

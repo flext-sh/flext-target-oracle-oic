@@ -35,7 +35,7 @@ class TargetOracleOIC(Target):
             "import_mode",
             th.StringType,
             allowed_values=["create", "update", "create_or_update"],
-            default=create_or_update,
+            default="create_or_update",
             description="Import mode for integrations",
         ),
         th.Property(

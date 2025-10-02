@@ -6,8 +6,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Any
-
 from flext_core import FlextTypes
 from flext_target_oracle_oic.config import TargetOracleOICConfig
 
@@ -23,19 +21,21 @@ OICProcessingConfig = TargetOracleOICConfig
 OICEntityConfig = TargetOracleOICConfig
 
 
-def create_config_from_dict(config_dict: dict[str, Any]) -> TargetOracleOICConfig:
+def create_config_from_dict(config_dict: dict[str, object]) -> TargetOracleOICConfig:
     """Create TargetOracleOICConfig from dictionary."""
     return TargetOracleOICConfig.model_validate(config_dict)
 
 
-def create_config_with_env_overrides(**overrides: Any) -> TargetOracleOICConfig:
+def create_config_with_env_overrides(
+    **overrides: dict[str, object],
+) -> TargetOracleOICConfig:
     """Create TargetOracleOICConfig with environment variable overrides."""
     return TargetOracleOICConfig.get_or_create_shared_instance(
         project_name="flext-target-oracle-oic", **overrides
     )
 
 
-def create_singer_config_schema() -> dict[str, Any]:
+def create_singer_config_schema() -> dict[str, object]:
     """Create Singer configuration schema from TargetOracleOICConfig."""
     return TargetOracleOICConfig.model_json_schema()
 

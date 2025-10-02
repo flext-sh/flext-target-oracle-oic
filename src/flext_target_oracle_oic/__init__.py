@@ -43,8 +43,6 @@ from flext_target_oracle_oic.patterns import (
     OICTypeConverter,
 )
 from flext_target_oracle_oic.protocols import FlextTargetOracleOicProtocols
-
-# Scripts imports removed - scripts are not part of the package structure
 from flext_target_oracle_oic.singer import OICRecordProcessor
 from flext_target_oracle_oic.target_client import (
     ConnectionsSink,
@@ -86,82 +84,66 @@ from flext_target_oracle_oic.target_models import (
     create_oic_package,
 )
 from flext_target_oracle_oic.utilities import FlextTargetOracleOicUtilities
+from flext_target_oracle_oic.version import VERSION, FlextTargetOracleOicVersion
 
-# Version information
 try:
     __version__ = importlib.metadata.version("flext-target-oracle-oic")
+    __version_info__: tuple[int | str, ...] = VERSION.version_info
 except importlib.metadata.PackageNotFoundError:
     __version__ = "0.9.0"
 
-__version_info__ = tuple(int(x) for x in __version__.split(".") if x.isdigit())
 
-
-# Import main classes and aliases from dedicated modules
-# Import main function from CLI module
 from flext_target_oracle_oic.cli import main
 from flext_target_oracle_oic.typings import FlextTargetOracleOicTypes
 
-# ===============================================================================
-# EXPORTS - PEP8 ORGANIZED
-# ===============================================================================
-
 __all__: FlextTargetOracleOicTypes.Core.StringList = [
-    # === UNIFIED CLIENT (SINKS) ===
+    "VERSION",
     "ConnectionsSink",
-    # === FLEXT-MELTANO RE-EXPORTS ===
     "FlextMeltanoBridge",
     "FlextMeltanoConfig",
     "FlextModels",
-    # === CORE RE-EXPORTS ===
     "FlextResult",
-    # === PRIMARY CLASSES ===
-    # === UNIFIED EXCEPTIONS ===
     "FlextTargetOracleOicAPIError",
     "FlextTargetOracleOicAuthenticationError",
-    # === UNIFIED CONFIGURATION ===
     "FlextTargetOracleOicConfigurationError",
     "FlextTargetOracleOicConnectionError",
     "FlextTargetOracleOicError",
     "FlextTargetOracleOicErrorDetails",
     "FlextTargetOracleOicInfrastructureError",
-    # === STANDARDIZED PATTERNS ===
     "FlextTargetOracleOicModels",
     "FlextTargetOracleOicProcessingError",
     "FlextTargetOracleOicProtocols",
     "FlextTargetOracleOicTransformationError",
     "FlextTargetOracleOicUtilities",
     "FlextTargetOracleOicValidationError",
+    "FlextTargetOracleOicVersion",
     "IntegrationsSink",
     "LegacyOICConnection",
     "LegacyOICConnectionSettings",
     "LookupsSink",
     "OICBaseSink",
-    # === BACKWARD COMPATIBILITY (LEGACY) ===
-    "OICClient",  # May be None if legacy not available
-    # === UNIFIED MODELS ===
+    "OICClient",
     "OICConnection",
     "OICConnectionAction",
-    # === CONNECTION MANAGEMENT ===
     "OICDataTransformation",
-    "OICDataTransformer",  # May be None if legacy not available
-    "OICEntryManager",  # May be None if legacy not available
+    "OICDataTransformer",
+    "OICEntryManager",
     "OICIntegration",
     "OICIntegrationAction",
     "OICLookup",
     "OICOAuth2Authenticator",
     "OICPackage",
     "OICProject",
-    "OICRecordProcessor",  # May be None if legacy not available
+    "OICRecordProcessor",
     "OICSchedule",
-    "OICSchemaMapper",  # May be None if legacy not available
+    "OICSchemaMapper",
     "OICSchemaMapping",
-    "OICTargetOrchestrator",  # May be None if legacy not available
-    "OICTypeConverter",  # May be None if legacy not available
+    "OICTargetOrchestrator",
+    "OICTypeConverter",
     "PackagesSink",
     "Target",
     "TargetOracleOIC",
     "TargetOracleOICConfig",
-    # === METADATA ===
     "__version__",
     "__version_info__",
     "cli_main",
@@ -179,7 +161,5 @@ __all__: FlextTargetOracleOicTypes.Core.StringList = [
     "create_processing_error",
     "create_singer_config_schema",
     "create_validation_error",
-    # === SCRIPT UTILITIES ===
-    # Script functions removed - not part of package structure
     "main",
 ]

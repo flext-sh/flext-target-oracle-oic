@@ -10,12 +10,47 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import re
-from datetime import datetime
-from typing import Any, Literal
+from datetime import UTC, datetime
+from typing import Literal
 
+from flext_core import FlextConstants, FlextModels, FlextResult, FlextUtilities
 from pydantic import Field, SecretStr
 
-from flext_core import FlextModels, FlextResult, FlextUtilities
+# Oracle OIC constants
+oauth2 = "oauth2"
+active = "active"
+inactive = "inactive"
+error = "error"
+ORCHESTRATION = "ORCHESTRATION"
+
+# Integration pattern constants
+MAP_MY_DATA = "MAP_MY_DATA"
+PUBLISH_TO_OIC = "PUBLISH_TO_OIC"
+SUBSCRIBE_TO_OIC = "SUBSCRIBE_TO_OIC"
+configured = "configured"
+activated = "activated"
+
+# Schedule type constants
+ONCE = "ONCE"
+RECURRING = "RECURRING"
+CRON = "CRON"
+activate = "activate"
+deactivate = "deactivate"
+
+# Operation type constants
+test = "test"
+clone = "clone"
+refresh_metadata = "refresh_metadata"
+
+# Data operation constants
+create_only = "create_only"
+update_only = "update_only"
+create_or_update = "create_or_update"
+
+# Error type constants (reusing from tap module)
+AUTHENTICATION = "AUTHENTICATION"
+AUTHORIZATION = "AUTHORIZATION"
+NETWORK = "NETWORK"
 
 
 class FlextTargetOracleOicModels(FlextModels):
@@ -35,7 +70,7 @@ class FlextTargetOracleOicModels(FlextModels):
         oauth_client_aud: str = Field(..., description="OAuth2 audience")
 
         # Authentication options
-        auth_method: Literal["oauth2"] = Field(
+        auth_method: Literal[oauth2] = Field(
             default="oauth2", description="Authentication method"
         )
         token_cache_duration: int = Field(
@@ -62,20 +97,17 @@ class FlextTargetOracleOicModels(FlextModels):
     class OicConnection(FlextModels.Entity):
         """Oracle Integration Cloud connection model."""
 
-        id: str = Field(..., description="Connection identifier", min_length=1)
         name: str = Field(..., description="Connection display name", min_length=1)
         description: str = Field(default="", description="Connection description")
         adapter_type: str = Field(
             ..., description="Connection adapter type", min_length=1
         )
-        properties: dict[str, Any] = Field(
+        properties: dict[str, object] = Field(
             default_factory=dict, description="Connection properties"
         )
-        status: Literal["active", "inactive", "error"] = Field(
+        status: Literal[active, inactive, error] = Field(
             default="active", description="Connection status"
         )
-        created_at: datetime | None = Field(None, description="Creation timestamp")
-        updated_at: datetime | None = Field(None, description="Last update timestamp")
 
         def validate_business_rules(self) -> FlextResult[None]:
             """Validate connection business rules."""
@@ -93,7 +125,6 @@ class FlextTargetOracleOicModels(FlextModels):
     class OicIntegration(FlextModels.Entity):
         """Oracle Integration Cloud integration model."""
 
-        id: str = Field(..., description="Integration identifier", min_length=1)
         name: str = Field(..., description="Integration display name", min_length=1)
         description: str = Field(default="", description="Integration description")
         version: str = Field(
@@ -102,9 +133,9 @@ class FlextTargetOracleOicModels(FlextModels):
             pattern=r"^\d{2}\.\d{2}\.\d{4}$",
         )
         pattern: Literal[
-            "ORCHESTRATION", "MAP_MY_DATA", "PUBLISH_TO_OIC", "SUBSCRIBE_TO_OIC"
+            ORCHESTRATION, MAP_MY_DATA, PUBLISH_TO_OIC, SUBSCRIBE_TO_OIC
         ] = Field(default="ORCHESTRATION", description="Integration pattern")
-        status: Literal["configured", "activated", "error"] = Field(
+        status: Literal[configured, activated, error] = Field(
             default="configured", description="Integration status"
         )
         archive_content: bytes | None = Field(
@@ -114,8 +145,6 @@ class FlextTargetOracleOicModels(FlextModels):
             default_factory=list,
             description="List of connection IDs used by this integration",
         )
-        created_at: datetime | None = Field(None, description="Creation timestamp")
-        updated_at: datetime | None = Field(None, description="Last update timestamp")
 
         def validate_business_rules(self) -> FlextResult[None]:
             """Validate integration business rules."""
@@ -138,7 +167,6 @@ class FlextTargetOracleOicModels(FlextModels):
     class OicPackage(FlextModels.Entity):
         """Oracle Integration Cloud package model."""
 
-        id: str = Field(..., description="Package identifier", min_length=1)
         name: str = Field(..., description="Package display name", min_length=1)
         description: str = Field(default="", description="Package description")
         version: str = Field(
@@ -159,8 +187,6 @@ class FlextTargetOracleOicModels(FlextModels):
         lookups: list[str] = Field(
             default_factory=list, description="List of lookup names in this package"
         )
-        created_at: datetime | None = Field(None, description="Creation timestamp")
-        updated_at: datetime | None = Field(None, description="Last update timestamp")
 
         def validate_business_rules(self) -> FlextResult[None]:
             """Validate package business rules."""
@@ -185,14 +211,12 @@ class FlextTargetOracleOicModels(FlextModels):
 
         name: str = Field(..., description="Lookup name (identifier)", min_length=1)
         description: str = Field(default="", description="Lookup description")
-        columns: list[dict[str, Any]] = Field(
+        columns: list[dict[str, object]] = Field(
             default_factory=list, description="Lookup column definitions"
         )
-        rows: list[dict[str, Any]] = Field(
+        rows: list[dict[str, object]] = Field(
             default_factory=list, description="Lookup row data"
         )
-        created_at: datetime | None = Field(None, description="Creation timestamp")
-        updated_at: datetime | None = Field(None, description="Last update timestamp")
 
         def validate_business_rules(self) -> FlextResult[None]:
             """Validate lookup business rules."""
@@ -229,14 +253,11 @@ class FlextTargetOracleOicModels(FlextModels):
     class OicProject(FlextModels.Entity):
         """Oracle Integration Cloud project model."""
 
-        id: str = Field(..., description="Project identifier", min_length=1)
         name: str = Field(..., description="Project display name", min_length=1)
         description: str = Field(default="", description="Project description")
-        folders: list[dict[str, Any]] = Field(
+        folders: list[dict[str, object]] = Field(
             default_factory=list, description="Project folders"
         )
-        created_at: datetime | None = Field(None, description="Creation timestamp")
-        updated_at: datetime | None = Field(None, description="Last update timestamp")
 
         def validate_business_rules(self) -> FlextResult[None]:
             """Validate project business rules."""
@@ -255,7 +276,7 @@ class FlextTargetOracleOicModels(FlextModels):
         integration_id: str = Field(
             ..., description="Integration identifier", min_length=1
         )
-        schedule_type: Literal["ONCE", "RECURRING", "CRON"] = Field(
+        schedule_type: Literal[ONCE, RECURRING, CRON] = Field(
             default="ONCE", description="Schedule type"
         )
         schedule_expression: str = Field(
@@ -293,10 +314,10 @@ class FlextTargetOracleOicModels(FlextModels):
             description="Integration version",
             pattern=r"^\d{2}\.\d{2}\.\d{4}$",
         )
-        action: Literal["activate", "deactivate", "test", "clone"] = Field(
+        action: Literal[activate, deactivate, test, clone] = Field(
             ..., description="Action to perform"
         )
-        parameters: dict[str, Any] = Field(
+        parameters: dict[str, object] = Field(
             default_factory=dict, description="Action parameters"
         )
         executed_at: datetime | None = Field(
@@ -329,10 +350,10 @@ class FlextTargetOracleOicModels(FlextModels):
         connection_id: str = Field(
             ..., description="Connection identifier", min_length=1
         )
-        action: Literal["test", "refresh_metadata"] = Field(
+        action: Literal[test, refresh_metadata] = Field(
             ..., description="Action to perform"
         )
-        parameters: dict[str, Any] = Field(
+        parameters: dict[str, object] = Field(
             default_factory=dict, description="Action parameters"
         )
         executed_at: datetime | None = Field(
@@ -355,12 +376,14 @@ class FlextTargetOracleOicModels(FlextModels):
     class OicDataTransformation(FlextModels.Entity):
         """Data transformation model for OIC records."""
 
-        source_data: dict[str, Any] = Field(..., description="Source data to transform")
-        target_schema: dict[str, Any] = Field(..., description="Target OIC schema")
-        transformation_rules: list[dict[str, Any]] = Field(
+        source_data: dict[str, object] = Field(
+            ..., description="Source data to transform"
+        )
+        target_schema: dict[str, object] = Field(..., description="Target OIC schema")
+        transformation_rules: list[dict[str, object]] = Field(
             default_factory=list, description="Transformation rules to apply"
         )
-        transformed_data: dict[str, Any] = Field(
+        transformed_data: dict[str, object] = Field(
             default_factory=dict, description="Transformed data result"
         )
 
@@ -378,10 +401,10 @@ class FlextTargetOracleOicModels(FlextModels):
     class OicSchemaMapping(FlextModels.Entity):
         """Schema mapping model for Singer to OIC transformation."""
 
-        singer_schema: dict[str, Any] = Field(
+        singer_schema: dict[str, object] = Field(
             ..., description="Singer schema definition"
         )
-        oic_schema: dict[str, Any] = Field(..., description="OIC schema definition")
+        oic_schema: dict[str, object] = Field(..., description="OIC schema definition")
         field_mappings: dict[str, str] = Field(
             default_factory=dict, description="Field mappings from Singer to OIC"
         )
@@ -409,7 +432,7 @@ class FlextTargetOracleOicModels(FlextModels):
         )
 
         # Import configuration
-        import_mode: Literal["create_only", "update_only", "create_or_update"] = Field(
+        import_mode: Literal[create_only, update_only, create_or_update] = Field(
             default="create_or_update", description="Import mode for OIC artifacts"
         )
         activate_integrations: bool = Field(
@@ -530,16 +553,16 @@ class FlextTargetOracleOicModels(FlextModels):
         """Error context for Oracle OIC target error handling."""
 
         error_type: Literal[
-            "AUTHENTICATION",
-            "AUTHORIZATION",
-            "NETWORK",
-            "OIC_API",
-            "OAUTH2_TOKEN",
-            "VALIDATION",
-            "TRANSFORMATION",
-            "SINGER_PROTOCOL",
-            "RATE_LIMIT",
-            "CIRCUIT_BREAKER",
+            AUTHENTICATION,
+            AUTHORIZATION,
+            NETWORK,
+            OIC_API,
+            OAUTH2_TOKEN,
+            VALIDATION,
+            TRANSFORMATION,
+            SINGER_PROTOCOL,
+            RATE_LIMIT,
+            CIRCUIT_BREAKER,
         ] = Field(..., description="Error category")
 
         # Context information
@@ -662,7 +685,7 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
                 )
 
             # Check minimum package size (valid .iar files should be at least 1KB)
-            if len(package_data) < 1024:
+            if len(package_data) < FlextConstants.Utilities.BYTES_PER_KB:
                 return FlextResult[dict].fail(
                     "Integration package too small, likely corrupted"
                 )
@@ -814,7 +837,7 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
                 "value": {
                     "bookmarks": bookmark_data,
                     "oic_target_metadata": {
-                        "last_sync": datetime.now().isoformat(),
+                        "last_sync": datetime.now(UTC).isoformat(),
                         "target_version": "2.0.0",
                     },
                 },
@@ -842,16 +865,32 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
             # Adjust batch size based on performance
             optimal_batch_size = default_batch_size
 
-            if avg_response_time > 2000:  # Slow responses
-                optimal_batch_size = max(10, optimal_batch_size // 2)
-            elif avg_response_time < 500:  # Fast responses
-                optimal_batch_size = min(50, optimal_batch_size * 2)
+            if (
+                avg_response_time > FlextConstants.Web.Timeout.TOTAL_TIMEOUT * 1000
+            ):  # Slow responses
+                optimal_batch_size = max(
+                    FlextConstants.Batch.Default.SMALL_SIZE, optimal_batch_size // 2
+                )
+            elif (
+                avg_response_time < FlextConstants.Web.Timeout.DEFAULT_TIMEOUT * 1000
+            ):  # Fast responses
+                optimal_batch_size = min(
+                    FlextConstants.Batch.Default.DEFAULT_SIZE, optimal_batch_size * 2
+                )
 
-            if error_rate > 10:  # High error rate
-                optimal_batch_size = max(5, optimal_batch_size // 3)
+            if error_rate > FlextConstants.Batch.Default.SMALL_SIZE:  # High error rate
+                optimal_batch_size = max(
+                    FlextConstants.Batch.Default.SMALL_SIZE // 20,
+                    optimal_batch_size // 3,
+                )
 
-            if rate_limit_remaining < 50:  # Approaching rate limit
-                optimal_batch_size = max(5, optimal_batch_size // 2)
+            if (
+                rate_limit_remaining < FlextConstants.Batch.Default.DEFAULT_SIZE // 2
+            ):  # Approaching rate limit
+                optimal_batch_size = max(
+                    FlextConstants.Batch.Default.SMALL_SIZE // 20,
+                    optimal_batch_size // 2,
+                )
 
             return FlextResult[int].ok(optimal_batch_size)
 

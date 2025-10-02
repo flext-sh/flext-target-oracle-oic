@@ -42,7 +42,7 @@ class OICRecordProcessor:
             processed_record = {
                 **record,
                 "_stream_name": "stream_name",
-                "_processed_by": flext - target - oracle - oic,
+                "_processed_by": "flext-target-oracle-oic",
             }
 
             # Schema validation if provided
