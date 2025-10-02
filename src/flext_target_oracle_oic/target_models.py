@@ -17,6 +17,11 @@ from pydantic import Field
 
 from flext_core import FlextModels, FlextResult, FlextTypes
 
+# Schedule type constants
+ONCE = "ONCE"
+RECURRING = "RECURRING"
+CRON = "CRON"
+
 LookupBase = FlextModels  # These models don't exist in ext_models
 PackageBase = FlextModels
 

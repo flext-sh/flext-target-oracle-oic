@@ -31,7 +31,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[dict[str, object]]: Integration response or error
 
             """
-            ...
 
         def invoke_oic_service(
             self,
@@ -50,7 +49,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[dict[str, object]]: Service response or error
 
             """
-            ...
 
         def manage_oic_connection(
             self,
@@ -65,7 +63,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[dict[str, object]]: Connection status or error
 
             """
-            ...
 
         def monitor_integration_flow(
             self,
@@ -82,7 +79,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[dict[str, object]]: Flow status or error
 
             """
-            ...
 
     @runtime_checkable
     class DataTransformationProtocol(FlextProtocols.Domain.Service, Protocol):
@@ -103,7 +99,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[dict[str, object]]: OIC-compatible record or error
 
             """
-            ...
 
         def map_stream_to_service(
             self,
@@ -120,7 +115,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[str]: OIC service endpoint or error
 
             """
-            ...
 
         def handle_nested_structures(
             self,
@@ -137,7 +131,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[dict[str, object]]: Flattened OIC data or error
 
             """
-            ...
 
         def validate_oic_payload(
             self,
@@ -154,7 +147,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[dict[str, object]]: Validation results or error
 
             """
-            ...
 
     @runtime_checkable
     class CloudApiProtocol(FlextProtocols.Domain.Service, Protocol):
@@ -173,7 +165,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[dict[str, object]]: Authentication tokens or error
 
             """
-            ...
 
         def call_oic_api(
             self,
@@ -194,7 +185,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[dict[str, object]]: API response or error
 
             """
-            ...
 
         def handle_api_rate_limiting(
             self,
@@ -209,7 +199,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[dict[str, object]]: Rate limiting status or error
 
             """
-            ...
 
         def manage_api_pagination(
             self,
@@ -224,7 +213,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[list[dict[str, object]]]: Paginated results or error
 
             """
-            ...
 
     @runtime_checkable
     class BatchProcessingProtocol(FlextProtocols.Domain.Service, Protocol):
@@ -245,7 +233,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[dict[str, object]]: Batch processing results or error
 
             """
-            ...
 
         def optimize_batch_size(
             self,
@@ -262,7 +249,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[int]: Optimal batch size or error
 
             """
-            ...
 
         def handle_batch_failures(
             self,
@@ -279,7 +265,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[dict[str, object]]: Failure handling results or error
 
             """
-            ...
 
         def monitor_batch_progress(
             self,
@@ -296,7 +281,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[dict[str, object]]: Progress status or error
 
             """
-            ...
 
     @runtime_checkable
     class ValidationProtocol(FlextProtocols.Domain.Service, Protocol):
@@ -317,7 +301,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[dict[str, object]]: Validation results or error
 
             """
-            ...
 
         def check_service_availability(
             self,
@@ -334,7 +317,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[dict[str, object]]: Service availability status or error
 
             """
-            ...
 
         def validate_data_schema(
             self,
@@ -351,7 +333,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[dict[str, object]]: Schema validation results or error
 
             """
-            ...
 
         def check_authentication_status(
             self,
@@ -366,7 +347,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[dict[str, object]]: Authentication status or error
 
             """
-            ...
 
     @runtime_checkable
     class PerformanceProtocol(FlextProtocols.Domain.Service, Protocol):
@@ -384,7 +364,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[dict[str, object]]: Optimization results or error
 
             """
-            ...
 
         def configure_connection_pooling(
             self, pool_config: dict[str, object]
@@ -398,7 +377,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[dict[str, object]]: Pool configuration result or error
 
             """
-            ...
 
         def monitor_target_performance(
             self, performance_metrics: dict[str, object]
@@ -412,7 +390,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[dict[str, object]]: Performance analysis or error
 
             """
-            ...
 
         def optimize_data_transfer(
             self, transfer_config: dict[str, object]
@@ -426,7 +403,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[dict[str, object]]: Transfer optimization results or error
 
             """
-            ...
 
     @runtime_checkable
     class MonitoringProtocol(FlextProtocols.Domain.Service, Protocol):
@@ -445,7 +421,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[bool]: Metric tracking success status
 
             """
-            ...
 
         def monitor_cloud_health(
             self, health_config: dict[str, object]
@@ -459,7 +434,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[dict[str, object]]: Health status or error
 
             """
-            ...
 
         def get_integration_status(
             self, integration_id: str
@@ -473,7 +447,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[dict[str, object]]: Integration status or error
 
             """
-            ...
 
         def create_monitoring_dashboard(
             self, dashboard_config: dict[str, object]
@@ -487,7 +460,6 @@ class FlextTargetOracleOicProtocols(FlextProtocols):
                 FlextResult[dict[str, object]]: Dashboard creation result or error
 
             """
-            ...
 
     # Convenience aliases for easier downstream usage
     TargetOracleOicIntegrationProtocol = OicIntegrationProtocol
