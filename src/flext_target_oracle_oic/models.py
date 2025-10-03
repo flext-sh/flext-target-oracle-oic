@@ -560,16 +560,16 @@ class FlextTargetOracleOicModels(FlextModels):
         """Error context for Oracle OIC target error handling."""
 
         error_type: Literal[
-            AUTHENTICATION,
-            AUTHORIZATION,
-            NETWORK,
-            OIC_API,
-            OAUTH2_TOKEN,
-            VALIDATION,
-            TRANSFORMATION,
-            SINGER_PROTOCOL,
-            RATE_LIMIT,
-            CIRCUIT_BREAKER,
+            "AUTHENTICATION",
+            "AUTHORIZATION",
+            "NETWORK",
+            "OIC_API",
+            "OAUTH2_TOKEN",
+            "VALIDATION",
+            "TRANSFORMATION",
+            "SINGER_PROTOCOL",
+            "RATE_LIMIT",
+            "CIRCUIT_BREAKER",
         ] = Field(..., description="Error category")
 
         # Context information
