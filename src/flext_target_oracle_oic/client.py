@@ -11,4 +11,4 @@ from __future__ import annotations
 from flext_core import FlextTypes
 from flext_target_oracle_oic.connection.connection import OICConnection as OICClient
 
-__all__: FlextTypes.Core.StringList = ["OICClient"]
+__all__: FlextTypes.StringList = ["OICClient"]

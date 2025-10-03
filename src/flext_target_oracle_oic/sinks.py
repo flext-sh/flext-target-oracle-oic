@@ -9,16 +9,15 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import override
 
+from flext_api import FlextApiClient
 from singer_sdk import Sink, Target
 
-from flext_api import FlextApiClient
 from flext_core import FlextLogger, FlextResult, FlextTypes
 from flext_target_oracle_oic.config import TargetOracleOICConfig
+from flext_target_oracle_oic.constants import FlextTargetOracleOicConstants
 from flext_target_oracle_oic.target_config import OICOAuth2Authenticator
 
-# Constants
-HTTP_NOT_FOUND = 404
-JSON_MIME = "application/json"
+# Constants - moved to FlextTargetOracleOicConstants.OAuth.HTTP_NOT_FOUND and .JSON_MIME
 
 logger = FlextLogger(__name__)
 
@@ -31,7 +30,7 @@ class OICBaseSink(Sink):
         self,
         target: Target,
         stream_name: str,
-        schema: FlextTypes.Core.Dict,
+        schema: FlextTypes.Dict,
         key_properties: Sequence[str] | None = None,
     ) -> None:
         """Initialize base sink with target and stream metadata."""
@@ -82,8 +81,8 @@ class OICBaseSink(Sink):
             # Create client with Bearer token
             auth_headers = {
                 "Authorization": f"Bearer {token_result.data}",
-                "Content-Type": "JSON_MIME",
-                "Accept": "JSON_MIME",
+                "Content-Type": FlextTargetOracleOicConstants.OAuth.JSON_MIME,
+                "Accept": FlextTargetOracleOicConstants.OAuth.JSON_MIME,
             }
 
             self._client = FlextApiClient(
@@ -95,9 +94,9 @@ class OICBaseSink(Sink):
 
     def preprocess_record(
         self,
-        record: FlextTypes.Core.Dict,
-        _context: FlextTypes.Core.Dict | None,
-    ) -> FlextTypes.Core.Dict:
+        record: FlextTypes.Dict,
+        _context: FlextTypes.Dict | None,
+    ) -> FlextTypes.Dict:
         """Preprocess record before batch processing.
 
         Args:
@@ -110,7 +109,7 @@ class OICBaseSink(Sink):
         """
         return record
 
-    def process_batch(self, context: FlextTypes.Core.Dict) -> None:
+    def process_batch(self, context: FlextTypes.Dict) -> None:
         """Process batch of records to OIC API.
 
         Groups records by operation type and submits in batches
@@ -126,13 +125,13 @@ class OICBaseSink(Sink):
         if not context.get("records"):
             return
         records_obj = context["records"]
-        records: list[FlextTypes.Core.Dict] = (
+        records: list[FlextTypes.Dict] = (
             records_obj if isinstance(records_obj, list) else []
         )
         batch_size = min(len(records), 100)  # OIC API batch limit
         # Group records by operation type for more efficient processing
-        create_records: list[FlextTypes.Core.Dict] = []
-        update_records: list[FlextTypes.Core.Dict] = []
+        create_records: list[FlextTypes.Dict] = []
+        update_records: list[FlextTypes.Dict] = []
         for record in records:
             if self._record_exists(record):
                 update_records.append(record)
@@ -149,14 +148,14 @@ class OICBaseSink(Sink):
                 batch = update_records[i : i + batch_size]
                 self._process_update_batch(batch, context)
 
-    def _record_exists(self, _record: FlextTypes.Core.Dict) -> bool:
+    def _record_exists(self, _record: FlextTypes.Dict) -> bool:
         # Default implementation - subclasses should override
         return False
 
     def _process_create_batch(
         self,
-        records: list[FlextTypes.Core.Dict],
-        context: FlextTypes.Core.Dict,
+        records: list[FlextTypes.Dict],
+        context: FlextTypes.Dict,
     ) -> None:
         # Default implementation processes records individually
         # Subclasses should override for true batch operations
@@ -165,8 +164,8 @@ class OICBaseSink(Sink):
 
     def _process_update_batch(
         self,
-        records: list[FlextTypes.Core.Dict],
-        context: FlextTypes.Core.Dict,
+        records: list[FlextTypes.Dict],
+        context: FlextTypes.Dict,
     ) -> None:
         # Default implementation processes records individually
         # Subclasses should override for true batch operations
@@ -175,8 +174,8 @@ class OICBaseSink(Sink):
 
     def process_record(
         self,
-        _record: FlextTypes.Core.Dict,
-        _context: FlextTypes.Core.Dict,
+        _record: FlextTypes.Dict,
+        _context: FlextTypes.Dict,
     ) -> None:
         """Process a single record - default implementation for base sink.
 
@@ -204,8 +203,8 @@ class ConnectionsSink(OICBaseSink):
 
     def process_record(
         self,
-        record: FlextTypes.Core.Dict,
-        _context: FlextTypes.Core.Dict,
+        record: FlextTypes.Dict,
+        _context: FlextTypes.Dict,
     ) -> None:
         """Process a connection record.
 
@@ -221,14 +220,14 @@ class ConnectionsSink(OICBaseSink):
         response = self.client.get(
             f"/ic/api/integration/v1/connections/{connection_id}",
         )
-        if response.status_code == HTTP_NOT_FOUND:
+        if response.status_code == FlextTargetOracleOicConstants.OAuth.HTTP_NOT_FOUND:
             # Create new connection
             self._create_connection(record)
         else:
             # Update existing connection
             self._update_connection(connection_id, record)
 
-    def _create_connection(self, record: FlextTypes.Core.Dict) -> None:
+    def _create_connection(self, record: FlextTypes.Dict) -> None:
         payload = {
             "connectionProperties": {
                 "name": record["name"],
@@ -247,7 +246,7 @@ class ConnectionsSink(OICBaseSink):
     def _update_connection(
         self,
         connection_id: str,
-        record: FlextTypes.Core.Dict,
+        record: FlextTypes.Dict,
     ) -> None:
         payload = {
             "connectionProperties": {
@@ -269,8 +268,8 @@ class IntegrationsSink(OICBaseSink):
 
     def process_record(
         self,
-        record: FlextTypes.Core.Dict,
-        _context: FlextTypes.Core.Dict,
+        record: FlextTypes.Dict,
+        _context: FlextTypes.Dict,
     ) -> None:
         """Process an integration record.
 
@@ -287,7 +286,7 @@ class IntegrationsSink(OICBaseSink):
         response = self.client.get(
             f"/ic/api/integration/v1/integrations/{integration_id}|{version}",
         )
-        if response.status_code == HTTP_NOT_FOUND:
+        if response.status_code == FlextTargetOracleOicConstants.OAuth.HTTP_NOT_FOUND:
             # Create new integration from archive if provided:
             if "archive_content" in record:
                 self._import_integration(record)
@@ -297,7 +296,7 @@ class IntegrationsSink(OICBaseSink):
             # Update existing integration
             self._update_integration(integration_id, version, record)
 
-    def _create_integration(self, record: FlextTypes.Core.Dict) -> None:
+    def _create_integration(self, record: FlextTypes.Dict) -> None:
         payload = {
             "name": record["name"],
             "identifier": record["id"],
@@ -310,7 +309,7 @@ class IntegrationsSink(OICBaseSink):
         )
         response.raise_for_status()
 
-    def _import_integration(self, record: FlextTypes.Core.Dict) -> None:
+    def _import_integration(self, record: FlextTypes.Dict) -> None:
         archive_content = record.get("archive_content")
         if isinstance(archive_content, str):
             archive_content = archive_content.encode()
@@ -336,7 +335,7 @@ class IntegrationsSink(OICBaseSink):
         self,
         integration_id: str,
         version: str,
-        record: FlextTypes.Core.Dict,
+        record: FlextTypes.Dict,
     ) -> None:
         payload = {
             "description": record.get("description", ""),
@@ -355,8 +354,8 @@ class PackagesSink(OICBaseSink):
 
     def process_record(
         self,
-        record: FlextTypes.Core.Dict,
-        _context: FlextTypes.Core.Dict,
+        record: FlextTypes.Dict,
+        _context: FlextTypes.Dict,
     ) -> None:
         """Process a package record.
 
@@ -379,7 +378,7 @@ class PackagesSink(OICBaseSink):
                 package_id,
             )
 
-    def _import_package(self, record: FlextTypes.Core.Dict) -> None:
+    def _import_package(self, record: FlextTypes.Dict) -> None:
         archive_content = record.get("archive_content")
         if isinstance(archive_content, str):
             archive_content = archive_content.encode()
@@ -409,8 +408,8 @@ class LookupsSink(OICBaseSink):
 
     def process_record(
         self,
-        record: FlextTypes.Core.Dict,
-        _context: FlextTypes.Core.Dict,
+        record: FlextTypes.Dict,
+        _context: FlextTypes.Dict,
     ) -> None:
         """Process a lookup record.
 
@@ -424,14 +423,14 @@ class LookupsSink(OICBaseSink):
         lookup_name = str(record.get("name", ""))
         # Check if lookup exists:
         response = self.client.get(f"/ic/api/integration/v1/lookups/{lookup_name}")
-        if response.status_code == HTTP_NOT_FOUND:
+        if response.status_code == FlextTargetOracleOicConstants.OAuth.HTTP_NOT_FOUND:
             # Create new lookup
             self._create_lookup(record)
         else:
             # Update existing lookup
             self._update_lookup(lookup_name, record)
 
-    def _create_lookup(self, record: FlextTypes.Core.Dict) -> None:
+    def _create_lookup(self, record: FlextTypes.Dict) -> None:
         payload = {
             "name": record["name"],
             "description": record.get("description", ""),
@@ -444,7 +443,7 @@ class LookupsSink(OICBaseSink):
         )
         response.raise_for_status()
 
-    def _update_lookup(self, lookup_name: str, record: FlextTypes.Core.Dict) -> None:
+    def _update_lookup(self, lookup_name: str, record: FlextTypes.Dict) -> None:
         payload = {
             "description": record.get("description", ""),
             "rows": record.get("rows", []),

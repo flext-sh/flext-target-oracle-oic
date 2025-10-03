@@ -8,8 +8,9 @@ from __future__ import annotations
 
 from typing import Final
 
-from flext_core import FlextConstants
-from flext_oracle_oic_ext import FlextOracleOicExtConstants
+from flext_oracle_oic import FlextOracleOicExtConstants
+
+from flext_core import FlextConstants, FlextTypes
 
 
 class FlextTargetOracleOicConstants(FlextConstants):
@@ -21,8 +22,8 @@ class FlextTargetOracleOicConstants(FlextConstants):
     Composes with FlextOracleOicExtConstants to avoid duplication and ensure consistency.
     """
 
-    # Import Oracle OIC Extension constants from flext-oracle-oic-ext (composition pattern)
-    from flext_oracle_oic_ext.constants import FlextOracleOicExtConstants
+    # Import Oracle OIC Extension constants from flext-oracle-oic (composition pattern)
+    from flext_oracle_oic.constants import FlextOracleOicExtConstants
 
     # Project identification (Final attributes inherited from FlextConstants)
     PROJECT_VERSION: Final[str] = "1.0.0"
@@ -65,7 +66,7 @@ class FlextTargetOracleOicConstants(FlextConstants):
         DEFAULT_API_VERSION: Final[str] = (
             FlextOracleOicExtConstants.OIC.DEFAULT_API_VERSION
         )
-        SUPPORTED_API_VERSIONS: Final[list[str]] = (
+        SUPPORTED_API_VERSIONS: Final[FlextTypes.StringList] = (
             FlextOracleOicExtConstants.OIC.SUPPORTED_API_VERSIONS
         )
 
@@ -115,6 +116,14 @@ class FlextTargetOracleOicConstants(FlextConstants):
         CONTENT_TYPE_JSON: Final[str] = FlextOracleOicExtConstants.API.CONTENT_TYPE_JSON
         ACCEPT_JSON: Final[str] = FlextOracleOicExtConstants.API.CONTENT_TYPE_JSON
 
+        # HTTP status codes
+        HTTP_NOT_FOUND: Final[int] = 404
+        HTTP_BAD_REQUEST: Final[int] = 400
+        HTTP_ERROR_STATUS_THRESHOLD: Final[int] = 400
+
+        # MIME types
+        JSON_MIME: Final[str] = "application/json"
+
     class EntityTypes:
         """OIC entity type constants."""
 
@@ -139,7 +148,7 @@ class FlextTargetOracleOicConstants(FlextConstants):
         }
 
         # Entity type descriptions
-        ENTITY_TYPE_DESCRIPTIONS: Final[dict[str, str]] = {
+        ENTITY_TYPE_DESCRIPTIONS: Final[FlextTypes.StringDict] = {
             INTEGRATION: "Oracle Integration Cloud integration",
             CONNECTION: "Oracle Integration Cloud connection",
             LOOKUP: "Oracle Integration Cloud lookup",
@@ -170,7 +179,7 @@ class FlextTargetOracleOicConstants(FlextConstants):
         DEFAULT_IMPORT_MODE: Final[str] = CREATE_OR_UPDATE
 
         # Import mode descriptions
-        IMPORT_MODE_DESCRIPTIONS: Final[dict[str, str]] = {
+        IMPORT_MODE_DESCRIPTIONS: Final[FlextTypes.StringDict] = {
             CREATE: "Create new entities only",
             UPDATE: "Update existing entities only",
             CREATE_OR_UPDATE: "Create new or update existing entities",

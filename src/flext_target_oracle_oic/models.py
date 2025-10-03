@@ -13,8 +13,15 @@ import re
 from datetime import UTC, datetime
 from typing import Literal
 
-from flext_core import FlextConstants, FlextModels, FlextResult, FlextUtilities
 from pydantic import Field, SecretStr
+
+from flext_core import (
+    FlextConstants,
+    FlextModels,
+    FlextResult,
+    FlextTypes,
+    FlextUtilities,
+)
 
 # Oracle OIC constants
 oauth2 = "oauth2"
@@ -102,7 +109,7 @@ class FlextTargetOracleOicModels(FlextModels):
         adapter_type: str = Field(
             ..., description="Connection adapter type", min_length=1
         )
-        properties: dict[str, object] = Field(
+        properties: FlextTypes.Dict = Field(
             default_factory=dict, description="Connection properties"
         )
         status: Literal[active, inactive, error] = Field(
@@ -141,7 +148,7 @@ class FlextTargetOracleOicModels(FlextModels):
         archive_content: bytes | None = Field(
             None, description="Integration archive content"
         )
-        connections: list[str] = Field(
+        connections: FlextTypes.StringList = Field(
             default_factory=list,
             description="List of connection IDs used by this integration",
         )
@@ -177,14 +184,14 @@ class FlextTargetOracleOicModels(FlextModels):
         archive_content: bytes | None = Field(
             None, description="Package archive content"
         )
-        integrations: list[str] = Field(
+        integrations: FlextTypes.StringList = Field(
             default_factory=list,
             description="List of integration IDs in this package",
         )
-        connections: list[str] = Field(
+        connections: FlextTypes.StringList = Field(
             default_factory=list, description="List of connection IDs in this package"
         )
-        lookups: list[str] = Field(
+        lookups: FlextTypes.StringList = Field(
             default_factory=list, description="List of lookup names in this package"
         )
 
@@ -211,10 +218,10 @@ class FlextTargetOracleOicModels(FlextModels):
 
         name: str = Field(..., description="Lookup name (identifier)", min_length=1)
         description: str = Field(default="", description="Lookup description")
-        columns: list[dict[str, object]] = Field(
+        columns: list[FlextTypes.Dict] = Field(
             default_factory=list, description="Lookup column definitions"
         )
-        rows: list[dict[str, object]] = Field(
+        rows: list[FlextTypes.Dict] = Field(
             default_factory=list, description="Lookup row data"
         )
 
@@ -226,7 +233,7 @@ class FlextTargetOracleOicModels(FlextModels):
                     return FlextResult[None].fail("Lookup name cannot be empty")
 
                 # Validate columns structure
-                validation_errors: list[str] = []
+                validation_errors: FlextTypes.StringList = []
                 validation_errors.extend([
                     "Column must have a name"
                     for column in self.columns
@@ -255,7 +262,7 @@ class FlextTargetOracleOicModels(FlextModels):
 
         name: str = Field(..., description="Project display name", min_length=1)
         description: str = Field(default="", description="Project description")
-        folders: list[dict[str, object]] = Field(
+        folders: list[FlextTypes.Dict] = Field(
             default_factory=list, description="Project folders"
         )
 
@@ -317,7 +324,7 @@ class FlextTargetOracleOicModels(FlextModels):
         action: Literal[activate, deactivate, test, clone] = Field(
             ..., description="Action to perform"
         )
-        parameters: dict[str, object] = Field(
+        parameters: FlextTypes.Dict = Field(
             default_factory=dict, description="Action parameters"
         )
         executed_at: datetime | None = Field(
@@ -353,7 +360,7 @@ class FlextTargetOracleOicModels(FlextModels):
         action: Literal[test, refresh_metadata] = Field(
             ..., description="Action to perform"
         )
-        parameters: dict[str, object] = Field(
+        parameters: FlextTypes.Dict = Field(
             default_factory=dict, description="Action parameters"
         )
         executed_at: datetime | None = Field(
@@ -376,14 +383,14 @@ class FlextTargetOracleOicModels(FlextModels):
     class OicDataTransformation(FlextModels.Entity):
         """Data transformation model for OIC records."""
 
-        source_data: dict[str, object] = Field(
+        source_data: FlextTypes.Dict = Field(
             ..., description="Source data to transform"
         )
-        target_schema: dict[str, object] = Field(..., description="Target OIC schema")
-        transformation_rules: list[dict[str, object]] = Field(
+        target_schema: FlextTypes.Dict = Field(..., description="Target OIC schema")
+        transformation_rules: list[FlextTypes.Dict] = Field(
             default_factory=list, description="Transformation rules to apply"
         )
-        transformed_data: dict[str, object] = Field(
+        transformed_data: FlextTypes.Dict = Field(
             default_factory=dict, description="Transformed data result"
         )
 
@@ -401,14 +408,14 @@ class FlextTargetOracleOicModels(FlextModels):
     class OicSchemaMapping(FlextModels.Entity):
         """Schema mapping model for Singer to OIC transformation."""
 
-        singer_schema: dict[str, object] = Field(
+        singer_schema: FlextTypes.Dict = Field(
             ..., description="Singer schema definition"
         )
-        oic_schema: dict[str, object] = Field(..., description="OIC schema definition")
-        field_mappings: dict[str, str] = Field(
+        oic_schema: FlextTypes.Dict = Field(..., description="OIC schema definition")
+        field_mappings: FlextTypes.StringDict = Field(
             default_factory=dict, description="Field mappings from Singer to OIC"
         )
-        type_conversions: dict[str, str] = Field(
+        type_conversions: FlextTypes.StringDict = Field(
             default_factory=dict, description="Type conversions from Singer to OIC"
         )
 
@@ -506,10 +513,10 @@ class FlextTargetOracleOicModels(FlextModels):
         )
 
         # Error tracking
-        error_messages: list[str] = Field(
+        error_messages: FlextTypes.StringList = Field(
             default_factory=list, description="Error messages encountered"
         )
-        warnings: list[str] = Field(
+        warnings: FlextTypes.StringList = Field(
             default_factory=list, description="Warning messages"
         )
 

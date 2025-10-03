@@ -83,7 +83,7 @@ class TargetOracleOIC(Target):
     def __init__(
         self,
         *,
-        config: FlextTypes.Core.Dict | None = None,
+        config: FlextTypes.Dict | None = None,
         parse_env_config: bool = False,
         validate_config: bool = True,
         **_kwargs: object,
@@ -119,7 +119,7 @@ class TargetOracleOIC(Target):
                 )
             self._orchestrator = None
 
-    def _process_schema_message(self, message_dict: FlextTypes.Core.Dict) -> None:
+    def _process_schema_message(self, message_dict: FlextTypes.Dict) -> None:
         """Process a schema message by creating and registering the appropriate sink.
 
         Args:
@@ -134,8 +134,8 @@ class TargetOracleOIC(Target):
         schema_obj = message_dict["schema"]
         if not isinstance(schema_obj, dict):
             return
-        schema: FlextTypes.Core.Dict = schema_obj
-        key_properties_obj: list[object] = message_dict.get("key_properties", [])
+        schema: FlextTypes.Dict = schema_obj
+        key_properties_obj: FlextTypes.List = message_dict.get("key_properties", [])
         key_properties: Sequence[str] | None = (
             key_properties_obj if isinstance(key_properties_obj, list) else None
         )
@@ -147,9 +147,9 @@ class TargetOracleOIC(Target):
         self,
         stream_name: str,
         *,
-        record: FlextTypes.Core.Dict
+        record: FlextTypes.Dict
         | None = None,  # kept for interface compatibility, not used
-        schema: FlextTypes.Core.Dict | None = None,
+        schema: FlextTypes.Dict | None = None,
         key_properties: Sequence[str] | None = None,
     ) -> Sink:
         """Get appropriate sink for the given stream.

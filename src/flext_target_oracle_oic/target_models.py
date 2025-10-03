@@ -9,7 +9,7 @@ from __future__ import annotations
 import re
 from datetime import UTC, datetime
 
-from flext_oracle_oic_ext.ext_models import (
+from flext_oracle_oic.ext_models import (
     OICConnectionInfo as ConnectionBase,
     OICIntegrationInfo as IntegrationBase,
 )
@@ -53,7 +53,7 @@ class OICConnection(ConnectionBase):
         description="Connection adapter type",
         min_length=1,
     )
-    properties: FlextTypes.Core.Dict = Field(
+    properties: FlextTypes.Dict = Field(
         default_factory=dict,
         description="Connection properties",
     )
@@ -121,7 +121,7 @@ class OICIntegration(IntegrationBase):
         None,
         description="Integration archive content",
     )
-    connections: FlextTypes.Core.StringList = Field(
+    connections: FlextTypes.StringList = Field(
         default_factory=list,
         description="List of connection IDs used by this integration",
     )
@@ -177,15 +177,15 @@ class OICPackage(PackageBase):
         None,
         description="Package archive content",
     )
-    integrations: FlextTypes.Core.StringList = Field(
+    integrations: FlextTypes.StringList = Field(
         default_factory=list,
         description="List of integration IDs in this package",
     )
-    connections: FlextTypes.Core.StringList = Field(
+    connections: FlextTypes.StringList = Field(
         default_factory=list,
         description="List of connection IDs in this package",
     )
-    lookups: FlextTypes.Core.StringList = Field(
+    lookups: FlextTypes.StringList = Field(
         default_factory=list,
         description="List of lookup names in this package",
     )
@@ -227,11 +227,11 @@ class OICLookup(LookupBase):
         default="",
         description="Lookup description",
     )
-    columns: list[FlextTypes.Core.Headers] = Field(
+    columns: list[FlextTypes.StringDict] = Field(
         default_factory=list,
         description="Lookup column definitions",
     )
-    rows: list[FlextTypes.Core.Dict] = Field(
+    rows: list[FlextTypes.Dict] = Field(
         default_factory=list,
         description="Lookup row data",
     )
@@ -251,8 +251,8 @@ class OICLookup(LookupBase):
             if not self.name.strip():
                 return FlextResult[None].fail("Lookup name cannot be empty")
 
-            # Validate columns structure - columns are already validated by type hints as FlextTypes.Core.Headers
-            validation_errors: list[str] = []
+            # Validate columns structure - columns are already validated by type hints as FlextTypes.StringDict
+            validation_errors: FlextTypes.StringList = []
             validation_errors.extend(
                 [
                     "Column must have a name"
@@ -261,7 +261,7 @@ class OICLookup(LookupBase):
                 ],
             )
 
-            # Validate rows have valid column references - rows are already validated by type hints as FlextTypes.Core.Dict
+            # Validate rows have valid column references - rows are already validated by type hints as FlextTypes.Dict
             if self.columns and self.rows:
                 column_names = {col["name"] for col in self.columns}
                 for row in self.rows:
@@ -301,7 +301,7 @@ class OICProject(FlextModels):
         default="",
         description="Project description",
     )
-    folders: list[FlextTypes.Core.Dict] = Field(
+    folders: list[FlextTypes.Dict] = Field(
         default_factory=list,
         description="Project folders",
     )
@@ -395,7 +395,7 @@ class OICIntegrationAction(FlextModels):
         description="Action to perform",
         pattern="^(activate | deactivate | test|clone)$",
     )
-    parameters: FlextTypes.Core.Dict = Field(
+    parameters: FlextTypes.Dict = Field(
         default_factory=dict,
         description="Action parameters",
     )
@@ -434,7 +434,7 @@ class OICConnectionAction(FlextModels):
         description="Action to perform",
         pattern="^(test | refresh_metadata)$",
     )
-    parameters: FlextTypes.Core.Dict = Field(
+    parameters: FlextTypes.Dict = Field(
         default_factory=dict,
         description="Action parameters",
     )
@@ -463,19 +463,19 @@ class OICConnectionAction(FlextModels):
 class OICDataTransformation(FlextModels):
     """Data transformation model for OIC records using flext-core patterns."""
 
-    source_data: FlextTypes.Core.Dict = Field(
+    source_data: FlextTypes.Dict = Field(
         ...,
         description="Source data to transform",
     )
-    target_schema: FlextTypes.Core.Dict = Field(
+    target_schema: FlextTypes.Dict = Field(
         ...,
         description="Target OIC schema",
     )
-    transformation_rules: list[FlextTypes.Core.Dict] = Field(
+    transformation_rules: list[FlextTypes.Dict] = Field(
         default_factory=list,
         description="Transformation rules to apply",
     )
-    transformed_data: FlextTypes.Core.Dict = Field(
+    transformed_data: FlextTypes.Dict = Field(
         default_factory=dict,
         description="Transformed data result",
     )
@@ -495,19 +495,19 @@ class OICDataTransformation(FlextModels):
 class OICSchemaMapping(FlextModels):
     """Schema mapping model for Singer to OIC transformation using flext-core patterns."""
 
-    singer_schema: FlextTypes.Core.Dict = Field(
+    singer_schema: FlextTypes.Dict = Field(
         ...,
         description="Singer schema definition",
     )
-    oic_schema: FlextTypes.Core.Dict = Field(
+    oic_schema: FlextTypes.Dict = Field(
         ...,
         description="OIC schema definition",
     )
-    field_mappings: FlextTypes.Core.Headers = Field(
+    field_mappings: FlextTypes.StringDict = Field(
         default_factory=dict,
         description="Field mappings from Singer to OIC",
     )
-    type_conversions: FlextTypes.Core.Headers = Field(
+    type_conversions: FlextTypes.StringDict = Field(
         default_factory=dict,
         description="Type conversions from Singer to OIC",
     )
@@ -529,7 +529,7 @@ class OICSchemaMapping(FlextModels):
 # ===============================================================================
 
 
-def create_oic_connection(data: FlextTypes.Core.Dict) -> FlextResult[OICConnection]:
+def create_oic_connection(data: FlextTypes.Dict) -> FlextResult[OICConnection]:
     """Create OIC connection from data dictionary."""
     try:
         connection = OICConnection(**data)
@@ -543,7 +543,7 @@ def create_oic_connection(data: FlextTypes.Core.Dict) -> FlextResult[OICConnecti
         return FlextResult[OICConnection].fail(f"Failed to create connection: {e}")
 
 
-def create_oic_integration(data: FlextTypes.Core.Dict) -> FlextResult[OICIntegration]:
+def create_oic_integration(data: FlextTypes.Dict) -> FlextResult[OICIntegration]:
     """Create OIC integration from data dictionary."""
     try:
         integration = OICIntegration(**data)
@@ -557,7 +557,7 @@ def create_oic_integration(data: FlextTypes.Core.Dict) -> FlextResult[OICIntegra
         return FlextResult[OICIntegration].fail(f"Failed to create integration: {e}")
 
 
-def create_oic_package(data: FlextTypes.Core.Dict) -> FlextResult[OICPackage]:
+def create_oic_package(data: FlextTypes.Dict) -> FlextResult[OICPackage]:
     """Create OIC package from data dictionary."""
     try:
         package = OICPackage(**data)
@@ -571,7 +571,7 @@ def create_oic_package(data: FlextTypes.Core.Dict) -> FlextResult[OICPackage]:
         return FlextResult[OICPackage].fail(f"Failed to create package: {e}")
 
 
-def create_oic_lookup(data: FlextTypes.Core.Dict) -> FlextResult[OICLookup]:
+def create_oic_lookup(data: FlextTypes.Dict) -> FlextResult[OICLookup]:
     """Create OIC lookup from data dictionary."""
     try:
         lookup = OICLookup(**data)
@@ -589,7 +589,7 @@ def create_oic_lookup(data: FlextTypes.Core.Dict) -> FlextResult[OICLookup]:
 # EXPORTS
 # ===============================================================================
 
-__all__: FlextTypes.Core.StringList = [
+__all__: FlextTypes.StringList = [
     "OICConnection",
     "OICConnectionAction",
     "OICDataTransformation",

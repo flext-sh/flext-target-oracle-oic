@@ -164,9 +164,9 @@
             develop = true
             path    = "../flext-meltano"
 
-        [tool.poetry.dependencies.flext-oracle-oic-ext]
+        [tool.poetry.dependencies.flext-oracle-oic]
             develop = true
-            path    = "../flext-oracle-oic-ext"
+            path    = "../flext-oracle-oic"
 
         [tool.poetry.dependencies.flext-observability]
             develop = true

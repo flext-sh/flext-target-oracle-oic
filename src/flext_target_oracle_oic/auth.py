@@ -18,4 +18,4 @@ from flext_target_oracle_oic.target_config import (
 # Note: This module is maintained for backward compatibility only.
 # New code should import directly from flext_target_oracle_oic.target_config
 
-__all__: FlextTypes.Core.StringList = ["OICAuthConfig", "OICOAuth2Authenticator"]
+__all__: FlextTypes.StringList = ["OICAuthConfig", "OICOAuth2Authenticator"]

@@ -119,7 +119,7 @@ class OICConnection:
                     f"Authentication failed: {response.status_code} - {response.text}",
                 )
 
-            token_data: dict[str, object] = response.json()
+            token_data: FlextTypes.Dict = response.json()
             self._access_token = token_data.get("access_token")
 
             if not self._access_token:
@@ -173,28 +173,28 @@ class OICConnection:
         self,
         method: str,
         endpoint: str,
-        data: FlextTypes.Core.Dict | None = None,
-        params: FlextTypes.Core.Dict | None = None,
-    ) -> FlextResult[FlextTypes.Core.Dict]:
+        data: FlextTypes.Dict | None = None,
+        params: FlextTypes.Dict | None = None,
+    ) -> FlextResult[FlextTypes.Dict]:
         """Make authenticated request to OIC API."""
         try:
             if not self._session or not self._access_token:
                 connect_result: FlextResult[object] = self.connect()
                 if not connect_result.success:
-                    return FlextResult[FlextTypes.Core.Dict].fail(
+                    return FlextResult[FlextTypes.Dict].fail(
                         connect_result.error or "Connection failed",
                     )
 
             url = f"{self.config.build_api_base_url()}/{endpoint.lstrip('/')}"
             if not self._access_token:
-                return FlextResult[FlextTypes.Core.Dict].fail(
+                return FlextResult[FlextTypes.Dict].fail(
                     "No access token available",
                 )
             headers = self.config.get_api_headers(self._access_token)
 
             # Make request
             if not self._session:
-                return FlextResult[FlextTypes.Core.Dict].fail(
+                return FlextResult[FlextTypes.Dict].fail(
                     "No active session available",
                 )
 
@@ -211,7 +211,7 @@ class OICConnection:
 
             # Handle response
             if response.status_code >= HTTP_BAD_REQUEST:
-                return FlextResult[FlextTypes.Core.Dict].fail(
+                return FlextResult[FlextTypes.Dict].fail(
                     f"API request failed: {response.status_code} - {response.text}",
                 )
 
@@ -220,18 +220,18 @@ class OICConnection:
             except json.JSONDecodeError:
                 response_data_obj = {"text": response.text}
 
-            response_dict: FlextTypes.Core.Dict
+            response_dict: FlextTypes.Dict
             if isinstance(response_data_obj, dict):
-                # Cast to FlextTypes.Core.Dict for proper typing
+                # Cast to FlextTypes.Dict for proper typing
                 response_dict = response_data_obj
             else:
                 response_dict = {"data": "response_data_obj"}
 
-            return FlextResult[FlextTypes.Core.Dict].ok(response_dict)
+            return FlextResult[FlextTypes.Dict].ok(response_dict)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("OIC API request failed: %s %s", method, endpoint)
-            return FlextResult[FlextTypes.Core.Dict].fail(f"API request failed: {e}")
+            return FlextResult[FlextTypes.Dict].fail(f"API request failed: {e}")
 
     @property
     def is_connected(self: object) -> bool:

@@ -10,7 +10,7 @@ from pathlib import Path
 from flext_core import FlextTypes
 
 
-def generate_config() -> FlextTypes.Core.Dict:
+def generate_config() -> FlextTypes.Dict:
     """Generate configuration dictionary from environment variables.
 
     Returns:
