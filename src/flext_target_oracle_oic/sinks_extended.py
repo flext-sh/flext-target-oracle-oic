@@ -11,9 +11,8 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from flext_core import FlextResult, FlextTypes
+from flext_target_oracle_oic.constants import FlextTargetOracleOicConstants
 from flext_target_oracle_oic.sinks import OICBaseSink
-
-# Constants - moved to FlextTargetOracleOicConstants.OAuth.HTTP_NOT_FOUND
 
 
 class LibrariesSink(OICBaseSink):

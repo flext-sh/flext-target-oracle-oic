@@ -14,9 +14,8 @@ from singer_sdk import Sink, Target
 
 from flext_core import FlextLogger, FlextResult, FlextTypes
 from flext_target_oracle_oic.config import TargetOracleOICConfig
+from flext_target_oracle_oic.constants import FlextTargetOracleOicConstants
 from flext_target_oracle_oic.target_config import create_singer_config_schema
-
-# Constants - moved to FlextTargetOracleOicConstants.OAuth
 
 logger = FlextLogger(__name__)
 
