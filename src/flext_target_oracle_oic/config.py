@@ -72,7 +72,7 @@ class TargetOracleOICConfig(FlextConfig):
         integration_identifier_field: str
         connection_identifier_field: str
         lookup_identifier_field: str
-        identifier_fields: dict[str, str]
+        identifier_fields: FlextTypes.StringDict
 
     model_config = SettingsConfigDict(
         env_prefix="TARGET_ORACLE_OIC_",
@@ -213,7 +213,7 @@ class TargetOracleOICConfig(FlextConfig):
         default="lookup_id",
         description="Field name to use as lookup identifier",
     )
-    identifier_fields: FlextTypes.Core.Headers = Field(
+    identifier_fields: FlextTypes.StringDict = Field(
         default_factory=lambda: {
             "integrations": "code",
             "connections": "code",
@@ -223,7 +223,7 @@ class TargetOracleOICConfig(FlextConfig):
     )
 
     # Additional configuration fields
-    transformation_rules: list[FlextTypes.Core.Dict] = Field(
+    transformation_rules: list[FlextTypes.Dict] = Field(
         default_factory=list,
         description="Custom transformation rules",
     )
@@ -383,7 +383,7 @@ class TargetOracleOICConfig(FlextConfig):
         }
 
     # Utility methods
-    def get_oauth_headers(self) -> FlextTypes.Core.Headers:
+    def get_oauth_headers(self) -> FlextTypes.StringDict:
         """Get OAuth headers for API requests."""
         return {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -448,9 +448,9 @@ class TargetOracleOICConfig(FlextConfig):
         return cls.get_or_create_shared_instance(project_name="flext-target-oracle-oic")
 
     @classmethod
-    def create_for_development(cls, **overrides: FlextTypes.Core.Value) -> Self:
+    def create_for_development(cls, **overrides: FlextTypes.Value) -> Self:
         """Create configuration for development environment."""
-        dev_overrides: dict[str, FlextTypes.Core.Value] = {
+        dev_overrides: dict[str, FlextTypes.Value] = {
             "batch_size": FlextConstants.Performance.BatchProcessing.DEFAULT_SIZE
             // 100,  # Smaller batches for development
             "enable_validation": True,
@@ -465,9 +465,9 @@ class TargetOracleOICConfig(FlextConfig):
         )
 
     @classmethod
-    def create_for_production(cls, **overrides: FlextTypes.Core.Value) -> Self:
+    def create_for_production(cls, **overrides: FlextTypes.Value) -> Self:
         """Create configuration for production environment."""
-        prod_overrides: dict[str, FlextTypes.Core.Value] = {
+        prod_overrides: dict[str, FlextTypes.Value] = {
             "batch_size": FlextConstants.Performance.BatchProcessing.DEFAULT_SIZE // 10,
             "enable_validation": True,
             "validation_strict_mode": False,
@@ -482,9 +482,9 @@ class TargetOracleOICConfig(FlextConfig):
         )
 
     @classmethod
-    def create_for_testing(cls, **overrides: FlextTypes.Core.Value) -> Self:
+    def create_for_testing(cls, **overrides: FlextTypes.Value) -> Self:
         """Create configuration for testing environment."""
-        test_overrides: dict[str, FlextTypes.Core.Value] = {
+        test_overrides: dict[str, FlextTypes.Value] = {
             "batch_size": FlextConstants.Performance.BatchProcessing.DEFAULT_SIZE
             // 200,
             "enable_validation": True,
@@ -499,6 +499,6 @@ class TargetOracleOICConfig(FlextConfig):
 
 
 # Export configuration class (single class only)
-__all__: FlextTypes.Core.StringList = [
+__all__: FlextTypes.StringList = [
     "TargetOracleOICConfig",
 ]

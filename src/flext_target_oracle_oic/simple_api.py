@@ -47,7 +47,7 @@ def setup_oic_target(
 
 
 def create_development_oic_target_config(
-    **overrides: FlextTypes.Core.Value,
+    **overrides: FlextTypes.Value,
 ) -> TargetOracleOICConfig:
     """Create development OIC target configuration with defaults.
 
@@ -58,7 +58,7 @@ def create_development_oic_target_config(
       TargetOracleOICConfig for development use.
 
     """
-    dev_config_overrides: dict[str, FlextTypes.Core.Value] = {
+    dev_config_overrides: dict[str, FlextTypes.Value] = {
         # Authentication configuration
         "oauth_client_id": getenv("OIC_DEV_CLIENT_ID", "dev-client-id"),
         "oauth_client_secret": SecretStr(
@@ -107,7 +107,7 @@ def create_development_oic_target_config(
 
 
 def create_production_oic_target_config(
-    **overrides: FlextTypes.Core.Value,
+    **overrides: FlextTypes.Value,
 ) -> TargetOracleOICConfig:
     """Create production OIC target configuration with defaults.
 
@@ -118,7 +118,7 @@ def create_production_oic_target_config(
       TargetOracleOICConfig for production use.
 
     """
-    prod_config_overrides: dict[str, FlextTypes.Core.Value] = {
+    prod_config_overrides: dict[str, FlextTypes.Value] = {
         # Authentication configuration
         "oauth_client_id": getenv("OIC_PROD_CLIENT_ID", ""),
         "oauth_client_secret": SecretStr(
@@ -156,7 +156,7 @@ def create_production_oic_target_config(
 
 
 def create_testing_oic_target_config(
-    **overrides: FlextTypes.Core.Value,
+    **overrides: FlextTypes.Value,
 ) -> TargetOracleOICConfig:
     """Create testing OIC target configuration with defaults.
 
@@ -167,7 +167,7 @@ def create_testing_oic_target_config(
       TargetOracleOICConfig for testing use.
 
     """
-    test_config_overrides: dict[str, FlextTypes.Core.Value] = {
+    test_config_overrides: dict[str, FlextTypes.Value] = {
         # Authentication configuration
         "oauth_client_id": getenv("OIC_TEST_CLIENT_ID", "test-client-id"),
         "oauth_client_secret": SecretStr(
@@ -206,7 +206,7 @@ def validate_oic_target_config(config: TargetOracleOICConfig) -> FlextResult[Non
     return config.validate_business_rules()
 
 
-def get_oic_target_config_schema() -> dict[str, object]:
+def get_oic_target_config_schema() -> FlextTypes.Dict:
     """Get JSON schema for Oracle Integration Cloud target configuration.
 
     Returns:
@@ -216,7 +216,7 @@ def get_oic_target_config_schema() -> dict[str, object]:
     return TargetOracleOICConfig.model_json_schema()
 
 
-__all__: FlextTypes.Core.StringList = [
+__all__: FlextTypes.StringList = [
     "create_development_oic_target_config",
     "create_production_oic_target_config",
     "create_testing_oic_target_config",

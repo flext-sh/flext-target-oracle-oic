@@ -24,17 +24,30 @@ class FlextTargetOracleOicError(FlextExceptions.Error):
     def __init__(
         self,
         message: str = "Oracle OIC target error",
-        details: FlextTypes.Core.Dict | None = None,
+        *,
+        details: FlextTypes.Dict | None = None,
         **kwargs: object,
     ) -> None:
         """Initialize exception with message and optional details."""
-        context = kwargs.copy()
-        if details:
-            context.update(details)
+        # Store domain-specific attributes before extracting common kwargs
+        self.details = details
 
-        self.message = message
-        self.details = context or {}
-        super().__init__(message)
+        # Extract common parameters using helper
+        base_context, correlation_id, error_code = self._extract_common_kwargs(kwargs)
+
+        # Build context with OIC-specific fields
+        context = self._build_context(
+            base_context,
+            **(details or {}),
+        )
+
+        # Call parent with complete error information
+        super().__init__(
+            message,
+            code=error_code or "TARGET_ORACLE_OIC_ERROR",
+            context=context,
+            correlation_id=correlation_id,
+        )
 
 
 class FlextTargetOracleOicAuthenticationError(FlextExceptions.AuthenticationError):
@@ -44,21 +57,32 @@ class FlextTargetOracleOicAuthenticationError(FlextExceptions.AuthenticationErro
     def __init__(
         self,
         message: str = "Oracle OIC authentication failed",
+        *,
         auth_method: str | None = None,
         endpoint: str | None = None,
         **kwargs: object,
     ) -> None:
         """Initialize Oracle OIC authentication error with context."""
-        context = kwargs.copy()
-        if auth_method is not None:
-            context["auth_method"] = auth_method
-        if endpoint is not None:
-            context["endpoint"] = endpoint
+        # Store domain-specific attributes before extracting common kwargs
+        self.auth_method = auth_method
+        self.endpoint = endpoint
 
+        # Extract common parameters using helper
+        base_context, correlation_id, error_code = self._extract_common_kwargs(kwargs)
+
+        # Build context with authentication-specific fields
+        context = self._build_context(
+            base_context,
+            auth_method=auth_method,
+            endpoint=endpoint,
+        )
+
+        # Call parent with complete error information
         super().__init__(
             f"Oracle OIC auth: {message}",
-            auth_method=auth_method,
-            **context,
+            code=error_code or "TARGET_ORACLE_OIC_AUTH_ERROR",
+            context=context,
+            correlation_id=correlation_id,
         )
 
 
@@ -69,22 +93,32 @@ class FlextTargetOracleOicProcessingError(FlextExceptions.ProcessingError):
     def __init__(
         self,
         message: str = "Oracle OIC processing failed",
+        *,
         integration_name: str | None = None,
         processing_stage: str | None = None,
         **kwargs: object,
     ) -> None:
         """Initialize Oracle OIC processing error with context."""
-        context = kwargs.copy()
-        if integration_name is not None:
-            context["integration_name"] = integration_name
-        if processing_stage is not None:
-            context["processing_stage"] = processing_stage
+        # Store domain-specific attributes before extracting common kwargs
+        self.integration_name = integration_name
+        self.processing_stage = processing_stage
 
+        # Extract common parameters using helper
+        base_context, correlation_id, error_code = self._extract_common_kwargs(kwargs)
+
+        # Build context with processing-specific fields
+        context = self._build_context(
+            base_context,
+            integration_name=integration_name,
+            processing_stage=processing_stage,
+        )
+
+        # Call parent with complete error information
         super().__init__(
             f"Oracle OIC processing: {message}",
-            operation=processing_stage,
-            business_rule=None,
-            **context,
+            code=error_code or "TARGET_ORACLE_OIC_PROCESSING_ERROR",
+            context=context,
+            correlation_id=correlation_id,
         )
 
 
@@ -95,23 +129,32 @@ class FlextTargetOracleOicTransformationError(FlextExceptions.ProcessingError):
     def __init__(
         self,
         message: str = "Oracle OIC transformation failed",
+        *,
         transformation_type: str | None = None,
-        input_data: FlextTypes.Core.Dict | None = None,
+        input_data: FlextTypes.Dict | None = None,
         **kwargs: object,
     ) -> None:
         """Initialize Oracle OIC transformation error with context."""
-        context = kwargs.copy()
-        if transformation_type is not None:
-            context["transformation_type"] = transformation_type
-        if input_data is not None:
-            # Include minimal data info for debugging
-            context["input_keys"] = list(input_data.keys())
+        # Store domain-specific attributes before extracting common kwargs
+        self.transformation_type = transformation_type
+        self.input_data = input_data
 
+        # Extract common parameters using helper
+        base_context, correlation_id, error_code = self._extract_common_kwargs(kwargs)
+
+        # Build context with transformation-specific fields
+        context = self._build_context(
+            base_context,
+            transformation_type=transformation_type,
+            input_keys=list(input_data.keys()) if input_data is not None else None,
+        )
+
+        # Call parent with complete error information
         super().__init__(
             f"Oracle OIC transformation: {message}",
-            operation=transformation_type,
-            business_rule=None,
-            **context,
+            code=error_code or "TARGET_ORACLE_OIC_TRANSFORMATION_ERROR",
+            context=context,
+            correlation_id=correlation_id,
         )
 
 
@@ -123,22 +166,32 @@ class FlextTargetOracleOicConnectionError(FlextExceptions.ConnectionError):
     def __init__(
         self,
         message: str = "Oracle OIC connection failed",
+        *,
         oic_instance: str | None = None,
         endpoint: str | None = None,
         **kwargs: object,
     ) -> None:
         """Initialize Oracle OIC connection error with context."""
-        context = kwargs.copy()
-        if oic_instance is not None:
-            context["oic_instance"] = oic_instance
-        if endpoint is not None:
-            context["endpoint"] = endpoint
+        # Store domain-specific attributes before extracting common kwargs
+        self.oic_instance = oic_instance
+        self.endpoint = endpoint
 
+        # Extract common parameters using helper
+        base_context, correlation_id, error_code = self._extract_common_kwargs(kwargs)
+
+        # Build context with connection-specific fields
+        context = self._build_context(
+            base_context,
+            oic_instance=oic_instance,
+            endpoint=endpoint,
+        )
+
+        # Call parent with complete error information
         super().__init__(
             f"Oracle OIC connection: {message}",
-            service=oic_instance or "Oracle OIC",
-            endpoint=endpoint,
-            **context,
+            code=error_code or "TARGET_ORACLE_OIC_CONNECTION_ERROR",
+            context=context,
+            correlation_id=correlation_id,
         )
 
 
@@ -149,28 +202,37 @@ class FlextTargetOracleOicValidationError(FlextExceptions.ValidationError):
     def __init__(
         self,
         message: str = "Oracle OIC validation failed",
+        *,
         field: str | None = None,
         value: object = None,
         integration_name: str | None = None,
         **kwargs: object,
     ) -> None:
         """Initialize Oracle OIC validation error with context."""
-        validation_details: FlextTypes.Core.Dict = {}
-        if field is not None:
-            validation_details["field"] = field
-        if value is not None:
-            validation_details["value"] = str(value)[:100]  # Truncate long values
+        # Store domain-specific attributes before extracting common kwargs
+        self.field = field
+        self.value = value
+        self.integration_name = integration_name
 
-        context = kwargs.copy()
-        if integration_name is not None:
-            context["integration_name"] = integration_name
+        # Extract common parameters using helper
+        base_context, correlation_id, error_code = self._extract_common_kwargs(kwargs)
 
+        # Build context with validation-specific fields
+        context = self._build_context(
+            base_context,
+            field=field,
+            value=str(value)[:100]
+            if value is not None
+            else None,  # Truncate long values
+            integration_name=integration_name,
+        )
+
+        # Call parent with complete error information
         super().__init__(
             f"Oracle OIC validation: {message}",
-            field=field,
-            value=value,
-            validation_details=validation_details or None,
-            **context,
+            code=error_code or "TARGET_ORACLE_OIC_VALIDATION_ERROR",
+            context=context,
+            correlation_id=correlation_id,
         )
 
 
@@ -181,22 +243,32 @@ class FlextTargetOracleOicConfigurationError(FlextExceptions.ConfigurationError)
     def __init__(
         self,
         message: str = "Oracle OIC configuration error",
+        *,
         config_key: str | None = None,
         integration_name: str | None = None,
         **kwargs: object,
     ) -> None:
         """Initialize Oracle OIC configuration error with context."""
-        context = kwargs.copy()
-        if config_key is not None:
-            context["config_key"] = config_key
-        if integration_name is not None:
-            context["integration_name"] = integration_name
+        # Store domain-specific attributes before extracting common kwargs
+        self.config_key = config_key
+        self.integration_name = integration_name
 
+        # Extract common parameters using helper
+        base_context, correlation_id, error_code = self._extract_common_kwargs(kwargs)
+
+        # Build context with configuration-specific fields
+        context = self._build_context(
+            base_context,
+            config_key=config_key,
+            integration_name=integration_name,
+        )
+
+        # Call parent with complete error information
         super().__init__(
             f"Oracle OIC config: {message}",
-            config_key=config_key,
-            config_file=None,
-            **context,
+            code=error_code or "TARGET_ORACLE_OIC_CONFIGURATION_ERROR",
+            context=context,
+            correlation_id=correlation_id,
         )
 
 
@@ -207,18 +279,33 @@ class FlextTargetOracleOicInfrastructureError(FlextTargetOracleOicError):
     def __init__(
         self,
         message: str = "Oracle OIC infrastructure error",
+        *,
         component: str | None = None,
         service: str | None = None,
         **kwargs: object,
     ) -> None:
         """Initialize Oracle OIC infrastructure error with context."""
-        context = kwargs.copy()
-        if component is not None:
-            context["component"] = component
-        if service is not None:
-            context["service"] = service
+        # Store domain-specific attributes before extracting common kwargs
+        self.component = component
+        self.service = service
 
-        super().__init__(f"Oracle OIC infrastructure: {message}", details=context)
+        # Extract common parameters using helper
+        base_context, correlation_id, error_code = self._extract_common_kwargs(kwargs)
+
+        # Build context with infrastructure-specific fields
+        context = self._build_context(
+            base_context,
+            component=component,
+            service=service,
+        )
+
+        # Call parent with complete error information
+        super().__init__(
+            f"Oracle OIC infrastructure: {message}",
+            details=context,
+            code=error_code or "TARGET_ORACLE_OIC_INFRASTRUCTURE_ERROR",
+            correlation_id=correlation_id,
+        )
 
 
 class FlextTargetOracleOicAPIError(FlextTargetOracleOicError):
@@ -228,21 +315,38 @@ class FlextTargetOracleOicAPIError(FlextTargetOracleOicError):
     def __init__(
         self,
         message: str = "Oracle OIC API error",
+        *,
         status_code: int | None = None,
         endpoint: str | None = None,
         response_body: str | None = None,
         **kwargs: object,
     ) -> None:
         """Initialize Oracle OIC API error with context."""
-        context = kwargs.copy()
-        if status_code is not None:
-            context["status_code"] = status_code
-        if endpoint is not None:
-            context["endpoint"] = endpoint
-        if response_body is not None:
-            context["response_body"] = response_body[:500]  # Truncate long responses
+        # Store domain-specific attributes before extracting common kwargs
+        self.status_code = status_code
+        self.endpoint = endpoint
+        self.response_body = response_body
 
-        super().__init__(f"Oracle OIC API: {message}", details=context)
+        # Extract common parameters using helper
+        base_context, correlation_id, error_code = self._extract_common_kwargs(kwargs)
+
+        # Build context with API-specific fields
+        context = self._build_context(
+            base_context,
+            status_code=status_code,
+            endpoint=endpoint,
+            response_body=response_body[:500]
+            if response_body is not None
+            else None,  # Truncate long responses
+        )
+
+        # Call parent with complete error information
+        super().__init__(
+            f"Oracle OIC API: {message}",
+            details=context,
+            code=error_code or "TARGET_ORACLE_OIC_API_ERROR",
+            correlation_id=correlation_id,
+        )
 
 
 class FlextTargetOracleOicErrorDetails(FlextModels):
@@ -250,7 +354,7 @@ class FlextTargetOracleOicErrorDetails(FlextModels):
 
     error_code: str
     error_type: str
-    context: FlextTypes.Core.Dict
+    context: FlextTypes.Dict
     timestamp: str
     source_component: str
 

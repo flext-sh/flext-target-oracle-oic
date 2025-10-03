@@ -13,8 +13,7 @@ from __future__ import annotations
 from flext_core import FlextResult, FlextTypes
 from flext_target_oracle_oic.sinks import OICBaseSink
 
-# Constants
-HTTP_NOT_FOUND = 404
+# Constants - moved to FlextTargetOracleOicConstants.OAuth.HTTP_NOT_FOUND
 
 
 class LibrariesSink(OICBaseSink):
@@ -24,8 +23,8 @@ class LibrariesSink(OICBaseSink):
 
     def process_record(
         self,
-        record: FlextTypes.Core.Dict,
-        _context: FlextTypes.Core.Dict,
+        record: FlextTypes.Dict,
+        _context: FlextTypes.Dict,
     ) -> None:
         """Process a library record.
 
@@ -37,14 +36,14 @@ class LibrariesSink(OICBaseSink):
         library_id = str(record.get("id", ""))
         # Check if library exists:
         response = self.client.get(f"/ic/api/integration/v1/libraries/{library_id}")
-        if response.status_code == HTTP_NOT_FOUND:
+        if response.status_code == FlextTargetOracleOicConstants.OAuth.HTTP_NOT_FOUND:
             # Create new library
             self._create_library(record)
         else:
             # Update existing library
             self._update_library(library_id, record)
 
-    def _create_library(self, record: FlextTypes.Core.Dict) -> None:
+    def _create_library(self, record: FlextTypes.Dict) -> None:
         # If archive content is provided, import it
         if "archive_content" in record:
             self._import_library(record)
@@ -62,7 +61,7 @@ class LibrariesSink(OICBaseSink):
         )
         response.raise_for_status()
 
-    def _import_library(self, record: FlextTypes.Core.Dict) -> None:
+    def _import_library(self, record: FlextTypes.Dict) -> None:
         archive_content = record.get("archive_content")
         if isinstance(archive_content, str):
             archive_content = archive_content.encode()
@@ -86,7 +85,7 @@ class LibrariesSink(OICBaseSink):
         )
         response.raise_for_status()
 
-    def _update_library(self, library_id: str, record: FlextTypes.Core.Dict) -> None:
+    def _update_library(self, library_id: str, record: FlextTypes.Dict) -> None:
         payload = {
             "description": record.get("description", ""),
             "version": record.get("version", "1.0"),
@@ -105,8 +104,8 @@ class CertificatesSink(OICBaseSink):
 
     def process_record(
         self,
-        record: FlextTypes.Core.Dict,
-        _context: FlextTypes.Core.Dict,
+        record: FlextTypes.Dict,
+        _context: FlextTypes.Dict,
     ) -> None:
         """Process a certificate record.
 
@@ -118,14 +117,14 @@ class CertificatesSink(OICBaseSink):
         cert_alias = str(record.get("alias", ""))
         # Check if certificate exists:
         response = self.client.get(f"/ic/api/integration/v1/certificates/{cert_alias}")
-        if response.status_code == HTTP_NOT_FOUND:
+        if response.status_code == FlextTargetOracleOicConstants.OAuth.HTTP_NOT_FOUND:
             # Create new certificate
             self._create_certificate(record)
         else:
             # Update existing certificate
             self._update_certificate(cert_alias, record)
 
-    def _create_certificate(self, record: FlextTypes.Core.Dict) -> None:
+    def _create_certificate(self, record: FlextTypes.Dict) -> None:
         # Certificate content must be provided
         cert_content = record.get("certificate_content")
         if not cert_content:
@@ -162,7 +161,7 @@ class CertificatesSink(OICBaseSink):
     def _update_certificate(
         self,
         cert_alias: str,
-        record: FlextTypes.Core.Dict,
+        record: FlextTypes.Dict,
     ) -> None:
         # Certificates can only be replaced, not updated
         # Delete and recreate if needed:
@@ -183,8 +182,8 @@ class ProjectsSink(OICBaseSink):
 
     def process_record(
         self,
-        record: FlextTypes.Core.Dict,
-        _context: FlextTypes.Core.Dict,
+        record: FlextTypes.Dict,
+        _context: FlextTypes.Dict,
     ) -> None:
         """Process a project record.
 
@@ -196,13 +195,13 @@ class ProjectsSink(OICBaseSink):
         project_id = str(record.get("id", ""))
         # Check if project exists:
         response = self.client.get(f"/ic/api/integration/v1/projects/{project_id}")
-        if response.status_code == HTTP_NOT_FOUND:
+        if response.status_code == FlextTargetOracleOicConstants.OAuth.HTTP_NOT_FOUND:
             # Create new project
             self._create_project(record)
             # Update existing project
             self._update_project(project_id, record)
 
-    def _create_project(self, record: FlextTypes.Core.Dict) -> None:
+    def _create_project(self, record: FlextTypes.Dict) -> None:
         payload = {
             "name": record["name"],
             "identifier": record["id"],
@@ -219,13 +218,13 @@ class ProjectsSink(OICBaseSink):
         # Create folders if provided:
         if "folders" in record:
             project_id_var = str(record.get("id", ""))
-            folders: list[object] = record.get("folders", [])
+            folders: FlextTypes.List = record.get("folders", [])
             if isinstance(folders, list):
                 for folder in folders:
                     if isinstance(folder, dict):
                         self._create_folder(project_id_var, folder)
 
-    def _create_folder(self, project_id: str, folder: FlextTypes.Core.Dict) -> None:
+    def _create_folder(self, project_id: str, folder: FlextTypes.Dict) -> None:
         payload = {
             "name": folder["name"],
             "type": folder.get("type", "INTEGRATION"),
@@ -237,7 +236,7 @@ class ProjectsSink(OICBaseSink):
         )
         response.raise_for_status()
 
-    def _update_project(self, project_id: str, record: FlextTypes.Core.Dict) -> None:
+    def _update_project(self, project_id: str, record: FlextTypes.Dict) -> None:
         payload = {
             "description": record.get("description", ""),
             "visibility": record.get("visibility", "PRIVATE"),
@@ -257,8 +256,8 @@ class SchedulesSink(OICBaseSink):
 
     def process_record(
         self,
-        record: FlextTypes.Core.Dict,
-        _context: FlextTypes.Core.Dict,
+        record: FlextTypes.Dict,
+        _context: FlextTypes.Dict,
     ) -> None:
         """Process a schedule record.
 
@@ -279,7 +278,7 @@ class SchedulesSink(OICBaseSink):
         response = self.client.get(
             f"/ic/api/integration/v1/integrations/{integration_id}/schedule",
         )
-        if response.status_code == HTTP_NOT_FOUND:
+        if response.status_code == FlextTargetOracleOicConstants.OAuth.HTTP_NOT_FOUND:
             # Create new schedule
             self._create_schedule(integration_id, record)
             # Update existing schedule
@@ -288,7 +287,7 @@ class SchedulesSink(OICBaseSink):
     def _create_schedule(
         self,
         integration_id: str,
-        record: FlextTypes.Core.Dict,
+        record: FlextTypes.Dict,
     ) -> None:
         payload = self._build_schedule_payload(record)
         response = self.client.post(
@@ -300,7 +299,7 @@ class SchedulesSink(OICBaseSink):
     def _update_schedule(
         self,
         integration_id: str,
-        record: FlextTypes.Core.Dict,
+        record: FlextTypes.Dict,
     ) -> None:
         payload = self._build_schedule_payload(record)
         response = self.client.put(
@@ -311,8 +310,8 @@ class SchedulesSink(OICBaseSink):
 
     def _build_schedule_payload(
         self,
-        record: FlextTypes.Core.Dict,
-    ) -> FlextTypes.Core.Dict:
+        record: FlextTypes.Dict,
+    ) -> FlextTypes.Dict:
         payload = {
             "scheduleType": record.get("scheduleType", "SIMPLE"),
             "enabled": record.get("enabled", True),
@@ -363,8 +362,8 @@ class BusinessEventsSink(OICBaseSink):
 
     def process_record(
         self,
-        record: FlextTypes.Core.Dict,
-        _context: FlextTypes.Core.Dict,
+        record: FlextTypes.Dict,
+        _context: FlextTypes.Dict,
     ) -> None:
         """Process a business event record.
 
@@ -376,7 +375,7 @@ class BusinessEventsSink(OICBaseSink):
         # Business events are typically published, not created
         self._publish_event(record)
 
-    def _publish_event(self, record: FlextTypes.Core.Dict) -> None:
+    def _publish_event(self, record: FlextTypes.Dict) -> None:
         str(record.get("eventType", ""))
         payload = {
             "eventType": "event_type",
@@ -405,8 +404,8 @@ class MonitoringConfigSink(OICBaseSink):
 
     def process_record(
         self,
-        record: FlextTypes.Core.Dict,
-        _context: FlextTypes.Core.Dict,
+        record: FlextTypes.Dict,
+        _context: FlextTypes.Dict,
     ) -> None:
         """Process a monitoring configuration record.
 
@@ -415,7 +414,7 @@ class MonitoringConfigSink(OICBaseSink):
             _context: Record context (unused).
 
         """
-        config_type: dict[str, object] = record.get("configType", "alerts")
+        config_type: FlextTypes.Dict = record.get("configType", "alerts")
         if config_type == "alerts":
             self._configure_alerts(record)
         elif config_type == "metrics":
@@ -423,7 +422,7 @@ class MonitoringConfigSink(OICBaseSink):
         elif config_type == "tracing":
             self._configure_tracing(record)
 
-    def _configure_alerts(self, record: FlextTypes.Core.Dict) -> None:
+    def _configure_alerts(self, record: FlextTypes.Dict) -> None:
         payload = {
             "alertRules": record.get("alertRules", []),
             "recipients": record.get("recipients", []),
@@ -436,7 +435,7 @@ class MonitoringConfigSink(OICBaseSink):
         )
         response.raise_for_status()
 
-    def _configure_metrics(self, record: FlextTypes.Core.Dict) -> None:
+    def _configure_metrics(self, record: FlextTypes.Dict) -> None:
         payload = {
             "metricsEnabled": record.get("metricsEnabled", True),
             "retentionPeriod": record.get("retentionPeriod", 30),
@@ -449,7 +448,7 @@ class MonitoringConfigSink(OICBaseSink):
         )
         response.raise_for_status()
 
-    def _configure_tracing(self, record: FlextTypes.Core.Dict) -> None:
+    def _configure_tracing(self, record: FlextTypes.Dict) -> None:
         payload = {
             "tracingEnabled": record.get("tracingEnabled", True),
             "payloadTracingEnabled": record.get("payloadTracingEnabled", False),
@@ -470,8 +469,8 @@ class IntegrationActionsSink(OICBaseSink):
 
     def process_record(
         self,
-        record: FlextTypes.Core.Dict,
-        _context: FlextTypes.Core.Dict,
+        record: FlextTypes.Dict,
+        _context: FlextTypes.Dict,
     ) -> None:
         """Process an integration action record.
 
@@ -499,7 +498,7 @@ class IntegrationActionsSink(OICBaseSink):
         self,
         integration_id: str,
         version: str,
-        record: FlextTypes.Core.Dict,
+        record: FlextTypes.Dict,
     ) -> None:
         payload = {
             "enableTracing": record.get("enableTracing", False),
@@ -521,9 +520,9 @@ class IntegrationActionsSink(OICBaseSink):
         self,
         integration_id: str,
         version: str,
-        record: FlextTypes.Core.Dict,
+        record: FlextTypes.Dict,
     ) -> None:
-        test_payload: dict[str, object] = record.get("testPayload", {})
+        test_payload: FlextTypes.Dict = record.get("testPayload", {})
         response = self.client.post(
             f"/ic/api/integration/v1/integrations/{integration_id}|{version}/test",
             json=test_payload,
@@ -534,7 +533,7 @@ class IntegrationActionsSink(OICBaseSink):
         self,
         integration_id: str,
         version: str,
-        record: FlextTypes.Core.Dict,
+        record: FlextTypes.Dict,
     ) -> None:
         payload = {
             "name": record.get("newName", f"{integration_id}_clone"),
@@ -556,8 +555,8 @@ class ConnectionActionsSink(OICBaseSink):
 
     def process_record(
         self,
-        record: FlextTypes.Core.Dict,
-        _context: FlextTypes.Core.Dict,
+        record: FlextTypes.Dict,
+        _context: FlextTypes.Dict,
     ) -> None:
         """Process a connection action record.
 

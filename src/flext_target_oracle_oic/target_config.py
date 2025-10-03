@@ -21,13 +21,13 @@ OICProcessingConfig = TargetOracleOICConfig
 OICEntityConfig = TargetOracleOICConfig
 
 
-def create_config_from_dict(config_dict: dict[str, object]) -> TargetOracleOICConfig:
+def create_config_from_dict(config_dict: FlextTypes.Dict) -> TargetOracleOICConfig:
     """Create TargetOracleOICConfig from dictionary."""
     return TargetOracleOICConfig.model_validate(config_dict)
 
 
 def create_config_with_env_overrides(
-    **overrides: dict[str, object],
+    **overrides: FlextTypes.Dict,
 ) -> TargetOracleOICConfig:
     """Create TargetOracleOICConfig with environment variable overrides."""
     return TargetOracleOICConfig.get_or_create_shared_instance(
@@ -35,12 +35,12 @@ def create_config_with_env_overrides(
     )
 
 
-def create_singer_config_schema() -> dict[str, object]:
+def create_singer_config_schema() -> FlextTypes.Dict:
     """Create Singer configuration schema from TargetOracleOICConfig."""
     return TargetOracleOICConfig.model_json_schema()
 
 
-__all__: FlextTypes.Core.StringList = [
+__all__: FlextTypes.StringList = [
     "OICAuthConfig",
     "OICConnectionConfig",
     "OICDeploymentConfig",
