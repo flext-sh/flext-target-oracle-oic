@@ -10,9 +10,11 @@ from collections.abc import Sequence
 from typing import ClassVar, override
 
 from flext_api import FlextApiClient
-from singer_sdk import Sink, Target
-
 from flext_core import FlextLogger, FlextResult, FlextTypes
+
+# Use FLEXT Meltano wrappers instead of direct singer_sdk imports (domain separation)
+from flext_meltano import FlextSink as Sink, FlextTarget as Target
+
 from flext_target_oracle_oic.config import TargetOracleOICConfig
 from flext_target_oracle_oic.constants import FlextTargetOracleOicConstants
 from flext_target_oracle_oic.target_config import create_singer_config_schema
