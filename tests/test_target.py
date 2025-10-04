@@ -7,9 +7,9 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
+from flext_core import FlextTypes
 from flext_meltano import ConfigValidationError
 
-from flext_core import FlextTypes
 from flext_target_oracle_oic import ConnectionsSink, IntegrationsSink, TargetOracleOIC
 
 

@@ -8,9 +8,8 @@ from __future__ import annotations
 
 from typing import Final
 
-from flext_oracle_oic import FlextOracleOicExtConstants
-
 from flext_core import FlextConstants, FlextTypes
+from flext_oracle_oic import FlextOracleOicExtConstants
 
 
 class FlextTargetOracleOicConstants(FlextConstants):

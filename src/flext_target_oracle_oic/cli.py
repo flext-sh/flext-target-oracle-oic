@@ -13,8 +13,7 @@ from __future__ import annotations
 
 from typing import override
 
-from Flext_cli import FlextCli, FlextCliCommands, FlextCliConfig
-
+from flext_cli import FlextCli, FlextCliCommands, FlextCliConfig
 from flext_core import FlextResult, FlextTypes
 
 

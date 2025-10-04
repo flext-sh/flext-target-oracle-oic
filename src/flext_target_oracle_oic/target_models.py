@@ -9,13 +9,12 @@ from __future__ import annotations
 import re
 from datetime import UTC, datetime
 
+from flext_core import FlextModels, FlextResult, FlextTypes
 from flext_oracle_oic.ext_models import (
     OICConnectionInfo as ConnectionBase,
     OICIntegrationInfo as IntegrationBase,
 )
 from pydantic import Field
-
-from flext_core import FlextModels, FlextResult, FlextTypes
 
 # Schedule type constants
 ONCE = "ONCE"
