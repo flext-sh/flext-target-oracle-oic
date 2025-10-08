@@ -462,7 +462,7 @@ class TestOracleOicErrorResilience:
 
 ```bash
 # Oracle OIC Target Development Workflow
-cd /home/marlonsc/flext/flext-target-oracle-oic
+cd .
 
 # Quality Validation (MANDATORY before commits)
 make validate                    # Complete: lint + type + security + test (90%+)
