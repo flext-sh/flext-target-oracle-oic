@@ -88,19 +88,11 @@ from flext_target_oracle_oic.target_models import (
     create_oic_package,
 )
 from flext_target_oracle_oic.utilities import FlextTargetOracleOicUtilities
-from flext_target_oracle_oic.version import VERSION, FlextTargetOracleOicVersion
-
-try:
-    __version__ = importlib.metadata.version("flext-target-oracle-oic")
-    __version_info__: tuple[int | str, ...] = VERSION.version_info
-except importlib.metadata.PackageNotFoundError:
-    __version__ = "0.9.0"
 
 from flext_target_oracle_oic.cli import main
 from flext_target_oracle_oic.typings import FlextTargetOracleOicTypes
 
 __all__: FlextTargetOracleOicTypes.Core.StringList = [
-    "VERSION",
     "ConnectionsSink",
     "FlextMeltanoBridge",
     "FlextMeltanoConfig",
@@ -119,7 +111,6 @@ __all__: FlextTargetOracleOicTypes.Core.StringList = [
     "FlextTargetOracleOicTransformationError",
     "FlextTargetOracleOicUtilities",
     "FlextTargetOracleOicValidationError",
-    "FlextTargetOracleOicVersion",
     "IntegrationsSink",
     "LegacyOICConnection",
     "LegacyOICConnectionSettings",
