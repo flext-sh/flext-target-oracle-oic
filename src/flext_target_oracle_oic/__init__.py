@@ -6,6 +6,8 @@ SPDX-License-Identifier: MIT.
 
 from __future__ import annotations
 
+from flext_target_oracle_oic.__version__ import __version__, __version_info__
+
 import importlib.metadata
 
 from flext_core import FlextModels, FlextResult
@@ -93,7 +95,6 @@ try:
     __version_info__: tuple[int | str, ...] = VERSION.version_info
 except importlib.metadata.PackageNotFoundError:
     __version__ = "0.9.0"
-
 
 from flext_target_oracle_oic.cli import main
 from flext_target_oracle_oic.typings import FlextTargetOracleOicTypes
