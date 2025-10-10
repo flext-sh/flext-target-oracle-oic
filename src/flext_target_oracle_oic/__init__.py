@@ -6,10 +6,6 @@ SPDX-License-Identifier: MIT.
 
 from __future__ import annotations
 
-from flext_target_oracle_oic.__version__ import __version__, __version_info__
-
-import importlib.metadata
-
 from flext_core import FlextModels, FlextResult
 
 # Use FLEXT Meltano wrapper instead of direct singer_sdk import (domain separation)
@@ -19,8 +15,9 @@ from flext_meltano import (
     FlextTarget as Target,
 )
 
+from flext_target_oracle_oic.__version__ import __version__, __version_info__
 from flext_target_oracle_oic.application import OICTargetOrchestrator
-from flext_target_oracle_oic.cli import main as cli_main
+from flext_target_oracle_oic.cli import main, main as cli_main
 from flext_target_oracle_oic.client import OICClient
 from flext_target_oracle_oic.config import TargetOracleOICConfig
 from flext_target_oracle_oic.connection import (
@@ -87,10 +84,8 @@ from flext_target_oracle_oic.target_models import (
     create_oic_lookup,
     create_oic_package,
 )
-from flext_target_oracle_oic.utilities import FlextTargetOracleOicUtilities
-
-from flext_target_oracle_oic.cli import main
 from flext_target_oracle_oic.typings import FlextTargetOracleOicTypes
+from flext_target_oracle_oic.utilities import FlextTargetOracleOicUtilities
 
 __all__: FlextTargetOracleOicTypes.Core.StringList = [
     "ConnectionsSink",
