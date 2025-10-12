@@ -10,16 +10,16 @@ from collections.abc import Sequence
 from typing import ClassVar, override
 
 from flext_api import FlextApiClient
-from flext_core import FlextLogger, FlextResult, FlextTypes
+from flext_core import FlextCore
 
 # Use FLEXT Meltano wrappers instead of direct singer_sdk imports (domain separation)
 from flext_meltano import FlextSink as Sink, FlextTarget as Target
 
-from flext_target_oracle_oic.config import TargetOracleOICConfig
+from flext_target_oracle_oic.config import TargetOracleOicConfig
 from flext_target_oracle_oic.constants import FlextTargetOracleOicConstants
 from flext_target_oracle_oic.target_config import create_singer_config_schema
 
-logger = FlextLogger(__name__)
+logger = FlextCore.Logger(__name__)
 
 
 # ===============================================================================
@@ -35,7 +35,7 @@ class OICBaseSink(Sink):
         self,
         target: Target,
         stream_name: str,
-        schema: FlextTypes.Dict,
+        schema: FlextCore.Types.Dict,
         key_properties: Sequence[str] | None = None,
     ) -> None:
         """Initialize base sink with target and stream metadata."""
@@ -43,14 +43,14 @@ class OICBaseSink(Sink):
         # CRITICAL: Set tap_name for Singer SDK auth compatibility
         self.tap_name = "target-oracle-oic"  # Required by Singer SDK authenticators
         # Keep a separate attribute for typed config to avoid base type conflicts
-        self._oic_config: TargetOracleOICConfig | None = None
+        self._oic_config: TargetOracleOicConfig | None = None
         self._client: FlextApiClient | None = None
 
     @property
-    def oic_config(self: object) -> TargetOracleOICConfig:
+    def oic_config(self: object) -> TargetOracleOicConfig:
         """Get unified OIC configuration."""
         if not self._oic_config:
-            self._oic_config = TargetOracleOICConfig.model_validate(
+            self._oic_config = TargetOracleOicConfig.model_validate(
                 dict(self.config) if self.config else {},
             )
         return self._oic_config
@@ -73,9 +73,9 @@ class OICBaseSink(Sink):
 
     def preprocess_record(
         self,
-        record: FlextTypes.Dict,
-        _context: FlextTypes.Dict | None,
-    ) -> FlextTypes.Dict:
+        record: FlextCore.Types.Dict,
+        _context: FlextCore.Types.Dict | None,
+    ) -> FlextCore.Types.Dict:
         """Preprocess record before batch processing.
 
         Args:
@@ -88,7 +88,7 @@ class OICBaseSink(Sink):
         """
         return record
 
-    def process_batch(self, context: FlextTypes.Dict) -> None:
+    def process_batch(self, context: FlextCore.Types.Dict) -> None:
         """Process batch of records to OIC API.
 
         Groups records by operation type and submits in batches
@@ -105,14 +105,14 @@ class OICBaseSink(Sink):
             return
 
         records_obj = context.get("records")
-        records: list[FlextTypes.Dict] = (
+        records: list[FlextCore.Types.Dict] = (
             records_obj if isinstance(records_obj, list) else []
         )
         batch_size = min(len(records), self.oic_config.processing.batch_size)
 
         # Group records by operation type for more efficient processing
-        create_records: list[FlextTypes.Dict] = []
-        update_records: list[FlextTypes.Dict] = []
+        create_records: list[FlextCore.Types.Dict] = []
+        update_records: list[FlextCore.Types.Dict] = []
 
         for record in records:
             if self._record_exists(record):
@@ -132,14 +132,14 @@ class OICBaseSink(Sink):
                 batch = update_records[i : i + batch_size]
                 self._process_update_batch(batch, context)
 
-    def _record_exists(self, _record: FlextTypes.Dict) -> bool:
+    def _record_exists(self, _record: FlextCore.Types.Dict) -> bool:
         """Check if record exists in OIC - default implementation."""
         return False
 
     def _process_create_batch(
         self,
-        records: list[FlextTypes.Dict],
-        context: FlextTypes.Dict,
+        records: list[FlextCore.Types.Dict],
+        context: FlextCore.Types.Dict,
     ) -> None:
         """Process create batch - default implementation."""
         for record in records:
@@ -147,8 +147,8 @@ class OICBaseSink(Sink):
 
     def _process_update_batch(
         self,
-        records: list[FlextTypes.Dict],
-        context: FlextTypes.Dict,
+        records: list[FlextCore.Types.Dict],
+        context: FlextCore.Types.Dict,
     ) -> None:
         """Process update batch - default implementation."""
         for record in records:
@@ -156,8 +156,8 @@ class OICBaseSink(Sink):
 
     def process_record(
         self,
-        _record: FlextTypes.Dict,
-        _context: FlextTypes.Dict,
+        _record: FlextCore.Types.Dict,
+        _context: FlextCore.Types.Dict,
     ) -> None:
         """Process a single record - default implementation for base sink.
 
@@ -186,8 +186,8 @@ class ConnectionsSink(OICBaseSink):
 
     def process_record(
         self,
-        record: FlextTypes.Dict,
-        _context: FlextTypes.Dict,
+        record: FlextCore.Types.Dict,
+        _context: FlextCore.Types.Dict,
     ) -> None:
         """Process a connection record."""
         connection_id = str(record.get("id", ""))
@@ -203,8 +203,8 @@ class IntegrationsSink(OICBaseSink):
 
     def process_record(
         self,
-        record: FlextTypes.Dict,
-        _context: FlextTypes.Dict,
+        record: FlextCore.Types.Dict,
+        _context: FlextCore.Types.Dict,
     ) -> None:
         """Process an integration record."""
         integration_id = str(record.get("id", ""))
@@ -213,7 +213,7 @@ class IntegrationsSink(OICBaseSink):
         # Simplified implementation - detailed OIC operations will be handled by flext-oracle-oic
         # For now, just log the record to maintain Singer SDK compatibility
 
-    def _create_integration(self, record: FlextTypes.Dict) -> None:
+    def _create_integration(self, record: FlextCore.Types.Dict) -> None:
         """Create new integration in OIC."""
         try:
             # Prepare creation payload - convert to string dict for FlextApiClient compatibility
@@ -225,7 +225,9 @@ class IntegrationsSink(OICBaseSink):
             }
 
             # Convert payload to string dict for FlextApiClient compatibility
-            json_data: FlextTypes.Dict = {str(k): str(v) for k, v in payload.items()}
+            json_data: FlextCore.Types.Dict = {
+                str(k): str(v) for k, v in payload.items()
+            }
 
             response_result = self.client.post(
                 "/ic/api/integration/v1/integrations",
@@ -254,7 +256,7 @@ class IntegrationsSink(OICBaseSink):
             self.logger.exception("Failed to create integration")
             raise
 
-    def _import_integration(self, record: FlextTypes.Dict) -> None:
+    def _import_integration(self, record: FlextCore.Types.Dict) -> None:
         """Import integration package into OIC."""
         try:
             package_file = record.get("package_file")
@@ -276,7 +278,9 @@ class IntegrationsSink(OICBaseSink):
                 payload["importOptions"] = str(record["importOptions"])
 
             # Convert payload to string dict for FlextApiClient compatibility
-            json_data: FlextTypes.Dict = {str(k): str(v) for k, v in payload.items()}
+            json_data: FlextCore.Types.Dict = {
+                str(k): str(v) for k, v in payload.items()
+            }
 
             response_result = self.client.post(
                 "/ic/api/integration/v1/packages/archive/import",
@@ -309,7 +313,7 @@ class IntegrationsSink(OICBaseSink):
         self,
         integration_id: str,
         version: str,
-        record: FlextTypes.Dict,
+        record: FlextCore.Types.Dict,
     ) -> None:
         """Update existing integration in OIC."""
         try:
@@ -329,7 +333,9 @@ class IntegrationsSink(OICBaseSink):
                 return
 
             # Convert payload to string dict for FlextApiClient compatibility
-            json_data: FlextTypes.Dict = {str(k): str(v) for k, v in payload.items()}
+            json_data: FlextCore.Types.Dict = {
+                str(k): str(v) for k, v in payload.items()
+            }
 
             response_result = self.client.put(
                 f"/ic/api/integration/v1/integrations/{integration_id}|{version}",
@@ -366,8 +372,8 @@ class PackagesSink(OICBaseSink):
 
     def process_record(
         self,
-        record: FlextTypes.Dict,
-        _context: FlextTypes.Dict,
+        record: FlextCore.Types.Dict,
+        _context: FlextCore.Types.Dict,
     ) -> None:
         """Process a package record."""
         # Implementation for package processing
@@ -381,8 +387,8 @@ class LookupsSink(OICBaseSink):
 
     def process_record(
         self,
-        record: FlextTypes.Dict,
-        _context: FlextTypes.Dict,
+        record: FlextCore.Types.Dict,
+        _context: FlextCore.Types.Dict,
     ) -> None:
         """Process a lookup record."""
         # Implementation for lookup processing
@@ -394,7 +400,7 @@ class LookupsSink(OICBaseSink):
 # ===============================================================================
 
 
-class TargetOracleOIC(Target):
+class TargetOracleOic(Target):
     """Oracle Integration Cloud Singer target implementation.
 
     This target handles data integration with Oracle Integration Cloud,
@@ -422,22 +428,22 @@ class TargetOracleOIC(Target):
     default_sink_class = OICBaseSink
 
     # Use unified configuration schema
-    config_jsonschema: ClassVar[FlextTypes.Dict] = create_singer_config_schema()
+    config_jsonschema: ClassVar[FlextCore.Types.Dict] = create_singer_config_schema()
 
     @override
     def __init__(
         self,
         *,
-        config: FlextTypes.Dict | None = None,
+        config: FlextCore.Types.Dict | None = None,
         parse_env_config: bool = False,
         validate_config: bool = True,
         **_kwargs: object,
     ) -> None:
         """Initialize target with configuration and options."""
         # Preserve the flat config exactly as received for test expectations
-        self._original_flat_config: FlextTypes.Dict = dict(config or {})
+        self._original_flat_config: FlextCore.Types.Dict = dict(config or {})
         # Map legacy flat config into unified model-compatible structure to satisfy tests
-        normalized_config: FlextTypes.Dict = dict(config or {})
+        normalized_config: FlextCore.Types.Dict = dict(config or {})
         if (
             normalized_config
             and "auth" not in normalized_config
@@ -447,7 +453,7 @@ class TargetOracleOIC(Target):
             )
         ):
             # Preserve flat keys for Singer validation; also inject nested structure for our usage
-            normalized_config: FlextTypes.Dict = dict(normalized_config)
+            normalized_config: FlextCore.Types.Dict = dict(normalized_config)
             normalized_config.setdefault("auth", {})
             normalized_config.setdefault("connection", {})
             auth_section = normalized_config["auth"]
@@ -488,26 +494,28 @@ class TargetOracleOIC(Target):
             parse_env_config=parse_env_config,
             validate_config=validate_config,
         )
-        self._oic_config: TargetOracleOICConfig | None = None
+        self._oic_config: TargetOracleOicConfig | None = None
 
     @property
-    def oic_config(self: object) -> TargetOracleOICConfig:
+    def oic_config(self: object) -> TargetOracleOicConfig:
         """Get unified OIC configuration."""
         if not self._oic_config:
-            self._oic_config = TargetOracleOICConfig.model_validate(
+            self._oic_config = TargetOracleOicConfig.model_validate(
                 dict(self.config) if self.config else {},
             )
         return self._oic_config
 
     # Override config property to return exactly the flat config passed by tests
     @property
-    def config(self: object) -> FlextTypes.Dict:
+    def config(self: object) -> FlextCore.Types.Dict:
         """Return the original flat configuration."""
         return self._original_flat_config
 
     def setup(self: object) -> None:
         """Set up the target client."""
-        validation_result: FlextResult[object] = self.oic_config.validate_domain_rules()
+        validation_result: FlextCore.Result[object] = (
+            self.oic_config.validate_domain_rules()
+        )
         if not validation_result.success:
             error_msg = f"Configuration validation failed: {validation_result.error}"
             self.logger.error(
@@ -519,15 +527,15 @@ class TargetOracleOIC(Target):
     def teardown(self: object) -> None:
         """Teardown the target."""
 
-    def _process_schema_message(self, message_dict: FlextTypes.Dict) -> None:
+    def _process_schema_message(self, message_dict: FlextCore.Types.Dict) -> None:
         """Process a schema message by creating and registering the appropriate sink."""
         # Ensure sink is created and registered for this stream
         stream_name = str(message_dict["stream"])
         schema_obj = message_dict["schema"]
         if not isinstance(schema_obj, dict):
             return
-        schema: FlextTypes.Dict = schema_obj
-        key_props_obj: FlextTypes.List = message_dict.get("key_properties", [])
+        schema: FlextCore.Types.Dict = schema_obj
+        key_props_obj: FlextCore.Types.List = message_dict.get("key_properties", [])
         key_properties: Sequence[str] | None = (
             key_props_obj if isinstance(key_props_obj, list) else None
         )
@@ -540,9 +548,9 @@ class TargetOracleOIC(Target):
         self,
         stream_name: str,
         *,
-        record: FlextTypes.Dict
+        record: FlextCore.Types.Dict
         | None = None,  # kept for interface compatibility, not used
-        schema: FlextTypes.Dict | None = None,
+        schema: FlextCore.Types.Dict | None = None,
         key_properties: Sequence[str] | None = None,
     ) -> Sink:
         """Get appropriate sink for the given stream."""
@@ -590,7 +598,7 @@ class TargetOracleOIC(Target):
 
 def main() -> None:
     """Entry point for target-oracle-oic CLI."""
-    TargetOracleOIC.cli()
+    TargetOracleOic.cli()
 
 
 if __name__ == "__main__":
@@ -601,12 +609,12 @@ if __name__ == "__main__":
 # EXPORTS
 # ===============================================================================
 
-__all__: FlextTypes.StringList = [
+__all__: FlextCore.Types.StringList = [
     "ConnectionsSink",
     "IntegrationsSink",
     "LookupsSink",
     "OICBaseSink",
     "PackagesSink",
-    "TargetOracleOIC",
+    "TargetOracleOic",
     "main",
 ]

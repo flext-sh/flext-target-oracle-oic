@@ -7,17 +7,17 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
-from flext_core import FlextTypes
+from flext_core import FlextCore
 from flext_meltano import ConfigValidationError
 
-from flext_target_oracle_oic import ConnectionsSink, IntegrationsSink, TargetOracleOIC
+from flext_target_oracle_oic import ConnectionsSink, IntegrationsSink, TargetOracleOic
 
 
-class TestTargetOracleOIC:
-    """Test cases for TargetOracleOIC with proper enterprise validation."""
+class TestTargetOracleOic:
+    """Test cases for TargetOracleOic with proper enterprise validation."""
 
     @pytest.fixture
-    def valid_config(self) -> FlextTypes.StringDict:
+    def valid_config(self) -> FlextCore.Types.StringDict:
         """Create valid configuration for testing."""
         return {
             "base_url": "https://test-instance-region.integration.ocp.oraclecloud.com",
@@ -29,10 +29,10 @@ class TestTargetOracleOIC:
 
     def test_target_initialization_with_valid_config(
         self,
-        valid_config: FlextTypes.StringDict,
+        valid_config: FlextCore.Types.StringDict,
     ) -> None:
         """Test target initialization with valid configuration."""
-        target = TargetOracleOIC(config=valid_config)
+        target = TargetOracleOic(config=valid_config)
         if target.name != "target-oracle-oic":
             msg: str = f"Expected {'target-oracle-oic'}, got {target.name}"
             raise AssertionError(msg)
@@ -45,7 +45,7 @@ class TestTargetOracleOIC:
             # Missing required OAuth2 credentials
         }
         with pytest.raises(ConfigValidationError):
-            TargetOracleOIC(config=invalid_config)
+            TargetOracleOic(config=invalid_config)
 
     def test_get_sink_mapping(self) -> None:
         """Test method."""
@@ -55,7 +55,7 @@ class TestTargetOracleOIC:
             "oauth_client_secret": "test_secret",
             "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
         }
-        target = TargetOracleOIC(config=config)
+        target = TargetOracleOic(config=config)
 
         # Test known streams
         if target._get_sink_class("connections") != ConnectionsSink:
@@ -70,7 +70,7 @@ class TestTargetOracleOIC:
 
     def test_config_schema(self) -> None:
         """Test method."""
-        schema = TargetOracleOIC.config_jsonschema
+        schema = TargetOracleOic.config_jsonschema
         assert isinstance(schema, dict)
         if "properties" not in schema:
             msg: str = f"Expected {'properties'} in {schema}"

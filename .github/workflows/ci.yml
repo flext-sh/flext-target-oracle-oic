@@ -235,14 +235,14 @@ jobs:
       - name: Test Singer SDK compliance
         run: |
           poetry run python -c "
-          from target_oracle_oic import TargetOracleOIC
+          from target_oracle_oic import TargetOracleOic
           config = {
             'base_url': 'https://test.integration.ocp.oraclecloud.com',
             'oauth_client_id': 'test_client',
             'oauth_client_secret': 'test_secret',
             'oauth_token_url': 'https://test.identity.oraclecloud.com/oauth2/v1/token'
           }
-          target = TargetOracleOIC(config=config)
+          target = TargetOracleOic(config=config)
           print(f'✅ Target initialized: {target.name}')
           "
 

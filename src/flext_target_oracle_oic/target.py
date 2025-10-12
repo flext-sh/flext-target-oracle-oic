@@ -9,7 +9,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import ClassVar, override
 
-from flext_core import FlextResult, FlextTypes
+from flext_core import FlextCore
 
 # Use FLEXT Meltano wrappers instead of direct singer_sdk imports (domain separation)
 from flext_meltano import FlextSink as Sink, FlextTarget as Target, typing as th
@@ -20,7 +20,7 @@ from flext_target_oracle_oic.sinks import (
 )
 
 
-class TargetOracleOIC(Target):
+class TargetOracleOic(Target):
     """Oracle Integration Cloud (OIC) target for Singer."""
 
     name = "target-oracle-oic"
@@ -85,7 +85,7 @@ class TargetOracleOIC(Target):
     def __init__(
         self,
         *,
-        config: FlextTypes.Dict | None = None,
+        config: FlextCore.Types.Dict | None = None,
         parse_env_config: bool = False,
         validate_config: bool = True,
         **_kwargs: object,
@@ -106,14 +106,14 @@ class TargetOracleOIC(Target):
             self._orchestrator = OICTargetOrchestrator(
                 dict(self.config) if self.config else None,
             )
-            setup_result: FlextResult[object] = self._orchestrator.setup()
+            setup_result: FlextCore.Result[object] = self._orchestrator.setup()
             if not setup_result.success:
                 self.logger.error("Orchestrator setup failed: %s", setup_result.error)
 
     def teardown(self: object) -> None:
         """Teardown the target orchestrator."""
         if self._orchestrator:
-            teardown_result: FlextResult[object] = self._orchestrator.teardown()
+            teardown_result: FlextCore.Result[object] = self._orchestrator.teardown()
             if not teardown_result.success:
                 self.logger.warning(
                     "Orchestrator teardown failed: %s",
@@ -121,7 +121,7 @@ class TargetOracleOIC(Target):
                 )
             self._orchestrator = None
 
-    def _process_schema_message(self, message_dict: FlextTypes.Dict) -> None:
+    def _process_schema_message(self, message_dict: FlextCore.Types.Dict) -> None:
         """Process a schema message by creating and registering the appropriate sink.
 
         Args:
@@ -136,8 +136,10 @@ class TargetOracleOIC(Target):
         schema_obj = message_dict["schema"]
         if not isinstance(schema_obj, dict):
             return
-        schema: FlextTypes.Dict = schema_obj
-        key_properties_obj: FlextTypes.List = message_dict.get("key_properties", [])
+        schema: FlextCore.Types.Dict = schema_obj
+        key_properties_obj: FlextCore.Types.List = message_dict.get(
+            "key_properties", []
+        )
         key_properties: Sequence[str] | None = (
             key_properties_obj if isinstance(key_properties_obj, list) else None
         )
@@ -149,9 +151,9 @@ class TargetOracleOIC(Target):
         self,
         stream_name: str,
         *,
-        record: FlextTypes.Dict
+        record: FlextCore.Types.Dict
         | None = None,  # kept for interface compatibility, not used
-        schema: FlextTypes.Dict | None = None,
+        schema: FlextCore.Types.Dict | None = None,
         key_properties: Sequence[str] | None = None,
     ) -> Sink:
         """Get appropriate sink for the given stream.
@@ -211,7 +213,7 @@ class TargetOracleOIC(Target):
 
 def main() -> None:
     """Entry point for target-oracle-oic CLI."""
-    TargetOracleOIC.cli()
+    TargetOracleOic.cli()
 
 
 if __name__ == "__main__":
