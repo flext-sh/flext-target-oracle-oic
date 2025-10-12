@@ -6,49 +6,49 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import FlextTypes
+from flext_core import FlextCore
 
-from flext_target_oracle_oic.config import TargetOracleOICConfig
+from flext_target_oracle_oic.config import TargetOracleOicConfig
 
 # Temporary authenticator placeholder until proper implementation
 OICOAuth2Authenticator = object
 
-# Backward compatibility aliases - all Config classes now use the single TargetOracleOICConfig
+# Backward compatibility aliases - all Config classes now use the single TargetOracleOicConfig
 # These provide compatibility for existing code while directing to the standardized Config
-OICAuthConfig = TargetOracleOICConfig
-OICConnectionConfig = TargetOracleOICConfig
-OICDeploymentConfig = TargetOracleOICConfig
-OICProcessingConfig = TargetOracleOICConfig
-OICEntityConfig = TargetOracleOICConfig
+OICAuthConfig = TargetOracleOicConfig
+OICConnectionConfig = TargetOracleOicConfig
+OICDeploymentConfig = TargetOracleOicConfig
+OICProcessingConfig = TargetOracleOicConfig
+OICEntityConfig = TargetOracleOicConfig
 
 
-def create_config_from_dict(config_dict: FlextTypes.Dict) -> TargetOracleOICConfig:
-    """Create TargetOracleOICConfig from dictionary."""
-    return TargetOracleOICConfig.model_validate(config_dict)
+def create_config_from_dict(config_dict: FlextCore.Types.Dict) -> TargetOracleOicConfig:
+    """Create TargetOracleOicConfig from dictionary."""
+    return TargetOracleOicConfig.model_validate(config_dict)
 
 
 def create_config_with_env_overrides(
-    **overrides: FlextTypes.Dict,
-) -> TargetOracleOICConfig:
-    """Create TargetOracleOICConfig with environment variable overrides."""
-    return TargetOracleOICConfig.get_or_create_shared_instance(
+    **overrides: FlextCore.Types.Dict,
+) -> TargetOracleOicConfig:
+    """Create TargetOracleOicConfig with environment variable overrides."""
+    return TargetOracleOicConfig.get_or_create_shared_instance(
         project_name="flext-target-oracle-oic", **overrides
     )
 
 
-def create_singer_config_schema() -> FlextTypes.Dict:
-    """Create Singer configuration schema from TargetOracleOICConfig."""
-    return TargetOracleOICConfig.model_json_schema()
+def create_singer_config_schema() -> FlextCore.Types.Dict:
+    """Create Singer configuration schema from TargetOracleOicConfig."""
+    return TargetOracleOicConfig.model_json_schema()
 
 
-__all__: FlextTypes.StringList = [
+__all__: FlextCore.Types.StringList = [
     "OICAuthConfig",
     "OICConnectionConfig",
     "OICDeploymentConfig",
     "OICEntityConfig",
     "OICOAuth2Authenticator",
     "OICProcessingConfig",
-    "TargetOracleOICConfig",
+    "TargetOracleOicConfig",
     "create_config_from_dict",
     "create_config_with_env_overrides",
     "create_singer_config_schema",

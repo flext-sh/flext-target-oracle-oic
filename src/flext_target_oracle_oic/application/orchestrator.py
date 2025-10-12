@@ -8,16 +8,16 @@ from __future__ import annotations
 
 from typing import override
 
-from flext_core import FlextLogger, FlextResult, FlextTypes
+from flext_core import FlextCore
 
-logger = FlextLogger(__name__)
+logger = FlextCore.Logger(__name__)
 
 
 class OICTargetOrchestrator:
     """Oracle OIC Target Orchestrator for FLEXT ecosystem integration."""
 
     @override
-    def __init__(self, config: FlextTypes.Dict | None = None) -> None:
+    def __init__(self, config: FlextCore.Types.Dict | None = None) -> None:
         """Initialize OIC target orchestrator.
 
         Args:
@@ -27,14 +27,14 @@ class OICTargetOrchestrator:
             object: Description of return value.
 
         """
-        self.config: FlextTypes.Dict = config or {}
+        self.config: FlextCore.Types.Dict = config or {}
         logger.debug("Initialized OIC target orchestrator")
 
-    def validate_configuration(self: object) -> FlextResult[bool]:
+    def validate_configuration(self: object) -> FlextCore.Result[bool]:
         """Validate OIC target configuration.
 
         Returns:
-            FlextResult indicating validation success
+            FlextCore.Result indicating validation success
 
         """
         try:
@@ -42,51 +42,53 @@ class OICTargetOrchestrator:
             required_fields = ["base_url", "oauth_client_id"]
             for field in required_fields:
                 if field not in self.config:
-                    return FlextResult[bool].fail(f"Missing required field: {field}")
+                    return FlextCore.Result[bool].fail(
+                        f"Missing required field: {field}"
+                    )
 
-            return FlextResult[bool].ok(data=True)
+            return FlextCore.Result[bool].ok(data=True)
         except Exception as e:
-            return FlextResult[bool].fail(f"Configuration validation failed: {e}")
+            return FlextCore.Result[bool].fail(f"Configuration validation failed: {e}")
 
-    def setup(self: object) -> FlextResult[None]:
+    def setup(self: object) -> FlextCore.Result[None]:
         """Set up OIC target orchestrator.
 
         Returns:
-            FlextResult indicating setup success
+            FlextCore.Result indicating setup success
 
         """
         try:
             logger.info("Setting up OIC target orchestrator")
-            return FlextResult[None].ok(None)
+            return FlextCore.Result[None].ok(None)
         except Exception as e:
             logger.exception("OIC orchestrator setup failed")
-            return FlextResult[None].fail(f"Setup failed: {e}")
+            return FlextCore.Result[None].fail(f"Setup failed: {e}")
 
-    def teardown(self: object) -> FlextResult[None]:
+    def teardown(self: object) -> FlextCore.Result[None]:
         """Teardown OIC target orchestrator.
 
         Returns:
-            FlextResult indicating teardown success
+            FlextCore.Result indicating teardown success
 
         """
         try:
             logger.info("Tearing down OIC target orchestrator")
-            return FlextResult[None].ok(None)
+            return FlextCore.Result[None].ok(None)
         except Exception as e:
             logger.exception("OIC orchestrator teardown failed")
-            return FlextResult[None].fail(f"Teardown failed: {e}")
+            return FlextCore.Result[None].fail(f"Teardown failed: {e}")
 
     def orchestrate_target_pipeline(
         self,
-        records: list[FlextTypes.Dict],
-    ) -> FlextResult[FlextTypes.Dict]:
+        records: list[FlextCore.Types.Dict],
+    ) -> FlextCore.Result[FlextCore.Types.Dict]:
         """Orchestrate OIC target pipeline execution.
 
         Args:
             records: Records to process
 
         Returns:
-            FlextResult with execution status
+            FlextCore.Result with execution status
 
         """
         try:
@@ -107,15 +109,15 @@ class OICTargetOrchestrator:
                 "OIC target pipeline completed: %d records processed",
                 processed_count,
             )
-            return FlextResult[FlextTypes.Dict].ok(result)
+            return FlextCore.Result[FlextCore.Types.Dict].ok(result)
 
         except Exception as e:
             logger.exception("OIC target pipeline orchestration failed")
-            return FlextResult[FlextTypes.Dict].fail(
+            return FlextCore.Result[FlextCore.Types.Dict].fail(
                 f"Pipeline orchestration failed: {e}",
             )
 
 
-__all__: FlextTypes.StringList = [
+__all__: FlextCore.Types.StringList = [
     "OICTargetOrchestrator",
 ]

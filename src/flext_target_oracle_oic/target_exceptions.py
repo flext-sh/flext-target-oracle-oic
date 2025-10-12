@@ -10,12 +10,7 @@ from __future__ import annotations
 
 from typing import override
 
-from flext_core import (
-    FlextExceptions,
-    FlextModels,
-    FlextResult,
-    FlextTypes,
-)
+from flext_core import FlextCore
 
 # ===============================================================================
 # BASE ORACLE OIC EXCEPTION
@@ -30,7 +25,7 @@ class FlextTargetOracleOicError(Exception):
         self,
         message: str = "Oracle OIC target error",
         *,
-        details: FlextTypes.Dict | None = None,
+        details: FlextCore.Types.Dict | None = None,
         integration_name: str | None = None,
         oic_instance: str | None = None,
         **kwargs: object,
@@ -57,7 +52,7 @@ class FlextTargetOracleOicError(Exception):
 
 
 class FlextTargetOracleOicAuthenticationError(
-    FlextExceptions.ModuleBaseError.ModuleAuthenticationError
+    FlextCore.Exceptions.ModuleBaseError.ModuleAuthenticationError
 ):
     """Oracle OIC authentication errors using flext-core patterns."""
 
@@ -90,7 +85,7 @@ class FlextTargetOracleOicAuthenticationError(
 
 
 class FlextTargetOracleOicConnectionError(
-    FlextExceptions.ModuleBaseError.ModuleConnectionError
+    FlextCore.Exceptions.ModuleBaseError.ModuleConnectionError
 ):
     """Oracle OIC connection errors using flext-core patterns."""
 
@@ -124,7 +119,7 @@ class FlextTargetOracleOicConnectionError(
 
 
 class FlextTargetOracleOicProcessingError(
-    FlextExceptions.ModuleBaseError.ModuleProcessingError
+    FlextCore.Exceptions.ModuleBaseError.ModuleProcessingError
 ):
     """Oracle OIC processing errors using flext-core patterns."""
 
@@ -158,7 +153,7 @@ class FlextTargetOracleOicProcessingError(
 
 
 class FlextTargetOracleOicValidationError(
-    FlextExceptions.ModuleBaseError.ModuleValidationError
+    FlextCore.Exceptions.ModuleBaseError.ModuleValidationError
 ):
     """Oracle OIC validation errors using flext-core patterns."""
 
@@ -174,7 +169,7 @@ class FlextTargetOracleOicValidationError(
         **kwargs: object,
     ) -> None:
         """Initialize Oracle OIC validation error with context."""
-        validation_details: FlextTypes.Dict = {}
+        validation_details: FlextCore.Types.Dict = {}
         context = kwargs.copy()
 
         if integration_name is not None:
@@ -201,7 +196,7 @@ class FlextTargetOracleOicValidationError(
 
 
 class FlextTargetOracleOicConfigurationError(
-    FlextExceptions.ModuleBaseError.ModuleConfigurationError
+    FlextCore.Exceptions.ModuleBaseError.ModuleConfigurationError
 ):
     """Oracle OIC configuration errors using flext-core patterns."""
 
@@ -246,8 +241,8 @@ class FlextTargetOracleOicTransformationError(FlextTargetOracleOicError):
         message: str = "Oracle OIC transformation failed",
         *,
         transformation_type: str | None = None,
-        input_schema: FlextTypes.Dict | None = None,
-        output_schema: FlextTypes.Dict | None = None,
+        input_schema: FlextCore.Types.Dict | None = None,
+        output_schema: FlextCore.Types.Dict | None = None,
         **kwargs: object,
     ) -> None:
         """Initialize Oracle OIC transformation error with context."""
@@ -257,11 +252,11 @@ class FlextTargetOracleOicTransformationError(FlextTargetOracleOicError):
             context["transformation_type"] = transformation_type
         if input_schema is not None:
             # Include minimal schema info for debugging
-            properties: FlextTypes.Dict = input_schema.get("properties", {})
+            properties: FlextCore.Types.Dict = input_schema.get("properties", {})
             if isinstance(properties, dict):
                 context["input_schema_keys"] = list(properties.keys())
         if output_schema is not None:
-            properties: FlextTypes.Dict = output_schema.get("properties", {})
+            properties: FlextCore.Types.Dict = output_schema.get("properties", {})
             if isinstance(properties, dict):
                 context["output_schema_keys"] = list(properties.keys())
 
@@ -337,27 +332,29 @@ class FlextTargetOracleOicAPIError(FlextTargetOracleOicError):
 # ===============================================================================
 
 
-class FlextTargetOracleOicErrorDetails(FlextModels):
+class FlextTargetOracleOicErrorDetails(FlextCore.Models):
     """Structured error details using flext-core patterns."""
 
     error_code: str
     error_type: str
-    context: FlextTypes.Dict
+    context: FlextCore.Types.Dict
     timestamp: str
     source_component: str
     integration_name: str | None = None
     oic_instance: str | None = None
 
-    def validate_domain_rules(self: object) -> FlextResult[None]:
+    def validate_domain_rules(self: object) -> FlextCore.Result[None]:
         """Validate domain-specific business rules."""
         try:
             # Validate error code format
             if not self.error_code or not self.error_code.startswith("ORACLE_OIC"):
-                return FlextResult[None].fail("Error code must start with 'ORACLE_OIC'")
+                return FlextCore.Result[None].fail(
+                    "Error code must start with 'ORACLE_OIC'"
+                )
 
             # Validate error type is not empty
             if not self.error_type:
-                return FlextResult[None].fail("Error type cannot be empty")
+                return FlextCore.Result[None].fail("Error type cannot be empty")
 
             # Validate source component is valid
             valid_components = {
@@ -372,13 +369,13 @@ class FlextTargetOracleOicErrorDetails(FlextModels):
                 "infrastructure",
             }
             if self.source_component not in valid_components:
-                return FlextResult[None].fail(
+                return FlextCore.Result[None].fail(
                     f"Invalid source component: {self.source_component}",
                 )
 
-            return FlextResult[None].ok(None)
+            return FlextCore.Result[None].ok(None)
         except Exception as e:
-            return FlextResult[None].fail(f"Domain validation failed: {e}")
+            return FlextCore.Result[None].fail(f"Domain validation failed: {e}")
 
 
 # ===============================================================================
@@ -497,7 +494,7 @@ def create_auth_error_result(
     auth_method: str | None = None,
     endpoint: str | None = None,
     oic_instance: str | None = None,
-) -> FlextResult[None]:
+) -> FlextCore.Result[None]:
     """Create authentication error result."""
     error = create_authentication_error(
         message,
@@ -505,7 +502,7 @@ def create_auth_error_result(
         endpoint=endpoint,
         oic_instance=oic_instance,
     )
-    return FlextResult[None].fail(str(error))
+    return FlextCore.Result[None].fail(str(error))
 
 
 def create_connection_error_result(
@@ -514,7 +511,7 @@ def create_connection_error_result(
     oic_instance: str | None = None,
     endpoint: str | None = None,
     connection_type: str | None = None,
-) -> FlextResult[None]:
+) -> FlextCore.Result[None]:
     """Create connection error result."""
     error = create_connection_error(
         message,
@@ -522,7 +519,7 @@ def create_connection_error_result(
         endpoint=endpoint,
         connection_type=connection_type,
     )
-    return FlextResult[None].fail(str(error))
+    return FlextCore.Result[None].fail(str(error))
 
 
 def create_processing_error_result(
@@ -531,7 +528,7 @@ def create_processing_error_result(
     integration_name: str | None = None,
     processing_stage: str | None = None,
     record_count: int | None = None,
-) -> FlextResult[None]:
+) -> FlextCore.Result[None]:
     """Create processing error result."""
     error = create_processing_error(
         message,
@@ -539,7 +536,7 @@ def create_processing_error_result(
         processing_stage=processing_stage,
         record_count=record_count,
     )
-    return FlextResult[None].fail(str(error))
+    return FlextCore.Result[None].fail(str(error))
 
 
 def create_validation_error_result(
@@ -549,7 +546,7 @@ def create_validation_error_result(
     value: object = None,
     integration_name: str | None = None,
     entity_type: str | None = None,
-) -> FlextResult[None]:
+) -> FlextCore.Result[None]:
     """Create validation error result."""
     error = create_validation_error(
         message,
@@ -558,14 +555,14 @@ def create_validation_error_result(
         integration_name=integration_name,
         entity_type=entity_type,
     )
-    return FlextResult[None].fail(str(error))
+    return FlextCore.Result[None].fail(str(error))
 
 
 # ===============================================================================
 # EXPORTS
 # ===============================================================================
 
-__all__: FlextTypes.StringList = [
+__all__: FlextCore.Types.StringList = [
     "FlextTargetOracleOicAPIError",
     "FlextTargetOracleOicAuthenticationError",
     "FlextTargetOracleOicConfigurationError",

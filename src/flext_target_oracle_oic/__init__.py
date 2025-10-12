@@ -6,8 +6,6 @@ SPDX-License-Identifier: MIT.
 
 from __future__ import annotations
 
-from flext_core import FlextModels, FlextResult
-
 # Use FLEXT Meltano wrapper instead of direct singer_sdk import (domain separation)
 from flext_meltano import (
     FlextMeltanoBridge,
@@ -19,7 +17,7 @@ from flext_target_oracle_oic.__version__ import __version__, __version_info__
 from flext_target_oracle_oic.application import OICTargetOrchestrator
 from flext_target_oracle_oic.cli import main, main as cli_main
 from flext_target_oracle_oic.client import OICClient
-from flext_target_oracle_oic.config import TargetOracleOICConfig
+from flext_target_oracle_oic.config import TargetOracleOicConfig
 from flext_target_oracle_oic.connection import (
     OICConnection as LegacyOICConnection,
     OICConnectionSettings as LegacyOICConnectionSettings,
@@ -51,7 +49,7 @@ from flext_target_oracle_oic.target_client import (
     LookupsSink,
     OICBaseSink,
     PackagesSink,
-    TargetOracleOIC,
+    TargetOracleOic,
     main as client_main,
 )
 from flext_target_oracle_oic.target_config import (
@@ -89,10 +87,10 @@ from flext_target_oracle_oic.utilities import FlextTargetOracleOicUtilities
 
 __all__: FlextTargetOracleOicTypes.Core.StringList = [
     "ConnectionsSink",
+    "FlextCore.Models",
+    "FlextCore.Result",
     "FlextMeltanoBridge",
     "FlextMeltanoConfig",
-    "FlextModels",
-    "FlextResult",
     "FlextTargetOracleOicAPIError",
     "FlextTargetOracleOicAuthenticationError",
     "FlextTargetOracleOicConfigurationError",
@@ -131,8 +129,8 @@ __all__: FlextTargetOracleOicTypes.Core.StringList = [
     "OICTypeConverter",
     "PackagesSink",
     "Target",
-    "TargetOracleOIC",
-    "TargetOracleOICConfig",
+    "TargetOracleOic",
+    "TargetOracleOicConfig",
     "__version__",
     "__version_info__",
     "cli_main",

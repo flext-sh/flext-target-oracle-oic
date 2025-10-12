@@ -27,7 +27,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pytest
-from flext_core import FlextTypes
+from flext_core import FlextCore
 from flext_meltano import FlextMeltanoValidationError as ConfigValidationError
 from singer_sdk.testing import get_target_test_class
 
@@ -36,12 +36,12 @@ from flext_target_oracle_oic import (
     IntegrationsSink,
     LookupsSink,
     PackagesSink,
-    TargetOracleOIC,
+    TargetOracleOic,
 )
 
 
 # Load real configuration from environment
-def load_test_config() -> FlextTypes.StringDict:
+def load_test_config() -> FlextCore.Types.StringDict:
     """Load real test configuration from environment variables."""
     # Load .env file if it exists
     env_file = Path(".env")
@@ -75,24 +75,24 @@ def load_test_config() -> FlextTypes.StringDict:
 
 
 @pytest.fixture
-def test_config() -> FlextTypes.StringDict:
+def test_config() -> FlextCore.Types.StringDict:
     """Provide real test configuration."""
     return load_test_config()
 
 
 @pytest.fixture
-def target(test_config: FlextTypes.StringDict) -> TargetOracleOIC:
+def target(test_config: FlextCore.Types.StringDict) -> TargetOracleOic:
     """Create real Target instance with environment configuration."""
-    return TargetOracleOIC(config=test_config)
+    return TargetOracleOic(config=test_config)
 
 
-class TestTargetOracleOICE2E:
+class TestTargetOracleOicE2E:
     """End-to-end tests for target-oracle-oic using REAL configuration and NO MOCKS."""
 
     def test_target_initialization(
         self,
-        target: TargetOracleOIC,
-        config: FlextTypes.Dict,
+        target: TargetOracleOic,
+        config: FlextCore.Types.Dict,
     ) -> None:
         """Test target initialization with valid configuration."""
         if target.name != "target-oracle-oic":
@@ -103,7 +103,7 @@ class TestTargetOracleOICE2E:
             msg: str = f"Expected {config['base_url']}, got {target.config['base_url']}"
             raise AssertionError(msg)
 
-    def test_sink_class_mapping(self, target: TargetOracleOIC) -> None:
+    def test_sink_class_mapping(self, target: TargetOracleOic) -> None:
         """Test sink class mapping for known streams."""
         # Test known sinks
         if target._get_sink_class("connections") != ConnectionsSink:
@@ -122,7 +122,7 @@ class TestTargetOracleOICE2E:
             msg: str = f"Expected {target.default_sink_class}, got {default_sink}"
             raise AssertionError(msg)
 
-    def test_sink_initialization(self, target: TargetOracleOIC) -> None:
+    def test_sink_initialization(self, target: TargetOracleOic) -> None:
         """Test sink initialization for each stream type."""
         # Test each sink type
         sinks_to_test = [
@@ -145,7 +145,7 @@ class TestTargetOracleOICE2E:
 
     def test_process_singer_messages(
         self,
-        target: TargetOracleOIC,
+        target: TargetOracleOic,
         tmp_path: Path,
     ) -> None:
         """Test processing Singer messages end-to-end."""
@@ -197,7 +197,7 @@ class TestTargetOracleOICE2E:
             # Verify that the record was processed
             assert mock_process.called, "process_record should have been called"
 
-    def test_sink_authenticator_setup(self, target: TargetOracleOIC) -> None:
+    def test_sink_authenticator_setup(self, target: TargetOracleOic) -> None:
         """Test sink authenticator initialization."""
         # Get a sink instance
         sink = ConnectionsSink(
@@ -211,7 +211,7 @@ class TestTargetOracleOICE2E:
         assert authenticator is not None
         assert hasattr(authenticator, "auth_headers")
 
-    def test_connections_sink_record_processing(self, target: TargetOracleOIC) -> None:
+    def test_connections_sink_record_processing(self, target: TargetOracleOic) -> None:
         """Test connections sink record processing."""
         sink = ConnectionsSink(
             target=target,
@@ -243,7 +243,7 @@ class TestTargetOracleOICE2E:
             else:
                 pytest.fail(f"Unexpected error: {e}")
 
-    def test_integrations_sink_record_processing(self, target: TargetOracleOIC) -> None:
+    def test_integrations_sink_record_processing(self, target: TargetOracleOic) -> None:
         """Test integrations sink record processing."""
         sink = IntegrationsSink(
             target=target,
@@ -273,7 +273,7 @@ class TestTargetOracleOICE2E:
             # Verify import endpoint was called
             mock_client.post.assert_called()
 
-    def test_connections_sink_validation(self, target: TargetOracleOIC) -> None:
+    def test_connections_sink_validation(self, target: TargetOracleOic) -> None:
         """Test connections sink record validation."""
         sink = ConnectionsSink(
             target=target,
@@ -289,7 +289,7 @@ class TestTargetOracleOICE2E:
         """Test method."""
         # Test missing required fields
         with pytest.raises(ConfigValidationError):
-            TargetOracleOIC(config={})
+            TargetOracleOic(config={})
         # Test with minimal valid config
         minimal_config = {
             "base_url": "https://test.integration.ocp.oraclecloud.com",
@@ -297,12 +297,12 @@ class TestTargetOracleOICE2E:
             "oauth_client_secret": "test",
             "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
         }
-        target = TargetOracleOIC(config=minimal_config)
+        target = TargetOracleOic(config=minimal_config)
         if target.config != minimal_config:
             msg: str = f"Expected {minimal_config}, got {target.config}"
             raise AssertionError(msg)
 
-    def test_packages_sink_record_processing(self, target: TargetOracleOIC) -> None:
+    def test_packages_sink_record_processing(self, target: TargetOracleOic) -> None:
         """Test packages sink record processing."""
         sink = PackagesSink(
             target=target,
@@ -333,7 +333,7 @@ class TestTargetOracleOICE2E:
                 msg: str = f"Expected {mock_client.post.call_count} >= {len(records)}"
                 raise AssertionError(msg)
 
-    def test_lookups_sink_record_processing(self, target: TargetOracleOIC) -> None:
+    def test_lookups_sink_record_processing(self, target: TargetOracleOic) -> None:
         """Test lookups sink record processing."""
         sink = LookupsSink(
             target=target,
@@ -390,7 +390,7 @@ class TestTargetOracleOICE2E:
             )
 
             def _run_cli(
-                cmd_list: FlextTypes.StringList,
+                cmd_list: FlextCore.Types.StringList,
                 cwd: str | None = None,
                 stdin_data: str | None = None,
             ) -> tuple[int, str, str]:
@@ -435,7 +435,7 @@ class TestTargetOracleOICE2E:
             )
 
             def _run_input(
-                cmd_list: FlextTypes.StringList,
+                cmd_list: FlextCore.Types.StringList,
                 cwd: str | None = None,
                 input_text: str = "",
             ) -> tuple[int, str, str]:
@@ -483,7 +483,7 @@ class TestTargetOracleOICE2E:
 def get_target_oic_test_class() -> type:
     """Get test class for Singer SDK tests."""
     return get_target_test_class(
-        target_class=TargetOracleOIC,
+        target_class=TargetOracleOic,
         config={
             "base_url": "https://test.integration.ocp.oraclecloud.com",
             "oauth_client_id": "test_client",

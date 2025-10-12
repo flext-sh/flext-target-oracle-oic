@@ -2,11 +2,11 @@
 
 from typing import Protocol, runtime_checkable
 
-from flext_core import FlextProtocols, FlextResult, FlextTypes
+from flext_core import FlextCore
 
 
 class FlextTargetOracleOicProtocols:
-    """Singer Target Oracle OIC protocols with explicit re-exports from FlextProtocols foundation.
+    """Singer Target Oracle OIC protocols with explicit re-exports from FlextCore.Protocols foundation.
 
     Domain Extension Pattern (Phase 3):
     - Explicit re-export of foundation protocols (not inheritance)
@@ -18,12 +18,12 @@ class FlextTargetOracleOicProtocols:
     # RE-EXPORT FOUNDATION PROTOCOLS (EXPLICIT PATTERN)
     # ============================================================================
 
-    Foundation = FlextProtocols.Foundation
-    Domain = FlextProtocols.Domain
-    Application = FlextProtocols.Application
-    Infrastructure = FlextProtocols.Infrastructure
-    Extensions = FlextProtocols.Extensions
-    Commands = FlextProtocols.Commands
+    Foundation = FlextCore.Protocols.Foundation
+    Domain = FlextCore.Protocols.Domain
+    Application = FlextCore.Protocols.Application
+    Infrastructure = FlextCore.Protocols.Infrastructure
+    Extensions = FlextCore.Protocols.Extensions
+    Commands = FlextCore.Protocols.Commands
 
     # ============================================================================
     # SINGER TARGET ORACLE OIC-SPECIFIC PROTOCOLS (DOMAIN NAMESPACE)
@@ -33,58 +33,60 @@ class FlextTargetOracleOicProtocols:
         """Singer Target Oracle OIC domain protocols for Oracle OIC loading."""
 
         @runtime_checkable
-        class OicIntegrationProtocol(FlextProtocols.Domain.Service, Protocol):
+        class OicIntegrationProtocol(FlextCore.Protocols.Domain.Service, Protocol):
             """Protocol for Oracle OIC integration."""
 
-            def integrate(self, data: FlextTypes.Dict) -> FlextResult[None]: ...
+            def integrate(
+                self, data: FlextCore.Types.Dict
+            ) -> FlextCore.Result[None]: ...
 
         @runtime_checkable
-        class DataTransformationProtocol(FlextProtocols.Domain.Service, Protocol):
+        class DataTransformationProtocol(FlextCore.Protocols.Domain.Service, Protocol):
             """Protocol for Singer to OIC transformation."""
 
             def transform_to_oic(
-                self, record: FlextTypes.Dict
-            ) -> FlextResult[FlextTypes.Dict]: ...
+                self, record: FlextCore.Types.Dict
+            ) -> FlextCore.Result[FlextCore.Types.Dict]: ...
 
         @runtime_checkable
-        class CloudApiProtocol(FlextProtocols.Domain.Service, Protocol):
+        class CloudApiProtocol(FlextCore.Protocols.Domain.Service, Protocol):
             """Protocol for OIC cloud API operations."""
 
             def invoke_integration(
-                self, payload: FlextTypes.Dict
-            ) -> FlextResult[FlextTypes.Dict]: ...
+                self, payload: FlextCore.Types.Dict
+            ) -> FlextCore.Result[FlextCore.Types.Dict]: ...
 
         @runtime_checkable
-        class BatchProcessingProtocol(FlextProtocols.Domain.Service, Protocol):
+        class BatchProcessingProtocol(FlextCore.Protocols.Domain.Service, Protocol):
             """Protocol for OIC batch processing."""
 
             def process_batch(
-                self, records: list[FlextTypes.Dict]
-            ) -> FlextResult[None]: ...
+                self, records: list[FlextCore.Types.Dict]
+            ) -> FlextCore.Result[None]: ...
 
         @runtime_checkable
-        class ValidationProtocol(FlextProtocols.Domain.Service, Protocol):
+        class ValidationProtocol(FlextCore.Protocols.Domain.Service, Protocol):
             """Protocol for OIC payload validation."""
 
             def validate_payload(
-                self, payload: FlextTypes.Dict
-            ) -> FlextResult[bool]: ...
+                self, payload: FlextCore.Types.Dict
+            ) -> FlextCore.Result[bool]: ...
 
         @runtime_checkable
-        class PerformanceProtocol(FlextProtocols.Domain.Service, Protocol):
+        class PerformanceProtocol(FlextCore.Protocols.Domain.Service, Protocol):
             """Protocol for OIC performance optimization."""
 
             def optimize_throughput(
-                self, config: FlextTypes.Dict
-            ) -> FlextResult[FlextTypes.Dict]: ...
+                self, config: FlextCore.Types.Dict
+            ) -> FlextCore.Result[FlextCore.Types.Dict]: ...
 
         @runtime_checkable
-        class MonitoringProtocol(FlextProtocols.Domain.Service, Protocol):
+        class MonitoringProtocol(FlextCore.Protocols.Domain.Service, Protocol):
             """Protocol for OIC loading monitoring."""
 
             def track_integration_status(
                 self, integration_id: str
-            ) -> FlextResult[FlextTypes.Dict]: ...
+            ) -> FlextCore.Result[FlextCore.Types.Dict]: ...
 
     # ============================================================================
     # BACKWARD COMPATIBILITY ALIASES (100% COMPATIBILITY)

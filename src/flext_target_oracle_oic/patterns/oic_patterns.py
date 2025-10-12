@@ -9,9 +9,9 @@ from __future__ import annotations
 import json
 from typing import override
 
-from flext_core import FlextLogger, FlextResult, FlextTypes
+from flext_core import FlextCore
 
-logger = FlextLogger(__name__)
+logger = FlextCore.Logger(__name__)
 
 
 class OICTypeConverter:
@@ -25,19 +25,19 @@ class OICTypeConverter:
         self,
         singer_type: str,
         value: object,
-    ) -> FlextResult[object]:
+    ) -> FlextCore.Result[object]:
         """Convert Singer type to OIC-compatible type."""
         try:
             if value is None:
-                return FlextResult[object].ok(None)
+                return FlextCore.Result[object].ok(None)
 
             # Handle complex types first
             if singer_type in {"object", "array"}:
                 if isinstance(value, (dict, list)):
-                    return FlextResult[object].ok(value)
+                    return FlextCore.Result[object].ok(value)
                 parsed_value: object
                 parsed_value = json.loads(value) if isinstance(value, str) else value
-                return FlextResult[object].ok(parsed_value)
+                return FlextCore.Result[object].ok(parsed_value)
 
             # Handle simple types with mapping
             type_converters = {
@@ -51,15 +51,15 @@ class OICTypeConverter:
             if singer_type in type_converters:
                 converter = type_converters[singer_type]
                 if callable(converter):
-                    return FlextResult[object].ok(converter(value))
-                return FlextResult[object].ok(value)
+                    return FlextCore.Result[object].ok(converter(value))
+                return FlextCore.Result[object].ok(value)
 
             # Default fallback
-            return FlextResult[object].ok(value)
+            return FlextCore.Result[object].ok(value)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.warning("Type conversion failed for %s: %s", singer_type, e)
-            return FlextResult[object].ok(str(value))  # Fallback to string
+            return FlextCore.Result[object].ok(str(value))  # Fallback to string
 
 
 class OICDataTransformer:
@@ -72,21 +72,21 @@ class OICDataTransformer:
 
     def transform_record(
         self,
-        record: FlextTypes.Dict,
-        schema: FlextTypes.Dict | None = None,
-    ) -> FlextResult[FlextTypes.Dict]:
+        record: FlextCore.Types.Dict,
+        schema: FlextCore.Types.Dict | None = None,
+    ) -> FlextCore.Result[FlextCore.Types.Dict]:
         """Transform Singer record for OIC storage."""
         try:
-            transformed: FlextTypes.Dict = {}
+            transformed: FlextCore.Types.Dict = {}
 
             for key, value in record.items():
                 # OIC-specific attribute naming (camelCase convention)
                 oic_key = self._normalize_oic_attribute_name(key)
 
                 if schema and isinstance(schema, dict):
-                    properties: FlextTypes.Dict = schema.get("properties", {})
+                    properties: FlextCore.Types.Dict = schema.get("properties", {})
                     if isinstance(properties, dict):
-                        prop_def: FlextTypes.Dict = properties.get(key, {})
+                        prop_def: FlextCore.Types.Dict = properties.get(key, {})
                     singer_type = prop_def.get("type", "string")
 
                     convert_result = self.type_converter.convert_singer_to_oic(
@@ -100,11 +100,11 @@ class OICDataTransformer:
                 else:
                     transformed[oic_key] = value
 
-            return FlextResult[FlextTypes.Dict].ok(transformed)
+            return FlextCore.Result[FlextCore.Types.Dict].ok(transformed)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("OIC record transformation failed")
-            return FlextResult[FlextTypes.Dict].fail(
+            return FlextCore.Result[FlextCore.Types.Dict].fail(
                 f"Record transformation failed: {e}",
             )
 
@@ -123,12 +123,12 @@ class OICDataTransformer:
 
     def prepare_oic_payload(
         self,
-        _record: FlextTypes.Dict,
+        _record: FlextCore.Types.Dict,
         _resource_type: str,
-    ) -> FlextResult[FlextTypes.Dict]:
+    ) -> FlextCore.Result[FlextCore.Types.Dict]:
         """Prepare payload for OIC API calls."""
         try:
-            payload: FlextTypes.Dict = {
+            payload: FlextCore.Types.Dict = {
                 "resourceType": _resource_type,
                 "properties": _record,
                 "metadata": {
@@ -137,11 +137,11 @@ class OICDataTransformer:
                 },
             }
 
-            return FlextResult[FlextTypes.Dict].ok(payload)
+            return FlextCore.Result[FlextCore.Types.Dict].ok(payload)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("OIC payload preparation failed")
-            return FlextResult[FlextTypes.Dict].fail(
+            return FlextCore.Result[FlextCore.Types.Dict].fail(
                 f"Payload preparation failed: {e}",
             )
 
@@ -155,20 +155,20 @@ class OICSchemaMapper:
 
     def map_singer_schema_to_oic(
         self,
-        schema: FlextTypes.Dict,
+        schema: FlextCore.Types.Dict,
         resource_type: str = "integration",
-    ) -> FlextResult[FlextTypes.StringDict]:
+    ) -> FlextCore.Result[FlextCore.Types.StringDict]:
         """Map Singer schema to OIC resource definitions."""
         try:
-            oic_schema: FlextTypes.StringDict = {}
-            properties: FlextTypes.Dict = schema.get("properties", {})
+            oic_schema: FlextCore.Types.StringDict = {}
+            properties: FlextCore.Types.Dict = schema.get("properties", {})
 
             if isinstance(properties, dict):
                 for prop_name, prop_def in properties.items():
                     if not isinstance(prop_name, str) or not isinstance(prop_def, dict):
                         continue
-                    # Ensure prop_def is properly typed as FlextTypes.Dict
-                    typed_prop_def: FlextTypes.Dict = prop_def
+                    # Ensure prop_def is properly typed as FlextCore.Types.Dict
+                    typed_prop_def: FlextCore.Types.Dict = prop_def
                     oic_name = self._normalize_attribute_name(prop_name)
                     oic_type_result = self._map_singer_type_to_oic(
                         typed_prop_def,
@@ -185,11 +185,11 @@ class OICSchemaMapper:
                     else:
                         oic_schema[oic_name] = "string"  # Fallback
 
-            return FlextResult[FlextTypes.StringDict].ok(oic_schema)
+            return FlextCore.Result[FlextCore.Types.StringDict].ok(oic_schema)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("OIC schema mapping failed")
-            return FlextResult[FlextTypes.StringDict].fail(
+            return FlextCore.Result[FlextCore.Types.StringDict].fail(
                 f"Schema mapping failed: {e}",
             )
 
@@ -208,27 +208,27 @@ class OICSchemaMapper:
 
     def _map_singer_type_to_oic(
         self,
-        prop_def: FlextTypes.Dict,
+        prop_def: FlextCore.Types.Dict,
         _resource_type: str,
-    ) -> FlextResult[str]:
+    ) -> FlextCore.Result[str]:
         """Map Singer property definition to OIC resource type."""
         try:
             prop_type = prop_def.get("type", "string")
             prop_format = prop_def.get("format")
 
             if prop_format in {"date-time", "date"}:
-                return FlextResult[str].ok("datetime")
+                return FlextCore.Result[str].ok("datetime")
             if prop_type in {"integer", "number"}:
-                return FlextResult[str].ok("number")
+                return FlextCore.Result[str].ok("number")
             if prop_type == "boolean":
-                return FlextResult[str].ok("boolean")
+                return FlextCore.Result[str].ok("boolean")
             if prop_type in {"object", "array"}:
-                return FlextResult[str].ok("object")
-            return FlextResult[str].ok("string")
+                return FlextCore.Result[str].ok("object")
+            return FlextCore.Result[str].ok("string")
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.warning("OIC type mapping failed: %s", e)
-            return FlextResult[str].ok("string")
+            return FlextCore.Result[str].ok("string")
 
 
 class OICEntryManager:
@@ -240,9 +240,9 @@ class OICEntryManager:
 
     def prepare_integration_entry(
         self,
-        record: FlextTypes.Dict,
+        record: FlextCore.Types.Dict,
         integration_name: str,
-    ) -> FlextResult[FlextTypes.Dict]:
+    ) -> FlextCore.Result[FlextCore.Types.Dict]:
         """Prepare integration entry for OIC."""
         try:
             entry = {
@@ -257,19 +257,19 @@ class OICEntryManager:
                 "properties": "record",
             }
 
-            return FlextResult[FlextTypes.Dict].ok(entry)
+            return FlextCore.Result[FlextCore.Types.Dict].ok(entry)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Integration entry preparation failed")
-            return FlextResult[FlextTypes.Dict].fail(
+            return FlextCore.Result[FlextCore.Types.Dict].fail(
                 f"Integration entry preparation failed: {e}",
             )
 
     def prepare_connection_entry(
         self,
-        record: FlextTypes.Dict,
+        record: FlextCore.Types.Dict,
         connection_name: str,
-    ) -> FlextResult[FlextTypes.Dict]:
+    ) -> FlextCore.Result[FlextCore.Types.Dict]:
         """Prepare connection entry for OIC."""
         try:
             entry = {
@@ -280,19 +280,19 @@ class OICEntryManager:
                 "connectionProperties": "record",
             }
 
-            return FlextResult[FlextTypes.Dict].ok(entry)
+            return FlextCore.Result[FlextCore.Types.Dict].ok(entry)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Connection entry preparation failed")
-            return FlextResult[FlextTypes.Dict].fail(
+            return FlextCore.Result[FlextCore.Types.Dict].fail(
                 f"Connection entry preparation failed: {e}",
             )
 
     def prepare_package_entry(
         self,
-        record: FlextTypes.Dict,
+        record: FlextCore.Types.Dict,
         package_name: str,
-    ) -> FlextResult[FlextTypes.Dict]:
+    ) -> FlextCore.Result[FlextCore.Types.Dict]:
         """Prepare package entry for OIC."""
         try:
             entry = {
@@ -303,19 +303,19 @@ class OICEntryManager:
                 "contents": "record",
             }
 
-            return FlextResult[FlextTypes.Dict].ok(entry)
+            return FlextCore.Result[FlextCore.Types.Dict].ok(entry)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Package entry preparation failed")
-            return FlextResult[FlextTypes.Dict].fail(
+            return FlextCore.Result[FlextCore.Types.Dict].fail(
                 f"Package entry preparation failed: {e}",
             )
 
     def prepare_lookup_entry(
         self,
-        record: FlextTypes.Dict,
+        record: FlextCore.Types.Dict,
         lookup_name: str,
-    ) -> FlextResult[FlextTypes.Dict]:
+    ) -> FlextCore.Result[FlextCore.Types.Dict]:
         """Prepare lookup entry for OIC."""
         try:
             entry = {
@@ -325,19 +325,19 @@ class OICEntryManager:
                 "lookupData": "record",
             }
 
-            return FlextResult[FlextTypes.Dict].ok(entry)
+            return FlextCore.Result[FlextCore.Types.Dict].ok(entry)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Lookup entry preparation failed")
-            return FlextResult[FlextTypes.Dict].fail(
+            return FlextCore.Result[FlextCore.Types.Dict].fail(
                 f"Lookup entry preparation failed: {e}",
             )
 
     def validate_entry_structure(
         self,
-        entry: FlextTypes.Dict,
+        entry: FlextCore.Types.Dict,
         entry_type: str,
-    ) -> FlextResult[bool]:
+    ) -> FlextCore.Result[bool]:
         """Validate OIC entry structure."""
         try:
             required_fields = {
@@ -347,16 +347,16 @@ class OICEntryManager:
                 "lookup": ["name", "lookupType"],
             }
 
-            required: FlextTypes.List = required_fields.get(entry_type, [])
+            required: FlextCore.Types.List = required_fields.get(entry_type, [])
             missing_fields = [field for field in required if field not in entry]
 
             if missing_fields:
-                return FlextResult[bool].fail(
+                return FlextCore.Result[bool].fail(
                     f"Missing required fields: {missing_fields}",
                 )
 
-            return FlextResult[bool].ok(data=True)
+            return FlextCore.Result[bool].ok(data=True)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Entry validation failed")
-            return FlextResult[bool].fail(f"Entry validation failed: {e}")
+            return FlextCore.Result[bool].fail(f"Entry validation failed: {e}")

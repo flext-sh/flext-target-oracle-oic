@@ -8,16 +8,11 @@ from __future__ import annotations
 
 from typing import override
 
-from flext_core import (
-    FlextExceptions,
-    FlextModels,
-    FlextResult,
-    FlextTypes,
-)
+from flext_core import FlextCore
 
 
 # Base Oracle OIC exception
-class FlextTargetOracleOicError(FlextExceptions.Error):
+class FlextTargetOracleOicError(FlextCore.Exceptions.Error):
     """Base exception for Oracle OIC target operations."""
 
     @override
@@ -25,7 +20,7 @@ class FlextTargetOracleOicError(FlextExceptions.Error):
         self,
         message: str = "Oracle OIC target error",
         *,
-        details: FlextTypes.Dict | None = None,
+        details: FlextCore.Types.Dict | None = None,
         **kwargs: object,
     ) -> None:
         """Initialize exception with message and optional details."""
@@ -50,7 +45,7 @@ class FlextTargetOracleOicError(FlextExceptions.Error):
         )
 
 
-class FlextTargetOracleOicAuthenticationError(FlextExceptions.AuthenticationError):
+class FlextTargetOracleOicAuthenticationError(FlextCore.Exceptions.AuthenticationError):
     """Oracle OIC authentication errors."""
 
     @override
@@ -86,7 +81,7 @@ class FlextTargetOracleOicAuthenticationError(FlextExceptions.AuthenticationErro
         )
 
 
-class FlextTargetOracleOicProcessingError(FlextExceptions.ProcessingError):
+class FlextTargetOracleOicProcessingError(FlextCore.Exceptions.ProcessingError):
     """Oracle OIC processing errors."""
 
     @override
@@ -122,7 +117,7 @@ class FlextTargetOracleOicProcessingError(FlextExceptions.ProcessingError):
         )
 
 
-class FlextTargetOracleOicTransformationError(FlextExceptions.ProcessingError):
+class FlextTargetOracleOicTransformationError(FlextCore.Exceptions.ProcessingError):
     """Oracle OIC transformation errors."""
 
     @override
@@ -131,7 +126,7 @@ class FlextTargetOracleOicTransformationError(FlextExceptions.ProcessingError):
         message: str = "Oracle OIC transformation failed",
         *,
         transformation_type: str | None = None,
-        input_data: FlextTypes.Dict | None = None,
+        input_data: FlextCore.Types.Dict | None = None,
         **kwargs: object,
     ) -> None:
         """Initialize Oracle OIC transformation error with context."""
@@ -159,7 +154,7 @@ class FlextTargetOracleOicTransformationError(FlextExceptions.ProcessingError):
 
 
 # Oracle OIC-specific exceptions that need custom behavior
-class FlextTargetOracleOicConnectionError(FlextExceptions.ConnectionError):
+class FlextTargetOracleOicConnectionError(FlextCore.Exceptions.ConnectionError):
     """Oracle OIC-specific connection errors."""
 
     @override
@@ -195,7 +190,7 @@ class FlextTargetOracleOicConnectionError(FlextExceptions.ConnectionError):
         )
 
 
-class FlextTargetOracleOicValidationError(FlextExceptions.ValidationError):
+class FlextTargetOracleOicValidationError(FlextCore.Exceptions.ValidationError):
     """Oracle OIC-specific validation errors."""
 
     @override
@@ -236,7 +231,7 @@ class FlextTargetOracleOicValidationError(FlextExceptions.ValidationError):
         )
 
 
-class FlextTargetOracleOicConfigurationError(FlextExceptions.ConfigurationError):
+class FlextTargetOracleOicConfigurationError(FlextCore.Exceptions.ConfigurationError):
     """Oracle OIC-specific configuration errors."""
 
     @override
@@ -349,25 +344,25 @@ class FlextTargetOracleOicAPIError(FlextTargetOracleOicError):
         )
 
 
-class FlextTargetOracleOicErrorDetails(FlextModels):
+class FlextTargetOracleOicErrorDetails(FlextCore.Models):
     """Structured error details using flext-core patterns."""
 
     error_code: str
     error_type: str
-    context: FlextTypes.Dict
+    context: FlextCore.Types.Dict
     timestamp: str
     source_component: str
 
-    def validate_domain_rules(self) -> FlextResult[None]:
+    def validate_domain_rules(self) -> FlextCore.Result[None]:
         """Validate domain-specific business rules."""
         try:
             # Validate error code format
             if not self.error_code or not self.error_code.startswith("OIC"):
-                return FlextResult[None].fail("Error code must start with 'OIC'")
+                return FlextCore.Result[None].fail("Error code must start with 'OIC'")
 
             # Validate error type is not empty
             if not self.error_type:
-                return FlextResult[None].fail("Error type cannot be empty")
+                return FlextCore.Result[None].fail("Error type cannot be empty")
 
             # Validate source component is valid
             valid_components = [
@@ -378,10 +373,10 @@ class FlextTargetOracleOicErrorDetails(FlextModels):
                 "infrastructure",
             ]
             if self.source_component not in valid_components:
-                return FlextResult[None].fail(
+                return FlextCore.Result[None].fail(
                     f"Invalid source component: {self.source_component}",
                 )
 
-            return FlextResult[None].ok(None)
+            return FlextCore.Result[None].ok(None)
         except Exception as e:
-            return FlextResult[None].fail(f"Domain validation failed: {e}")
+            return FlextCore.Result[None].fail(f"Domain validation failed: {e}")

@@ -8,57 +8,57 @@ from __future__ import annotations
 
 from os import getenv
 
-from flext_core import FlextResult, FlextTypes
+from flext_core import FlextCore
 from pydantic import SecretStr
 
-from flext_target_oracle_oic.config import TargetOracleOICConfig
+from flext_target_oracle_oic.config import TargetOracleOicConfig
 
 
 def setup_oic_target(
-    config: TargetOracleOICConfig | None = None,
-) -> FlextResult[TargetOracleOICConfig]:
+    config: TargetOracleOicConfig | None = None,
+) -> FlextCore.Result[TargetOracleOicConfig]:
     """Set up Oracle Integration Cloud target with configuration.
 
     Args:
       config: Optional configuration. If None, creates defaults.
 
     Returns:
-      FlextResult with TargetOracleOICConfig or error message.
+      FlextCore.Result with TargetOracleOicConfig or error message.
 
     """
     try:
         if config is None:
             # Create with intelligent defaults using the singleton pattern
-            config = TargetOracleOICConfig.get_global_instance()
+            config = TargetOracleOicConfig.get_global_instance()
 
         # Validate configuration
         validation_result = config.validate_business_rules()
         if validation_result.is_failure:
-            return FlextResult[TargetOracleOICConfig].fail(
+            return FlextCore.Result[TargetOracleOicConfig].fail(
                 f"Configuration validation failed: {validation_result.error}"
             )
 
-        return FlextResult[TargetOracleOICConfig].ok(config)
+        return FlextCore.Result[TargetOracleOicConfig].ok(config)
 
     except (RuntimeError, ValueError, TypeError) as e:
-        return FlextResult[TargetOracleOICConfig].fail(
+        return FlextCore.Result[TargetOracleOicConfig].fail(
             f"Failed to set up OIC target: {e}",
         )
 
 
 def create_development_oic_target_config(
-    **overrides: FlextTypes.Value,
-) -> TargetOracleOICConfig:
+    **overrides: FlextCore.Types.Value,
+) -> TargetOracleOicConfig:
     """Create development OIC target configuration with defaults.
 
     Args:
       **overrides: Configuration overrides
 
     Returns:
-      TargetOracleOICConfig for development use.
+      TargetOracleOicConfig for development use.
 
     """
-    dev_config_overrides: dict[str, FlextTypes.Value] = {
+    dev_config_overrides: dict[str, FlextCore.Types.Value] = {
         # Authentication configuration
         "oauth_client_id": getenv("OIC_DEV_CLIENT_ID", "dev-client-id"),
         "oauth_client_secret": SecretStr(
@@ -103,22 +103,22 @@ def create_development_oic_target_config(
         **overrides,
     }
 
-    return TargetOracleOICConfig.create_for_development(**dev_config_overrides)
+    return TargetOracleOicConfig.create_for_development(**dev_config_overrides)
 
 
 def create_production_oic_target_config(
-    **overrides: FlextTypes.Value,
-) -> TargetOracleOICConfig:
+    **overrides: FlextCore.Types.Value,
+) -> TargetOracleOicConfig:
     """Create production OIC target configuration with defaults.
 
     Args:
       **overrides: Configuration overrides
 
     Returns:
-      TargetOracleOICConfig for production use.
+      TargetOracleOicConfig for production use.
 
     """
-    prod_config_overrides: dict[str, FlextTypes.Value] = {
+    prod_config_overrides: dict[str, FlextCore.Types.Value] = {
         # Authentication configuration
         "oauth_client_id": getenv("OIC_PROD_CLIENT_ID", ""),
         "oauth_client_secret": SecretStr(
@@ -152,22 +152,22 @@ def create_production_oic_target_config(
         **overrides,
     }
 
-    return TargetOracleOICConfig.create_for_production(**prod_config_overrides)
+    return TargetOracleOicConfig.create_for_production(**prod_config_overrides)
 
 
 def create_testing_oic_target_config(
-    **overrides: FlextTypes.Value,
-) -> TargetOracleOICConfig:
+    **overrides: FlextCore.Types.Value,
+) -> TargetOracleOicConfig:
     """Create testing OIC target configuration with defaults.
 
     Args:
       **overrides: Configuration overrides
 
     Returns:
-      TargetOracleOICConfig for testing use.
+      TargetOracleOicConfig for testing use.
 
     """
-    test_config_overrides: dict[str, FlextTypes.Value] = {
+    test_config_overrides: dict[str, FlextCore.Types.Value] = {
         # Authentication configuration
         "oauth_client_id": getenv("OIC_TEST_CLIENT_ID", "test-client-id"),
         "oauth_client_secret": SecretStr(
@@ -190,33 +190,33 @@ def create_testing_oic_target_config(
         **overrides,
     }
 
-    return TargetOracleOICConfig.create_for_testing(**test_config_overrides)
+    return TargetOracleOicConfig.create_for_testing(**test_config_overrides)
 
 
-def validate_oic_target_config(config: TargetOracleOICConfig) -> FlextResult[None]:
+def validate_oic_target_config(config: TargetOracleOicConfig) -> FlextCore.Result[None]:
     """Validate Oracle Integration Cloud target configuration.
 
     Args:
       config: Configuration to validate
 
     Returns:
-      FlextResult indicating validation success or failure
+      FlextCore.Result indicating validation success or failure
 
     """
     return config.validate_business_rules()
 
 
-def get_oic_target_config_schema() -> FlextTypes.Dict:
+def get_oic_target_config_schema() -> FlextCore.Types.Dict:
     """Get JSON schema for Oracle Integration Cloud target configuration.
 
     Returns:
-      JSON schema dictionary for TargetOracleOICConfig
+      JSON schema dictionary for TargetOracleOicConfig
 
     """
-    return TargetOracleOICConfig.model_json_schema()
+    return TargetOracleOicConfig.model_json_schema()
 
 
-__all__: FlextTypes.StringList = [
+__all__: FlextCore.Types.StringList = [
     "create_development_oic_target_config",
     "create_production_oic_target_config",
     "create_testing_oic_target_config",
