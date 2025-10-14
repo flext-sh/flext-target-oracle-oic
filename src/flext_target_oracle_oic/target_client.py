@@ -51,7 +51,7 @@ class OICBaseSink(Sink):
         """Get unified OIC configuration."""
         if not self._oic_config:
             self._oic_config = TargetOracleOicConfig.model_validate(
-                dict(self.config) if self.config else {},
+                dict[str, object](self.config) if self.config else {},
             )
         return self._oic_config
 
@@ -216,7 +216,7 @@ class IntegrationsSink(OICBaseSink):
     def _create_integration(self, record: FlextCore.Types.Dict) -> None:
         """Create new integration in OIC."""
         try:
-            # Prepare creation payload - convert to string dict for FlextApiClient compatibility
+            # Prepare creation payload - convert to string dict[str, object] for FlextApiClient compatibility
             payload = {
                 "name": str(record["name"]),
                 "identifier": str(record["id"]),
@@ -224,7 +224,7 @@ class IntegrationsSink(OICBaseSink):
                 "pattern": str(record.get("pattern", "ORCHESTRATION")),
             }
 
-            # Convert payload to string dict for FlextApiClient compatibility
+            # Convert payload to string dict[str, object] for FlextApiClient compatibility
             json_data: FlextCore.Types.Dict = {
                 str(k): str(v) for k, v in payload.items()
             }
@@ -264,7 +264,7 @@ class IntegrationsSink(OICBaseSink):
                 msg = "package_file is required for integration import"
                 raise ValueError(msg)
 
-            # Prepare import payload - convert to string dict for FlextApiClient compatibility
+            # Prepare import payload - convert to string dict[str, object] for FlextApiClient compatibility
             payload = {
                 "type": "APPLICATION_IMPORT",
                 "name": str(record.get("name", "")),
@@ -277,7 +277,7 @@ class IntegrationsSink(OICBaseSink):
             if "importOptions" in record:
                 payload["importOptions"] = str(record["importOptions"])
 
-            # Convert payload to string dict for FlextApiClient compatibility
+            # Convert payload to string dict[str, object] for FlextApiClient compatibility
             json_data: FlextCore.Types.Dict = {
                 str(k): str(v) for k, v in payload.items()
             }
@@ -317,7 +317,7 @@ class IntegrationsSink(OICBaseSink):
     ) -> None:
         """Update existing integration in OIC."""
         try:
-            # Prepare update payload - convert to string dict for FlextApiClient compatibility
+            # Prepare update payload - convert to string dict[str, object] for FlextApiClient compatibility
             payload = {}
 
             # Add updatable fields if present
@@ -332,7 +332,7 @@ class IntegrationsSink(OICBaseSink):
                 )
                 return
 
-            # Convert payload to string dict for FlextApiClient compatibility
+            # Convert payload to string dict[str, object] for FlextApiClient compatibility
             json_data: FlextCore.Types.Dict = {
                 str(k): str(v) for k, v in payload.items()
             }
@@ -441,9 +441,11 @@ class TargetOracleOic(Target):
     ) -> None:
         """Initialize target with configuration and options."""
         # Preserve the flat config exactly as received for test expectations
-        self._original_flat_config: FlextCore.Types.Dict = dict(config or {})
+        self._original_flat_config: FlextCore.Types.Dict = dict[str, object](
+            config or {}
+        )
         # Map legacy flat config into unified model-compatible structure to satisfy tests
-        normalized_config: FlextCore.Types.Dict = dict(config or {})
+        normalized_config: FlextCore.Types.Dict = dict[str, object](config or {})
         if (
             normalized_config
             and "auth" not in normalized_config
@@ -453,7 +455,9 @@ class TargetOracleOic(Target):
             )
         ):
             # Preserve flat keys for Singer validation; also inject nested structure for our usage
-            normalized_config: FlextCore.Types.Dict = dict(normalized_config)
+            normalized_config: FlextCore.Types.Dict = dict[str, object](
+                normalized_config
+            )
             normalized_config.setdefault("auth", {})
             normalized_config.setdefault("connection", {})
             auth_section = normalized_config["auth"]
@@ -501,7 +505,7 @@ class TargetOracleOic(Target):
         """Get unified OIC configuration."""
         if not self._oic_config:
             self._oic_config = TargetOracleOicConfig.model_validate(
-                dict(self.config) if self.config else {},
+                dict[str, object](self.config) if self.config else {},
             )
         return self._oic_config
 
