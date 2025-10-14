@@ -15,7 +15,7 @@ from datetime import UTC, datetime
 from typing import Literal
 
 from flext_core import FlextCore
-from pydantic import Field, SecretStr
+from pydantic import ConfigDict, Field, SecretStr
 
 # Oracle OIC constants
 oauth2 = "oauth2"
@@ -61,7 +61,22 @@ class FlextTargetOracleOicModels(FlextCore.Models):
     compliance, OAuth2 authentication, and target operations following standardized patterns.
     """
 
-    class OicAuthenticationConfig(FlextCore.Models.BaseConfig):
+    model_config = ConfigDict(
+        validate_assignment=True,
+        validate_return=True,
+        validate_default=True,
+        use_enum_values=True,
+        arbitrary_types_allowed=True,
+        extra="forbid",
+        frozen=False,
+        strict=True,
+        str_strip_whitespace=True,
+        ser_json_timedelta="iso8601",
+        ser_json_bytes="base64",
+        hide_input_in_errors=True,
+    )
+
+    class OicAuthenticationConfig(FlextCore.Models.ArbitraryTypesModel):
         """Oracle OIC authentication configuration with OAuth2 support."""
 
         base_url: str = Field(..., description="Oracle OIC instance URL")
@@ -71,7 +86,7 @@ class FlextTargetOracleOicModels(FlextCore.Models):
         oauth_client_aud: str = Field(..., description="OAuth2 audience")
 
         # Authentication options
-        auth_method: Literal[oauth2] = Field(
+        auth_method: Literal["oauth2"] = Field(
             default="oauth2", description="Authentication method"
         )
         token_cache_duration: int = Field(
@@ -106,7 +121,7 @@ class FlextTargetOracleOicModels(FlextCore.Models):
         properties: FlextCore.Types.Dict = Field(
             default_factory=dict, description="Connection properties"
         )
-        status: Literal[active, inactive, error] = Field(
+        status: Literal["active", "inactive", "error"] = Field(
             default="active", description="Connection status"
         )
 
@@ -130,15 +145,15 @@ class FlextTargetOracleOicModels(FlextCore.Models):
 
         name: str = Field(..., description="Integration display name", min_length=1)
         description: str = Field(default="", description="Integration description")
-        version: str = Field(
+        oic_version: str = Field(
             default="01.00.0000",
-            description="Integration version",
+            description="Oracle OIC integration version",
             pattern=r"^\d{2}\.\d{2}\.\d{4}$",
         )
         pattern: Literal[
-            ORCHESTRATION, MAP_MY_DATA, PUBLISH_TO_OIC, SUBSCRIBE_TO_OIC
+            "ORCHESTRATION", "MAP_MY_DATA", "PUBLISH_TO_OIC", "SUBSCRIBE_TO_OIC"
         ] = Field(default="ORCHESTRATION", description="Integration pattern")
-        status: Literal[configured, activated, error] = Field(
+        status: Literal["configured", "activated", "error"] = Field(
             default="configured", description="Integration status"
         )
         archive_content: bytes | None = Field(
@@ -176,7 +191,7 @@ class FlextTargetOracleOicModels(FlextCore.Models):
 
         name: str = Field(..., description="Package display name", min_length=1)
         description: str = Field(default="", description="Package description")
-        version: str = Field(
+        oic_version: str = Field(
             default="01.00.0000",
             description="Package version",
             pattern=r"^\d{2}\.\d{2}\.\d{4}$",
@@ -283,7 +298,7 @@ class FlextTargetOracleOicModels(FlextCore.Models):
         integration_id: str = Field(
             ..., description="Integration identifier", min_length=1
         )
-        schedule_type: Literal[ONCE, RECURRING, CRON] = Field(
+        schedule_type: Literal["ONCE", "RECURRING", "CRON"] = Field(
             default="ONCE", description="Schedule type"
         )
         schedule_expression: str = Field(
@@ -316,12 +331,12 @@ class FlextTargetOracleOicModels(FlextCore.Models):
         integration_id: str = Field(
             ..., description="Integration identifier", min_length=1
         )
-        version: str = Field(
+        oic_version: str = Field(
             default="01.00.0000",
             description="Integration version",
             pattern=r"^\d{2}\.\d{2}\.\d{4}$",
         )
-        action: Literal[activate, deactivate, test, clone] = Field(
+        action: Literal["activate", "deactivate", "test", "clone"] = Field(
             ..., description="Action to perform"
         )
         parameters: FlextCore.Types.Dict = Field(
@@ -357,7 +372,7 @@ class FlextTargetOracleOicModels(FlextCore.Models):
         connection_id: str = Field(
             ..., description="Connection identifier", min_length=1
         )
-        action: Literal[test, refresh_metadata] = Field(
+        action: Literal["test", "refresh_metadata"] = Field(
             ..., description="Action to perform"
         )
         parameters: FlextCore.Types.Dict = Field(
@@ -447,7 +462,7 @@ class FlextTargetOracleOicModels(FlextCore.Models):
         )
 
         # Import configuration
-        import_mode: Literal[create_only, update_only, create_or_update] = Field(
+        import_mode: Literal["create_only", "update_only", "create_or_update"] = Field(
             default="create_or_update", description="Import mode for OIC artifacts"
         )
         activate_integrations: bool = Field(
@@ -566,7 +581,7 @@ class FlextTargetOracleOicModels(FlextCore.Models):
                 return 0.0
             return (self.operation_failures / self.records_processed) * 100.0
 
-    class OicErrorContext(FlextCore.Models.BaseModel):
+    class OicErrorContext(FlextCore.Models.StrictArbitraryTypesModel):
         """Error context for Oracle OIC target error handling."""
 
         error_type: Literal[
@@ -622,7 +637,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
 
         @staticmethod
         def validate_oauth2_config(
-            config: dict,
+            config: FlextCore.Types.Dict,
         ) -> FlextCore.Result[FlextCore.Types.Dict]:
             """Validate OAuth2 configuration for Oracle OIC connectivity."""
             if not config:
@@ -674,7 +689,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
 
         @staticmethod
         def validate_oauth2_token_response(
-            response: dict,
+            response: FlextCore.Types.Dict,
         ) -> FlextCore.Result[FlextCore.Types.Dict]:
             """Validate OAuth2 token response from Oracle IDCS."""
             if not response:
@@ -767,7 +782,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
 
         @staticmethod
         def parse_oic_error_response(
-            error_response: dict,
+            error_response: dict[str, object],
         ) -> FlextCore.Result[FlextCore.Types.Dict]:
             """Parse Oracle OIC API error response for meaningful error information."""
             if not error_response:
@@ -804,7 +819,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
 
         @staticmethod
         def validate_singer_schema_message(
-            message: dict,
+            message: dict[str, object],
         ) -> FlextCore.Result[FlextCore.Types.Dict]:
             """Validate Singer SCHEMA message for OIC target compatibility."""
             if not message:
@@ -840,7 +855,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
 
         @staticmethod
         def transform_singer_record_to_oic_artifact(
-            record: dict, stream_name: str
+            record: FlextCore.Types.Dict, stream_name: str
         ) -> FlextCore.Result[FlextCore.Types.Dict]:
             """Transform Singer RECORD message to Oracle OIC artifact format."""
             if not record or not stream_name:
@@ -883,7 +898,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
 
         @staticmethod
         def create_singer_state_message(
-            bookmark_data: dict,
+            bookmark_data: FlextCore.Types.Dict,
         ) -> FlextCore.Result[FlextCore.Types.Dict]:
             """Create Singer STATE message for OIC target state persistence."""
             if not bookmark_data:
@@ -908,7 +923,9 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
         """Helper for Oracle OIC performance optimization and monitoring."""
 
         @staticmethod
-        def calculate_optimal_batch_size(api_metrics: dict) -> FlextCore.Result[int]:
+        def calculate_optimal_batch_size(
+            api_metrics: dict[str, object],
+        ) -> FlextCore.Result[int]:
             """Calculate optimal batch size based on OIC API performance metrics."""
             if not api_metrics:
                 return FlextCore.Result[int].fail("API metrics are required")
@@ -970,10 +987,10 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
             failed_operations = total_operations - successful_operations
 
             response_times = [
-                result.get("response_time_ms", 0) for result in operation_results
+                float(result.get("response_time_ms", 0)) for result in operation_results
             ]
             avg_response_time = (
-                sum(response_times) / len(response_times) if response_times else 0
+                sum(response_times) / len(response_times) if response_times else 0.0
             )
 
             metrics = {
@@ -994,7 +1011,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
     def create_oic_target_configuration(
         cls,
         base_url: str,
-        oauth_config: dict,
+        oauth_config: FlextCore.Types.Dict,
         performance_settings: dict[str, object] | None = None,
     ) -> FlextCore.Result[FlextCore.Types.Dict]:
         """Create comprehensive Oracle OIC target configuration."""
@@ -1038,7 +1055,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
 
     @classmethod
     def validate_oic_target_environment(
-        cls, config: dict
+        cls, config: FlextCore.Types.Dict
     ) -> FlextCore.Result[FlextCore.Types.Dict]:
         """Validate Oracle OIC target environment readiness."""
         if not config:
@@ -1046,7 +1063,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                 "Configuration cannot be empty"
             )
 
-        validation_results = {
+        validation_results: FlextCore.Types.Dict = {
             "oauth_config": "pending",
             "oic_connectivity": "pending",
             "api_permissions": "pending",
