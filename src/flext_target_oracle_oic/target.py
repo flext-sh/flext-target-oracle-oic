@@ -104,7 +104,7 @@ class TargetOracleOic(Target):
         """Set up the target orchestrator."""
         if self._orchestrator is None:
             self._orchestrator = OICTargetOrchestrator(
-                dict(self.config) if self.config else None,
+                dict[str, object](self.config) if self.config else None,
             )
             setup_result: FlextCore.Result[object] = self._orchestrator.setup()
             if not setup_result.success:

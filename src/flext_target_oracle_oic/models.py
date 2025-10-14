@@ -991,7 +991,10 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
 
     @classmethod
     def create_oic_target_configuration(
-        cls, base_url: str, oauth_config: dict, performance_settings: dict | None = None
+        cls,
+        base_url: str,
+        oauth_config: dict,
+        performance_settings: dict[str, object] | None = None,
     ) -> FlextCore.Result[FlextCore.Types.Dict]:
         """Create comprehensive Oracle OIC target configuration."""
         if not base_url or not oauth_config:
