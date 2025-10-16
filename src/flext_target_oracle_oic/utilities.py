@@ -10,10 +10,10 @@ from __future__ import annotations
 from datetime import UTC, datetime, timedelta
 from typing import ClassVar
 
-from flext_core import FlextCore
+from flext_core import FlextConstants, FlextResult, FlextTypes, FlextUtilities
 
 
-class FlextTargetOracleOicUtilities(FlextCore.Utilities):
+class FlextTargetOracleOicUtilities(FlextUtilities):
     """Single unified utilities class for Singer target Oracle Integration Cloud operations.
 
     This class provides comprehensive Oracle OIC target functionality for Singer protocol
@@ -52,9 +52,9 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
         @staticmethod
         def create_schema_message(
             stream_name: str,
-            schema: FlextCore.Types.Dict,
-            key_properties: FlextCore.Types.StringList | None = None,
-        ) -> FlextCore.Types.Dict:
+            schema: FlextTypes.Dict,
+            key_properties: FlextTypes.StringList | None = None,
+        ) -> FlextTypes.Dict:
             """Create Singer SCHEMA message for OIC integration definition.
 
             Args:
@@ -77,9 +77,9 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
         @staticmethod
         def create_record_message(
             stream_name: str,
-            record: FlextCore.Types.Dict,
+            record: FlextTypes.Dict,
             time_extracted: str | None = None,
-        ) -> FlextCore.Types.Dict:
+        ) -> FlextTypes.Dict:
             """Create Singer RECORD message for OIC integration deployment.
 
             Args:
@@ -101,7 +101,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
             return message
 
         @staticmethod
-        def create_state_message(state: FlextCore.Types.Dict) -> FlextCore.Types.Dict:
+        def create_state_message(state: FlextTypes.Dict) -> FlextTypes.Dict:
             """Create Singer STATE message for OIC target checkpointing.
 
             Args:
@@ -115,25 +115,25 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
 
         @staticmethod
         def validate_singer_message(
-            message: FlextCore.Types.Dict,
-        ) -> FlextCore.Result[FlextCore.Types.Dict]:
+            message: FlextTypes.Dict,
+        ) -> FlextResult[FlextTypes.Dict]:
             """Validate Singer message format and required fields.
 
             Args:
                 message: Singer message to validate
 
             Returns:
-                FlextCore.Result containing validated message or error
+                FlextResult containing validated message or error
 
             """
             if not isinstance(message, dict):
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
+                return FlextResult[FlextTypes.Dict].fail(
                     "Singer message must be a dictionary"
                 )
 
             message_type = message.get("type")
             if message_type not in {"SCHEMA", "RECORD", "STATE"}:
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
+                return FlextResult[FlextTypes.Dict].fail(
                     f"Invalid Singer message type: {message_type}"
                 )
 
@@ -141,7 +141,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                 required_fields = ["stream", "schema"]
                 for field in required_fields:
                     if field not in message:
-                        return FlextCore.Result[FlextCore.Types.Dict].fail(
+                        return FlextResult[FlextTypes.Dict].fail(
                             f"Missing required field for SCHEMA: {field}"
                         )
 
@@ -149,17 +149,17 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                 required_fields = ["stream", "record"]
                 for field in required_fields:
                     if field not in message:
-                        return FlextCore.Result[FlextCore.Types.Dict].fail(
+                        return FlextResult[FlextTypes.Dict].fail(
                             f"Missing required field for RECORD: {field}"
                         )
 
             elif message_type == "STATE":
                 if "value" not in message:
-                    return FlextCore.Result[FlextCore.Types.Dict].fail(
+                    return FlextResult[FlextTypes.Dict].fail(
                         "Missing required field for STATE: value"
                     )
 
-            return FlextCore.Result[FlextCore.Types.Dict].ok(message)
+            return FlextResult[FlextTypes.Dict].ok(message)
 
     class OicIntegrationProcessing:
         """Oracle OIC integration-specific processing utilities."""
@@ -167,9 +167,9 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
         @staticmethod
         def map_singer_stream_to_oic_integration(
             stream_name: str,
-            schema: FlextCore.Types.Dict,
-            oic_config: FlextCore.Types.Dict,
-        ) -> FlextCore.Result[FlextCore.Types.Dict]:
+            schema: FlextTypes.Dict,
+            oic_config: FlextTypes.Dict,
+        ) -> FlextResult[FlextTypes.Dict]:
             """Map Singer stream to Oracle OIC integration configuration.
 
             Args:
@@ -178,7 +178,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                 oic_config: OIC-specific configuration
 
             Returns:
-                FlextCore.Result containing OIC integration mapping or error
+                FlextResult containing OIC integration mapping or error
 
             """
             try:
@@ -192,17 +192,17 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                     "activation_mode": oic_config.get("activation_mode", "automatic"),
                 }
 
-                return FlextCore.Result[FlextCore.Types.Dict].ok(integration_mapping)
+                return FlextResult[FlextTypes.Dict].ok(integration_mapping)
 
             except Exception as e:
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
+                return FlextResult[FlextTypes.Dict].fail(
                     f"Failed to map Singer stream to OIC integration: {e}"
                 )
 
         @staticmethod
         def generate_oic_integration_package(
-            integration_config: FlextCore.Types.Dict, artifacts: FlextCore.Types.Dict
-        ) -> FlextCore.Result[FlextCore.Types.Dict]:
+            integration_config: FlextTypes.Dict, artifacts: FlextTypes.Dict
+        ) -> FlextResult[FlextTypes.Dict]:
             """Generate Oracle OIC integration package from Singer data.
 
             Args:
@@ -210,7 +210,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                 artifacts: Integration artifacts and components
 
             Returns:
-                FlextCore.Result containing OIC package information or error
+                FlextResult containing OIC package information or error
 
             """
             try:
@@ -228,21 +228,21 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
 
                 # Validate package components
                 if not package_info["components"]:
-                    return FlextCore.Result[FlextCore.Types.Dict].fail(
+                    return FlextResult[FlextTypes.Dict].fail(
                         "Integration package must have at least one component"
                     )
 
-                return FlextCore.Result[FlextCore.Types.Dict].ok(package_info)
+                return FlextResult[FlextTypes.Dict].ok(package_info)
 
             except Exception as e:
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
+                return FlextResult[FlextTypes.Dict].fail(
                     f"Failed to generate OIC integration package: {e}"
                 )
 
         @staticmethod
         def transform_record_for_oic_deployment(
-            record: FlextCore.Types.Dict, deployment_config: FlextCore.Types.Dict
-        ) -> FlextCore.Result[FlextCore.Types.Dict]:
+            record: FlextTypes.Dict, deployment_config: FlextTypes.Dict
+        ) -> FlextResult[FlextTypes.Dict]:
             """Transform Singer record for Oracle OIC deployment.
 
             Args:
@@ -250,7 +250,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                 deployment_config: OIC deployment configuration
 
             Returns:
-                FlextCore.Result containing transformed record or error
+                FlextResult containing transformed record or error
 
             """
             try:
@@ -278,10 +278,10 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                 if "connections" in record:
                     transformed["connection_configs"] = record["connections"]
 
-                return FlextCore.Result[FlextCore.Types.Dict].ok(transformed)
+                return FlextResult[FlextTypes.Dict].ok(transformed)
 
             except Exception as e:
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
+                return FlextResult[FlextTypes.Dict].fail(
                     f"Failed to transform record for OIC deployment: {e}"
                 )
 
@@ -290,37 +290,37 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
 
         @staticmethod
         def validate_oauth2_config(
-            config: FlextCore.Types.Dict,
-        ) -> FlextCore.Result[FlextCore.Types.Dict]:
+            config: FlextTypes.Dict,
+        ) -> FlextResult[FlextTypes.Dict]:
             """Validate OAuth2 configuration for Oracle OIC.
 
             Args:
                 config: OAuth2 configuration
 
             Returns:
-                FlextCore.Result containing validated config or error
+                FlextResult containing validated config or error
 
             """
             required_fields = ["client_id", "client_secret", "token_url", "audience"]
             for field in required_fields:
                 if field not in config or not config[field]:
-                    return FlextCore.Result[FlextCore.Types.Dict].fail(
+                    return FlextResult[FlextTypes.Dict].fail(
                         f"Missing required OAuth2 config field: {field}"
                     )
 
             # Validate URLs
             token_url = config["token_url"]
             if not token_url.startswith(("https://", "http://")):
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
+                return FlextResult[FlextTypes.Dict].fail(
                     "OAuth2 token URL must be a valid HTTP/HTTPS URL"
                 )
 
-            return FlextCore.Result[FlextCore.Types.Dict].ok(config)
+            return FlextResult[FlextTypes.Dict].ok(config)
 
         @staticmethod
         def generate_oauth2_token_request(
-            config: FlextCore.Types.Dict, grant_type: str = "client_credentials"
-        ) -> FlextCore.Result[FlextCore.Types.Dict]:
+            config: FlextTypes.Dict, grant_type: str = "client_credentials"
+        ) -> FlextResult[FlextTypes.Dict]:
             """Generate OAuth2 token request for Oracle IDCS.
 
             Args:
@@ -328,7 +328,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                 grant_type: OAuth2 grant type (default: client_credentials)
 
             Returns:
-                FlextCore.Result containing token request or error
+                FlextResult containing token request or error
 
             """
             try:
@@ -344,37 +344,37 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                 if "audience" in config:
                     token_request["audience"] = config["audience"]
 
-                return FlextCore.Result[FlextCore.Types.Dict].ok(token_request)
+                return FlextResult[FlextTypes.Dict].ok(token_request)
 
             except Exception as e:
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
+                return FlextResult[FlextTypes.Dict].fail(
                     f"Failed to generate OAuth2 token request: {e}"
                 )
 
         @staticmethod
         def validate_oauth2_token_response(
-            response: FlextCore.Types.Dict,
-        ) -> FlextCore.Result[FlextCore.Types.Dict]:
+            response: FlextTypes.Dict,
+        ) -> FlextResult[FlextTypes.Dict]:
             """Validate OAuth2 token response from Oracle IDCS.
 
             Args:
                 response: OAuth2 token response
 
             Returns:
-                FlextCore.Result containing validated token info or error
+                FlextResult containing validated token info or error
 
             """
             try:
                 required_fields = ["access_token", "token_type"]
                 for field in required_fields:
                     if field not in response:
-                        return FlextCore.Result[FlextCore.Types.Dict].fail(
+                        return FlextResult[FlextTypes.Dict].fail(
                             f"Missing required token field: {field}"
                         )
 
                 # Validate token type
                 if response["token_type"].lower() != "bearer":
-                    return FlextCore.Result[FlextCore.Types.Dict].fail(
+                    return FlextResult[FlextTypes.Dict].fail(
                         "Invalid token type, expected 'Bearer'"
                     )
 
@@ -391,29 +391,29 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                 expiration_time = datetime.now(UTC) + timedelta(seconds=expires_in)
                 token_info["expires_at"] = expiration_time.isoformat()
 
-                return FlextCore.Result[FlextCore.Types.Dict].ok(token_info)
+                return FlextResult[FlextTypes.Dict].ok(token_info)
 
             except Exception as e:
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
+                return FlextResult[FlextTypes.Dict].fail(
                     f"Failed to validate OAuth2 token response: {e}"
                 )
 
         @staticmethod
         def check_token_expiration(
-            token_info: FlextCore.Types.Dict,
-        ) -> FlextCore.Result[bool]:
+            token_info: FlextTypes.Dict,
+        ) -> FlextResult[bool]:
             """Check if OAuth2 token needs refresh.
 
             Args:
                 token_info: Token information with expiration
 
             Returns:
-                FlextCore.Result containing boolean indicating if refresh needed
+                FlextResult containing boolean indicating if refresh needed
 
             """
             try:
                 if "expires_at" not in token_info:
-                    return FlextCore.Result[bool].fail(
+                    return FlextResult[bool].fail(
                         "Token expiration information not available"
                     )
 
@@ -427,12 +427,10 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                 time_until_expiry = (expiration_time - current_time).total_seconds()
 
                 needs_refresh = time_until_expiry <= threshold_seconds
-                return FlextCore.Result[bool].ok(needs_refresh)
+                return FlextResult[bool].ok(needs_refresh)
 
             except Exception as e:
-                return FlextCore.Result[bool].fail(
-                    f"Failed to check token expiration: {e}"
-                )
+                return FlextResult[bool].fail(f"Failed to check token expiration: {e}")
 
     class ApiUtilities:
         """Oracle OIC API utilities for operations and requests."""
@@ -440,8 +438,8 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
         @staticmethod
         def create_oic_api_headers(
             access_token: str,
-            additional_headers: FlextCore.Types.StringDict | None = None,
-        ) -> FlextCore.Result[FlextCore.Types.StringDict]:
+            additional_headers: FlextTypes.StringDict | None = None,
+        ) -> FlextResult[FlextTypes.StringDict]:
             """Create headers for Oracle OIC API requests.
 
             Args:
@@ -449,7 +447,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                 additional_headers: Optional additional headers
 
             Returns:
-                FlextCore.Result containing API headers or error
+                FlextResult containing API headers or error
 
             """
             try:
@@ -463,18 +461,18 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                 if additional_headers:
                     headers.update(additional_headers)
 
-                return FlextCore.Result[FlextCore.Types.StringDict].ok(headers)
+                return FlextResult[FlextTypes.StringDict].ok(headers)
 
             except Exception as e:
-                return FlextCore.Result[FlextCore.Types.StringDict].fail(
+                return FlextResult[FlextTypes.StringDict].fail(
                     f"Failed to create OIC API headers: {e}"
                 )
 
         @staticmethod
         def validate_oic_api_response(
-            response: FlextCore.Types.Dict,
-            expected_status_codes: FlextCore.Types.IntList | None = None,
-        ) -> FlextCore.Result[FlextCore.Types.Dict]:
+            response: FlextTypes.Dict,
+            expected_status_codes: FlextTypes.IntList | None = None,
+        ) -> FlextResult[FlextTypes.Dict]:
             """Validate Oracle OIC API response.
 
             Args:
@@ -482,7 +480,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                 expected_status_codes: List of expected status codes
 
             Returns:
-                FlextCore.Result containing validated response or error
+                FlextResult containing validated response or error
 
             """
             try:
@@ -494,24 +492,24 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                     error_message = response.get("error", {}).get(
                         "message", "Unknown API error"
                     )
-                    return FlextCore.Result[FlextCore.Types.Dict].fail(
+                    return FlextResult[FlextTypes.Dict].fail(
                         f"OIC API error (HTTP {status_code}): {error_message}"
                     )
 
                 # Extract response data
                 response_data = response.get("data", response)
 
-                return FlextCore.Result[FlextCore.Types.Dict].ok(response_data)
+                return FlextResult[FlextTypes.Dict].ok(response_data)
 
             except Exception as e:
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
+                return FlextResult[FlextTypes.Dict].fail(
                     f"Failed to validate OIC API response: {e}"
                 )
 
         @staticmethod
         def calculate_api_retry_delay(
             attempt: int, base_delay: float = 2.0, max_delay: float = 60.0
-        ) -> FlextCore.Result[float]:
+        ) -> FlextResult[float]:
             """Calculate exponential backoff delay for API retries.
 
             Args:
@@ -520,14 +518,12 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                 max_delay: Maximum delay in seconds
 
             Returns:
-                FlextCore.Result containing calculated delay or error
+                FlextResult containing calculated delay or error
 
             """
             try:
                 if attempt <= 0:
-                    return FlextCore.Result[float].fail(
-                        "Retry attempt must be positive"
-                    )
+                    return FlextResult[float].fail("Retry attempt must be positive")
 
                 # Exponential backoff: base_delay * (2 ^ (attempt - 1))
                 delay = base_delay * (2 ** (attempt - 1))
@@ -535,12 +531,10 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                 # Cap at maximum delay
                 actual_delay = min(delay, max_delay)
 
-                return FlextCore.Result[float].ok(actual_delay)
+                return FlextResult[float].ok(actual_delay)
 
             except Exception as e:
-                return FlextCore.Result[float].fail(
-                    f"Failed to calculate retry delay: {e}"
-                )
+                return FlextResult[float].fail(f"Failed to calculate retry delay: {e}")
 
     class StreamUtilities:
         """Singer stream processing utilities for Oracle OIC target."""
@@ -548,9 +542,9 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
         @staticmethod
         def process_schema_stream(
             stream_name: str,
-            schema_message: FlextCore.Types.Dict,
-            oic_config: FlextCore.Types.Dict,
-        ) -> FlextCore.Result[FlextCore.Types.Dict]:
+            schema_message: FlextTypes.Dict,
+            oic_config: FlextTypes.Dict,
+        ) -> FlextResult[FlextTypes.Dict]:
             """Process Singer schema stream for OIC integration configuration.
 
             Args:
@@ -559,7 +553,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                 oic_config: OIC-specific configuration
 
             Returns:
-                FlextCore.Result containing processed schema information or error
+                FlextResult containing processed schema information or error
 
             """
             try:
@@ -571,7 +565,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                     stream_name, schema, oic_config
                 )
                 if integration_result.is_failure:
-                    return FlextCore.Result[FlextCore.Types.Dict].fail(
+                    return FlextResult[FlextTypes.Dict].fail(
                         f"Integration mapping failed: {integration_result.error}"
                     )
 
@@ -588,17 +582,17 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                     },
                 }
 
-                return FlextCore.Result[FlextCore.Types.Dict].ok(processed_schema)
+                return FlextResult[FlextTypes.Dict].ok(processed_schema)
 
             except Exception as e:
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
+                return FlextResult[FlextTypes.Dict].fail(
                     f"Failed to process schema stream: {e}"
                 )
 
         @staticmethod
         def batch_records_for_oic_deployment(
-            records: list[FlextCore.Types.Dict], batch_size: int | None = None
-        ) -> FlextCore.Result[list[list[FlextCore.Types.Dict]]]:
+            records: list[FlextTypes.Dict], batch_size: int | None = None
+        ) -> FlextResult[list[list[FlextTypes.Dict]]]:
             """Batch Singer records for efficient OIC deployment operations.
 
             Args:
@@ -606,7 +600,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                 batch_size: Size of each batch (default: OIC_DEFAULT_BATCH_SIZE)
 
             Returns:
-                FlextCore.Result containing list of batches or error
+                FlextResult containing list of batches or error
 
             """
             actual_batch_size = (
@@ -614,7 +608,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
             )
 
             if actual_batch_size <= 0:
-                return FlextCore.Result[list[list[FlextCore.Types.Dict]]].fail(
+                return FlextResult[list[list[FlextTypes.Dict]]].fail(
                     "Batch size must be positive"
                 )
 
@@ -624,10 +618,10 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                     batch = records[i : i + actual_batch_size]
                     batches.append(batch)
 
-                return FlextCore.Result[list[list[FlextCore.Types.Dict]]].ok(batches)
+                return FlextResult[list[list[FlextTypes.Dict]]].ok(batches)
 
             except Exception as e:
-                return FlextCore.Result[list[list[FlextCore.Types.Dict]]].fail(
+                return FlextResult[list[list[FlextTypes.Dict]]].fail(
                     f"Failed to batch records: {e}"
                 )
 
@@ -636,15 +630,15 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
 
         @staticmethod
         def validate_oic_connection_config(
-            config: FlextCore.Types.Dict,
-        ) -> FlextCore.Result[FlextCore.Types.Dict]:
+            config: FlextTypes.Dict,
+        ) -> FlextResult[FlextTypes.Dict]:
             """Validate Oracle OIC connection configuration.
 
             Args:
                 config: OIC connection configuration
 
             Returns:
-                FlextCore.Result containing validated config or error
+                FlextResult containing validated config or error
 
             """
             required_fields = [
@@ -655,75 +649,73 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
             ]
             for field in required_fields:
                 if field not in config or not config[field]:
-                    return FlextCore.Result[FlextCore.Types.Dict].fail(
+                    return FlextResult[FlextTypes.Dict].fail(
                         f"Missing required OIC config field: {field}"
                     )
 
             # Validate URLs
             base_url = config["base_url"]
             if not base_url.startswith("https://"):
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
-                    "OIC base URL must use HTTPS"
-                )
+                return FlextResult[FlextTypes.Dict].fail("OIC base URL must use HTTPS")
 
             token_url = config["oauth_token_url"]
             if not token_url.startswith(("https://", "http://")):
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
+                return FlextResult[FlextTypes.Dict].fail(
                     "OAuth token URL must be a valid HTTP/HTTPS URL"
                 )
 
-            return FlextCore.Result[FlextCore.Types.Dict].ok(config)
+            return FlextResult[FlextTypes.Dict].ok(config)
 
         @staticmethod
         def validate_oic_target_config(
-            config: FlextCore.Types.Dict,
-        ) -> FlextCore.Result[FlextCore.Types.Dict]:
+            config: FlextTypes.Dict,
+        ) -> FlextResult[FlextTypes.Dict]:
             """Validate Oracle OIC target-specific configuration.
 
             Args:
                 config: OIC target configuration
 
             Returns:
-                FlextCore.Result containing validated config or error
+                FlextResult containing validated config or error
 
             """
             # Validate batch size
             batch_size = config.get(
                 "batch_size", FlextTargetOracleOicUtilities.OIC_DEFAULT_BATCH_SIZE
             )
-            if batch_size <= 0 or batch_size > FlextCore.Constants.Batch.DEFAULT_SIZE:
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
-                    f"Batch size must be between 1 and {FlextCore.Constants.Batch.DEFAULT_SIZE}"
+            if batch_size <= 0 or batch_size > FlextConstants.Batch.DEFAULT_SIZE:
+                return FlextResult[FlextTypes.Dict].fail(
+                    f"Batch size must be between 1 and {FlextConstants.Batch.DEFAULT_SIZE}"
                 )
 
             # Validate timeout
             timeout = config.get(
                 "request_timeout", FlextTargetOracleOicUtilities.OIC_DEFAULT_API_TIMEOUT
             )
-            if timeout <= 0 or timeout > FlextCore.Constants.Web.TOTAL_TIMEOUT:
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
-                    f"Request timeout must be between 1 and {FlextCore.Constants.Web.TOTAL_TIMEOUT} seconds"
+            if timeout <= 0 or timeout > FlextConstants.Web.TOTAL_TIMEOUT:
+                return FlextResult[FlextTypes.Dict].fail(
+                    f"Request timeout must be between 1 and {FlextConstants.Web.TOTAL_TIMEOUT} seconds"
                 )
 
             # Validate retry configuration
             max_retries = config.get(
                 "max_retries", FlextTargetOracleOicUtilities.MAX_API_RETRIES
             )
-            if max_retries < 0 or max_retries > FlextCore.Constants.Batch.SMALL_SIZE:
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
-                    f"Max retries must be between 0 and {FlextCore.Constants.Batch.SMALL_SIZE}"
+            if max_retries < 0 or max_retries > FlextConstants.Batch.SMALL_SIZE:
+                return FlextResult[FlextTypes.Dict].fail(
+                    f"Max retries must be between 0 and {FlextConstants.Batch.SMALL_SIZE}"
                 )
 
-            return FlextCore.Result[FlextCore.Types.Dict].ok(config)
+            return FlextResult[FlextTypes.Dict].ok(config)
 
     class StateManagement:
         """Singer state management utilities for Oracle OIC target."""
 
         @staticmethod
         def create_oic_target_state(
-            deployment_states: FlextCore.Types.Dict,
-            target_metadata: FlextCore.Types.Dict | None = None,
-        ) -> FlextCore.Result[FlextCore.Types.Dict]:
+            deployment_states: FlextTypes.Dict,
+            target_metadata: FlextTypes.Dict | None = None,
+        ) -> FlextResult[FlextTypes.Dict]:
             """Create Oracle OIC target state for Singer checkpointing.
 
             Args:
@@ -731,7 +723,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                 target_metadata: Optional target-specific metadata
 
             Returns:
-                FlextCore.Result containing OIC target state or error
+                FlextResult containing OIC target state or error
 
             """
             try:
@@ -744,19 +736,19 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                 if target_metadata:
                     state["target_metadata"] = target_metadata
 
-                return FlextCore.Result[FlextCore.Types.Dict].ok(state)
+                return FlextResult[FlextTypes.Dict].ok(state)
 
             except Exception as e:
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
+                return FlextResult[FlextTypes.Dict].fail(
                     f"Failed to create OIC target state: {e}"
                 )
 
         @staticmethod
         def update_deployment_state(
-            current_state: FlextCore.Types.Dict,
+            current_state: FlextTypes.Dict,
             integration_id: str,
-            deployment_result: FlextCore.Types.Dict,
-        ) -> FlextCore.Result[FlextCore.Types.Dict]:
+            deployment_result: FlextTypes.Dict,
+        ) -> FlextResult[FlextTypes.Dict]:
             """Update state for a specific integration deployment.
 
             Args:
@@ -765,7 +757,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                 deployment_result: Deployment result data
 
             Returns:
-                FlextCore.Result containing updated state or error
+                FlextResult containing updated state or error
 
             """
             try:
@@ -780,10 +772,10 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                     "deployment_status": deployment_result.get("status", "unknown"),
                 }
 
-                return FlextCore.Result[FlextCore.Types.Dict].ok(updated_state)
+                return FlextResult[FlextTypes.Dict].ok(updated_state)
 
             except Exception as e:
-                return FlextCore.Result[FlextCore.Types.Dict].fail(
+                return FlextResult[FlextTypes.Dict].fail(
                     f"Failed to update deployment state: {e}"
                 )
 
@@ -794,7 +786,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
         def calculate_optimal_api_batch_size(
             integration_size_bytes: int,
             available_memory_mb: int = 50,
-        ) -> FlextCore.Result[int]:
+        ) -> FlextResult[int]:
             """Calculate optimal batch size for OIC API operations.
 
             Args:
@@ -802,19 +794,15 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                 available_memory_mb: Available memory for batching in MB
 
             Returns:
-                FlextCore.Result containing optimal batch size or error
+                FlextResult containing optimal batch size or error
 
             """
             try:
                 if integration_size_bytes <= 0:
-                    return FlextCore.Result[int].fail(
-                        "Integration size must be positive"
-                    )
+                    return FlextResult[int].fail("Integration size must be positive")
 
                 if available_memory_mb <= 0:
-                    return FlextCore.Result[int].fail(
-                        "Available memory must be positive"
-                    )
+                    return FlextResult[int].fail("Available memory must be positive")
 
                 available_memory_bytes = available_memory_mb * 1024 * 1024
                 max_batch_size = available_memory_bytes // integration_size_bytes
@@ -828,10 +816,10 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                     ),
                 )
 
-                return FlextCore.Result[int].ok(optimal_batch_size)
+                return FlextResult[int].ok(optimal_batch_size)
 
             except Exception as e:
-                return FlextCore.Result[int].fail(
+                return FlextResult[int].fail(
                     f"Failed to calculate optimal batch size: {e}"
                 )
 
@@ -839,7 +827,7 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
         def calculate_api_rate_limit_delay(
             requests_per_minute: int,
             _current_request_count: int,
-        ) -> FlextCore.Result[float]:
+        ) -> FlextResult[float]:
             """Calculate delay to respect OIC API rate limits.
 
             Args:
@@ -847,12 +835,12 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                 _current_request_count: Current number of requests made
 
             Returns:
-                FlextCore.Result containing delay in seconds or error
+                FlextResult containing delay in seconds or error
 
             """
             try:
                 if requests_per_minute <= 0:
-                    return FlextCore.Result[float].fail(
+                    return FlextResult[float].fail(
                         "Requests per minute must be positive"
                     )
 
@@ -863,28 +851,28 @@ class FlextTargetOracleOicUtilities(FlextCore.Utilities):
                 jitter = (hash(str(_current_request_count)) % 10) / 100.0  # 0.0 to 0.1
                 actual_delay = delay_seconds + jitter
 
-                return FlextCore.Result[float].ok(actual_delay)
+                return FlextResult[float].ok(actual_delay)
 
             except Exception as e:
-                return FlextCore.Result[float].fail(
+                return FlextResult[float].fail(
                     f"Failed to calculate rate limit delay: {e}"
                 )
 
     # Proxy methods for backward compatibility (minimal)
     def validate_singer_message(
-        self, message: FlextCore.Types.Dict
-    ) -> FlextCore.Result[FlextCore.Types.Dict]:
+        self, message: FlextTypes.Dict
+    ) -> FlextResult[FlextTypes.Dict]:
         """Proxy to SingerUtilities.validate_singer_message."""
         return self.SingerUtilities.validate_singer_message(message)
 
     def validate_oauth2_config(
-        self, config: FlextCore.Types.Dict
-    ) -> FlextCore.Result[FlextCore.Types.Dict]:
+        self, config: FlextTypes.Dict
+    ) -> FlextResult[FlextTypes.Dict]:
         """Proxy to OAuth2Utilities.validate_oauth2_config."""
         return self.OAuth2Utilities.validate_oauth2_config(config)
 
     def validate_oic_connection_config(
-        self, config: FlextCore.Types.Dict
-    ) -> FlextCore.Result[FlextCore.Types.Dict]:
+        self, config: FlextTypes.Dict
+    ) -> FlextResult[FlextTypes.Dict]:
         """Proxy to ConfigValidation.validate_oic_connection_config."""
         return self.ConfigValidation.validate_oic_connection_config(config)

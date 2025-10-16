@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
-from flext_core import FlextCore
+from flext_core import FlextTypes
 from flext_meltano import ConfigValidationError
 
 from flext_target_oracle_oic import ConnectionsSink, IntegrationsSink, TargetOracleOic
@@ -18,7 +18,7 @@ class TestTargetOracleOic:
     """Test cases for TargetOracleOic with proper enterprise validation."""
 
     @pytest.fixture
-    def valid_config(self) -> FlextCore.Types.StringDict:
+    def valid_config(self) -> FlextTypes.StringDict:
         """Create valid configuration for testing."""
         return {
             "base_url": "https://test-instance-region.integration.ocp.oraclecloud.com",
@@ -30,7 +30,7 @@ class TestTargetOracleOic:
 
     def test_target_initialization_with_valid_config(
         self,
-        valid_config: FlextCore.Types.StringDict,
+        valid_config: FlextTypes.StringDict,
     ) -> None:
         """Test target initialization with valid configuration."""
         target = TargetOracleOic(config=valid_config)

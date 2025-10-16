@@ -9,16 +9,16 @@ from __future__ import annotations
 
 from typing import Self, TypedDict
 
-from flext_core import FlextCore
+from flext_core import FlextConfig, FlextConstants, FlextModels, FlextResult, FlextTypes
 from pydantic import Field, SecretStr, computed_field, field_validator, model_validator
 from pydantic_settings import SettingsConfigDict
 
 
-class TargetOracleOicConfig(FlextCore.Config):
-    """Single flat Config class for target-oracle-oic extending FlextCore.Config.
+class TargetOracleOicConfig(FlextConfig):
+    """Single flat Config class for target-oracle-oic extending FlextConfig.
 
     Follows standardized FLEXT Config pattern:
-    - Single flat class extending FlextCore.Config
+    - Single flat class extending FlextConfig
     - Uses Pydantic 2 Settings with SettingsConfigDict
     - Uses SecretStr for sensitive data
     - Implements singleton pattern with inverse dependency injection
@@ -72,7 +72,7 @@ class TargetOracleOicConfig(FlextCore.Config):
         integration_identifier_field: str
         connection_identifier_field: str
         lookup_identifier_field: str
-        identifier_fields: FlextCore.Types.StringDict
+        identifier_fields: FlextTypes.StringDict
 
     model_config = SettingsConfigDict(
         env_prefix="TARGET_ORACLE_OIC_",
@@ -85,7 +85,7 @@ class TargetOracleOicConfig(FlextCore.Config):
         # Enhanced Pydantic 2.11+ features
         json_schema_extra={
             "title": "Target Oracle OIC Configuration",
-            "description": "Enterprise Oracle OIC target configuration extending FlextCore.Config",
+            "description": "Enterprise Oracle OIC target configuration extending FlextConfig",
         },
     )
 
@@ -120,13 +120,13 @@ class TargetOracleOicConfig(FlextCore.Config):
         pattern=r"^https://.*\.integration\.ocp\.oraclecloud\.com$",
     )
     timeout: int = Field(
-        default=FlextCore.Constants.Network.DEFAULT_TIMEOUT,
+        default=FlextConstants.Network.DEFAULT_TIMEOUT,
         description="Request timeout in seconds",
         gt=0,
         le=300,
     )
     max_retries: int = Field(
-        default=FlextCore.Constants.Reliability.MAX_RETRY_ATTEMPTS,
+        default=FlextConstants.Reliability.MAX_RETRY_ATTEMPTS,
         description="Maximum number of retries",
         ge=0,
         le=10,
@@ -169,7 +169,7 @@ class TargetOracleOicConfig(FlextCore.Config):
 
     # Processing configuration fields
     batch_size: int = Field(
-        FlextCore.Constants.Performance.BatchProcessing.DEFAULT_SIZE // 10,
+        FlextConstants.Performance.BatchProcessing.DEFAULT_SIZE // 10,
         description="Batch size for bulk operations",
         gt=0,
         le=1000,
@@ -187,7 +187,7 @@ class TargetOracleOicConfig(FlextCore.Config):
         description="Skip integrations with missing connections",
     )
     max_errors: int = Field(
-        FlextCore.Constants.Reliability.MAX_RETRY_ATTEMPTS * 3 + 1,
+        FlextConstants.Reliability.MAX_RETRY_ATTEMPTS * 3 + 1,
         description="Maximum number of errors before stopping",
         ge=0,
     )
@@ -213,7 +213,7 @@ class TargetOracleOicConfig(FlextCore.Config):
         default="lookup_id",
         description="Field name to use as lookup identifier",
     )
-    identifier_fields: FlextCore.Types.StringDict = Field(
+    identifier_fields: FlextTypes.StringDict = Field(
         default_factory=lambda: {
             "integrations": "code",
             "connections": "code",
@@ -223,7 +223,7 @@ class TargetOracleOicConfig(FlextCore.Config):
     )
 
     # Additional configuration fields
-    transformation_rules: list[FlextCore.Types.Dict] = Field(
+    transformation_rules: list[FlextTypes.Dict] = Field(
         default_factory=list,
         description="Custom transformation rules",
     )
@@ -283,7 +283,7 @@ class TargetOracleOicConfig(FlextCore.Config):
         """Validate complete configuration."""
         # Validate archive directory if provided
         if self.archive_directory:
-            validation_result = FlextCore.Models.create_validated_directory_path(
+            validation_result = FlextModels.create_validated_directory_path(
                 self.archive_directory,
             )
             if validation_result.is_failure:
@@ -321,7 +321,6 @@ class TargetOracleOicConfig(FlextCore.Config):
 
     # Computed fields
     @computed_field
-    @property
     def auth_config(self) -> AuthConfigDict:
         """Get authentication configuration as dictionary."""
         return {
@@ -333,7 +332,6 @@ class TargetOracleOicConfig(FlextCore.Config):
         }
 
     @computed_field
-    @property
     def connection_config(self) -> ConnectionConfigDict:
         """Get connection configuration as dictionary."""
         return {
@@ -344,7 +342,6 @@ class TargetOracleOicConfig(FlextCore.Config):
         }
 
     @computed_field
-    @property
     def deployment_config(self) -> DeploymentConfigDict:
         """Get deployment configuration as dictionary."""
         return {
@@ -358,7 +355,6 @@ class TargetOracleOicConfig(FlextCore.Config):
         }
 
     @computed_field
-    @property
     def processing_config(self) -> ProcessingConfigDict:
         """Get processing configuration as dictionary."""
         return {
@@ -372,7 +368,6 @@ class TargetOracleOicConfig(FlextCore.Config):
         }
 
     @computed_field
-    @property
     def entity_config(self) -> EntityConfigDict:
         """Get entity configuration as dictionary."""
         return {
@@ -383,7 +378,7 @@ class TargetOracleOicConfig(FlextCore.Config):
         }
 
     # Utility methods
-    def get_oauth_headers(self) -> FlextCore.Types.StringDict:
+    def get_oauth_headers(self) -> FlextTypes.StringDict:
         """Get OAuth headers for API requests."""
         return {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -398,33 +393,33 @@ class TargetOracleOicConfig(FlextCore.Config):
         """Get the actual OAuth client secret value (safely extract from SecretStr)."""
         return self.oauth_client_secret.get_secret_value()
 
-    def validate_business_rules(self) -> FlextCore.Result[None]:
+    def validate_business_rules(self) -> FlextResult[None]:
         """Validate configuration business rules."""
         try:
             # Validate authentication configuration
             if not self.oauth_client_id.strip():
-                return FlextCore.Result[None].fail("OAuth client ID cannot be empty")
+                return FlextResult[None].fail("OAuth client ID cannot be empty")
             if not self.oauth_token_url.strip():
-                return FlextCore.Result[None].fail("OAuth token URL cannot be empty")
+                return FlextResult[None].fail("OAuth token URL cannot be empty")
 
             # Validate connection configuration
             if not self.base_url.strip():
-                return FlextCore.Result[None].fail("Base URL cannot be empty")
+                return FlextResult[None].fail("Base URL cannot be empty")
             if self.timeout <= 0:
-                return FlextCore.Result[None].fail("Timeout must be positive")
+                return FlextResult[None].fail("Timeout must be positive")
 
             # Validate deployment configuration
             valid_modes = {"create_only", "update_only", "create_or_update"}
             if self.import_mode not in valid_modes:
-                return FlextCore.Result[None].fail(
+                return FlextResult[None].fail(
                     f"Invalid import mode: {self.import_mode}"
                 )
 
             # Validate processing configuration
             if self.batch_size <= 0:
-                return FlextCore.Result[None].fail("Batch size must be positive")
+                return FlextResult[None].fail("Batch size must be positive")
             if self.max_errors < 0:
-                return FlextCore.Result[None].fail("Max errors cannot be negative")
+                return FlextResult[None].fail("Max errors cannot be negative")
 
             # Validate entity configuration
             required_fields = [
@@ -435,23 +430,23 @@ class TargetOracleOicConfig(FlextCore.Config):
             for field in required_fields:
                 value = getattr(self, field)
                 if not value or not value.strip():
-                    return FlextCore.Result[None].fail(f"{field} cannot be empty")
+                    return FlextResult[None].fail(f"{field} cannot be empty")
 
-            return FlextCore.Result[None].ok(None)
+            return FlextResult[None].ok(None)
         except Exception as e:
-            return FlextCore.Result[None].fail(f"Configuration validation failed: {e}")
+            return FlextResult[None].fail(f"Configuration validation failed: {e}")
 
     # Singleton pattern methods
     @classmethod
     def get_global_instance(cls) -> Self:
-        """Get the global singleton instance using enhanced FlextCore.Config pattern."""
+        """Get the global singleton instance using enhanced FlextConfig pattern."""
         return cls.get_or_create_shared_instance(project_name="flext-target-oracle-oic")
 
     @classmethod
-    def create_for_development(cls, **overrides: FlextCore.Types.Value) -> Self:
+    def create_for_development(cls, **overrides: FlextTypes.Value) -> Self:
         """Create configuration for development environment."""
-        dev_overrides: dict[str, FlextCore.Types.Value] = {
-            "batch_size": FlextCore.Constants.Performance.BatchProcessing.DEFAULT_SIZE
+        dev_overrides: dict[str, FlextTypes.Value] = {
+            "batch_size": FlextConstants.Performance.BatchProcessing.DEFAULT_SIZE
             // 100,  # Smaller batches for development
             "enable_validation": True,
             "validation_strict_mode": True,
@@ -465,11 +460,10 @@ class TargetOracleOicConfig(FlextCore.Config):
         )
 
     @classmethod
-    def create_for_production(cls, **overrides: FlextCore.Types.Value) -> Self:
+    def create_for_production(cls, **overrides: FlextTypes.Value) -> Self:
         """Create configuration for production environment."""
-        prod_overrides: dict[str, FlextCore.Types.Value] = {
-            "batch_size": FlextCore.Constants.Performance.BatchProcessing.DEFAULT_SIZE
-            // 10,
+        prod_overrides: dict[str, FlextTypes.Value] = {
+            "batch_size": FlextConstants.Performance.BatchProcessing.DEFAULT_SIZE // 10,
             "enable_validation": True,
             "validation_strict_mode": False,
             "dry_run_mode": False,
@@ -483,10 +477,10 @@ class TargetOracleOicConfig(FlextCore.Config):
         )
 
     @classmethod
-    def create_for_testing(cls, **overrides: FlextCore.Types.Value) -> Self:
+    def create_for_testing(cls, **overrides: FlextTypes.Value) -> Self:
         """Create configuration for testing environment."""
-        test_overrides: dict[str, FlextCore.Types.Value] = {
-            "batch_size": FlextCore.Constants.Performance.BatchProcessing.DEFAULT_SIZE
+        test_overrides: dict[str, FlextTypes.Value] = {
+            "batch_size": FlextConstants.Performance.BatchProcessing.DEFAULT_SIZE
             // 200,
             "enable_validation": True,
             "validation_strict_mode": True,
@@ -500,6 +494,6 @@ class TargetOracleOicConfig(FlextCore.Config):
 
 
 # Export configuration class (single class only)
-__all__: FlextCore.Types.StringList = [
+__all__: FlextTypes.StringList = [
     "TargetOracleOicConfig",
 ]

@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from os import getenv
 
-from flext_core import FlextCore
+from flext_core import FlextResult, FlextTypes
 from pydantic import SecretStr
 
 from flext_target_oracle_oic.config import TargetOracleOicConfig
@@ -17,14 +17,14 @@ from flext_target_oracle_oic.config import TargetOracleOicConfig
 
 def setup_oic_target(
     config: TargetOracleOicConfig | None = None,
-) -> FlextCore.Result[TargetOracleOicConfig]:
+) -> FlextResult[TargetOracleOicConfig]:
     """Set up Oracle Integration Cloud target with configuration.
 
     Args:
       config: Optional configuration. If None, creates defaults.
 
     Returns:
-      FlextCore.Result with TargetOracleOicConfig or error message.
+      FlextResult with TargetOracleOicConfig or error message.
 
     """
     try:
@@ -35,20 +35,20 @@ def setup_oic_target(
         # Validate configuration
         validation_result = config.validate_business_rules()
         if validation_result.is_failure:
-            return FlextCore.Result[TargetOracleOicConfig].fail(
+            return FlextResult[TargetOracleOicConfig].fail(
                 f"Configuration validation failed: {validation_result.error}"
             )
 
-        return FlextCore.Result[TargetOracleOicConfig].ok(config)
+        return FlextResult[TargetOracleOicConfig].ok(config)
 
     except (RuntimeError, ValueError, TypeError) as e:
-        return FlextCore.Result[TargetOracleOicConfig].fail(
+        return FlextResult[TargetOracleOicConfig].fail(
             f"Failed to set up OIC target: {e}",
         )
 
 
 def create_development_oic_target_config(
-    **overrides: FlextCore.Types.Value,
+    **overrides: FlextTypes.Value,
 ) -> TargetOracleOicConfig:
     """Create development OIC target configuration with defaults.
 
@@ -59,7 +59,7 @@ def create_development_oic_target_config(
       TargetOracleOicConfig for development use.
 
     """
-    dev_config_overrides: dict[str, FlextCore.Types.Value] = {
+    dev_config_overrides: dict[str, FlextTypes.Value] = {
         # Authentication configuration
         "oauth_client_id": getenv("OIC_DEV_CLIENT_ID", "dev-client-id"),
         "oauth_client_secret": SecretStr(
@@ -108,7 +108,7 @@ def create_development_oic_target_config(
 
 
 def create_production_oic_target_config(
-    **overrides: FlextCore.Types.Value,
+    **overrides: FlextTypes.Value,
 ) -> TargetOracleOicConfig:
     """Create production OIC target configuration with defaults.
 
@@ -119,7 +119,7 @@ def create_production_oic_target_config(
       TargetOracleOicConfig for production use.
 
     """
-    prod_config_overrides: dict[str, FlextCore.Types.Value] = {
+    prod_config_overrides: dict[str, FlextTypes.Value] = {
         # Authentication configuration
         "oauth_client_id": getenv("OIC_PROD_CLIENT_ID", ""),
         "oauth_client_secret": SecretStr(
@@ -157,7 +157,7 @@ def create_production_oic_target_config(
 
 
 def create_testing_oic_target_config(
-    **overrides: FlextCore.Types.Value,
+    **overrides: FlextTypes.Value,
 ) -> TargetOracleOicConfig:
     """Create testing OIC target configuration with defaults.
 
@@ -168,7 +168,7 @@ def create_testing_oic_target_config(
       TargetOracleOicConfig for testing use.
 
     """
-    test_config_overrides: dict[str, FlextCore.Types.Value] = {
+    test_config_overrides: dict[str, FlextTypes.Value] = {
         # Authentication configuration
         "oauth_client_id": getenv("OIC_TEST_CLIENT_ID", "test-client-id"),
         "oauth_client_secret": SecretStr(
@@ -194,20 +194,20 @@ def create_testing_oic_target_config(
     return TargetOracleOicConfig.create_for_testing(**test_config_overrides)
 
 
-def validate_oic_target_config(config: TargetOracleOicConfig) -> FlextCore.Result[None]:
+def validate_oic_target_config(config: TargetOracleOicConfig) -> FlextResult[None]:
     """Validate Oracle Integration Cloud target configuration.
 
     Args:
       config: Configuration to validate
 
     Returns:
-      FlextCore.Result indicating validation success or failure
+      FlextResult indicating validation success or failure
 
     """
     return config.validate_business_rules()
 
 
-def get_oic_target_config_schema() -> FlextCore.Types.Dict:
+def get_oic_target_config_schema() -> FlextTypes.Dict:
     """Get JSON schema for Oracle Integration Cloud target configuration.
 
     Returns:
@@ -217,7 +217,7 @@ def get_oic_target_config_schema() -> FlextCore.Types.Dict:
     return TargetOracleOicConfig.model_json_schema()
 
 
-__all__: FlextCore.Types.StringList = [
+__all__: FlextTypes.StringList = [
     "create_development_oic_target_config",
     "create_production_oic_target_config",
     "create_testing_oic_target_config",

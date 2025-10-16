@@ -6,6 +6,8 @@ SPDX-License-Identifier: MIT.
 
 from __future__ import annotations
 
+from flext_core import FlextModels, FlextResult
+
 # Use FLEXT Meltano wrapper instead of direct singer_sdk import (domain separation)
 from flext_meltano import (
     FlextMeltanoBridge,
@@ -58,7 +60,6 @@ from flext_target_oracle_oic.target_config import (
     create_config_with_env_overrides,
     create_singer_config_schema,
 )
-from flext_target_oracle_oic.target_exceptions import (
     FlextTargetOracleOicAPIError,
     FlextTargetOracleOicAuthenticationError,
     FlextTargetOracleOicConfigurationError,
@@ -87,10 +88,10 @@ from flext_target_oracle_oic.utilities import FlextTargetOracleOicUtilities
 
 __all__: FlextTargetOracleOicTypes.Core.StringList = [
     "ConnectionsSink",
-    "FlextCore.Models",
-    "FlextCore.Result",
     "FlextMeltanoBridge",
     "FlextMeltanoConfig",
+    "FlextModels",
+    "FlextResult",
     "FlextTargetOracleOicAPIError",
     "FlextTargetOracleOicAuthenticationError",
     "FlextTargetOracleOicConfigurationError",
