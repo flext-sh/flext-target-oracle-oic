@@ -7,13 +7,13 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import FlextCore
+from flext_core import FlextConstants, FlextLogger, FlextModels, FlextResult, FlextTypes
 from pydantic import Field
 
-logger = FlextCore.Logger(__name__)
+logger = FlextLogger(__name__)
 
 
-class OICConnectionSettings(FlextCore.Models):
+class OICConnectionSettings(FlextModels):
     """Oracle OIC connection settings using flext-core patterns."""
 
     base_url: str = Field(..., description="Oracle OIC base URL")
@@ -31,12 +31,12 @@ class OICConnectionSettings(FlextCore.Models):
     )
     use_oauth2: bool = Field(default=True, description="Use OAuth2 authentication")
     timeout: int = Field(
-        default=FlextCore.Constants.Network.DEFAULT_TIMEOUT,
+        default=FlextConstants.Network.DEFAULT_TIMEOUT,
         description="Request timeout in seconds",
         gt=0,
     )
     max_retries: int = Field(
-        default=FlextCore.Constants.Reliability.MAX_RETRY_ATTEMPTS,
+        default=FlextConstants.Reliability.MAX_RETRY_ATTEMPTS,
         description="Maximum number of retries",
         ge=0,
     )
@@ -52,14 +52,14 @@ class OICConnectionSettings(FlextCore.Models):
         url = self.base_url.rstrip("/")
         return f"{url}/ic/api/integration/v1"
 
-    def get_auth_headers(self: object) -> FlextCore.Types.StringDict:
+    def get_auth_headers(self: object) -> FlextTypes.StringDict:
         """Get authentication headers."""
         return {
             "Content-Type": "application/x-www-form-urlencoded",
             "Accept": "application/json",
         }
 
-    def get_api_headers(self, access_token: str) -> FlextCore.Types.StringDict:
+    def get_api_headers(self, access_token: str) -> FlextTypes.StringDict:
         """Get API request headers with authentication."""
         return {
             "Authorization": f"Bearer {access_token}",
@@ -68,7 +68,7 @@ class OICConnectionSettings(FlextCore.Models):
         }
 
     @classmethod
-    def from_dict(cls, data: FlextCore.Types.Dict) -> OICConnectionSettings:
+    def from_dict(cls, data: FlextTypes.Dict) -> OICConnectionSettings:
         """Create configuration from dictionary using modern Pydantic patterns."""
         try:
             return cls(**data)
@@ -76,9 +76,9 @@ class OICConnectionSettings(FlextCore.Models):
             logger.exception("Failed to create OICConnectionSettings from dict")
             raise
 
-    def validate_business_rules(self: object) -> FlextCore.Result[None]:
+    def validate_business_rules(self: object) -> FlextResult[None]:
         """Validate OIC connection configuration business rules."""
-        errors: FlextCore.Types.StringList = []
+        errors: FlextTypes.StringList = []
 
         if not self.base_url:
             errors.append("base_url is required")
@@ -98,8 +98,8 @@ class OICConnectionSettings(FlextCore.Models):
             errors.append("max_retries must be non-negative")
 
         if errors:
-            return FlextCore.Result[None].fail(
+            return FlextResult[None].fail(
                 f"OIC connection config validation failed: {'; '.join(errors)}",
             )
 
-        return FlextCore.Result[None].ok(None)
+        return FlextResult[None].ok(None)

@@ -7,10 +7,10 @@ import json
 import os
 from pathlib import Path
 
-from flext_core import FlextCore
+from flext_core import FlextTypes
 
 
-def generate_config() -> FlextCore.Types.Dict:
+def generate_config() -> FlextTypes.Dict:
     """Generate configuration dictionary from environment variables.
 
     Returns:

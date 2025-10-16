@@ -28,7 +28,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pytest
-from flext_core import FlextCore
+from flext_core import FlextTypes
 from flext_meltano import FlextMeltanoValidationError as ConfigValidationError
 from singer_sdk.testing import get_target_test_class
 
@@ -42,7 +42,7 @@ from flext_target_oracle_oic import (
 
 
 # Load real configuration from environment
-def load_test_config() -> FlextCore.Types.StringDict:
+def load_test_config() -> FlextTypes.StringDict:
     """Load real test configuration from environment variables."""
     # Load .env file if it exists
     env_file = Path(".env")
@@ -76,13 +76,13 @@ def load_test_config() -> FlextCore.Types.StringDict:
 
 
 @pytest.fixture
-def test_config() -> FlextCore.Types.StringDict:
+def test_config() -> FlextTypes.StringDict:
     """Provide real test configuration."""
     return load_test_config()
 
 
 @pytest.fixture
-def target(test_config: FlextCore.Types.StringDict) -> TargetOracleOic:
+def target(test_config: FlextTypes.StringDict) -> TargetOracleOic:
     """Create real Target instance with environment configuration."""
     return TargetOracleOic(config=test_config)
 
@@ -93,7 +93,7 @@ class TestTargetOracleOicE2E:
     def test_target_initialization(
         self,
         target: TargetOracleOic,
-        config: FlextCore.Types.Dict,
+        config: FlextTypes.Dict,
     ) -> None:
         """Test target initialization with valid configuration."""
         if target.name != "target-oracle-oic":
@@ -391,7 +391,7 @@ class TestTargetOracleOicE2E:
             )
 
             def _run_cli(
-                cmd_list: FlextCore.Types.StringList,
+                cmd_list: FlextTypes.StringList,
                 cwd: str | None = None,
                 stdin_data: str | None = None,
             ) -> tuple[int, str, str]:
@@ -436,7 +436,7 @@ class TestTargetOracleOicE2E:
             )
 
             def _run_input(
-                cmd_list: FlextCore.Types.StringList,
+                cmd_list: FlextTypes.StringList,
                 cwd: str | None = None,
                 input_text: str = "",
             ) -> tuple[int, str, str]:
