@@ -249,13 +249,11 @@ class FlextTargetOracleOicModels(FlextModels):
 
                 # Validate columns structure
                 validation_errors: FlextTypes.StringList = []
-                validation_errors.extend(
-                    [
-                        "Column must have a name"
-                        for column in self.columns
-                        if "name" not in column
-                    ]
-                )
+                validation_errors.extend([
+                    "Column must have a name"
+                    for column in self.columns
+                    if "name" not in column
+                ])
 
                 # Validate rows have valid column references
                 if self.columns and self.rows:

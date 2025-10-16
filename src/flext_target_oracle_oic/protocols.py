@@ -18,7 +18,6 @@ class FlextTargetOracleOicProtocols:
     # RE-EXPORT FOUNDATION PROTOCOLS (EXPLICIT PATTERN)
     # ============================================================================
 
-
     # ============================================================================
     # SINGER TARGET ORACLE OIC-SPECIFIC PROTOCOLS (DOMAIN NAMESPACE)
     # ============================================================================
