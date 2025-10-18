@@ -10,8 +10,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import FlextTypes
-
 from flext_target_oracle_oic.target_config import (
     OICAuthConfig,
     OICOAuth2Authenticator,
@@ -20,4 +18,4 @@ from flext_target_oracle_oic.target_config import (
 # Note: This module is maintained for backward compatibility only.
 # New code should import directly from flext_target_oracle_oic.target_config
 
-__all__: FlextTypes.StringList = ["OICAuthConfig", "OICOAuth2Authenticator"]
+__all__: list[str] = ["OICAuthConfig", "OICOAuth2Authenticator"]

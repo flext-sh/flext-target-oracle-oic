@@ -72,7 +72,7 @@ class TargetOracleOicConfig(FlextConfig):
         integration_identifier_field: str
         connection_identifier_field: str
         lookup_identifier_field: str
-        identifier_fields: FlextTypes.StringDict
+        identifier_fields: dict[str, str]
 
     model_config = SettingsConfigDict(
         env_prefix="TARGET_ORACLE_OIC_",
@@ -213,7 +213,7 @@ class TargetOracleOicConfig(FlextConfig):
         default="lookup_id",
         description="Field name to use as lookup identifier",
     )
-    identifier_fields: FlextTypes.StringDict = Field(
+    identifier_fields: dict[str, str] = Field(
         default_factory=lambda: {
             "integrations": "code",
             "connections": "code",
@@ -223,7 +223,7 @@ class TargetOracleOicConfig(FlextConfig):
     )
 
     # Additional configuration fields
-    transformation_rules: list[FlextTypes.Dict] = Field(
+    transformation_rules: list[dict[str, object]] = Field(
         default_factory=list,
         description="Custom transformation rules",
     )
@@ -378,7 +378,7 @@ class TargetOracleOicConfig(FlextConfig):
         }
 
     # Utility methods
-    def get_oauth_headers(self) -> FlextTypes.StringDict:
+    def get_oauth_headers(self) -> dict[str, str]:
         """Get OAuth headers for API requests."""
         return {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -494,6 +494,6 @@ class TargetOracleOicConfig(FlextConfig):
 
 
 # Export configuration class (single class only)
-__all__: FlextTypes.StringList = [
+__all__: list[str] = [
     "TargetOracleOicConfig",
 ]
