@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import FlextConstants, FlextLogger, FlextModels, FlextResult, FlextTypes
+from flext_core import FlextConstants, FlextLogger, FlextModels, FlextResult
 from pydantic import Field
 
 logger = FlextLogger(__name__)
@@ -52,14 +52,14 @@ class OICConnectionSettings(FlextModels):
         url = self.base_url.rstrip("/")
         return f"{url}/ic/api/integration/v1"
 
-    def get_auth_headers(self: object) -> FlextTypes.StringDict:
+    def get_auth_headers(self: object) -> dict[str, str]:
         """Get authentication headers."""
         return {
             "Content-Type": "application/x-www-form-urlencoded",
             "Accept": "application/json",
         }
 
-    def get_api_headers(self, access_token: str) -> FlextTypes.StringDict:
+    def get_api_headers(self, access_token: str) -> dict[str, str]:
         """Get API request headers with authentication."""
         return {
             "Authorization": f"Bearer {access_token}",
@@ -68,7 +68,7 @@ class OICConnectionSettings(FlextModels):
         }
 
     @classmethod
-    def from_dict(cls, data: FlextTypes.Dict) -> OICConnectionSettings:
+    def from_dict(cls, data: dict[str, object]) -> OICConnectionSettings:
         """Create configuration from dictionary using modern Pydantic patterns."""
         try:
             return cls(**data)
@@ -78,7 +78,7 @@ class OICConnectionSettings(FlextModels):
 
     def validate_business_rules(self: object) -> FlextResult[None]:
         """Validate OIC connection configuration business rules."""
-        errors: FlextTypes.StringList = []
+        errors: list[str] = []
 
         if not self.base_url:
             errors.append("base_url is required")

@@ -207,7 +207,7 @@ def validate_oic_target_config(config: TargetOracleOicConfig) -> FlextResult[Non
     return config.validate_business_rules()
 
 
-def get_oic_target_config_schema() -> FlextTypes.Dict:
+def get_oic_target_config_schema() -> dict[str, object]:
     """Get JSON schema for Oracle Integration Cloud target configuration.
 
     Returns:
@@ -217,7 +217,7 @@ def get_oic_target_config_schema() -> FlextTypes.Dict:
     return TargetOracleOicConfig.model_json_schema()
 
 
-__all__: FlextTypes.StringList = [
+__all__: list[str] = [
     "create_development_oic_target_config",
     "create_production_oic_target_config",
     "create_testing_oic_target_config",

@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import Final
 
-from flext_core import FlextConstants, FlextTypes
+from flext_core import FlextConstants
 from flext_oracle_oic import FlextOracleOicConstants
 
 
@@ -21,9 +21,6 @@ class FlextTargetOracleOicConstants(FlextConstants):
 
     Composes with FlextOracleOicConstants to avoid duplication and ensure consistency.
     """
-
-    # Import Oracle OIC Extension constants from flext-oracle-oic (composition pattern)
-    from flext_oracle_oic.constants import FlextOracleOicConstants
 
     # Project identification (Final attributes inherited from FlextConstants)
     PROJECT_VERSION: Final[str] = "1.0.0"
@@ -64,7 +61,7 @@ class FlextTargetOracleOicConstants(FlextConstants):
         DEFAULT_API_VERSION: Final[str] = (
             FlextOracleOicConstants.OIC.DEFAULT_API_VERSION
         )
-        SUPPORTED_API_VERSIONS: Final[FlextTypes.StringList] = (
+        SUPPORTED_API_VERSIONS: Final[list[str]] = (
             FlextOracleOicConstants.OIC.SUPPORTED_API_VERSIONS
         )
 
@@ -144,7 +141,7 @@ class FlextTargetOracleOicConstants(FlextConstants):
         }
 
         # Entity type descriptions
-        ENTITY_TYPE_DESCRIPTIONS: Final[FlextTypes.StringDict] = {
+        ENTITY_TYPE_DESCRIPTIONS: Final[dict[str, str]] = {
             INTEGRATION: "Oracle Integration Cloud integration",
             CONNECTION: "Oracle Integration Cloud connection",
             LOOKUP: "Oracle Integration Cloud lookup",
@@ -175,7 +172,7 @@ class FlextTargetOracleOicConstants(FlextConstants):
         DEFAULT_IMPORT_MODE: Final[str] = CREATE_OR_UPDATE
 
         # Import mode descriptions
-        IMPORT_MODE_DESCRIPTIONS: Final[FlextTypes.StringDict] = {
+        IMPORT_MODE_DESCRIPTIONS: Final[dict[str, str]] = {
             CREATE: "Create new entities only",
             UPDATE: "Update existing entities only",
             CREATE_OR_UPDATE: "Create new or update existing entities",

@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from typing import override
 
-from flext_core import FlextExceptions, FlextModels, FlextResult, FlextTypes
+from flext_core import FlextExceptions, FlextModels, FlextResult
 
 # ===============================================================================
 # BASE ORACLE OIC EXCEPTION
@@ -25,7 +25,7 @@ class FlextTargetOracleOicError(Exception):
         self,
         message: str = "Oracle OIC target error",
         *,
-        details: FlextTypes.Dict | None = None,
+        details: dict[str, object] | None = None,
         integration_name: str | None = None,
         oic_instance: str | None = None,
         **kwargs: object,
@@ -169,7 +169,7 @@ class FlextTargetOracleOicValidationError(
         **kwargs: object,
     ) -> None:
         """Initialize Oracle OIC validation error with context."""
-        validation_details: FlextTypes.Dict = {}
+        validation_details: dict[str, object] = {}
         context = kwargs.copy()
 
         if integration_name is not None:
@@ -241,8 +241,8 @@ class FlextTargetOracleOicTransformationError(FlextTargetOracleOicError):
         message: str = "Oracle OIC transformation failed",
         *,
         transformation_type: str | None = None,
-        input_schema: FlextTypes.Dict | None = None,
-        output_schema: FlextTypes.Dict | None = None,
+        input_schema: dict[str, object] | None = None,
+        output_schema: dict[str, object] | None = None,
         **kwargs: object,
     ) -> None:
         """Initialize Oracle OIC transformation error with context."""
@@ -252,11 +252,11 @@ class FlextTargetOracleOicTransformationError(FlextTargetOracleOicError):
             context["transformation_type"] = transformation_type
         if input_schema is not None:
             # Include minimal schema info for debugging
-            properties: FlextTypes.Dict = input_schema.get("properties", {})
+            properties: dict[str, object] = input_schema.get("properties", {})
             if isinstance(properties, dict):
                 context["input_schema_keys"] = list(properties.keys())
         if output_schema is not None:
-            properties: FlextTypes.Dict = output_schema.get("properties", {})
+            properties: dict[str, object] = output_schema.get("properties", {})
             if isinstance(properties, dict):
                 context["output_schema_keys"] = list(properties.keys())
 
@@ -337,7 +337,7 @@ class FlextTargetOracleOicErrorDetails(FlextModels):
 
     error_code: str
     error_type: str
-    context: FlextTypes.Dict
+    context: dict[str, object]
     timestamp: str
     source_component: str
     integration_name: str | None = None
@@ -560,7 +560,7 @@ def create_validation_error_result(
 # EXPORTS
 # ===============================================================================
 
-__all__: FlextTypes.StringList = [
+__all__: list[str] = [
     "FlextTargetOracleOicAPIError",
     "FlextTargetOracleOicAuthenticationError",
     "FlextTargetOracleOicConfigurationError",

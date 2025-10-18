@@ -2,7 +2,7 @@
 
 from typing import Protocol, runtime_checkable
 
-from flext_core import FlextProtocols, FlextResult, FlextTypes
+from flext_core import FlextProtocols, FlextResult
 
 
 class FlextTargetOracleOicProtocols:
@@ -29,30 +29,30 @@ class FlextTargetOracleOicProtocols:
         class OicIntegrationProtocol(FlextProtocols.Service, Protocol):
             """Protocol for Oracle OIC integration."""
 
-            def integrate(self, data: FlextTypes.Dict) -> FlextResult[None]: ...
+            def integrate(self, data: dict[str, object]) -> FlextResult[None]: ...
 
         @runtime_checkable
         class DataTransformationProtocol(FlextProtocols.Service, Protocol):
             """Protocol for Singer to OIC transformation."""
 
             def transform_to_oic(
-                self, record: FlextTypes.Dict
-            ) -> FlextResult[FlextTypes.Dict]: ...
+                self, record: dict[str, object]
+            ) -> FlextResult[dict[str, object]]: ...
 
         @runtime_checkable
         class CloudApiProtocol(FlextProtocols.Service, Protocol):
             """Protocol for OIC cloud API operations."""
 
             def invoke_integration(
-                self, payload: FlextTypes.Dict
-            ) -> FlextResult[FlextTypes.Dict]: ...
+                self, payload: dict[str, object]
+            ) -> FlextResult[dict[str, object]]: ...
 
         @runtime_checkable
         class BatchProcessingProtocol(FlextProtocols.Service, Protocol):
             """Protocol for OIC batch processing."""
 
             def process_batch(
-                self, records: list[FlextTypes.Dict]
+                self, records: list[dict[str, object]]
             ) -> FlextResult[None]: ...
 
         @runtime_checkable
@@ -60,7 +60,7 @@ class FlextTargetOracleOicProtocols:
             """Protocol for OIC payload validation."""
 
             def validate_payload(
-                self, payload: FlextTypes.Dict
+                self, payload: dict[str, object]
             ) -> FlextResult[bool]: ...
 
         @runtime_checkable
@@ -68,8 +68,8 @@ class FlextTargetOracleOicProtocols:
             """Protocol for OIC performance optimization."""
 
             def optimize_throughput(
-                self, config: FlextTypes.Dict
-            ) -> FlextResult[FlextTypes.Dict]: ...
+                self, config: dict[str, object]
+            ) -> FlextResult[dict[str, object]]: ...
 
         @runtime_checkable
         class MonitoringProtocol(FlextProtocols.Service, Protocol):
@@ -77,7 +77,7 @@ class FlextTargetOracleOicProtocols:
 
             def track_integration_status(
                 self, integration_id: str
-            ) -> FlextResult[FlextTypes.Dict]: ...
+            ) -> FlextResult[dict[str, object]]: ...
 
     # ============================================================================
     # BACKWARD COMPATIBILITY ALIASES (100% COMPATIBILITY)

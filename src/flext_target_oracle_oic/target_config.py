@@ -7,8 +7,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import FlextTypes
-
 from flext_target_oracle_oic.config import TargetOracleOicConfig
 
 # Temporary authenticator placeholder until proper implementation
@@ -23,13 +21,13 @@ OICProcessingConfig = TargetOracleOicConfig
 OICEntityConfig = TargetOracleOicConfig
 
 
-def create_config_from_dict(config_dict: FlextTypes.Dict) -> TargetOracleOicConfig:
+def create_config_from_dict(config_dict: dict[str, object]) -> TargetOracleOicConfig:
     """Create TargetOracleOicConfig from dictionary."""
     return TargetOracleOicConfig.model_validate(config_dict)
 
 
 def create_config_with_env_overrides(
-    **overrides: FlextTypes.Dict,
+    **overrides: dict[str, object],
 ) -> TargetOracleOicConfig:
     """Create TargetOracleOicConfig with environment variable overrides."""
     return TargetOracleOicConfig.get_or_create_shared_instance(
@@ -37,12 +35,12 @@ def create_config_with_env_overrides(
     )
 
 
-def create_singer_config_schema() -> FlextTypes.Dict:
+def create_singer_config_schema() -> dict[str, object]:
     """Create Singer configuration schema from TargetOracleOicConfig."""
     return TargetOracleOicConfig.model_json_schema()
 
 
-__all__: FlextTypes.StringList = [
+__all__: list[str] = [
     "OICAuthConfig",
     "OICConnectionConfig",
     "OICDeploymentConfig",

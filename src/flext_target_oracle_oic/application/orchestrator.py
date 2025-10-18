@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import override
 
-from flext_core import FlextLogger, FlextResult, FlextTypes
+from flext_core import FlextLogger, FlextResult
 
 logger = FlextLogger(__name__)
 
@@ -18,7 +18,7 @@ class OICTargetOrchestrator:
     """Oracle OIC Target Orchestrator for FLEXT ecosystem integration."""
 
     @override
-    def __init__(self, config: FlextTypes.Dict | None = None) -> None:
+    def __init__(self, config: dict[str, object] | None = None) -> None:
         """Initialize OIC target orchestrator.
 
         Args:
@@ -28,7 +28,7 @@ class OICTargetOrchestrator:
             object: Description of return value.
 
         """
-        self.config: FlextTypes.Dict = config or {}
+        self.config: dict[str, object] = config or {}
         logger.debug("Initialized OIC target orchestrator")
 
     def validate_configuration(self: object) -> FlextResult[bool]:
@@ -79,8 +79,8 @@ class OICTargetOrchestrator:
 
     def orchestrate_target_pipeline(
         self,
-        records: list[FlextTypes.Dict],
-    ) -> FlextResult[FlextTypes.Dict]:
+        records: list[dict[str, object]],
+    ) -> FlextResult[dict[str, object]]:
         """Orchestrate OIC target pipeline execution.
 
         Args:
@@ -108,15 +108,15 @@ class OICTargetOrchestrator:
                 "OIC target pipeline completed: %d records processed",
                 processed_count,
             )
-            return FlextResult[FlextTypes.Dict].ok(result)
+            return FlextResult[dict[str, object]].ok(result)
 
         except Exception as e:
             logger.exception("OIC target pipeline orchestration failed")
-            return FlextResult[FlextTypes.Dict].fail(
+            return FlextResult[dict[str, object]].fail(
                 f"Pipeline orchestration failed: {e}",
             )
 
 
-__all__: FlextTypes.StringList = [
+__all__: list[str] = [
     "OICTargetOrchestrator",
 ]
