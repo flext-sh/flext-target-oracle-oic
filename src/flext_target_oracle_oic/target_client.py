@@ -66,10 +66,13 @@ class OICBaseSink(Sink):
         """
         if not self._client:
             # Create basic client - authentication will be handled by flext-oracle-oic
-            self._client = FlextApiClient(
+            from flext_api.config import FlextApiConfig
+
+            api_config = FlextApiConfig(
                 base_url=self.config.get("base_url", ""),
                 timeout=30,
             )
+            self._client = FlextApiClient(api_config)
         return self._client
 
     def preprocess_record(
