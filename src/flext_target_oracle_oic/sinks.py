@@ -88,11 +88,14 @@ class OICBaseSink(Sink):
                 "Accept": FlextTargetOracleOicConstants.OAuth.JSON_MIME,
             }
 
-            self._client = FlextApiClient(
+            from flext_api.config import FlextApiConfig
+
+            api_config = FlextApiConfig(
                 base_url=self.config["base_url"],
-                default_headers=auth_headers,
+                headers=auth_headers,
                 timeout=30.0,
             )
+            self._client = FlextApiClient(api_config)
         return self._client
 
     def preprocess_record(
