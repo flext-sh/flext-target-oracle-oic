@@ -22,10 +22,10 @@ class OICTargetOrchestrator:
         """Initialize OIC target orchestrator.
 
         Args:
-            config: Configuration dictionary
+        config: Configuration dictionary
 
         Returns:
-            object: Description of return value.
+        object: Description of return value.
 
         """
         self.config: dict[str, object] = config or {}
@@ -35,7 +35,7 @@ class OICTargetOrchestrator:
         """Validate OIC target configuration.
 
         Returns:
-            FlextResult indicating validation success
+        FlextResult indicating validation success
 
         """
         try:
@@ -53,7 +53,7 @@ class OICTargetOrchestrator:
         """Set up OIC target orchestrator.
 
         Returns:
-            FlextResult indicating setup success
+        FlextResult indicating setup success
 
         """
         try:
@@ -67,7 +67,7 @@ class OICTargetOrchestrator:
         """Teardown OIC target orchestrator.
 
         Returns:
-            FlextResult indicating teardown success
+        FlextResult indicating teardown success
 
         """
         try:
@@ -84,10 +84,10 @@ class OICTargetOrchestrator:
         """Orchestrate OIC target pipeline execution.
 
         Args:
-            records: Records to process
+        records: Records to process
 
         Returns:
-            FlextResult with execution status
+        FlextResult with execution status
 
         """
         try:

@@ -126,10 +126,10 @@ class TargetOracleOic(Target):
         """Process a schema message by creating and registering the appropriate sink.
 
         Args:
-            message_dict: The schema message dictionary.
+        message_dict: The schema message dictionary.
 
         Returns:
-            object: Description of return value.
+        object: Description of return value.
 
         """
         # Ensure sink is created and registered for this stream
@@ -158,13 +158,13 @@ class TargetOracleOic(Target):
         """Get appropriate sink for the given stream.
 
         Args:
-            stream_name: Name of the data stream to process.
-            record: Optional record for context.
-            schema: Optional schema for validation.
-            key_properties: Optional key properties for the stream.
+        stream_name: Name of the data stream to process.
+        record: Optional record for context.
+        schema: Optional schema for validation.
+        key_properties: Optional key properties for the stream.
 
         Returns:
-            Sink instance for processing the stream data.
+        Sink instance for processing the stream data.
 
         """
         _ = record
@@ -191,10 +191,10 @@ class TargetOracleOic(Target):
         """Get sink class for the given stream name.
 
         Args:
-            stream_name: Name of the stream.
+        stream_name: Name of the stream.
 
         Returns:
-            Appropriate sink class for the stream.
+        Appropriate sink class for the stream.
 
         """
         sink_mapping = {

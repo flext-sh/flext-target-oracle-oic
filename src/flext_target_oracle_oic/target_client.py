@@ -41,7 +41,7 @@ class OICBaseSink(Sink):
     ) -> None:
         """Initialize base sink with target and stream metadata."""
         super().__init__(target, stream_name, schema, key_properties)
-        # CRITICAL: Set tap_name for Singer SDK auth compatibility
+        # Critical: Set tap_name for Singer SDK auth compatibility
         self.tap_name = "target-oracle-oic"  # Required by Singer SDK authenticators
         # Keep a separate attribute for typed config to avoid base type conflicts
         self._oic_config: TargetOracleOicConfig | None = None
@@ -61,7 +61,7 @@ class OICBaseSink(Sink):
         """Get or create HTTP client with authentication headers.
 
         Returns:
-            Configured FlextApiClient for OIC API requests.
+        Configured FlextApiClient for OIC API requests.
 
         """
         if not self._client:
@@ -83,11 +83,11 @@ class OICBaseSink(Sink):
         """Preprocess record before batch processing.
 
         Args:
-            record: Raw record data to preprocess.
-            _context: Optional context information (unused).
+        record: Raw record data to preprocess.
+        _context: Optional context information (unused).
 
         Returns:
-            Preprocessed record ready for API submission.
+        Preprocessed record ready for API submission.
 
         """
         return record
@@ -99,10 +99,10 @@ class OICBaseSink(Sink):
         respecting OIC API batch size limits.
 
         Args:
-            context: Batch context containing records and metadata.
+        context: Batch context containing records and metadata.
 
         Returns:
-            object: Description of return value.
+        object: Description of return value.
 
         """
         if not context.get("records"):
@@ -166,8 +166,8 @@ class OICBaseSink(Sink):
         """Process a single record - default implementation for base sink.
 
         Args:
-            _record: Record data to process.
-            _context: Processing context.
+        _record: Record data to process.
+        _context: Processing context.
 
         """
         # Default implementation: log and skip
@@ -409,7 +409,7 @@ class TargetOracleOic(Target):
     - Secure integration artifact upload
     - Configurable import modes (create, update, create_or_update)
     - Automatic integration activation
-    - Comprehensive error handling and retry logic
+    - Complete error handling and retry logic
     - Maximum composition from flext-core and flext-meltano
 
     Configuration:

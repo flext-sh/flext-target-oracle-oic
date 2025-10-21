@@ -30,8 +30,8 @@ class LibrariesSink(OICBaseSink):
         """Process a library record.
 
         Args:
-            record: Library record to process.
-            _context: Record context (unused).
+        record: Library record to process.
+        _context: Record context (unused).
 
         """
         library_id = str(record.get("id", ""))
@@ -111,8 +111,8 @@ class CertificatesSink(OICBaseSink):
         """Process a certificate record.
 
         Args:
-            record: Certificate record to process.
-            _context: Record context (unused).
+        record: Certificate record to process.
+        _context: Record context (unused).
 
         """
         cert_alias = str(record.get("alias", ""))
@@ -189,8 +189,8 @@ class ProjectsSink(OICBaseSink):
         """Process a project record.
 
         Args:
-            record: Project record to process.
-            _context: Record context (unused).
+        record: Project record to process.
+        _context: Record context (unused).
 
         """
         project_id = str(record.get("id", ""))
@@ -263,8 +263,8 @@ class SchedulesSink(OICBaseSink):
         """Process a schedule record.
 
         Args:
-            record: Schedule record to process.
-            _context: Record context (unused).
+        record: Schedule record to process.
+        _context: Record context (unused).
 
         """
         schedule_id = str(record.get("id", ""))
@@ -369,8 +369,8 @@ class BusinessEventsSink(OICBaseSink):
         """Process a business event record.
 
         Args:
-            record: Business event record to process.
-            _context: Record context (unused).
+        record: Business event record to process.
+        _context: Record context (unused).
 
         """
         # Business events are typically published, not created
@@ -411,8 +411,8 @@ class MonitoringConfigSink(OICBaseSink):
         """Process a monitoring configuration record.
 
         Args:
-            record: Monitoring config record to process.
-            _context: Record context (unused).
+        record: Monitoring config record to process.
+        _context: Record context (unused).
 
         """
         config_type: dict[str, object] = record.get("configType", "alerts")
@@ -476,8 +476,8 @@ class IntegrationActionsSink(OICBaseSink):
         """Process an integration action record.
 
         Args:
-            record: Integration action record to process.
-            _context: Record context (unused).
+        record: Integration action record to process.
+        _context: Record context (unused).
 
         """
         action = record.get("action", "")
@@ -562,8 +562,8 @@ class ConnectionActionsSink(OICBaseSink):
         """Process a connection action record.
 
         Args:
-            record: Connection action record to process.
-            _context: Record context (unused).
+        record: Connection action record to process.
+        _context: Record context (unused).
 
         """
         action = record.get("action", "")

@@ -17,7 +17,7 @@ class FlextTargetOracleOicConstants(FlextConstants):
     """Oracle OIC target loading-specific constants following flext-core patterns.
 
     Enhanced Oracle OIC Target constants extending FlextConstants with
-    comprehensive organization, validation limits, and security considerations.
+    complete organization, validation limits, and security considerations.
 
     Composes with FlextOracleOicConstants to avoid duplication and ensure consistency.
     """
@@ -27,7 +27,7 @@ class FlextTargetOracleOicConstants(FlextConstants):
     PROJECT_DESCRIPTION: Final[str] = "Oracle OIC target for FLEXT data pipeline"
 
     class OracleOic:
-        """Oracle OIC specific constants with comprehensive configuration."""
+        """Oracle OIC specific constants with complete configuration."""
 
         # Connection defaults from FlextOracleOicConstants
         DEFAULT_TIMEOUT: Final[int] = FlextOracleOicConstants.OIC.DEFAULT_TIMEOUT

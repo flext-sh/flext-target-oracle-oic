@@ -38,7 +38,7 @@ class OICBaseSink(Sink):
     ) -> None:
         """Initialize base sink with target and stream metadata."""
         super().__init__(target, stream_name, schema, key_properties)
-        # CRITICAL: Set tap_name for Singer SDK auth compatibility
+        # Critical: Set tap_name for Singer SDK auth compatibility
         self.tap_name = "target-oracle-oic"  # Required by Singer SDK authenticators
         self._authenticator: OICOAuth2Authenticator | None = None
         self._client: FlextApiClient | None = None
@@ -48,7 +48,7 @@ class OICBaseSink(Sink):
         """Get or create OAuth2 authenticator instance.
 
         Returns:
-            OICOAuth2Authenticator for API authentication.
+        OICOAuth2Authenticator for API authentication.
 
         """
         if not self._authenticator:
@@ -71,7 +71,7 @@ class OICBaseSink(Sink):
         """Get or create HTTP client with authentication headers.
 
         Returns:
-            Configured FlextApiClient for OIC API requests.
+        Configured FlextApiClient for OIC API requests.
 
         """
         if not self._client:
@@ -106,11 +106,11 @@ class OICBaseSink(Sink):
         """Preprocess record before batch processing.
 
         Args:
-            record: Raw record data to preprocess.
-            _context: Optional context information (unused).
+        record: Raw record data to preprocess.
+        _context: Optional context information (unused).
 
         Returns:
-            Preprocessed record ready for API submission.
+        Preprocessed record ready for API submission.
 
         """
         return record
@@ -122,10 +122,10 @@ class OICBaseSink(Sink):
         respecting OIC API batch size limits.
 
         Args:
-            context: Batch context containing records and metadata.
+        context: Batch context containing records and metadata.
 
         Returns:
-            object: Description of return value.
+        object: Description of return value.
 
         """
         if not context.get("records"):
@@ -186,11 +186,11 @@ class OICBaseSink(Sink):
         """Process a single record - default implementation for base sink.
 
         Args:
-            record: Record data to process.
-            context: Processing context.
+        record: Record data to process.
+        context: Processing context.
 
         Returns:
-            bool:: Description of return value.
+        bool:: Description of return value.
 
         """
         # Default implementation: log and skip
@@ -217,8 +217,8 @@ class ConnectionsSink(OICBaseSink):
         Creates new connections or updates existing ones based on record ID.
 
         Args:
-            record: Connection record data containing id and configuration.
-            _context: Processing context (unused).
+        record: Connection record data containing id and configuration.
+        _context: Processing context (unused).
 
         """
         connection_id = str(record.get("id", ""))
@@ -282,8 +282,8 @@ class IntegrationsSink(OICBaseSink):
         Imports integrations to OIC with version management.
 
         Args:
-            record: Integration record containing id, version, and integration archive.
-            _context: Processing context (unused).
+        record: Integration record containing id, version, and integration archive.
+        _context: Processing context (unused).
 
         """
         integration_id = str(record.get("id", ""))
@@ -368,8 +368,8 @@ class PackagesSink(OICBaseSink):
         Imports package archives to OIC if archive content is provided.
 
         Args:
-            record: Package record containing id and optional archive_content.
-            _context: Processing context (unused).
+        record: Package record containing id and optional archive_content.
+        _context: Processing context (unused).
 
         """
         package_id = str(record.get("id", ""))
@@ -422,8 +422,8 @@ class LookupsSink(OICBaseSink):
         Creates new lookups or updates existing ones based on lookup name.
 
         Args:
-            record: Lookup record containing name and lookup definitions.
-            _context: Processing context (unused).
+        record: Lookup record containing name and lookup definitions.
+        _context: Processing context (unused).
 
         """
         lookup_name = str(record.get("name", ""))
