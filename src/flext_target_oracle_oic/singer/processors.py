@@ -30,12 +30,12 @@ class OICRecordProcessor:
         """Process Singer record for OIC format.
 
         Args:
-            record: Singer record data
-            stream_name: Name of the data stream
-            schema: Optional schema for validation
+        record: Singer record data
+        stream_name: Name of the data stream
+        schema: Optional schema for validation
 
         Returns:
-            FlextResult containing processed record or error
+        FlextResult containing processed record or error
 
         """
         try:
@@ -80,11 +80,11 @@ class OICRecordProcessor:
         """Validate record against Singer schema.
 
         Args:
-            record: Record to validate
-            schema: Singer schema definition
+        record: Record to validate
+        schema: Singer schema definition
 
         Returns:
-            FlextResult indicating validation success or error
+        FlextResult indicating validation success or error
 
         """
         try:
@@ -131,11 +131,11 @@ class OICRecordProcessor:
         """Validate field value against expected type.
 
         Args:
-            value: Field value to validate
-            expected_type: Expected Singer type
+        value: Field value to validate
+        expected_type: Expected Singer type
 
         Returns:
-            True if type matches or can be coerced, False otherwise
+        True if type matches or can be coerced, False otherwise
 
         """
         if expected_type is None or value is None:
@@ -164,11 +164,11 @@ class OICRecordProcessor:
         """Extract metadata from stream definition.
 
         Args:
-            stream_name: Name of the data stream
-            schema: Optional schema definition
+        stream_name: Name of the data stream
+        schema: Optional schema definition
 
         Returns:
-            FlextResult containing stream metadata
+        FlextResult containing stream metadata
 
         """
         try:
@@ -214,11 +214,11 @@ class OICRecordProcessor:
         """Prepare records for batch processing.
 
         Args:
-            records: List of records to batch
-            batch_size: Maximum batch size
+        records: List of records to batch
+        batch_size: Maximum batch size
 
         Returns:
-            FlextResult containing list of batches
+        FlextResult containing list of batches
 
         """
         try:

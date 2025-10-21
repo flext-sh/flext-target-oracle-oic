@@ -1,6 +1,6 @@
 """Oracle OIC target models extending flext-core FlextModels.
 
-Provides comprehensive models for Oracle Integration Cloud data loading, Singer protocol
+Provides complete models for Oracle Integration Cloud data loading, Singer protocol
 compliance, OAuth2 authentication, and target operations following standardized patterns.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
@@ -62,7 +62,7 @@ NETWORK = "NETWORK"
 class FlextTargetOracleOicModels(FlextModels):
     """Oracle OIC target models extending flext-core FlextModels.
 
-    Provides comprehensive models for Oracle Integration Cloud data loading, Singer protocol
+    Provides complete models for Oracle Integration Cloud data loading, Singer protocol
     compliance, OAuth2 authentication, and target operations following standardized patterns.
     """
 
@@ -616,7 +616,7 @@ class FlextTargetOracleOicModels(FlextModels):
 class FlextTargetOracleOicUtilities(FlextUtilities):
     """Standardized utilities for FLEXT Target Oracle OIC operations.
 
-    Provides comprehensive utilities for Oracle Integration Cloud target operations,
+    Provides complete utilities for Oracle Integration Cloud target operations,
     Singer protocol compliance, OAuth2 authentication, and integration deployment
     following SOLID principles and flext-core patterns.
     """
@@ -1001,7 +1001,7 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
         oauth_config: dict[str, object],
         performance_settings: dict[str, object] | None = None,
     ) -> FlextResult[dict[str, object]]:
-        """Create comprehensive Oracle OIC target configuration."""
+        """Create complete Oracle OIC target configuration."""
         if not base_url or not oauth_config:
             return FlextResult[dict[str, object]].fail(
                 "Base URL and OAuth configuration are required"

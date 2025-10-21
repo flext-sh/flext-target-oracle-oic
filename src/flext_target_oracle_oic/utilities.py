@@ -16,25 +16,25 @@ from flext_core import FlextConstants, FlextResult, FlextTypes, FlextUtilities
 class FlextTargetOracleOicUtilities(FlextUtilities):
     """Single unified utilities class for Singer target Oracle Integration Cloud operations.
 
-    This class provides comprehensive Oracle OIC target functionality for Singer protocol
+    This class provides complete Oracle OIC target functionality for Singer protocol
     integration, including OAuth2 authentication, integration artifact deployment,
-    connection management, and API operations with comprehensive security patterns.
+    connection management, and API operations with complete security patterns.
 
     Oracle OIC Domain Specialization:
     - Enterprise OAuth2/IDCS authentication with secure token management
     - Oracle Integration Cloud artifact deployment and lifecycle management
     - High-performance API operations with rate limiting and connection pooling
     - Singer protocol compliance with stream-to-integration mapping
-    - OIC-specific error handling with comprehensive retry strategies
+    - OIC-specific error handling with complete retry strategies
     - Enterprise security with OAuth2 token lifecycle management
     - OIC performance monitoring and optimization patterns
 
     Attributes:
-        OIC_DEFAULT_API_TIMEOUT: Default API operation timeout (180 seconds)
-        OIC_DEFAULT_BATCH_SIZE: Default batch size for bulk operations (25)
-        OAUTH2_TOKEN_REFRESH_THRESHOLD: Threshold for token refresh (300 seconds)
-        MAX_API_RETRIES: Maximum API retry attempts (5)
-        DEFAULT_CONNECTION_POOL_SIZE: Default connection pool size (5)
+    OIC_DEFAULT_API_TIMEOUT: Default API operation timeout (180 seconds)
+    OIC_DEFAULT_BATCH_SIZE: Default batch size for bulk operations (25)
+    OAUTH2_TOKEN_REFRESH_THRESHOLD: Threshold for token refresh (300 seconds)
+    MAX_API_RETRIES: Maximum API retry attempts (5)
+    DEFAULT_CONNECTION_POOL_SIZE: Default connection pool size (5)
 
     """
 
@@ -58,12 +58,12 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
             """Create Singer SCHEMA message for OIC integration definition.
 
             Args:
-                stream_name: Name of the Singer stream
-                schema: JSON schema definition for the stream
-                key_properties: List of key property names
+            stream_name: Name of the Singer stream
+            schema: JSON schema definition for the stream
+            key_properties: List of key property names
 
             Returns:
-                Singer SCHEMA message dictionary
+            Singer SCHEMA message dictionary
 
             """
             return {
@@ -83,12 +83,12 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
             """Create Singer RECORD message for OIC integration deployment.
 
             Args:
-                stream_name: Name of the Singer stream
-                record: Integration record to deploy
-                time_extracted: Optional extraction timestamp
+            stream_name: Name of the Singer stream
+            record: Integration record to deploy
+            time_extracted: Optional extraction timestamp
 
             Returns:
-                Singer RECORD message dictionary
+            Singer RECORD message dictionary
 
             """
             message = {
@@ -105,10 +105,10 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
             """Create Singer STATE message for OIC target checkpointing.
 
             Args:
-                state: State data for checkpointing
+            state: State data for checkpointing
 
             Returns:
-                Singer STATE message dictionary
+            Singer STATE message dictionary
 
             """
             return {"type": "STATE", "value": state}
@@ -120,10 +120,10 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
             """Validate Singer message format and required fields.
 
             Args:
-                message: Singer message to validate
+            message: Singer message to validate
 
             Returns:
-                FlextResult containing validated message or error
+            FlextResult containing validated message or error
 
             """
             if not isinstance(message, dict):
@@ -173,12 +173,12 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
             """Map Singer stream to Oracle OIC integration configuration.
 
             Args:
-                stream_name: Name of the Singer stream
-                schema: Singer stream schema
-                oic_config: OIC-specific configuration
+            stream_name: Name of the Singer stream
+            schema: Singer stream schema
+            oic_config: OIC-specific configuration
 
             Returns:
-                FlextResult containing OIC integration mapping or error
+            FlextResult containing OIC integration mapping or error
 
             """
             try:
@@ -206,11 +206,11 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
             """Generate Oracle OIC integration package from Singer data.
 
             Args:
-                integration_config: OIC integration configuration
-                artifacts: Integration artifacts and components
+            integration_config: OIC integration configuration
+            artifacts: Integration artifacts and components
 
             Returns:
-                FlextResult containing OIC package information or error
+            FlextResult containing OIC package information or error
 
             """
             try:
@@ -246,11 +246,11 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
             """Transform Singer record for Oracle OIC deployment.
 
             Args:
-                record: Singer record data
-                deployment_config: OIC deployment configuration
+            record: Singer record data
+            deployment_config: OIC deployment configuration
 
             Returns:
-                FlextResult containing transformed record or error
+            FlextResult containing transformed record or error
 
             """
             try:
@@ -295,10 +295,10 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
             """Validate OAuth2 configuration for Oracle OIC.
 
             Args:
-                config: OAuth2 configuration
+            config: OAuth2 configuration
 
             Returns:
-                FlextResult containing validated config or error
+            FlextResult containing validated config or error
 
             """
             required_fields = ["client_id", "client_secret", "token_url", "audience"]
@@ -324,11 +324,11 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
             """Generate OAuth2 token request for Oracle IDCS.
 
             Args:
-                config: OAuth2 configuration
-                grant_type: OAuth2 grant type (default: client_credentials)
+            config: OAuth2 configuration
+            grant_type: OAuth2 grant type (default: client_credentials)
 
             Returns:
-                FlextResult containing token request or error
+            FlextResult containing token request or error
 
             """
             try:
@@ -358,10 +358,10 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
             """Validate OAuth2 token response from Oracle IDCS.
 
             Args:
-                response: OAuth2 token response
+            response: OAuth2 token response
 
             Returns:
-                FlextResult containing validated token info or error
+            FlextResult containing validated token info or error
 
             """
             try:
@@ -405,10 +405,10 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
             """Check if OAuth2 token needs refresh.
 
             Args:
-                token_info: Token information with expiration
+            token_info: Token information with expiration
 
             Returns:
-                FlextResult containing boolean indicating if refresh needed
+            FlextResult containing boolean indicating if refresh needed
 
             """
             try:
@@ -443,11 +443,11 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
             """Create headers for Oracle OIC API requests.
 
             Args:
-                access_token: OAuth2 access token
-                additional_headers: Optional additional headers
+            access_token: OAuth2 access token
+            additional_headers: Optional additional headers
 
             Returns:
-                FlextResult containing API headers or error
+            FlextResult containing API headers or error
 
             """
             try:
@@ -476,11 +476,11 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
             """Validate Oracle OIC API response.
 
             Args:
-                response: API response data
-                expected_status_codes: List of expected status codes
+            response: API response data
+            expected_status_codes: List of expected status codes
 
             Returns:
-                FlextResult containing validated response or error
+            FlextResult containing validated response or error
 
             """
             try:
@@ -513,12 +513,12 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
             """Calculate exponential backoff delay for API retries.
 
             Args:
-                attempt: Current retry attempt number (starting from 1)
-                base_delay: Base delay in seconds
-                max_delay: Maximum delay in seconds
+            attempt: Current retry attempt number (starting from 1)
+            base_delay: Base delay in seconds
+            max_delay: Maximum delay in seconds
 
             Returns:
-                FlextResult containing calculated delay or error
+            FlextResult containing calculated delay or error
 
             """
             try:
@@ -548,12 +548,12 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
             """Process Singer schema stream for OIC integration configuration.
 
             Args:
-                stream_name: Name of the Singer stream
-                schema_message: Singer SCHEMA message
-                oic_config: OIC-specific configuration
+            stream_name: Name of the Singer stream
+            schema_message: Singer SCHEMA message
+            oic_config: OIC-specific configuration
 
             Returns:
-                FlextResult containing processed schema information or error
+            FlextResult containing processed schema information or error
 
             """
             try:
@@ -596,11 +596,11 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
             """Batch Singer records for efficient OIC deployment operations.
 
             Args:
-                records: List of Singer records
-                batch_size: Size of each batch (default: OIC_DEFAULT_BATCH_SIZE)
+            records: List of Singer records
+            batch_size: Size of each batch (default: OIC_DEFAULT_BATCH_SIZE)
 
             Returns:
-                FlextResult containing list of batches or error
+            FlextResult containing list of batches or error
 
             """
             actual_batch_size = (
@@ -635,10 +635,10 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
             """Validate Oracle OIC connection configuration.
 
             Args:
-                config: OIC connection configuration
+            config: OIC connection configuration
 
             Returns:
-                FlextResult containing validated config or error
+            FlextResult containing validated config or error
 
             """
             required_fields = [
@@ -675,10 +675,10 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
             """Validate Oracle OIC target-specific configuration.
 
             Args:
-                config: OIC target configuration
+            config: OIC target configuration
 
             Returns:
-                FlextResult containing validated config or error
+            FlextResult containing validated config or error
 
             """
             # Validate batch size
@@ -721,11 +721,11 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
             """Create Oracle OIC target state for Singer checkpointing.
 
             Args:
-                deployment_states: Dictionary of deployment states
-                target_metadata: Optional target-specific metadata
+            deployment_states: Dictionary of deployment states
+            target_metadata: Optional target-specific metadata
 
             Returns:
-                FlextResult containing OIC target state or error
+            FlextResult containing OIC target state or error
 
             """
             try:
@@ -754,12 +754,12 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
             """Update state for a specific integration deployment.
 
             Args:
-                current_state: Current Singer state
-                integration_id: ID of the integration
-                deployment_result: Deployment result data
+            current_state: Current Singer state
+            integration_id: ID of the integration
+            deployment_result: Deployment result data
 
             Returns:
-                FlextResult containing updated state or error
+            FlextResult containing updated state or error
 
             """
             try:
@@ -792,11 +792,11 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
             """Calculate optimal batch size for OIC API operations.
 
             Args:
-                integration_size_bytes: Average size of integration artifact in bytes
-                available_memory_mb: Available memory for batching in MB
+            integration_size_bytes: Average size of integration artifact in bytes
+            available_memory_mb: Available memory for batching in MB
 
             Returns:
-                FlextResult containing optimal batch size or error
+            FlextResult containing optimal batch size or error
 
             """
             try:
@@ -833,11 +833,11 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
             """Calculate delay to respect OIC API rate limits.
 
             Args:
-                requests_per_minute: API rate limit (requests per minute)
-                _current_request_count: Current number of requests made
+            requests_per_minute: API rate limit (requests per minute)
+            _current_request_count: Current number of requests made
 
             Returns:
-                FlextResult containing delay in seconds or error
+            FlextResult containing delay in seconds or error
 
             """
             try:

@@ -21,10 +21,10 @@ def setup_oic_target(
     """Set up Oracle Integration Cloud target with configuration.
 
     Args:
-      config: Optional configuration. If None, creates defaults.
+    config: Optional configuration. If None, creates defaults.
 
     Returns:
-      FlextResult with TargetOracleOicConfig or error message.
+    FlextResult with TargetOracleOicConfig or error message.
 
     """
     try:
@@ -53,10 +53,10 @@ def create_development_oic_target_config(
     """Create development OIC target configuration with defaults.
 
     Args:
-      **overrides: Configuration overrides
+    **overrides: Configuration overrides
 
     Returns:
-      TargetOracleOicConfig for development use.
+    TargetOracleOicConfig for development use.
 
     """
     dev_config_overrides: dict[str, FlextTypes.Value] = {
@@ -113,10 +113,10 @@ def create_production_oic_target_config(
     """Create production OIC target configuration with defaults.
 
     Args:
-      **overrides: Configuration overrides
+    **overrides: Configuration overrides
 
     Returns:
-      TargetOracleOicConfig for production use.
+    TargetOracleOicConfig for production use.
 
     """
     prod_config_overrides: dict[str, FlextTypes.Value] = {
@@ -162,10 +162,10 @@ def create_testing_oic_target_config(
     """Create testing OIC target configuration with defaults.
 
     Args:
-      **overrides: Configuration overrides
+    **overrides: Configuration overrides
 
     Returns:
-      TargetOracleOicConfig for testing use.
+    TargetOracleOicConfig for testing use.
 
     """
     test_config_overrides: dict[str, FlextTypes.Value] = {
@@ -198,10 +198,10 @@ def validate_oic_target_config(config: TargetOracleOicConfig) -> FlextResult[Non
     """Validate Oracle Integration Cloud target configuration.
 
     Args:
-      config: Configuration to validate
+    config: Configuration to validate
 
     Returns:
-      FlextResult indicating validation success or failure
+    FlextResult indicating validation success or failure
 
     """
     return config.validate_business_rules()
@@ -211,7 +211,7 @@ def get_oic_target_config_schema() -> dict[str, object]:
     """Get JSON schema for Oracle Integration Cloud target configuration.
 
     Returns:
-      JSON schema dictionary for TargetOracleOicConfig
+    JSON schema dictionary for TargetOracleOicConfig
 
     """
     return TargetOracleOicConfig.model_json_schema()
