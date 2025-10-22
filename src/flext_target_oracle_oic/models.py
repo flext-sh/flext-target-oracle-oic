@@ -570,7 +570,7 @@ class FlextTargetOracleOicModels(FlextModels):
                 return 0.0
             return (self.operation_failures / self.records_processed) * 100.0
 
-    class OicErrorContext(FlextModels.StrictArbitraryTypesModel):
+    class OicErrorContext(FlextModels.ArbitraryTypesModel):
         """Error context for Oracle OIC target error handling."""
 
         error_type: Literal[

@@ -11,6 +11,7 @@ from collections.abc import Sequence
 from typing import override
 
 from flext_api import FlextApiClient
+from flext_api.config import FlextApiConfig
 from flext_core import FlextLogger, FlextResult
 
 # Use FLEXT Meltano wrappers instead of direct singer_sdk imports (domain separation)
@@ -87,8 +88,6 @@ class OICBaseSink(Sink):
                 "Content-Type": FlextTargetOracleOicConstants.OAuth.JSON_MIME,
                 "Accept": FlextTargetOracleOicConstants.OAuth.JSON_MIME,
             }
-
-            from flext_api.config import FlextApiConfig
 
             api_config = FlextApiConfig(
                 base_url=self.config["base_url"],
