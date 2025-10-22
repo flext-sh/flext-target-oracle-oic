@@ -10,7 +10,14 @@ from __future__ import annotations
 from typing import Self, TypedDict
 
 from flext_core import FlextConfig, FlextConstants, FlextModels, FlextResult, FlextTypes
-from pydantic import Field, SecretStr, computed_field, field_validator, model_validator
+from pydantic import (
+    AnyUrl,
+    Field,
+    SecretStr,
+    computed_field,
+    field_validator,
+    model_validator,
+)
 from pydantic_settings import SettingsConfigDict
 
 
@@ -85,7 +92,9 @@ class TargetOracleOicConfig(FlextConfig):
         # Enhanced Pydantic 2.11+ features
         json_schema_extra={
             "title": "Target Oracle OIC Configuration",
-            "description": "Enterprise Oracle OIC target configuration extending FlextConfig",
+            "description": (
+                "Enterprise Oracle OIC target configuration extending FlextConfig"
+            ),
         },
     )
 
@@ -99,7 +108,7 @@ class TargetOracleOicConfig(FlextConfig):
         ...,
         description="OAuth2 client secret for Oracle OIC authentication",
     )
-    oauth_token_url: str = Field(
+    oauth_token_url: AnyUrl = Field(
         ...,
         description="OAuth2 token URL for Oracle OIC authentication",
         pattern=r"^https?://",
@@ -114,7 +123,7 @@ class TargetOracleOicConfig(FlextConfig):
     )
 
     # Connection configuration fields
-    base_url: str = Field(
+    base_url: AnyUrl = Field(
         ...,
         description="Oracle OIC base URL",
         pattern=r"^https://.*\.integration\.ocp\.oraclecloud\.com$",
@@ -203,14 +212,17 @@ class TargetOracleOicConfig(FlextConfig):
     # Entity configuration fields
     integration_identifier_field: str = Field(
         default="integration_id",
+        min_length=1,
         description="Field name to use as integration identifier",
     )
     connection_identifier_field: str = Field(
         default="connection_id",
+        min_length=1,
         description="Field name to use as connection identifier",
     )
     lookup_identifier_field: str = Field(
         default="lookup_id",
+        min_length=1,
         description="Field name to use as lookup identifier",
     )
     identifier_fields: dict[str, str] = Field(
@@ -237,36 +249,6 @@ class TargetOracleOicConfig(FlextConfig):
     )
 
     # Field validators
-    @field_validator("oauth_client_id")
-    @classmethod
-    def validate_oauth_client_id(cls, v: str) -> str:
-        """Validate OAuth client ID."""
-        if not v.strip():
-            msg = "OAuth client ID cannot be empty"
-            raise ValueError(msg)
-        return v.strip()
-
-    @field_validator("oauth_token_url")
-    @classmethod
-    def validate_oauth_token_url(cls, v: str) -> str:
-        """Validate OAuth token URL."""
-        if not v.strip():
-            msg = "OAuth token URL cannot be empty"
-            raise ValueError(msg)
-        if not v.startswith(("http://", "https://")):
-            msg = "OAuth token URL must start with http:// or https://"
-            raise ValueError(msg)
-        return v.strip()
-
-    @field_validator("base_url")
-    @classmethod
-    def validate_base_url(cls, v: str) -> str:
-        """Validate Oracle OIC base URL."""
-        if not v.strip():
-            msg = "Base URL cannot be empty"
-            raise ValueError(msg)
-        return v.strip()
-
     @field_validator("import_mode")
     @classmethod
     def validate_import_mode(cls, v: str) -> str:
@@ -304,18 +286,6 @@ class TargetOracleOicConfig(FlextConfig):
         if self.max_errors < 0:
             msg = "Max errors cannot be negative"
             raise ValueError(msg)
-
-        # Validate identifier fields
-        required_identifier_fields = [
-            "integration_identifier_field",
-            "connection_identifier_field",
-            "lookup_identifier_field",
-        ]
-        for field_name in required_identifier_fields:
-            value = getattr(self, field_name)
-            if not value or not value.strip():
-                msg = f"{field_name} cannot be empty"
-                raise ValueError(msg)
 
         return self
 
@@ -420,17 +390,6 @@ class TargetOracleOicConfig(FlextConfig):
                 return FlextResult[None].fail("Batch size must be positive")
             if self.max_errors < 0:
                 return FlextResult[None].fail("Max errors cannot be negative")
-
-            # Validate entity configuration
-            required_fields = [
-                "integration_identifier_field",
-                "connection_identifier_field",
-                "lookup_identifier_field",
-            ]
-            for field in required_fields:
-                value = getattr(self, field)
-                if not value or not value.strip():
-                    return FlextResult[None].fail(f"{field} cannot be empty")
 
             return FlextResult[None].ok(None)
         except Exception as e:

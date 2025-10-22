@@ -29,55 +29,36 @@ class FlextTargetOracleOicProtocols:
         class OicIntegrationProtocol(FlextProtocols.Service, Protocol):
             """Protocol for Oracle OIC integration."""
 
-            def integrate(self, data: dict[str, object]) -> FlextResult[None]: ...
-
-        @runtime_checkable
-        class DataTransformationProtocol(FlextProtocols.Service, Protocol):
-            """Protocol for Singer to OIC transformation."""
+            def integrate(self, data: dict[str, object]) -> FlextResult[None]:
+                """Integrate data with Oracle OIC."""
 
             def transform_to_oic(
                 self, record: dict[str, object]
-            ) -> FlextResult[dict[str, object]]: ...
-
-        @runtime_checkable
-        class CloudApiProtocol(FlextProtocols.Service, Protocol):
-            """Protocol for OIC cloud API operations."""
+            ) -> FlextResult[dict[str, object]]:
+                """Transform Singer record to OIC format."""
 
             def invoke_integration(
                 self, payload: dict[str, object]
-            ) -> FlextResult[dict[str, object]]: ...
-
-        @runtime_checkable
-        class BatchProcessingProtocol(FlextProtocols.Service, Protocol):
-            """Protocol for OIC batch processing."""
+            ) -> FlextResult[dict[str, object]]:
+                """Invoke OIC integration with payload."""
 
             def process_batch(
                 self, records: list[dict[str, object]]
-            ) -> FlextResult[None]: ...
+            ) -> FlextResult[None]:
+                """Process batch of records for OIC."""
 
-        @runtime_checkable
-        class ValidationProtocol(FlextProtocols.Service, Protocol):
-            """Protocol for OIC payload validation."""
-
-            def validate_payload(
-                self, payload: dict[str, object]
-            ) -> FlextResult[bool]: ...
-
-        @runtime_checkable
-        class PerformanceProtocol(FlextProtocols.Service, Protocol):
-            """Protocol for OIC performance optimization."""
+            def validate_payload(self, payload: dict[str, object]) -> FlextResult[bool]:
+                """Validate payload for OIC compatibility."""
 
             def optimize_throughput(
                 self, config: dict[str, object]
-            ) -> FlextResult[dict[str, object]]: ...
-
-        @runtime_checkable
-        class MonitoringProtocol(FlextProtocols.Service, Protocol):
-            """Protocol for OIC loading monitoring."""
+            ) -> FlextResult[dict[str, object]]:
+                """Optimize OIC throughput settings."""
 
             def track_integration_status(
                 self, integration_id: str
-            ) -> FlextResult[dict[str, object]]: ...
+            ) -> FlextResult[dict[str, object]]:
+                """Track integration execution status."""
 
     # ============================================================================
     # BACKWARD COMPATIBILITY ALIASES (100% COMPATIBILITY)
