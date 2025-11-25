@@ -114,7 +114,7 @@ class OICBaseSink(Sink):
         """
         return record
 
-    def process_batch(self, context: dict[str, object]) -> None:
+    def process_batch(self, _context: dict[str, object]) -> None:
         """Process batch of records to OIC API.
 
         Groups records by operation type and submits in batches
@@ -182,16 +182,7 @@ class OICBaseSink(Sink):
         _record: dict[str, object],
         _context: dict[str, object],
     ) -> None:
-        """Process a single record - default implementation for base sink.
-
-        Args:
-        record: Record data to process.
-        context: Processing context.
-
-        Returns:
-        bool:: Description of return value.
-
-        """
+        """Process a single record - default implementation for base sink."""
         # Default implementation: log and skip
         # Subclasses should override this method
         self.logger.warning(
