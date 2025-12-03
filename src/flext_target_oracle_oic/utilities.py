@@ -10,10 +10,10 @@ from __future__ import annotations
 from datetime import UTC, datetime, timedelta
 from typing import ClassVar
 
-from flext_core import FlextConstants, FlextResult, FlextTypes, FlextUtilities
+from flext_core import FlextConstants, FlextResult, t, u
 
 
-class FlextTargetOracleOicUtilities(FlextUtilities):
+class FlextTargetOracleOicUtilities(u):
     """Single unified utilities class for Singer target Oracle Integration Cloud operations.
 
     This class provides complete Oracle OIC target functionality for Singer protocol
@@ -471,7 +471,7 @@ class FlextTargetOracleOicUtilities(FlextUtilities):
         @staticmethod
         def validate_oic_api_response(
             response: dict[str, object],
-            expected_status_codes: FlextTypes.IntList | None = None,
+            expected_status_codes: t.IntList | None = None,
         ) -> FlextResult[dict[str, object]]:
             """Validate Oracle OIC API response.
 

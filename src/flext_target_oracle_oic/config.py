@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import Self, TypedDict
 
-from flext_core import FlextConfig, FlextConstants, FlextModels, FlextResult, FlextTypes
+from flext_core import FlextConfig, FlextConstants, FlextModels, FlextResult, t
 from pydantic import (
     AnyUrl,
     Field,
@@ -402,9 +402,9 @@ class TargetOracleOicConfig(FlextConfig):
         return cls.get_or_create_shared_instance(project_name="flext-target-oracle-oic")
 
     @classmethod
-    def create_for_development(cls, **overrides: FlextTypes.Value) -> Self:
+    def create_for_development(cls, **overrides: t.Value) -> Self:
         """Create configuration for development environment."""
-        dev_overrides: dict[str, FlextTypes.Value] = {
+        dev_overrides: dict[str, t.Value] = {
             "batch_size": FlextConstants.Performance.BatchProcessing.DEFAULT_SIZE
             // 100,  # Smaller batches for development
             "enable_validation": True,
@@ -419,9 +419,9 @@ class TargetOracleOicConfig(FlextConfig):
         )
 
     @classmethod
-    def create_for_production(cls, **overrides: FlextTypes.Value) -> Self:
+    def create_for_production(cls, **overrides: t.Value) -> Self:
         """Create configuration for production environment."""
-        prod_overrides: dict[str, FlextTypes.Value] = {
+        prod_overrides: dict[str, t.Value] = {
             "batch_size": FlextConstants.Performance.BatchProcessing.DEFAULT_SIZE // 10,
             "enable_validation": True,
             "validation_strict_mode": False,
@@ -436,9 +436,9 @@ class TargetOracleOicConfig(FlextConfig):
         )
 
     @classmethod
-    def create_for_testing(cls, **overrides: FlextTypes.Value) -> Self:
+    def create_for_testing(cls, **overrides: t.Value) -> Self:
         """Create configuration for testing environment."""
-        test_overrides: dict[str, FlextTypes.Value] = {
+        test_overrides: dict[str, t.Value] = {
             "batch_size": FlextConstants.Performance.BatchProcessing.DEFAULT_SIZE
             // 200,
             "enable_validation": True,

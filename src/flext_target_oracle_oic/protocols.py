@@ -2,11 +2,11 @@
 
 from typing import Protocol, runtime_checkable
 
-from flext_core import FlextProtocols, FlextResult
+from flext_core import FlextResult, p
 
 
 class FlextTargetOracleOicProtocols:
-    """Singer Target Oracle OIC protocols with explicit re-exports from FlextProtocols foundation.
+    """Singer Target Oracle OIC protocols with explicit re-exports from p foundation.
 
     Domain Extension Pattern (Phase 3):
     - Explicit re-export of foundation protocols (not inheritance)
@@ -26,7 +26,7 @@ class FlextTargetOracleOicProtocols:
         """Singer Target Oracle OIC domain protocols for Oracle OIC loading."""
 
         @runtime_checkable
-        class OicIntegrationProtocol(FlextProtocols.Service, Protocol):
+        class OicIntegrationProtocol(p.Service, Protocol):
             """Protocol for Oracle OIC integration."""
 
             def integrate(self, data: dict[str, object]) -> FlextResult[None]:

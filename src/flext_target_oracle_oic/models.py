@@ -18,7 +18,7 @@ from flext_core import (
     FlextConstants,
     FlextModels,
     FlextResult,
-    FlextUtilities,
+    u,
 )
 from pydantic import ConfigDict, Field, SecretStr
 
@@ -613,7 +613,7 @@ class FlextTargetOracleOicModels(FlextModels):
         )
 
 
-class FlextTargetOracleOicUtilities(FlextUtilities):
+class FlextTargetOracleOicUtilities(u):
     """Standardized utilities for FLEXT Target Oracle OIC operations.
 
     Provides complete utilities for Oracle Integration Cloud target operations,

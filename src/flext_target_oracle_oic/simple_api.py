@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from os import getenv
 
-from flext_core import FlextResult, FlextTypes
+from flext_core import FlextResult, t
 from pydantic import SecretStr
 
 from flext_target_oracle_oic.config import TargetOracleOicConfig
@@ -48,7 +48,7 @@ def setup_oic_target(
 
 
 def create_development_oic_target_config(
-    **overrides: FlextTypes.Value,
+    **overrides: t.Value,
 ) -> TargetOracleOicConfig:
     """Create development OIC target configuration with defaults.
 
@@ -59,7 +59,7 @@ def create_development_oic_target_config(
     TargetOracleOicConfig for development use.
 
     """
-    dev_config_overrides: dict[str, FlextTypes.Value] = {
+    dev_config_overrides: dict[str, t.Value] = {
         # Authentication configuration
         "oauth_client_id": getenv("OIC_DEV_CLIENT_ID", "dev-client-id"),
         "oauth_client_secret": SecretStr(
@@ -108,7 +108,7 @@ def create_development_oic_target_config(
 
 
 def create_production_oic_target_config(
-    **overrides: FlextTypes.Value,
+    **overrides: t.Value,
 ) -> TargetOracleOicConfig:
     """Create production OIC target configuration with defaults.
 
@@ -119,7 +119,7 @@ def create_production_oic_target_config(
     TargetOracleOicConfig for production use.
 
     """
-    prod_config_overrides: dict[str, FlextTypes.Value] = {
+    prod_config_overrides: dict[str, t.Value] = {
         # Authentication configuration
         "oauth_client_id": getenv("OIC_PROD_CLIENT_ID", ""),
         "oauth_client_secret": SecretStr(
@@ -157,7 +157,7 @@ def create_production_oic_target_config(
 
 
 def create_testing_oic_target_config(
-    **overrides: FlextTypes.Value,
+    **overrides: t.Value,
 ) -> TargetOracleOicConfig:
     """Create testing OIC target configuration with defaults.
 
@@ -168,7 +168,7 @@ def create_testing_oic_target_config(
     TargetOracleOicConfig for testing use.
 
     """
-    test_config_overrides: dict[str, FlextTypes.Value] = {
+    test_config_overrides: dict[str, t.Value] = {
         # Authentication configuration
         "oauth_client_id": getenv("OIC_TEST_CLIENT_ID", "test-client-id"),
         "oauth_client_secret": SecretStr(
