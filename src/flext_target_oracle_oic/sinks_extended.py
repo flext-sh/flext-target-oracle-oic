@@ -53,7 +53,7 @@ class LibrariesSink(OICBaseSink):
             "name": record["name"],
             "identifier": record["id"],
             "description": record.get("description", ""),
-            "type": record.get("type", "JAVASCRIPT"),  # FlextTypes.ProjectType
+            "type": record.get("type", "JAVASCRIPT"),  # t.ProjectType
             "version": record.get("version", "1.0"),
         }
         response = self.client.post(
