@@ -36,7 +36,8 @@ class FlextTargetOracleOicCliService:
 
         # Register target command groups
         run_result: FlextResult[object] = main_cli.register_command(
-            "run", self._handle_target_run
+            "run",
+            self._handle_target_run,
         )
         if run_result.is_failure:
             return None

@@ -33,17 +33,20 @@ class FlextTargetOracleOicProtocols:
                 """Integrate data with Oracle OIC."""
 
             def transform_to_oic(
-                self, record: dict[str, object]
+                self,
+                record: dict[str, object],
             ) -> FlextResult[dict[str, object]]:
                 """Transform Singer record to OIC format."""
 
             def invoke_integration(
-                self, payload: dict[str, object]
+                self,
+                payload: dict[str, object],
             ) -> FlextResult[dict[str, object]]:
                 """Invoke OIC integration with payload."""
 
             def process_batch(
-                self, records: list[dict[str, object]]
+                self,
+                records: list[dict[str, object]],
             ) -> FlextResult[None]:
                 """Process batch of records for OIC."""
 
@@ -51,12 +54,14 @@ class FlextTargetOracleOicProtocols:
                 """Validate payload for OIC compatibility."""
 
             def optimize_throughput(
-                self, config: dict[str, object]
+                self,
+                config: dict[str, object],
             ) -> FlextResult[dict[str, object]]:
                 """Optimize OIC throughput settings."""
 
             def track_integration_status(
-                self, integration_id: str
+                self,
+                integration_id: str,
             ) -> FlextResult[dict[str, object]]:
                 """Track integration execution status."""
 
@@ -64,23 +69,68 @@ class FlextTargetOracleOicProtocols:
     # BACKWARD COMPATIBILITY ALIASES (100% COMPATIBILITY)
     # ============================================================================
 
-    OicIntegrationProtocol = TargetOracleOic.OicIntegrationProtocol
-    DataTransformationProtocol = TargetOracleOic.DataTransformationProtocol
-    CloudApiProtocol = TargetOracleOic.CloudApiProtocol
-    BatchProcessingProtocol = TargetOracleOic.BatchProcessingProtocol
-    ValidationProtocol = TargetOracleOic.ValidationProtocol
-    PerformanceProtocol = TargetOracleOic.PerformanceProtocol
-    MonitoringProtocol = TargetOracleOic.MonitoringProtocol
+    @runtime_checkable
+    class OicIntegrationProtocol(TargetOracleOic.OicIntegrationProtocol):
+        """OicIntegrationProtocol - real inheritance."""
 
-    TargetOracleOicIntegrationProtocol = TargetOracleOic.OicIntegrationProtocol
-    TargetOracleOicDataTransformationProtocol = (
-        TargetOracleOic.DataTransformationProtocol
-    )
-    TargetOracleOicCloudApiProtocol = TargetOracleOic.CloudApiProtocol
-    TargetOracleOicBatchProcessingProtocol = TargetOracleOic.BatchProcessingProtocol
-    TargetOracleOicValidationProtocol = TargetOracleOic.ValidationProtocol
-    TargetOracleOicPerformanceProtocol = TargetOracleOic.PerformanceProtocol
-    TargetOracleOicMonitoringProtocol = TargetOracleOic.MonitoringProtocol
+    @runtime_checkable
+    class DataTransformationProtocol(TargetOracleOic.DataTransformationProtocol):
+        """DataTransformationProtocol - real inheritance."""
+
+    @runtime_checkable
+    class CloudApiProtocol(TargetOracleOic.CloudApiProtocol):
+        """CloudApiProtocol - real inheritance."""
+
+    @runtime_checkable
+    class BatchProcessingProtocol(TargetOracleOic.BatchProcessingProtocol):
+        """BatchProcessingProtocol - real inheritance."""
+
+    @runtime_checkable
+    class ValidationProtocol(TargetOracleOic.ValidationProtocol):
+        """ValidationProtocol - real inheritance."""
+
+    @runtime_checkable
+    class PerformanceProtocol(TargetOracleOic.PerformanceProtocol):
+        """PerformanceProtocol - real inheritance."""
+
+    @runtime_checkable
+    class MonitoringProtocol(TargetOracleOic.MonitoringProtocol):
+        """MonitoringProtocol - real inheritance."""
+
+    @runtime_checkable
+    class TargetOracleOicIntegrationProtocol(TargetOracleOic.OicIntegrationProtocol):
+        """TargetOracleOicIntegrationProtocol - real inheritance."""
+
+    @runtime_checkable
+    class TargetOracleOicDataTransformationProtocol(
+        TargetOracleOic.DataTransformationProtocol,
+    ):
+        """TargetOracleOicDataTransformationProtocol - real inheritance.
+
+        Exposes DataTransformationProtocol through real inheritance.
+        """
+
+    @runtime_checkable
+    class TargetOracleOicCloudApiProtocol(TargetOracleOic.CloudApiProtocol):
+        """TargetOracleOicCloudApiProtocol - real inheritance."""
+
+    @runtime_checkable
+    class TargetOracleOicBatchProcessingProtocol(
+        TargetOracleOic.BatchProcessingProtocol,
+    ):
+        """TargetOracleOicBatchProcessingProtocol - real inheritance."""
+
+    @runtime_checkable
+    class TargetOracleOicValidationProtocol(TargetOracleOic.ValidationProtocol):
+        """TargetOracleOicValidationProtocol - real inheritance."""
+
+    @runtime_checkable
+    class TargetOracleOicPerformanceProtocol(TargetOracleOic.PerformanceProtocol):
+        """TargetOracleOicPerformanceProtocol - real inheritance."""
+
+    @runtime_checkable
+    class TargetOracleOicMonitoringProtocol(TargetOracleOic.MonitoringProtocol):
+        """TargetOracleOicMonitoringProtocol - real inheritance."""
 
 
 __all__ = [

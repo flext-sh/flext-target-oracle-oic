@@ -61,7 +61,8 @@ class OICBaseSink(Sink):
                 oauth_client_aud=self.config.get("oauth_client_aud"),
                 oauth_scope=self.config.get("oauth_scope", ""),
                 base_url=self.config.get(
-                    "base_url", "https://default.integration.ocp.oraclecloud.com"
+                    "base_url",
+                    "https://default.integration.ocp.oraclecloud.com",
                 ),
             )
             self._authenticator = OICOAuth2Authenticator(config)
