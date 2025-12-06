@@ -31,7 +31,8 @@ def create_config_with_env_overrides(
 ) -> TargetOracleOicConfig:
     """Create TargetOracleOicConfig with environment variable overrides."""
     return TargetOracleOicConfig.get_or_create_shared_instance(
-        project_name="flext-target-oracle-oic", **overrides
+        project_name="flext-target-oracle-oic",
+        **overrides,
     )
 
 

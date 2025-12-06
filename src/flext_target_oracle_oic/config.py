@@ -382,7 +382,7 @@ class TargetOracleOicConfig(FlextConfig):
             valid_modes = {"create_only", "update_only", "create_or_update"}
             if self.import_mode not in valid_modes:
                 return FlextResult[None].fail(
-                    f"Invalid import mode: {self.import_mode}"
+                    f"Invalid import mode: {self.import_mode}",
                 )
 
             # Validate processing configuration
@@ -415,7 +415,8 @@ class TargetOracleOicConfig(FlextConfig):
             **overrides,
         }
         return cls.get_or_create_shared_instance(
-            project_name="flext-target-oracle-oic", **dev_overrides
+            project_name="flext-target-oracle-oic",
+            **dev_overrides,
         )
 
     @classmethod
@@ -432,7 +433,8 @@ class TargetOracleOicConfig(FlextConfig):
             **overrides,
         }
         return cls.get_or_create_shared_instance(
-            project_name="flext-target-oracle-oic", **prod_overrides
+            project_name="flext-target-oracle-oic",
+            **prod_overrides,
         )
 
     @classmethod
@@ -448,7 +450,8 @@ class TargetOracleOicConfig(FlextConfig):
             **overrides,
         }
         return cls.get_or_create_shared_instance(
-            project_name="flext-target-oracle-oic", **test_overrides
+            project_name="flext-target-oracle-oic",
+            **test_overrides,
         )
 
 

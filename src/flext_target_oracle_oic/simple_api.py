@@ -36,7 +36,7 @@ def setup_oic_target(
         validation_result = config.validate_business_rules()
         if validation_result.is_failure:
             return FlextResult[TargetOracleOicConfig].fail(
-                f"Configuration validation failed: {validation_result.error}"
+                f"Configuration validation failed: {validation_result.error}",
             )
 
         return FlextResult[TargetOracleOicConfig].ok(config)
@@ -131,7 +131,8 @@ def create_production_oic_target_config(
         ),
         # Connection configuration
         "base_url": getenv(
-            "OIC_PROD_BASE_URL", "https://prod-instance.integration.ocp.oraclecloud.com"
+            "OIC_PROD_BASE_URL",
+            "https://prod-instance.integration.ocp.oraclecloud.com",
         ),
         "timeout": 300,
         "max_retries": 5,

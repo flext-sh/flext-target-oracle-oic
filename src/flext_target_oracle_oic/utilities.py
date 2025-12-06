@@ -128,13 +128,13 @@ class FlextTargetOracleOicUtilities(u):
             """
             if not isinstance(message, dict):
                 return FlextResult[dict[str, object]].fail(
-                    "Singer message must be a dictionary"
+                    "Singer message must be a dictionary",
                 )
 
             message_type = message.get("type")
             if message_type not in {"SCHEMA", "RECORD", "STATE"}:
                 return FlextResult[dict[str, object]].fail(
-                    f"Invalid Singer message type: {message_type}"
+                    f"Invalid Singer message type: {message_type}",
                 )
 
             if message_type == "SCHEMA":
@@ -142,7 +142,7 @@ class FlextTargetOracleOicUtilities(u):
                 for field in required_fields:
                     if field not in message:
                         return FlextResult[dict[str, object]].fail(
-                            f"Missing required field for SCHEMA: {field}"
+                            f"Missing required field for SCHEMA: {field}",
                         )
 
             elif message_type == "RECORD":
@@ -150,13 +150,13 @@ class FlextTargetOracleOicUtilities(u):
                 for field in required_fields:
                     if field not in message:
                         return FlextResult[dict[str, object]].fail(
-                            f"Missing required field for RECORD: {field}"
+                            f"Missing required field for RECORD: {field}",
                         )
 
             elif message_type == "STATE":
                 if "value" not in message:
                     return FlextResult[dict[str, object]].fail(
-                        "Missing required field for STATE: value"
+                        "Missing required field for STATE: value",
                     )
 
             return FlextResult[dict[str, object]].ok(message)
@@ -196,12 +196,13 @@ class FlextTargetOracleOicUtilities(u):
 
             except Exception as e:
                 return FlextResult[dict[str, object]].fail(
-                    f"Failed to map Singer stream to OIC integration: {e}"
+                    f"Failed to map Singer stream to OIC integration: {e}",
                 )
 
         @staticmethod
         def generate_oic_integration_package(
-            integration_config: dict[str, object], artifacts: dict[str, object]
+            integration_config: dict[str, object],
+            artifacts: dict[str, object],
         ) -> FlextResult[dict[str, object]]:
             """Generate Oracle OIC integration package from Singer data.
 
@@ -229,19 +230,20 @@ class FlextTargetOracleOicUtilities(u):
                 # Validate package components
                 if not package_info["components"]:
                     return FlextResult[dict[str, object]].fail(
-                        "Integration package must have at least one component"
+                        "Integration package must have at least one component",
                     )
 
                 return FlextResult[dict[str, object]].ok(package_info)
 
             except Exception as e:
                 return FlextResult[dict[str, object]].fail(
-                    f"Failed to generate OIC integration package: {e}"
+                    f"Failed to generate OIC integration package: {e}",
                 )
 
         @staticmethod
         def transform_record_for_oic_deployment(
-            record: dict[str, object], deployment_config: dict[str, object]
+            record: dict[str, object],
+            deployment_config: dict[str, object],
         ) -> FlextResult[dict[str, object]]:
             """Transform Singer record for Oracle OIC deployment.
 
@@ -256,13 +258,16 @@ class FlextTargetOracleOicUtilities(u):
             try:
                 transformed = {
                     "deployment_target": deployment_config.get(
-                        "target_environment", "production"
+                        "target_environment",
+                        "production",
                     ),
                     "activation_mode": deployment_config.get(
-                        "activation_mode", "automatic"
+                        "activation_mode",
+                        "automatic",
                     ),
                     "import_mode": deployment_config.get(
-                        "import_mode", "create_or_update"
+                        "import_mode",
+                        "create_or_update",
                     ),
                     "enable_tracing": deployment_config.get("enable_tracing", False),
                     "record_data": record,
@@ -282,7 +287,7 @@ class FlextTargetOracleOicUtilities(u):
 
             except Exception as e:
                 return FlextResult[dict[str, object]].fail(
-                    f"Failed to transform record for OIC deployment: {e}"
+                    f"Failed to transform record for OIC deployment: {e}",
                 )
 
     class OAuth2Utilities:
@@ -305,21 +310,22 @@ class FlextTargetOracleOicUtilities(u):
             for field in required_fields:
                 if field not in config or not config[field]:
                     return FlextResult[dict[str, object]].fail(
-                        f"Missing required OAuth2 config field: {field}"
+                        f"Missing required OAuth2 config field: {field}",
                     )
 
             # Validate URLs
             token_url = config["token_url"]
             if not token_url.startswith(("https://", "http://")):
                 return FlextResult[dict[str, object]].fail(
-                    "OAuth2 token URL must be a valid HTTP/HTTPS URL"
+                    "OAuth2 token URL must be a valid HTTP/HTTPS URL",
                 )
 
             return FlextResult[dict[str, object]].ok(config)
 
         @staticmethod
         def generate_oauth2_token_request(
-            config: dict[str, object], grant_type: str = "client_credentials"
+            config: dict[str, object],
+            grant_type: str = "client_credentials",
         ) -> FlextResult[dict[str, object]]:
             """Generate OAuth2 token request for Oracle IDCS.
 
@@ -337,7 +343,8 @@ class FlextTargetOracleOicUtilities(u):
                     "client_id": config["client_id"],
                     "client_secret": config["client_secret"],
                     "scope": config.get(
-                        "scope", "https://oracle.com/cloud/integration/"
+                        "scope",
+                        "https://oracle.com/cloud/integration/",
                     ),
                 }
 
@@ -348,7 +355,7 @@ class FlextTargetOracleOicUtilities(u):
 
             except Exception as e:
                 return FlextResult[dict[str, object]].fail(
-                    f"Failed to generate OAuth2 token request: {e}"
+                    f"Failed to generate OAuth2 token request: {e}",
                 )
 
         @staticmethod
@@ -369,13 +376,13 @@ class FlextTargetOracleOicUtilities(u):
                 for field in required_fields:
                     if field not in response:
                         return FlextResult[dict[str, object]].fail(
-                            f"Missing required token field: {field}"
+                            f"Missing required token field: {field}",
                         )
 
                 # Validate token type
                 if response["token_type"].lower() != "bearer":
                     return FlextResult[dict[str, object]].fail(
-                        "Invalid token type, expected 'Bearer'"
+                        "Invalid token type, expected 'Bearer'",
                     )
 
                 # Extract token metadata
@@ -395,7 +402,7 @@ class FlextTargetOracleOicUtilities(u):
 
             except Exception as e:
                 return FlextResult[dict[str, object]].fail(
-                    f"Failed to validate OAuth2 token response: {e}"
+                    f"Failed to validate OAuth2 token response: {e}",
                 )
 
         @staticmethod
@@ -414,7 +421,7 @@ class FlextTargetOracleOicUtilities(u):
             try:
                 if "expires_at" not in token_info:
                     return FlextResult[bool].fail(
-                        "Token expiration information not available"
+                        "Token expiration information not available",
                     )
 
                 expiration_time = datetime.fromisoformat(token_info["expires_at"])
@@ -465,7 +472,7 @@ class FlextTargetOracleOicUtilities(u):
 
             except Exception as e:
                 return FlextResult[dict[str, str]].fail(
-                    f"Failed to create OIC API headers: {e}"
+                    f"Failed to create OIC API headers: {e}",
                 )
 
         @staticmethod
@@ -490,10 +497,11 @@ class FlextTargetOracleOicUtilities(u):
                 status_code = response.get("status_code", 200)
                 if status_code not in expected_codes:
                     error_message = response.get("error", {}).get(
-                        "message", "Unknown API error"
+                        "message",
+                        "Unknown API error",
                     )
                     return FlextResult[dict[str, object]].fail(
-                        f"OIC API error (HTTP {status_code}): {error_message}"
+                        f"OIC API error (HTTP {status_code}): {error_message}",
                     )
 
                 # Extract response data
@@ -503,12 +511,14 @@ class FlextTargetOracleOicUtilities(u):
 
             except Exception as e:
                 return FlextResult[dict[str, object]].fail(
-                    f"Failed to validate OIC API response: {e}"
+                    f"Failed to validate OIC API response: {e}",
                 )
 
         @staticmethod
         def calculate_api_retry_delay(
-            attempt: int, base_delay: float = 2.0, max_delay: float = 60.0
+            attempt: int,
+            base_delay: float = 2.0,
+            max_delay: float = 60.0,
         ) -> FlextResult[float]:
             """Calculate exponential backoff delay for API retries.
 
@@ -562,11 +572,13 @@ class FlextTargetOracleOicUtilities(u):
 
                 # Map to OIC integration
                 integration_result = FlextTargetOracleOicUtilities.OicIntegrationProcessing.map_singer_stream_to_oic_integration(
-                    stream_name, schema, oic_config
+                    stream_name,
+                    schema,
+                    oic_config,
                 )
                 if integration_result.is_failure:
                     return FlextResult[dict[str, object]].fail(
-                        f"Integration mapping failed: {integration_result.error}"
+                        f"Integration mapping failed: {integration_result.error}",
                     )
 
                 processed_schema = {
@@ -577,7 +589,8 @@ class FlextTargetOracleOicUtilities(u):
                     "stream_metadata": {
                         "extraction_method": oic_config.get("extraction_method", "api"),
                         "replication_method": oic_config.get(
-                            "replication_method", "full_table"
+                            "replication_method",
+                            "full_table",
                         ),
                     },
                 }
@@ -586,12 +599,13 @@ class FlextTargetOracleOicUtilities(u):
 
             except Exception as e:
                 return FlextResult[dict[str, object]].fail(
-                    f"Failed to process schema stream: {e}"
+                    f"Failed to process schema stream: {e}",
                 )
 
         @staticmethod
         def batch_records_for_oic_deployment(
-            records: list[dict[str, object]], batch_size: int | None = None
+            records: list[dict[str, object]],
+            batch_size: int | None = None,
         ) -> FlextResult[list[list[dict[str, object]]]]:
             """Batch Singer records for efficient OIC deployment operations.
 
@@ -609,7 +623,7 @@ class FlextTargetOracleOicUtilities(u):
 
             if actual_batch_size <= 0:
                 return FlextResult[list[list[dict[str, object]]]].fail(
-                    "Batch size must be positive"
+                    "Batch size must be positive",
                 )
 
             try:
@@ -622,7 +636,7 @@ class FlextTargetOracleOicUtilities(u):
 
             except Exception as e:
                 return FlextResult[list[list[dict[str, object]]]].fail(
-                    f"Failed to batch records: {e}"
+                    f"Failed to batch records: {e}",
                 )
 
     class ConfigValidation:
@@ -650,20 +664,20 @@ class FlextTargetOracleOicUtilities(u):
             for field in required_fields:
                 if field not in config or not config[field]:
                     return FlextResult[dict[str, object]].fail(
-                        f"Missing required OIC config field: {field}"
+                        f"Missing required OIC config field: {field}",
                     )
 
             # Validate URLs
             base_url = config["base_url"]
             if not base_url.startswith("https://"):
                 return FlextResult[dict[str, object]].fail(
-                    "OIC base URL must use HTTPS"
+                    "OIC base URL must use HTTPS",
                 )
 
             token_url = config["oauth_token_url"]
             if not token_url.startswith(("https://", "http://")):
                 return FlextResult[dict[str, object]].fail(
-                    "OAuth token URL must be a valid HTTP/HTTPS URL"
+                    "OAuth token URL must be a valid HTTP/HTTPS URL",
                 )
 
             return FlextResult[dict[str, object]].ok(config)
@@ -683,29 +697,32 @@ class FlextTargetOracleOicUtilities(u):
             """
             # Validate batch size
             batch_size = config.get(
-                "batch_size", FlextTargetOracleOicUtilities.OIC_DEFAULT_BATCH_SIZE
+                "batch_size",
+                FlextTargetOracleOicUtilities.OIC_DEFAULT_BATCH_SIZE,
             )
             if batch_size <= 0 or batch_size > FlextConstants.Batch.DEFAULT_SIZE:
                 return FlextResult[dict[str, object]].fail(
-                    f"Batch size must be between 1 and {FlextConstants.Batch.DEFAULT_SIZE}"
+                    f"Batch size must be between 1 and {FlextConstants.Batch.DEFAULT_SIZE}",
                 )
 
             # Validate timeout
             timeout = config.get(
-                "request_timeout", FlextTargetOracleOicUtilities.OIC_DEFAULT_API_TIMEOUT
+                "request_timeout",
+                FlextTargetOracleOicUtilities.OIC_DEFAULT_API_TIMEOUT,
             )
             if timeout <= 0 or timeout > FlextConstants.Web.TOTAL_TIMEOUT:
                 return FlextResult[dict[str, object]].fail(
-                    f"Request timeout must be between 1 and {FlextConstants.Web.TOTAL_TIMEOUT} seconds"
+                    f"Request timeout must be between 1 and {FlextConstants.Web.TOTAL_TIMEOUT} seconds",
                 )
 
             # Validate retry configuration
             max_retries = config.get(
-                "max_retries", FlextTargetOracleOicUtilities.MAX_API_RETRIES
+                "max_retries",
+                FlextTargetOracleOicUtilities.MAX_API_RETRIES,
             )
             if max_retries < 0 or max_retries > FlextConstants.Batch.SMALL_SIZE:
                 return FlextResult[dict[str, object]].fail(
-                    f"Max retries must be between 0 and {FlextConstants.Batch.SMALL_SIZE}"
+                    f"Max retries must be between 0 and {FlextConstants.Batch.SMALL_SIZE}",
                 )
 
             return FlextResult[dict[str, object]].ok(config)
@@ -742,7 +759,7 @@ class FlextTargetOracleOicUtilities(u):
 
             except Exception as e:
                 return FlextResult[dict[str, object]].fail(
-                    f"Failed to create OIC target state: {e}"
+                    f"Failed to create OIC target state: {e}",
                 )
 
         @staticmethod
@@ -778,7 +795,7 @@ class FlextTargetOracleOicUtilities(u):
 
             except Exception as e:
                 return FlextResult[dict[str, object]].fail(
-                    f"Failed to update deployment state: {e}"
+                    f"Failed to update deployment state: {e}",
                 )
 
     class PerformanceUtilities:
@@ -822,7 +839,7 @@ class FlextTargetOracleOicUtilities(u):
 
             except Exception as e:
                 return FlextResult[int].fail(
-                    f"Failed to calculate optimal batch size: {e}"
+                    f"Failed to calculate optimal batch size: {e}",
                 )
 
         @staticmethod
@@ -843,7 +860,7 @@ class FlextTargetOracleOicUtilities(u):
             try:
                 if requests_per_minute <= 0:
                     return FlextResult[float].fail(
-                        "Requests per minute must be positive"
+                        "Requests per minute must be positive",
                     )
 
                 # Calculate delay to spread requests evenly across the minute
@@ -857,24 +874,27 @@ class FlextTargetOracleOicUtilities(u):
 
             except Exception as e:
                 return FlextResult[float].fail(
-                    f"Failed to calculate rate limit delay: {e}"
+                    f"Failed to calculate rate limit delay: {e}",
                 )
 
     # Proxy methods for backward compatibility (minimal)
     def validate_singer_message(
-        self, message: dict[str, object]
+        self,
+        message: dict[str, object],
     ) -> FlextResult[dict[str, object]]:
         """Proxy to SingerUtilities.validate_singer_message."""
         return self.SingerUtilities.validate_singer_message(message)
 
     def validate_oauth2_config(
-        self, config: dict[str, object]
+        self,
+        config: dict[str, object],
     ) -> FlextResult[dict[str, object]]:
         """Proxy to OAuth2Utilities.validate_oauth2_config."""
         return self.OAuth2Utilities.validate_oauth2_config(config)
 
     def validate_oic_connection_config(
-        self, config: dict[str, object]
+        self,
+        config: dict[str, object],
     ) -> FlextResult[dict[str, object]]:
         """Proxy to ConfigValidation.validate_oic_connection_config."""
         return self.ConfigValidation.validate_oic_connection_config(config)

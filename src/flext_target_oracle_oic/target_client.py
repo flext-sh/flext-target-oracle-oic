@@ -194,7 +194,7 @@ class ConnectionsSink(OICBaseSink):
     ) -> None:
         """Process a connection record."""
         connection_id = str(record.get("id", ""))
-        self.logger.info(f"Processing connection record: {connection_id}")
+        self.logger.info("Processing connection record: %s", connection_id)
         # Simplified implementation - detailed OIC operations will be handled by flext-oracle-oic
         # For now, just log the record to maintain Singer SDK compatibility
 
@@ -212,7 +212,9 @@ class IntegrationsSink(OICBaseSink):
         """Process an integration record."""
         integration_id = str(record.get("id", ""))
         version = str(record.get("version", "01.00.0000"))
-        self.logger.info(f"Processing integration record: {integration_id} v{version}")
+        self.logger.info(
+            "Processing integration record: %s v%s", integration_id, version
+        )
         # Simplified implementation - detailed OIC operations will be handled by flext-oracle-oic
         # For now, just log the record to maintain Singer SDK compatibility
 
@@ -302,7 +304,7 @@ class IntegrationsSink(OICBaseSink):
                     msg,
                 )
 
-            self.logger.info(f"Imported integration package: {package_file}")
+            self.logger.info("Imported integration package: %s", package_file)
 
         except Exception:
             self.logger.exception("Failed to import integration")
@@ -327,7 +329,8 @@ class IntegrationsSink(OICBaseSink):
 
             if not payload:
                 self.logger.warning(
-                    f"No updatable fields provided for integration {integration_id}",
+                    "No updatable fields provided for integration %s",
+                    integration_id,
                 )
                 return
 
@@ -355,7 +358,7 @@ class IntegrationsSink(OICBaseSink):
                     msg,
                 )
 
-            self.logger.info(f"Updated integration: {integration_id}")
+            self.logger.info("Updated integration: %s", integration_id)
 
         except Exception:
             self.logger.exception("Failed to update integration")
