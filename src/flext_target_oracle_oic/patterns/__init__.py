@@ -13,11 +13,12 @@ from flext_target_oracle_oic.patterns.oic_patterns import (
     OICSchemaMapper,
     OICTypeConverter,
 )
-from flext_target_oracle_oic.typings import FlextTargetOracleOicTypes
+from flext_target_oracle_oic.typings import t
 
-__all__: FlextTargetOracleOicTypes.Core.StringList = [
+__all__: list[str] = [
     "OICDataTransformer",
     "OICEntryManager",
     "OICSchemaMapper",
     "OICTypeConverter",
+    "t",
 ]

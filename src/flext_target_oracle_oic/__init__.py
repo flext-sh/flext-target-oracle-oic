@@ -66,10 +66,10 @@ from flext_target_oracle_oic.target_models import (
     create_oic_lookup,
     create_oic_package,
 )
-from flext_target_oracle_oic.typings import FlextTargetOracleOicTypes
+from flext_target_oracle_oic.typings import t
 from flext_target_oracle_oic.utilities import FlextTargetOracleOicUtilities
 
-__all__: FlextTargetOracleOicTypes.Core.StringList = [
+__all__: list[str] = [
     "ConnectionsSink",
     "FlextMeltanoBridge",
     "FlextMeltanoConfig",
@@ -133,4 +133,5 @@ __all__: FlextTargetOracleOicTypes.Core.StringList = [
     "create_singer_config_schema",
     "create_validation_error",
     "main",
+    "t",
 ]
