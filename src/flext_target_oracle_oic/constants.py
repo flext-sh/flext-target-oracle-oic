@@ -254,4 +254,6 @@ class FlextTargetOracleOicConstants(FlextConstants):
         NETWORK_ERROR = "Network error occurred"
 
 
-__all__ = ["FlextTargetOracleOicConstants"]
+c = FlextTargetOracleOicConstants
+
+__all__ = ["FlextTargetOracleOicConstants", "c"]
