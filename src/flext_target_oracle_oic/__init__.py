@@ -36,6 +36,8 @@ from flext_target_oracle_oic.models import (
     OICProject,
     OICSchedule,
     OICSchemaMapping,
+    m,
+    m_target_oracle_oic,
 )
 from flext_target_oracle_oic.patterns import (
     OICDataTransformer,
@@ -68,6 +70,9 @@ from flext_target_oracle_oic.target_models import (
 )
 from flext_target_oracle_oic.typings import t
 from flext_target_oracle_oic.utilities import FlextTargetOracleOicUtilities
+
+# Domain-specific aliases
+u = FlextTargetOracleOicUtilities  # Utilities (FlextTargetOracleOicUtilities extends FlextOracleOicUtilities)
 
 __all__: list[str] = [
     "ConnectionsSink",
@@ -132,6 +137,9 @@ __all__: list[str] = [
     "create_processing_error",
     "create_singer_config_schema",
     "create_validation_error",
+    "m",
+    "m_target_oracle_oic",
     "main",
     "t",
+    "u",
 ]

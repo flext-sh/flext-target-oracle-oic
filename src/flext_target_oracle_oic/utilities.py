@@ -10,10 +10,11 @@ from __future__ import annotations
 from datetime import UTC, datetime, timedelta
 from typing import ClassVar
 
-from flext_core import FlextConstants, FlextResult, t, u
+from flext_core import FlextConstants, FlextResult, t
+from flext_core.utilities import FlextUtilities as u_core
 
 
-class FlextTargetOracleOicUtilities(u):
+class FlextTargetOracleOicUtilities(u_core):
     """Single unified utilities class for Singer target Oracle Integration Cloud operations.
 
     This class provides complete Oracle OIC target functionality for Singer protocol
