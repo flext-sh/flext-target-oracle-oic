@@ -13,7 +13,7 @@ from __future__ import annotations
 
 from flext_core import FlextResult
 
-from flext_target_oracle_oic.constants import FlextTargetOracleOicConstants
+from flext_target_oracle_oic.constants import c
 from flext_target_oracle_oic.sinks import OICBaseSink
 
 
@@ -37,7 +37,7 @@ class LibrariesSink(OICBaseSink):
         library_id = str(record.get("id", ""))
         # Check if library exists:
         response = self.client.get(f"/ic/api/integration/v1/libraries/{library_id}")
-        if response.status_code == FlextTargetOracleOicConstants.OAuth.HTTP_NOT_FOUND:
+        if response.status_code == c.TargetOracleOic.OAuth.HTTP_NOT_FOUND:
             # Create new library
             self._create_library(record)
         else:
@@ -118,7 +118,7 @@ class CertificatesSink(OICBaseSink):
         cert_alias = str(record.get("alias", ""))
         # Check if certificate exists:
         response = self.client.get(f"/ic/api/integration/v1/certificates/{cert_alias}")
-        if response.status_code == FlextTargetOracleOicConstants.OAuth.HTTP_NOT_FOUND:
+        if response.status_code == c.TargetOracleOic.OAuth.HTTP_NOT_FOUND:
             # Create new certificate
             self._create_certificate(record)
         else:
@@ -196,7 +196,7 @@ class ProjectsSink(OICBaseSink):
         project_id = str(record.get("id", ""))
         # Check if project exists:
         response = self.client.get(f"/ic/api/integration/v1/projects/{project_id}")
-        if response.status_code == FlextTargetOracleOicConstants.OAuth.HTTP_NOT_FOUND:
+        if response.status_code == c.TargetOracleOic.OAuth.HTTP_NOT_FOUND:
             # Create new project
             self._create_project(record)
             # Update existing project
@@ -279,7 +279,7 @@ class SchedulesSink(OICBaseSink):
         response = self.client.get(
             f"/ic/api/integration/v1/integrations/{integration_id}/schedule",
         )
-        if response.status_code == FlextTargetOracleOicConstants.OAuth.HTTP_NOT_FOUND:
+        if response.status_code == c.TargetOracleOic.OAuth.HTTP_NOT_FOUND:
             # Create new schedule
             self._create_schedule(integration_id, record)
             # Update existing schedule

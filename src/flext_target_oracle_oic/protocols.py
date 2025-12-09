@@ -15,118 +15,137 @@ class FlextTargetOracleOicProtocols(p_meltano, p_db_oracle):
     Architecture:
     - EXTENDS: FlextDbOracleProtocols (inherits .Database.* protocols)
     - EXTENDS: FlextMeltanoProtocols (inherits .Meltano.* protocols)
-    - ADDS: Target Oracle OIC-specific protocols in TargetOracleOic namespace
+    - ADDS: Target Oracle OIC-specific protocols in Target.OracleOic namespace
     - PROVIDES: Root-level alias `p` for convenient access
+
+    Usage:
+    from flext_target_oracle_oic.protocols import p
+
+    # Foundation protocols (inherited)
+    result: p.Result[str]
+    service: p.Service[str]
+
+    # Oracle protocols (inherited)
+    connection: p.Database.ConnectionProtocol
+
+    # Meltano protocols (inherited)
+    target: p.Meltano.TargetProtocol
+
+    # Target Oracle OIC-specific protocols
+    oic_integration: p.Target.OracleOic.OicIntegrationProtocol
     """
 
-    class TargetOracleOic:
-        """Singer Target Oracle OIC domain protocols for Oracle OIC loading.
+    class Target:
+        """Singer Target domain protocols."""
 
-        Provides protocol definitions for Oracle OIC integration operations, including
-        data integration, transformation, batch processing, payload validation,
-        throughput optimization, and integration status tracking.
-        """
+        class OracleOic:
+            """Singer Target Oracle OIC domain protocols for Oracle OIC loading.
 
-        @runtime_checkable
-        class OicIntegrationProtocol(p_db_oracle.Service[object], Protocol):
-            """Protocol for Oracle OIC integration.
-
-            Defines the interface for integrating data with Oracle OIC.
+            Provides protocol definitions for Oracle OIC integration operations, including
+            data integration, transformation, batch processing, payload validation,
+            throughput optimization, and integration status tracking.
             """
 
-            def integrate(self, data: dict[str, object]) -> p_meltano.Result[bool]:
-                """Integrate data with Oracle OIC.
+            @runtime_checkable
+            class OicIntegrationProtocol(p_db_oracle.Service[object], Protocol):
+                """Protocol for Oracle OIC integration.
 
-                Args:
-                    data: Data to integrate.
-
-                Returns:
-                    Result indicating success or failure of the integration.
-
+                Defines the interface for integrating data with Oracle OIC.
                 """
 
-            def transform_to_oic(
-                self,
-                record: dict[str, object],
-            ) -> p_meltano.Result[dict[str, object]]:
-                """Transform Singer record to OIC format.
+                def integrate(self, data: dict[str, object]) -> p_meltano.Result[bool]:
+                    """Integrate data with Oracle OIC.
 
-                Args:
-                    record: Singer record to transform.
+                    Args:
+                        data: Data to integrate.
 
-                Returns:
-                    Result containing the transformed record in OIC format.
+                    Returns:
+                        Result indicating success or failure of the integration.
 
-                """
+                    """
 
-            def invoke_integration(
-                self,
-                payload: dict[str, object],
-            ) -> p_meltano.Result[dict[str, object]]:
-                """Invoke OIC integration with payload.
+                def transform_to_oic(
+                    self,
+                    record: dict[str, object],
+                ) -> p_meltano.Result[dict[str, object]]:
+                    """Transform Singer record to OIC format.
 
-                Args:
-                    payload: Integration payload.
+                    Args:
+                        record: Singer record to transform.
 
-                Returns:
-                    Result containing the integration response.
+                    Returns:
+                        Result containing the transformed record in OIC format.
 
-                """
+                    """
 
-            def process_batch(
-                self,
-                records: list[dict[str, object]],
-            ) -> p_meltano.Result[bool]:
-                """Process batch of records for OIC.
+                def invoke_integration(
+                    self,
+                    payload: dict[str, object],
+                ) -> p_meltano.Result[dict[str, object]]:
+                    """Invoke OIC integration with payload.
 
-                Args:
-                    records: List of records to process.
+                    Args:
+                        payload: Integration payload.
 
-                Returns:
-                    Result indicating success or failure of the batch processing.
+                    Returns:
+                        Result containing the integration response.
 
-                """
+                    """
 
-            def validate_payload(
-                self, payload: dict[str, object]
-            ) -> p_meltano.Result[bool]:
-                """Validate payload for OIC compatibility.
+                def process_batch(
+                    self,
+                    records: list[dict[str, object]],
+                ) -> p_meltano.Result[bool]:
+                    """Process batch of records for OIC.
 
-                Args:
-                    payload: Payload to validate.
+                    Args:
+                        records: List of records to process.
 
-                Returns:
-                    Result indicating whether the payload is valid.
+                    Returns:
+                        Result indicating success or failure of the batch processing.
 
-                """
+                    """
 
-            def optimize_throughput(
-                self,
-                config: dict[str, object],
-            ) -> p_meltano.Result[dict[str, object]]:
-                """Optimize OIC throughput settings.
+                def validate_payload(
+                    self, payload: dict[str, object]
+                ) -> p_meltano.Result[bool]:
+                    """Validate payload for OIC compatibility.
 
-                Args:
-                    config: Configuration to optimize.
+                    Args:
+                        payload: Payload to validate.
 
-                Returns:
-                    Result containing optimized configuration.
+                    Returns:
+                        Result indicating whether the payload is valid.
 
-                """
+                    """
 
-            def track_integration_status(
-                self,
-                integration_id: str,
-            ) -> p_meltano.Result[dict[str, object]]:
-                """Track integration execution status.
+                def optimize_throughput(
+                    self,
+                    config: dict[str, object],
+                ) -> p_meltano.Result[dict[str, object]]:
+                    """Optimize OIC throughput settings.
 
-                Args:
-                    integration_id: ID of the integration to track.
+                    Args:
+                        config: Configuration to optimize.
 
-                Returns:
-                    Result containing the integration status information.
+                    Returns:
+                        Result containing optimized configuration.
 
-                """
+                    """
+
+                def track_integration_status(
+                    self,
+                    integration_id: str,
+                ) -> p_meltano.Result[dict[str, object]]:
+                    """Track integration execution status.
+
+                    Args:
+                        integration_id: ID of the integration to track.
+
+                    Returns:
+                        Result containing the integration status information.
+
+                    """
 
 
 # Runtime alias for simplified usage

@@ -18,8 +18,8 @@ from flext_core import (
     FlextConstants,
     FlextModels,
     FlextResult,
-    u,
 )
+from flext_core.utilities import u
 from pydantic import ConfigDict, Field, SecretStr
 
 # Oracle OIC constants
@@ -65,6 +65,14 @@ class FlextTargetOracleOicModels(FlextModels):
     Provides complete models for Oracle Integration Cloud data loading, Singer protocol
     compliance, OAuth2 authentication, and target operations following standardized patterns.
     """
+
+    def __init_subclass__(cls, **kwargs: object) -> None:
+        """Warn when FlextTargetOracleOicModels is subclassed directly."""
+        super().__init_subclass__(**kwargs)
+        u.Deprecation.warn_once(
+            f"subclass:{cls.__name__}",
+            "Subclassing FlextTargetOracleOicModels is deprecated. Use FlextModels directly with composition instead.",
+        )
 
     model_config = ConfigDict(
         validate_assignment=True,
@@ -1249,6 +1257,10 @@ class OICSchemaMapping(FlextTargetOracleOicModels.OicSchemaMapping):
     """OIC Schema Mapping model - real inheritance."""
 
 
+# Short aliases
+m = FlextTargetOracleOicModels
+m_target_oracle_oic = FlextTargetOracleOicModels
+
 __all__ = [
     "FlextTargetOracleOicModels",
     "FlextTargetOracleOicUtilities",
@@ -1263,4 +1275,6 @@ __all__ = [
     "OICProject",
     "OICSchedule",
     "OICSchemaMapping",
+    "m",
+    "m_target_oracle_oic",
 ]

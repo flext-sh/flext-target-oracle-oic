@@ -18,7 +18,7 @@ from flext_core import FlextLogger, FlextResult
 from flext_meltano import FlextSink as Sink, FlextTarget as Target
 
 from flext_target_oracle_oic.config import TargetOracleOicConfig
-from flext_target_oracle_oic.constants import FlextTargetOracleOicConstants
+from flext_target_oracle_oic.constants import c
 from flext_target_oracle_oic.target_config import create_singer_config_schema
 
 logger = FlextLogger(__name__)
@@ -246,7 +246,7 @@ class IntegrationsSink(OICBaseSink):
             response = response_result.unwrap()
             if (
                 response.status_code
-                >= FlextTargetOracleOicConstants.OAuth.HTTP_ERROR_STATUS_THRESHOLD
+                >= c.TargetOracleOic.OAuth.HTTP_ERROR_STATUS_THRESHOLD
             ):
                 msg = f"Integration creation failed with status {response.status_code}"
                 raise ValueError(
@@ -297,7 +297,7 @@ class IntegrationsSink(OICBaseSink):
             response = response_result.unwrap()
             if (
                 response.status_code
-                >= FlextTargetOracleOicConstants.OAuth.HTTP_ERROR_STATUS_THRESHOLD
+                >= c.TargetOracleOic.OAuth.HTTP_ERROR_STATUS_THRESHOLD
             ):
                 msg = f"Integration import failed with status {response.status_code}"
                 raise ValueError(
@@ -351,7 +351,7 @@ class IntegrationsSink(OICBaseSink):
             response = response_result.unwrap()
             if (
                 response.status_code
-                >= FlextTargetOracleOicConstants.OAuth.HTTP_ERROR_STATUS_THRESHOLD
+                >= c.TargetOracleOic.OAuth.HTTP_ERROR_STATUS_THRESHOLD
             ):
                 msg = f"Integration update failed with status {response.status_code}"
                 raise ValueError(

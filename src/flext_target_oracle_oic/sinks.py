@@ -18,10 +18,10 @@ from flext_core import FlextLogger, FlextResult
 from flext_meltano import FlextSink as Sink, FlextTarget as Target
 
 from flext_target_oracle_oic.config import TargetOracleOicConfig
-from flext_target_oracle_oic.constants import FlextTargetOracleOicConstants
+from flext_target_oracle_oic.constants import c
 from flext_target_oracle_oic.target_config import OICOAuth2Authenticator
 
-# Constants - moved to FlextTargetOracleOicConstants.OAuth.HTTP_NOT_FOUND and .JSON_MIME
+# Constants - moved to c.TargetOracleOic.OAuth.HTTP_NOT_FOUND and .JSON_MIME
 
 logger = FlextLogger(__name__)
 
@@ -86,8 +86,8 @@ class OICBaseSink(Sink):
             # Create client with Bearer token
             auth_headers = {
                 "Authorization": f"Bearer {token_result.data}",
-                "Content-Type": FlextTargetOracleOicConstants.OAuth.JSON_MIME,
-                "Accept": FlextTargetOracleOicConstants.OAuth.JSON_MIME,
+                "Content-Type": c.TargetOracleOic.OAuth.JSON_MIME,
+                "Accept": c.TargetOracleOic.OAuth.JSON_MIME,
             }
 
             api_config = FlextApiConfig(
@@ -217,7 +217,7 @@ class ConnectionsSink(OICBaseSink):
         response = self.client.get(
             f"/ic/api/integration/v1/connections/{connection_id}",
         )
-        if response.status_code == FlextTargetOracleOicConstants.OAuth.HTTP_NOT_FOUND:
+        if response.status_code == c.TargetOracleOic.OAuth.HTTP_NOT_FOUND:
             # Create new connection
             self._create_connection(record)
         else:
@@ -283,7 +283,7 @@ class IntegrationsSink(OICBaseSink):
         response = self.client.get(
             f"/ic/api/integration/v1/integrations/{integration_id}|{version}",
         )
-        if response.status_code == FlextTargetOracleOicConstants.OAuth.HTTP_NOT_FOUND:
+        if response.status_code == c.TargetOracleOic.OAuth.HTTP_NOT_FOUND:
             # Create new integration from archive if provided:
             if "archive_content" in record:
                 self._import_integration(record)
@@ -420,7 +420,7 @@ class LookupsSink(OICBaseSink):
         lookup_name = str(record.get("name", ""))
         # Check if lookup exists:
         response = self.client.get(f"/ic/api/integration/v1/lookups/{lookup_name}")
-        if response.status_code == FlextTargetOracleOicConstants.OAuth.HTTP_NOT_FOUND:
+        if response.status_code == c.TargetOracleOic.OAuth.HTTP_NOT_FOUND:
             # Create new lookup
             self._create_lookup(record)
         else:
