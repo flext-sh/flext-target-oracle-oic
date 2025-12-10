@@ -243,7 +243,7 @@ class IntegrationsSink(OICBaseSink):
                     msg,
                 )
 
-            response = response_result.unwrap()
+            response = response_result.value
             if (
                 response.status_code
                 >= c.TargetOracleOic.OAuth.HTTP_ERROR_STATUS_THRESHOLD
@@ -294,7 +294,7 @@ class IntegrationsSink(OICBaseSink):
                     msg,
                 )
 
-            response = response_result.unwrap()
+            response = response_result.value
             if (
                 response.status_code
                 >= c.TargetOracleOic.OAuth.HTTP_ERROR_STATUS_THRESHOLD
@@ -348,7 +348,7 @@ class IntegrationsSink(OICBaseSink):
                     msg,
                 )
 
-            response = response_result.unwrap()
+            response = response_result.value
             if (
                 response.status_code
                 >= c.TargetOracleOic.OAuth.HTTP_ERROR_STATUS_THRESHOLD
