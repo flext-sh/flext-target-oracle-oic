@@ -1207,7 +1207,7 @@ class FlextTargetOracleOicUtilities(u):
                     )
                 )
                 if artifact_result.is_success:
-                    oic_artifacts.append(artifact_result.unwrap())
+                    oic_artifacts.append(artifact_result.value)
                 else:
                     return FlextResult[list[dict[str, object]]].fail(
                         f"Artifact transformation failed: {artifact_result.error}",

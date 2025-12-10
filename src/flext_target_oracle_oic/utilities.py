@@ -584,7 +584,7 @@ class FlextTargetOracleOicUtilities(u_core):
 
                 processed_schema = {
                     "stream_name": stream_name,
-                    "oic_integration_config": integration_result.unwrap(),
+                    "oic_integration_config": integration_result.value,
                     "key_properties": key_properties,
                     "properties": schema.get("properties", {}),
                     "stream_metadata": {
