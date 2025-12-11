@@ -195,7 +195,7 @@ class FlextTargetOracleOicValidationError(
         )
 
 
-class FlextTargetOracleOicConfigurationError(
+class FlextTargetOracleOicSettingsurationError(
     FlextExceptions.ModuleBaseError.ModuleConfigurationError,
 ):
     """Oracle OIC configuration errors using flext-core patterns."""
@@ -453,9 +453,9 @@ def create_configuration_error(
     config_key: str | None = None,
     config_section: str | None = None,
     integration_name: str | None = None,
-) -> FlextTargetOracleOicConfigurationError:
+) -> FlextTargetOracleOicSettingsurationError:
     """Create configuration errors."""
-    return FlextTargetOracleOicConfigurationError(
+    return FlextTargetOracleOicSettingsurationError(
         message,
         config_key=config_key,
         config_section=config_section,
@@ -563,12 +563,12 @@ def create_validation_error_result(
 __all__: list[str] = [
     "FlextTargetOracleOicAPIError",
     "FlextTargetOracleOicAuthenticationError",
-    "FlextTargetOracleOicConfigurationError",
     "FlextTargetOracleOicConnectionError",
     "FlextTargetOracleOicError",
     "FlextTargetOracleOicErrorDetails",
     "FlextTargetOracleOicInfrastructureError",
     "FlextTargetOracleOicProcessingError",
+    "FlextTargetOracleOicSettingsurationError",
     "FlextTargetOracleOicTransformationError",
     "FlextTargetOracleOicValidationError",
     "create_api_error",

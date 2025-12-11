@@ -41,18 +41,12 @@ class FlextTargetOracleOicTypes(FlextTypes):
 
         type TargetConfiguration = dict[str, str | int | bool | dict[str, object]]
         type StreamConfiguration = dict[
-            str, str | bool | dict[str, FlextTypes.Json.JsonValue]
+            str, str | bool | dict[str, FlextTypes.JsonValue]
         ]
-        type MessageProcessing = dict[
-            str, str | list[dict[str, FlextTypes.Json.JsonValue]]
-        ]
-        type RecordHandling = dict[
-            str, str | dict[str, FlextTypes.Json.JsonValue] | bool
-        ]
-        type StateManagement = dict[str, str | dict[str, FlextTypes.Json.JsonValue]]
-        type BatchProcessing = dict[
-            str, str | int | dict[str, FlextTypes.Json.JsonValue]
-        ]
+        type MessageProcessing = dict[str, str | list[dict[str, FlextTypes.JsonValue]]]
+        type RecordHandling = dict[str, str | dict[str, FlextTypes.JsonValue] | bool]
+        type StateManagement = dict[str, str | dict[str, FlextTypes.JsonValue]]
+        type BatchProcessing = dict[str, str | int | dict[str, FlextTypes.JsonValue]]
 
     # =========================================================================
     # ORACLE OIC INTEGRATION TYPES - Complex Oracle OIC integration types
@@ -63,11 +57,11 @@ class FlextTargetOracleOicTypes(FlextTypes):
 
         type IntegrationConfiguration = dict[str, str | int | bool | dict[str, object]]
         type IntegrationDefinition = dict[
-            str, str | list[str] | dict[str, FlextTypes.Json.JsonValue]
+            str, str | list[str] | dict[str, FlextTypes.JsonValue]
         ]
-        type IntegrationFlow = dict[str, str | dict[str, FlextTypes.Json.JsonValue]]
+        type IntegrationFlow = dict[str, str | dict[str, FlextTypes.JsonValue]]
         type IntegrationMapping = dict[str, str | dict[str, object]]
-        type IntegrationMetadata = dict[str, str | dict[str, FlextTypes.Json.JsonValue]]
+        type IntegrationMetadata = dict[str, str | dict[str, FlextTypes.JsonValue]]
         type IntegrationStatus = dict[str, str | bool | dict[str, object]]
 
     # =========================================================================
@@ -78,12 +72,10 @@ class FlextTargetOracleOicTypes(FlextTypes):
         """Oracle OIC connection complex types."""
 
         type ConnectionConfiguration = dict[str, str | int | bool | dict[str, object]]
-        type ConnectionCredentials = dict[
-            str, str | dict[str, FlextTypes.Json.JsonValue]
-        ]
+        type ConnectionCredentials = dict[str, str | dict[str, FlextTypes.JsonValue]]
         type ConnectionSecurity = dict[str, str | bool | dict[str, object]]
         type ConnectionValidation = dict[str, bool | str | dict[str, object]]
-        type ConnectionMetadata = dict[str, str | dict[str, FlextTypes.Json.JsonValue]]
+        type ConnectionMetadata = dict[str, str | dict[str, FlextTypes.JsonValue]]
         type ConnectionPool = dict[str, int | bool | dict[str, object]]
 
     # =========================================================================
@@ -94,11 +86,9 @@ class FlextTargetOracleOicTypes(FlextTypes):
         """Oracle OIC authentication complex types."""
 
         type OAuth2Configuration = dict[str, str | int | dict[str, object]]
-        type IdcsConfiguration = dict[
-            str, str | bool | dict[str, FlextTypes.Json.JsonValue]
-        ]
+        type IdcsConfiguration = dict[str, str | bool | dict[str, FlextTypes.JsonValue]]
         type TokenManagement = dict[str, str | int | dict[str, object]]
-        type AuthenticationFlow = dict[str, str | dict[str, FlextTypes.Json.JsonValue]]
+        type AuthenticationFlow = dict[str, str | dict[str, FlextTypes.JsonValue]]
         type SecuritySettings = dict[str, bool | str | dict[str, object]]
         type AuthenticationCache = dict[str, str | int | dict[str, object]]
 
@@ -110,9 +100,9 @@ class FlextTargetOracleOicTypes(FlextTypes):
         """Oracle OIC deployment complex types."""
 
         type DeploymentConfiguration = dict[str, str | bool | dict[str, object]]
-        type ArtifactManagement = dict[str, str | dict[str, FlextTypes.Json.JsonValue]]
+        type ArtifactManagement = dict[str, str | dict[str, FlextTypes.JsonValue]]
         type DeploymentValidation = dict[str, bool | str | dict[str, object]]
-        type PackageDeployment = dict[str, str | dict[str, FlextTypes.Json.JsonValue]]
+        type PackageDeployment = dict[str, str | dict[str, FlextTypes.JsonValue]]
         type DeploymentStatus = dict[str, str | bool | dict[str, object]]
         type RollbackStrategy = dict[str, str | dict[str, object]]
 
@@ -125,10 +115,10 @@ class FlextTargetOracleOicTypes(FlextTypes):
 
         type TransformationConfiguration = dict[str, str | bool | dict[str, object]]
         type FieldMapping = dict[str, str | list[str] | dict[str, object]]
-        type DataValidation = dict[str, str | dict[str, FlextTypes.Json.JsonValue]]
+        type DataValidation = dict[str, str | dict[str, FlextTypes.JsonValue]]
         type TypeConversion = dict[str, bool | str | dict[str, object]]
-        type FilteringRules = dict[str, str | dict[str, FlextTypes.Json.JsonValue]]
-        type TransformationResult = dict[str, dict[str, FlextTypes.Json.JsonValue]]
+        type FilteringRules = dict[str, str | dict[str, FlextTypes.JsonValue]]
+        type TransformationResult = dict[str, dict[str, FlextTypes.JsonValue]]
 
     # =========================================================================
     # STREAM PROCESSING TYPES - Complex stream handling types
@@ -138,11 +128,11 @@ class FlextTargetOracleOicTypes(FlextTypes):
         """Stream processing complex types."""
 
         type StreamConfiguration = dict[str, str | bool | int | dict[str, object]]
-        type StreamMetadata = dict[str, str | dict[str, FlextTypes.Json.JsonValue]]
-        type StreamRecord = dict[str, FlextTypes.Json.JsonValue | dict[str, object]]
-        type StreamState = dict[str, str | int | dict[str, FlextTypes.Json.JsonValue]]
+        type StreamMetadata = dict[str, str | dict[str, FlextTypes.JsonValue]]
+        type StreamRecord = dict[str, FlextTypes.JsonValue | dict[str, object]]
+        type StreamState = dict[str, str | int | dict[str, FlextTypes.JsonValue]]
         type StreamBookmark = dict[str, str | int | dict[str, object]]
-        type StreamSchema = dict[str, str | dict[str, FlextTypes.Json.JsonValue] | bool]
+        type StreamSchema = dict[str, str | dict[str, FlextTypes.JsonValue] | bool]
 
     # =========================================================================
     # ERROR HANDLING TYPES - Complex error management types
@@ -153,15 +143,11 @@ class FlextTargetOracleOicTypes(FlextTypes):
 
         type ErrorConfiguration = dict[str, bool | str | int | dict[str, object]]
         type ErrorRecovery = dict[str, str | bool | dict[str, object]]
-        type ErrorReporting = dict[
-            str, str | int | dict[str, FlextTypes.Json.JsonValue]
-        ]
+        type ErrorReporting = dict[str, str | int | dict[str, FlextTypes.JsonValue]]
         type ErrorClassification = dict[str, str | int | dict[str, object]]
-        type ErrorMetrics = dict[
-            str, int | float | dict[str, FlextTypes.Json.JsonValue]
-        ]
+        type ErrorMetrics = dict[str, int | float | dict[str, FlextTypes.JsonValue]]
         type ErrorTracking = list[
-            dict[str, str | int | dict[str, FlextTypes.Json.JsonValue]]
+            dict[str, str | int | dict[str, FlextTypes.JsonValue]]
         ]
 
     # =========================================================================
