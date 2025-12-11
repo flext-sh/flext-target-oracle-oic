@@ -11,7 +11,7 @@ from flext_core import FlextModels, FlextResult
 # Use FLEXT Meltano wrapper instead of direct singer_sdk import (domain separation)
 from flext_meltano import (
     FlextMeltanoBridge,
-    FlextMeltanoConfig,
+    FlextMeltanoSettings,
     FlextTarget as Target,
 )
 
@@ -77,12 +77,11 @@ u = FlextTargetOracleOicUtilities  # Utilities (FlextTargetOracleOicUtilities ex
 __all__: list[str] = [
     "ConnectionsSink",
     "FlextMeltanoBridge",
-    "FlextMeltanoConfig",
+    "FlextMeltanoSettings",
     "FlextModels",
     "FlextResult",
     "FlextTargetOracleOicAPIError",
     "FlextTargetOracleOicAuthenticationError",
-    "FlextTargetOracleOicConfigurationError",
     "FlextTargetOracleOicConnectionError",
     "FlextTargetOracleOicError",
     "FlextTargetOracleOicErrorDetails",
@@ -90,6 +89,7 @@ __all__: list[str] = [
     "FlextTargetOracleOicModels",
     "FlextTargetOracleOicProcessingError",
     "FlextTargetOracleOicProtocols",
+    "FlextTargetOracleOicSettingsurationError",
     "FlextTargetOracleOicTransformationError",
     "FlextTargetOracleOicUtilities",
     "FlextTargetOracleOicValidationError",

@@ -11,7 +11,7 @@ from collections.abc import Sequence
 from typing import ClassVar, override
 
 from flext_api import FlextApiClient
-from flext_api.config import FlextApiConfig
+from flext_api.settings import FlextApiSettings
 from flext_core import FlextLogger, FlextResult
 
 # Use FLEXT Meltano wrappers instead of direct singer_sdk imports (domain separation)
@@ -67,7 +67,7 @@ class OICBaseSink(Sink):
         """
         if not self._client:
             # Create basic client - authentication will be handled by flext-oracle-oic
-            api_config = FlextApiConfig(
+            api_config = FlextApiSettings(
                 base_url=self.config.get("base_url", ""),
                 timeout=30,
             )

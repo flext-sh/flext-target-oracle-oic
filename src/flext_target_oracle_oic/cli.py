@@ -14,7 +14,7 @@ from __future__ import annotations
 
 from typing import override
 
-from flext_cli import FlextCli, FlextCliCommands, FlextCliConfig
+from flext_cli import FlextCli, FlextCliCommands, FlextCliSettings
 from flext_core import FlextResult
 
 
@@ -25,7 +25,7 @@ class FlextTargetOracleOicCliService:
     def __init__(self: object) -> None:
         """Initialize CLI service with flext-cli patterns."""
         self._cli_api = FlextCli()
-        self._config: dict[str, object] = FlextCliConfig()
+        self._config: dict[str, object] = FlextCliSettings()
 
     def create_target_cli_interface(self: object) -> None:
         """Create Oracle OIC target CLI interface using flext-cli patterns."""

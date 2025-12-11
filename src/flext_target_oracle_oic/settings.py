@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import Self, TypedDict
 
-from flext_core import FlextConfig, FlextConstants, FlextModels, FlextResult, t
+from flext_core import FlextConstants, FlextModels, FlextResult, FlextSettings, t
 from pydantic import (
     AnyUrl,
     Field,
@@ -21,11 +21,11 @@ from pydantic import (
 from pydantic_settings import SettingsConfigDict
 
 
-class TargetOracleOicConfig(FlextConfig):
-    """Single flat Config class for target-oracle-oic extending FlextConfig.
+class TargetOracleOicConfig(FlextSettings):
+    """Single flat Config class for target-oracle-oic extending FlextSettings.
 
     Follows standardized FLEXT Config pattern:
-    - Single flat class extending FlextConfig
+    - Single flat class extending FlextSettings
     - Uses Pydantic 2 Settings with SettingsConfigDict
     - Uses SecretStr for sensitive data
     - Implements singleton pattern with inverse dependency injection
@@ -93,7 +93,7 @@ class TargetOracleOicConfig(FlextConfig):
         json_schema_extra={
             "title": "Target Oracle OIC Configuration",
             "description": (
-                "Enterprise Oracle OIC target configuration extending FlextConfig"
+                "Enterprise Oracle OIC target configuration extending FlextSettings"
             ),
         },
     )
@@ -398,7 +398,7 @@ class TargetOracleOicConfig(FlextConfig):
     # Singleton pattern methods
     @classmethod
     def get_global_instance(cls) -> Self:
-        """Get the global singleton instance using enhanced FlextConfig pattern."""
+        """Get the global singleton instance using enhanced FlextSettings pattern."""
         return cls.get_or_create_shared_instance(project_name="flext-target-oracle-oic")
 
     @classmethod
