@@ -12,51 +12,51 @@ from os import getenv
 from flext_core import FlextResult, t
 from pydantic import SecretStr
 
-from flext_target_oracle_oic.config import TargetOracleOicConfig
+from flext_target_oracle_oic.settings import TargetOracleOicSettings
 
 
 def setup_oic_target(
-    config: TargetOracleOicConfig | None = None,
-) -> FlextResult[TargetOracleOicConfig]:
+    config: TargetOracleOicSettings | None = None,
+) -> FlextResult[TargetOracleOicSettings]:
     """Set up Oracle Integration Cloud target with configuration.
 
     Args:
     config: Optional configuration. If None, creates defaults.
 
     Returns:
-    FlextResult with TargetOracleOicConfig or error message.
+    FlextResult with TargetOracleOicSettings or error message.
 
     """
     try:
         if config is None:
             # Create with intelligent defaults using the singleton pattern
-            config = TargetOracleOicConfig.get_global_instance()
+            config = TargetOracleOicSettings.get_global_instance()
 
         # Validate configuration
         validation_result = config.validate_business_rules()
         if validation_result.is_failure:
-            return FlextResult[TargetOracleOicConfig].fail(
+            return FlextResult[TargetOracleOicSettings].fail(
                 f"Configuration validation failed: {validation_result.error}",
             )
 
-        return FlextResult[TargetOracleOicConfig].ok(config)
+        return FlextResult[TargetOracleOicSettings].ok(config)
 
     except (RuntimeError, ValueError, TypeError) as e:
-        return FlextResult[TargetOracleOicConfig].fail(
+        return FlextResult[TargetOracleOicSettings].fail(
             f"Failed to set up OIC target: {e}",
         )
 
 
 def create_development_oic_target_config(
     **overrides: t.Value,
-) -> TargetOracleOicConfig:
+) -> TargetOracleOicSettings:
     """Create development OIC target configuration with defaults.
 
     Args:
     **overrides: Configuration overrides
 
     Returns:
-    TargetOracleOicConfig for development use.
+    TargetOracleOicSettings for development use.
 
     """
     dev_config_overrides: dict[str, t.Value] = {
@@ -104,19 +104,19 @@ def create_development_oic_target_config(
         **overrides,
     }
 
-    return TargetOracleOicConfig.create_for_development(**dev_config_overrides)
+    return TargetOracleOicSettings.create_for_development(**dev_config_overrides)
 
 
 def create_production_oic_target_config(
     **overrides: t.Value,
-) -> TargetOracleOicConfig:
+) -> TargetOracleOicSettings:
     """Create production OIC target configuration with defaults.
 
     Args:
     **overrides: Configuration overrides
 
     Returns:
-    TargetOracleOicConfig for production use.
+    TargetOracleOicSettings for production use.
 
     """
     prod_config_overrides: dict[str, t.Value] = {
@@ -154,19 +154,19 @@ def create_production_oic_target_config(
         **overrides,
     }
 
-    return TargetOracleOicConfig.create_for_production(**prod_config_overrides)
+    return TargetOracleOicSettings.create_for_production(**prod_config_overrides)
 
 
 def create_testing_oic_target_config(
     **overrides: t.Value,
-) -> TargetOracleOicConfig:
+) -> TargetOracleOicSettings:
     """Create testing OIC target configuration with defaults.
 
     Args:
     **overrides: Configuration overrides
 
     Returns:
-    TargetOracleOicConfig for testing use.
+    TargetOracleOicSettings for testing use.
 
     """
     test_config_overrides: dict[str, t.Value] = {
@@ -192,10 +192,10 @@ def create_testing_oic_target_config(
         **overrides,
     }
 
-    return TargetOracleOicConfig.create_for_testing(**test_config_overrides)
+    return TargetOracleOicSettings.create_for_testing(**test_config_overrides)
 
 
-def validate_oic_target_config(config: TargetOracleOicConfig) -> FlextResult[None]:
+def validate_oic_target_config(config: TargetOracleOicSettings) -> FlextResult[None]:
     """Validate Oracle Integration Cloud target configuration.
 
     Args:
@@ -212,10 +212,10 @@ def get_oic_target_config_schema() -> dict[str, object]:
     """Get JSON schema for Oracle Integration Cloud target configuration.
 
     Returns:
-    JSON schema dictionary for TargetOracleOicConfig
+    JSON schema dictionary for TargetOracleOicSettings
 
     """
-    return TargetOracleOicConfig.model_json_schema()
+    return TargetOracleOicSettings.model_json_schema()
 
 
 __all__: list[str] = [

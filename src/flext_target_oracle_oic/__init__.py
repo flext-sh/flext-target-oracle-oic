@@ -19,7 +19,6 @@ from flext_target_oracle_oic.__version__ import __version__, __version_info__
 from flext_target_oracle_oic.application import OICTargetOrchestrator
 from flext_target_oracle_oic.cli import main, main as cli_main
 from flext_target_oracle_oic.client import OICClient
-from flext_target_oracle_oic.config import TargetOracleOicConfig
 from flext_target_oracle_oic.connection import (
     OICConnection as LegacyOICConnection,
     OICConnectionSettings as LegacyOICConnectionSettings,
@@ -46,6 +45,7 @@ from flext_target_oracle_oic.patterns import (
     OICTypeConverter,
 )
 from flext_target_oracle_oic.protocols import FlextTargetOracleOicProtocols
+from flext_target_oracle_oic.settings import TargetOracleOicSettings
 from flext_target_oracle_oic.singer import OICRecordProcessor
 from flext_target_oracle_oic.target_client import (
     ConnectionsSink,
@@ -119,7 +119,7 @@ __all__: list[str] = [
     "PackagesSink",
     "Target",
     "TargetOracleOic",
-    "TargetOracleOicConfig",
+    "TargetOracleOicSettings",
     "__version__",
     "__version_info__",
     "cli_main",

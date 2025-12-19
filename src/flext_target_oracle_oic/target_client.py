@@ -17,8 +17,8 @@ from flext_core import FlextLogger, FlextResult
 # Use FLEXT Meltano wrappers instead of direct singer_sdk imports (domain separation)
 from flext_meltano import FlextSink as Sink, FlextTarget as Target
 
-from flext_target_oracle_oic.config import TargetOracleOicConfig
 from flext_target_oracle_oic.constants import c
+from flext_target_oracle_oic.settings import TargetOracleOicSettings
 from flext_target_oracle_oic.target_config import create_singer_config_schema
 
 logger = FlextLogger(__name__)
@@ -45,14 +45,14 @@ class OICBaseSink(Sink):
         # Critical: Set tap_name for Singer SDK auth compatibility
         self.tap_name = "target-oracle-oic"  # Required by Singer SDK authenticators
         # Keep a separate attribute for typed config to avoid base type conflicts
-        self._oic_config: TargetOracleOicConfig | None = None
+        self._oic_config: TargetOracleOicSettings | None = None
         self._client: FlextApiClient | None = None
 
     @property
-    def oic_config(self: object) -> TargetOracleOicConfig:
+    def oic_config(self: object) -> TargetOracleOicSettings:
         """Get unified OIC configuration."""
         if not self._oic_config:
-            self._oic_config = TargetOracleOicConfig.model_validate(
+            self._oic_config = TargetOracleOicSettings.model_validate(
                 dict[str, object](self.config) if self.config else {},
             )
         return self._oic_config
@@ -494,13 +494,13 @@ class TargetOracleOic(Target):
             parse_env_config=parse_env_config,
             validate_config=validate_config,
         )
-        self._oic_config: TargetOracleOicConfig | None = None
+        self._oic_config: TargetOracleOicSettings | None = None
 
     @property
-    def oic_config(self: object) -> TargetOracleOicConfig:
+    def oic_config(self: object) -> TargetOracleOicSettings:
         """Get unified OIC configuration."""
         if not self._oic_config:
-            self._oic_config = TargetOracleOicConfig.model_validate(
+            self._oic_config = TargetOracleOicSettings.model_validate(
                 dict[str, object](self.config) if self.config else {},
             )
         return self._oic_config
