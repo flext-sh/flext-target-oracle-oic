@@ -11,7 +11,7 @@ from datetime import UTC, datetime, timedelta
 from typing import ClassVar
 
 from flext_core import FlextConstants, FlextResult, t
-from flext_core.utilities import FlextUtilities as u_core
+from flext_core.utilities import u_core
 
 
 class FlextTargetOracleOicUtilities(u_core):

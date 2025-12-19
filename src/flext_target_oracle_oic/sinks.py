@@ -17,8 +17,8 @@ from flext_core import FlextLogger, FlextResult
 # Use FLEXT Meltano wrappers instead of direct singer_sdk imports (domain separation)
 from flext_meltano import FlextSink as Sink, FlextTarget as Target
 
-from flext_target_oracle_oic.config import TargetOracleOicConfig
 from flext_target_oracle_oic.constants import c
+from flext_target_oracle_oic.settings import TargetOracleOicSettings
 from flext_target_oracle_oic.target_config import OICOAuth2Authenticator
 
 # Constants - moved to c.TargetOracleOic.OAuth.HTTP_NOT_FOUND and .JSON_MIME
@@ -53,8 +53,8 @@ class OICBaseSink(Sink):
 
         """
         if not self._authenticator:
-            # Create TargetOracleOicConfig from sink configuration
-            config = TargetOracleOicConfig(
+            # Create TargetOracleOicSettings from sink configuration
+            config = TargetOracleOicSettings(
                 oauth_client_id=self.config.get("oauth_client_id", ""),
                 oauth_client_secret=self.config.get("oauth_client_secret", ""),
                 oauth_token_url=self.config.get("oauth_token_url", ""),

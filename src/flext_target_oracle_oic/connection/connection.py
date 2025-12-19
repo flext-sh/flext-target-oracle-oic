@@ -14,7 +14,7 @@ import requests
 import urllib3
 from flext_core import FlextLogger, FlextResult
 
-from flext_target_oracle_oic.connection.config import OICConnectionSettings
+from flext_target_oracle_oic.connection.settings import OICConnectionSettings
 from flext_target_oracle_oic.exceptions import FlextTargetOracleOicAuthenticationError
 
 # Constants
