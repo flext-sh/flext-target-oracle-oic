@@ -21,7 +21,7 @@ from pydantic import (
 from pydantic_settings import SettingsConfigDict
 
 
-class TargetOracleOicSettings(FlextSettings):
+class TargetOracleOicConfig(FlextSettings):
     """Single flat Config class for target-oracle-oic extending FlextSettings.
 
     Follows standardized FLEXT Config pattern:
@@ -457,5 +457,5 @@ class TargetOracleOicSettings(FlextSettings):
 
 # Export configuration class (single class only)
 __all__: list[str] = [
-    "TargetOracleOicSettings",
+    "TargetOracleOicConfig",
 ]
