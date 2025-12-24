@@ -12,11 +12,11 @@ from typing import override
 
 from flext_api import FlextApiClient
 from flext_api.settings import FlextApiSettings
-from flext_core import FlextLogger, FlextResult
 
 # Use FLEXT Meltano wrappers instead of direct singer_sdk imports (domain separation)
 from flext_meltano import FlextSink as Sink, FlextTarget as Target
 
+from flext import FlextLogger, FlextResult
 from flext_target_oracle_oic.config import TargetOracleOicConfig
 from flext_target_oracle_oic.constants import c
 from flext_target_oracle_oic.target_config import OICOAuth2Authenticator

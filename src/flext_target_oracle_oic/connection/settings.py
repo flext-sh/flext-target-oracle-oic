@@ -7,8 +7,9 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import FlextConstants, FlextLogger, FlextModels, FlextResult
 from pydantic import Field
+
+from flext import FlextConstants, FlextLogger, FlextModels, FlextResult
 
 logger = FlextLogger(__name__)
 

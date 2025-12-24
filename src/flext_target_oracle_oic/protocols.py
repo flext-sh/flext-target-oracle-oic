@@ -107,7 +107,7 @@ class FlextTargetOracleOicProtocols(p_meltano, p_db_oracle):
                     """
 
                 def validate_payload(
-                    self, payload: dict[str, object]
+                    self, payload: dict[str, object],
                 ) -> p_meltano.Result[bool]:
                     """Validate payload for OIC compatibility.
 

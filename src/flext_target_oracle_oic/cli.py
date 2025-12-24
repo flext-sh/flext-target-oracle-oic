@@ -15,7 +15,8 @@ from __future__ import annotations
 from typing import override
 
 from flext_cli import FlextCli, FlextCliCommands, FlextCliSettings
-from flext_core import FlextResult
+
+from flext import FlextResult
 
 
 class FlextTargetOracleOicCliService:
