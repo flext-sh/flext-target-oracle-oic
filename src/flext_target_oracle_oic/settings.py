@@ -9,6 +9,7 @@ from __future__ import annotations
 
 from typing import Self, TypedDict
 
+from flext_core import FlextConstants, FlextModels, FlextResult, FlextSettings, t
 from pydantic import (
     AnyUrl,
     Field,
@@ -18,8 +19,6 @@ from pydantic import (
     model_validator,
 )
 from pydantic_settings import SettingsConfigDict
-
-from flext import FlextConstants, FlextModels, FlextResult, FlextSettings, t
 
 
 class TargetOracleOicConfig(FlextSettings):

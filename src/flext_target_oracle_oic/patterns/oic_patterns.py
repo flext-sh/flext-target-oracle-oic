@@ -10,7 +10,7 @@ from __future__ import annotations
 import json
 from typing import override
 
-from flext import FlextLogger, FlextResult
+from flext_core import FlextLogger, FlextResult
 
 logger = FlextLogger(__name__)
 
