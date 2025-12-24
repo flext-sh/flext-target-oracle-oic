@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from typing import override
 
-from flext import FlextExceptions, FlextModels, FlextResult
+from flext_core import FlextExceptions, FlextModels, FlextResult
 
 # ===============================================================================
 # BASE ORACLE OIC EXCEPTION

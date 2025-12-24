@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-from flext import FlextTypes
+from flext_core import FlextTypes
 
 # =============================================================================
 # TARGET ORACLE OIC-SPECIFIC TYPE VARIABLES - Domain-specific TypeVars for Singer Oracle OIC target operations
@@ -41,7 +41,8 @@ class FlextTargetOracleOicTypes(FlextTypes):
 
         type TargetConfiguration = dict[str, str | int | bool | dict[str, object]]
         type StreamConfiguration = dict[
-            str, str | bool | dict[str, FlextTypes.JsonValue],
+            str,
+            str | bool | dict[str, FlextTypes.JsonValue],
         ]
         type MessageProcessing = dict[str, str | list[dict[str, FlextTypes.JsonValue]]]
         type RecordHandling = dict[str, str | dict[str, FlextTypes.JsonValue] | bool]
@@ -57,7 +58,8 @@ class FlextTargetOracleOicTypes(FlextTypes):
 
         type IntegrationConfiguration = dict[str, str | int | bool | dict[str, object]]
         type IntegrationDefinition = dict[
-            str, str | list[str] | dict[str, FlextTypes.JsonValue],
+            str,
+            str | list[str] | dict[str, FlextTypes.JsonValue],
         ]
         type IntegrationFlow = dict[str, str | dict[str, FlextTypes.JsonValue]]
         type IntegrationMapping = dict[str, str | dict[str, object]]

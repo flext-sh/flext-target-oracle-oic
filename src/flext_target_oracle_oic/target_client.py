@@ -12,11 +12,11 @@ from typing import ClassVar, override
 
 from flext_api import FlextApiClient
 from flext_api.settings import FlextApiSettings
+from flext_core import FlextLogger, FlextResult
 
 # Use FLEXT Meltano wrappers instead of direct singer_sdk imports (domain separation)
 from flext_meltano import FlextSink as Sink, FlextTarget as Target
 
-from flext import FlextLogger, FlextResult
 from flext_target_oracle_oic.config import TargetOracleOicConfig
 from flext_target_oracle_oic.constants import c
 from flext_target_oracle_oic.target_config import create_singer_config_schema
@@ -213,7 +213,9 @@ class IntegrationsSink(OICBaseSink):
         integration_id = str(record.get("id", ""))
         version = str(record.get("version", "01.00.0000"))
         self.logger.info(
-            "Processing integration record: %s v%s", integration_id, version,
+            "Processing integration record: %s v%s",
+            integration_id,
+            version,
         )
         # Simplified implementation - detailed OIC operations will be handled by flext-oracle-oic
         # For now, just log the record to maintain Singer SDK compatibility

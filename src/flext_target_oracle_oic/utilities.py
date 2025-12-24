@@ -10,9 +10,8 @@ from __future__ import annotations
 from datetime import UTC, datetime, timedelta
 from typing import ClassVar
 
+from flext_core import FlextConstants, FlextResult, t
 from flext_core.utilities import FlextUtilities as u_core
-
-from flext import FlextConstants, FlextResult, t
 
 
 class FlextTargetOracleOicUtilities(u_core):
