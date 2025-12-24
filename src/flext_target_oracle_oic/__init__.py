@@ -6,8 +6,6 @@ SPDX-License-Identifier: MIT.
 
 from __future__ import annotations
 
-from flext_core import FlextModels, FlextResult
-
 # Use FLEXT Meltano wrapper instead of direct singer_sdk import (domain separation)
 from flext_meltano import (
     FlextMeltanoBridge,
@@ -15,6 +13,7 @@ from flext_meltano import (
     FlextTarget as Target,
 )
 
+from flext import FlextModels, FlextResult
 from flext_target_oracle_oic.__version__ import __version__, __version_info__
 from flext_target_oracle_oic.application import OICTargetOrchestrator
 from flext_target_oracle_oic.cli import main, main as cli_main

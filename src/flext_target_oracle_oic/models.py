@@ -14,11 +14,9 @@ import re
 from datetime import UTC, datetime
 from typing import Literal
 
-from flext_core import (
-    FlextConstants,
+from flext import FlextConstants,
     FlextModels,
-    FlextResult,
-)
+    FlextResult
 from flext_core.utilities import u
 from pydantic import ConfigDict, Field, SecretStr
 
