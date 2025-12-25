@@ -31,7 +31,8 @@ import pytest
 from flext_meltano import FlextMeltanoValidationError as ConfigValidationError
 from singer_sdk.testing import get_target_test_class
 
-from flext_target_oracle_oic import (
+
+
     ConnectionsSink,
     IntegrationsSink,
     LookupsSink,
