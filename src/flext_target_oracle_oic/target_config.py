@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_target_oracle_oic.config import TargetOracleOicConfig
+from flext_target_oracle_oic.settings import TargetOracleOicConfig
 
 # Temporary authenticator placeholder until proper implementation
 OICOAuth2Authenticator = object

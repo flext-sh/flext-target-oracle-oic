@@ -12,14 +12,12 @@ from flext_core import FlextModels, FlextResult
 from flext_meltano import (
     FlextMeltanoBridge,
     FlextMeltanoSettings,
-    FlextTarget as Target,
 )
 
 from flext_target_oracle_oic.__version__ import __version__, __version_info__
 from flext_target_oracle_oic.application import OICTargetOrchestrator
 from flext_target_oracle_oic.cli import main, main as cli_main
 from flext_target_oracle_oic.client import OICClient
-from flext_target_oracle_oic.config import TargetOracleOicConfig
 from flext_target_oracle_oic.connection import (
     OICConnection as LegacyOICConnection,
     OICConnectionSettings as LegacyOICConnectionSettings,
@@ -58,6 +56,7 @@ from flext_target_oracle_oic.target_client import (
 )
 from flext_target_oracle_oic.target_config import (
     OICOAuth2Authenticator,
+    TargetOracleOicConfig,
     create_config_from_dict,
     create_config_with_env_overrides,
     create_singer_config_schema,
@@ -117,7 +116,6 @@ __all__: list[str] = [
     "OICTargetOrchestrator",
     "OICTypeConverter",
     "PackagesSink",
-    "Target",
     "TargetOracleOic",
     "TargetOracleOicConfig",
     "__version__",

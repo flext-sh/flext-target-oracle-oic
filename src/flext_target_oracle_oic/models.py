@@ -500,7 +500,7 @@ class FlextTargetOracleOicModels(FlextModels):
             except Exception as e:
                 return FlextResult[None].fail(f"Schema mapping validation failed: {e}")
 
-    class OicTargetConfig(FlextModels.BaseConfig):
+    class OicTargetConfig(FlextModels.ArbitraryTypesModel):
         """Oracle OIC target configuration with Singer protocol integration."""
 
         # Authentication configuration

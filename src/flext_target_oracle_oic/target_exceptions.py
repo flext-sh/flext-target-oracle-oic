@@ -52,7 +52,7 @@ class FlextTargetOracleOicError(Exception):
 
 
 class FlextTargetOracleOicAuthenticationError(
-    FlextExceptions.ModuleBaseError.ModuleAuthenticationError,
+    FlextExceptions.AuthenticationError,
 ):
     """Oracle OIC authentication errors using flext-core patterns."""
 
@@ -85,7 +85,7 @@ class FlextTargetOracleOicAuthenticationError(
 
 
 class FlextTargetOracleOicConnectionError(
-    FlextExceptions.ModuleBaseError.ModuleConnectionError,
+    FlextExceptions.ConnectionError,
 ):
     """Oracle OIC connection errors using flext-core patterns."""
 
@@ -119,7 +119,7 @@ class FlextTargetOracleOicConnectionError(
 
 
 class FlextTargetOracleOicProcessingError(
-    FlextExceptions.ModuleBaseError.ModuleProcessingError,
+    FlextExceptions.OperationError,
 ):
     """Oracle OIC processing errors using flext-core patterns."""
 
@@ -153,7 +153,7 @@ class FlextTargetOracleOicProcessingError(
 
 
 class FlextTargetOracleOicValidationError(
-    FlextExceptions.ModuleBaseError.ModuleValidationError,
+    FlextExceptions.ValidationError,
 ):
     """Oracle OIC validation errors using flext-core patterns."""
 
@@ -196,7 +196,7 @@ class FlextTargetOracleOicValidationError(
 
 
 class FlextTargetOracleOicSettingsurationError(
-    FlextExceptions.ModuleBaseError.ModuleConfigurationError,
+    FlextExceptions.ConfigurationError,
 ):
     """Oracle OIC configuration errors using flext-core patterns."""
 

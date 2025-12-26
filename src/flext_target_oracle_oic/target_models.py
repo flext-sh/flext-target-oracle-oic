@@ -11,9 +11,8 @@ import re
 from datetime import UTC, datetime
 
 from flext_core import FlextModels, FlextResult
-from flext_oracle_oic.ext_models import (
-    OICConnectionInfo as ConnectionBase,
-    OICIntegrationInfo as IntegrationBase,
+from flext_oracle_oic import (
+    FlextOracleOicModels,
 )
 from pydantic import Field
 
@@ -31,7 +30,7 @@ PackageBase = FlextModels
 # ===============================================================================
 
 
-class OICConnection(ConnectionBase):
+class OICConnection(FlextOracleOicModels.OICConnectionInfo):
     """Oracle Integration Cloud connection model using flext-core patterns."""
 
     id: str = Field(
@@ -85,7 +84,7 @@ class OICConnection(ConnectionBase):
             return FlextResult[None].fail(f"Connection validation failed: {e}")
 
 
-class OICIntegration(IntegrationBase):
+class OICIntegration(FlextOracleOicModels.OICIntegrationInfo):
     """Oracle Integration Cloud integration model using flext-core patterns."""
 
     id: str = Field(
