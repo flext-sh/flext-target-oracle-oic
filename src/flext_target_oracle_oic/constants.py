@@ -7,6 +7,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from enum import StrEnum
 from typing import Final
 
 from flext_oracle_oic import FlextOracleOicConstants
@@ -277,6 +278,63 @@ class FlextTargetOracleOicConstants(FlextOracleOicConstants):
             INTERNAL_ERROR: Final[str] = "Internal error in Oracle OIC target"
             EXTERNAL_SERVICE_ERROR: Final[str] = "External service error"
             NETWORK_ERROR: Final[str] = "Network error occurred"
+
+        class AuthMethod(StrEnum):
+            """Authentication method enumeration."""
+
+            OAUTH2 = "oauth2"
+
+        class IntegrationStatus(StrEnum):
+            """Integration status enumeration."""
+
+            ACTIVE = "active"
+            INACTIVE = "inactive"
+            ERROR = "error"
+            CONFIGURED = "configured"
+            ACTIVATED = "activated"
+
+        class IntegrationPattern(StrEnum):
+            """Integration pattern enumeration."""
+
+            ORCHESTRATION = "ORCHESTRATION"
+            MAP_MY_DATA = "MAP_MY_DATA"
+            PUBLISH_TO_OIC = "PUBLISH_TO_OIC"
+            SUBSCRIBE_TO_OIC = "SUBSCRIBE_TO_OIC"
+
+        class ScheduleType(StrEnum):
+            """Schedule type enumeration."""
+
+            ONCE = "ONCE"
+            RECURRING = "RECURRING"
+            CRON = "CRON"
+
+        class IntegrationAction(StrEnum):
+            """Integration action enumeration."""
+
+            ACTIVATE = "activate"
+            DEACTIVATE = "deactivate"
+            TEST = "test"
+            CLONE = "clone"
+
+        class MetadataAction(StrEnum):
+            """Metadata action enumeration."""
+
+            TEST = "test"
+            REFRESH_METADATA = "refresh_metadata"
+
+        class DataOperation(StrEnum):
+            """Data operation enumeration."""
+
+            CREATE_ONLY = "create_only"
+            UPDATE_ONLY = "update_only"
+            CREATE_OR_UPDATE = "create_or_update"
+
+        class ErrorType(StrEnum):
+            """Error type enumeration."""
+
+            AUTHENTICATION = "AUTHENTICATION"
+            AUTHORIZATION = "AUTHORIZATION"
+            NETWORK = "NETWORK"
 
 
 c = FlextTargetOracleOicConstants
