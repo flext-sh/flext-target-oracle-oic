@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import re
 from datetime import UTC, datetime
-from typing import Literal
 
 from flext_core import (
     FlextConstants,
@@ -22,42 +21,6 @@ from flext_core import (
 )
 from flext_core.utilities import u
 from pydantic import ConfigDict, Field, SecretStr
-
-# Oracle OIC constants
-oauth2 = "oauth2"
-active = "active"
-inactive = "inactive"
-error = "error"
-ORCHESTRATION = "ORCHESTRATION"
-
-# Integration pattern constants
-MAP_MY_DATA = "MAP_MY_DATA"
-PUBLISH_TO_OIC = "PUBLISH_TO_OIC"
-SUBSCRIBE_TO_OIC = "SUBSCRIBE_TO_OIC"
-configured = "configured"
-activated = "activated"
-
-# Schedule type constants
-ONCE = "ONCE"
-RECURRING = "RECURRING"
-CRON = "CRON"
-activate = "activate"
-deactivate = "deactivate"
-
-# Operation type constants
-test = "test"
-clone = "clone"
-refresh_metadata = "refresh_metadata"
-
-# Data operation constants
-create_only = "create_only"
-update_only = "update_only"
-create_or_update = "create_or_update"
-
-# Error type constants (reusing from tap module)
-AUTHENTICATION = "AUTHENTICATION"
-AUTHORIZATION = "AUTHORIZATION"
-NETWORK = "NETWORK"
 
 
 class FlextTargetOracleOicModels(FlextModels):
@@ -100,7 +63,7 @@ class FlextTargetOracleOicModels(FlextModels):
         oauth_client_aud: str = Field(..., description="OAuth2 audience")
 
         # Authentication options
-        auth_method: Literal["oauth2"] = Field(
+        auth_method: t.Project.AuthMethodLiteral = Field(
             default="oauth2",
             description="Authentication method",
         )
@@ -151,7 +114,7 @@ class FlextTargetOracleOicModels(FlextModels):
             default_factory=dict,
             description="Connection properties",
         )
-        status: Literal["active", "inactive", "error"] = Field(
+        status: str = Field(
             default="active",
             description="Connection status",
         )
@@ -179,13 +142,8 @@ class FlextTargetOracleOicModels(FlextModels):
             description="Oracle OIC integration version",
             pattern=r"^\d{2}\.\d{2}\.\d{4}$",
         )
-        pattern: Literal[
-            "ORCHESTRATION",
-            "MAP_MY_DATA",
-            "PUBLISH_TO_OIC",
-            "SUBSCRIBE_TO_OIC",
-        ] = Field(default="ORCHESTRATION", description="Integration pattern")
-        status: Literal["configured", "activated", "error"] = Field(
+        pattern: str = Field(default="ORCHESTRATION", description="Integration pattern")
+        status: str = Field(
             default="configured",
             description="Integration status",
         )
@@ -336,7 +294,7 @@ class FlextTargetOracleOicModels(FlextModels):
             description="Integration identifier",
             min_length=1,
         )
-        schedule_type: Literal["ONCE", "RECURRING", "CRON"] = Field(
+        schedule_type: str = Field(
             default="ONCE",
             description="Schedule type",
         )
@@ -378,7 +336,7 @@ class FlextTargetOracleOicModels(FlextModels):
             description="Integration version",
             pattern=r"^\d{2}\.\d{2}\.\d{4}$",
         )
-        action: Literal["activate", "deactivate", "test", "clone"] = Field(
+        action: str = Field(
             ...,
             description="Action to perform",
         )
@@ -419,7 +377,7 @@ class FlextTargetOracleOicModels(FlextModels):
             description="Connection identifier",
             min_length=1,
         )
-        action: Literal["test", "refresh_metadata"] = Field(
+        action: str = Field(
             ...,
             description="Action to perform",
         )
@@ -515,7 +473,7 @@ class FlextTargetOracleOicModels(FlextModels):
         )
 
         # Import configuration
-        import_mode: Literal["create_only", "update_only", "create_or_update"] = Field(
+        import_mode: str = Field(
             default="create_or_update",
             description="Import mode for OIC artifacts",
         )
@@ -670,18 +628,7 @@ class FlextTargetOracleOicModels(FlextModels):
     class OicErrorContext(FlextModels.ArbitraryTypesModel):
         """Error context for Oracle OIC target error handling."""
 
-        error_type: Literal[
-            "AUTHENTICATION",
-            "AUTHORIZATION",
-            "NETWORK",
-            "OIC_API",
-            "OAUTH2_TOKEN",
-            "VALIDATION",
-            "TRANSFORMATION",
-            "SINGER_PROTOCOL",
-            "RATE_LIMIT",
-            "CIRCUIT_BREAKER",
-        ] = Field(..., description="Error category")
+        error_type: str = Field(..., description="Error category")
 
         # Context information
         oic_operation: str | None = Field(None, description="OIC operation that failed")
