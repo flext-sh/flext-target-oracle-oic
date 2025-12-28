@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import override
 
-from flext_core import FlextLogger, FlextResult
+from flext_core import FlextLogger, FlextResult, FlextTypes as t
 
 logger = FlextLogger(__name__)
 
@@ -23,10 +23,10 @@ class OICRecordProcessor:
 
     def process_singer_record(
         self,
-        record: dict[str, object],
+        record: dict[str, t.GeneralValueType],
         stream_name: str,
-        schema: dict[str, object] | None = None,
-    ) -> FlextResult[dict[str, object]]:
+        schema: dict[str, t.GeneralValueType] | None = None,
+    ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Process Singer record for OIC format.
 
         Args:
@@ -52,8 +52,8 @@ class OICRecordProcessor:
                     processed_record,
                     schema,
                 )
-                if not validation_result.success:
-                    return FlextResult[dict[str, object]].fail(
+                if not validation_result.is_success:
+                    return FlextResult[dict[str, t.GeneralValueType]].fail(
                         validation_result.error or "Schema validation failed",
                     )
 
@@ -61,21 +61,20 @@ class OICRecordProcessor:
                 "Successfully processed Singer record for stream: %s",
                 stream_name,
             )
-            return FlextResult[dict[str, object]].ok(processed_record)
+            return FlextResult[dict[str, t.GeneralValueType]].ok(processed_record)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception(
-                "Singer record processing failed for stream: %s",
-                stream_name,
+                f"Singer record processing failed for stream: {stream_name}",
             )
-            return FlextResult[dict[str, object]].fail(
+            return FlextResult[dict[str, t.GeneralValueType]].fail(
                 f"Record processing failed: {e}",
             )
 
     def _validate_against_schema(
         self,
-        record: dict[str, object],
-        schema: dict[str, object],
+        record: dict[str, t.GeneralValueType],
+        schema: dict[str, t.GeneralValueType],
     ) -> FlextResult[None]:
         """Validate record against Singer schema.
 
@@ -88,8 +87,8 @@ class OICRecordProcessor:
 
         """
         try:
-            properties: dict[str, object] = schema.get("properties", {})
-            required_fields: list[object] = schema.get("required", [])
+            properties: dict[str, t.GeneralValueType] = schema.get("properties", {})
+            required_fields: list[t.GeneralValueType] = schema.get("required", [])
 
             if not isinstance(properties, dict):
                 return FlextResult[None].fail("Schema properties must be a dictionary")
@@ -159,8 +158,8 @@ class OICRecordProcessor:
     def extract_stream_metadata(
         self,
         stream_name: str,
-        schema: dict[str, object] | None = None,
-    ) -> FlextResult[dict[str, object]]:
+        schema: dict[str, t.GeneralValueType] | None = None,
+    ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Extract metadata from stream definition.
 
         Args:
@@ -172,20 +171,22 @@ class OICRecordProcessor:
 
         """
         try:
-            metadata: dict[str, object] = {
+            metadata: dict[str, t.GeneralValueType] = {
                 "stream_name": "stream_name",
                 "schema_available": schema is not None,
             }
 
             if schema:
-                properties_raw: dict[str, object] = schema.get("properties", {})
-                properties: dict[str, object] = {}
+                properties_raw: dict[str, t.GeneralValueType] = schema.get(
+                    "properties", {}
+                )
+                properties: dict[str, t.GeneralValueType] = {}
                 if isinstance(properties_raw, dict):
                     properties = {
                         k: v for k, v in properties_raw.items() if isinstance(k, str)
                     }
                 len(properties)
-                required_fields: list[object] = schema.get("required", [])
+                required_fields: list[t.GeneralValueType] = schema.get("required", [])
                 required_fields = (
                     required_fields if isinstance(required_fields, list) else []
                 )
@@ -198,19 +199,19 @@ class OICRecordProcessor:
                     },
                 )
 
-            return FlextResult[dict[str, object]].ok(metadata)
+            return FlextResult[dict[str, t.GeneralValueType]].ok(metadata)
 
         except (RuntimeError, ValueError, TypeError) as e:
-            logger.exception("Stream metadata extraction failed for: %s", stream_name)
-            return FlextResult[dict[str, object]].fail(
+            logger.exception(f"Stream metadata extraction failed for: {stream_name}")
+            return FlextResult[dict[str, t.GeneralValueType]].fail(
                 f"Metadata extraction failed: {e}",
             )
 
     def prepare_batch_records(
         self,
-        records: list[dict[str, object]],
+        records: list[dict[str, t.GeneralValueType]],
         batch_size: int = 100,
-    ) -> FlextResult[list[list[dict[str, object]]]]:
+    ) -> FlextResult[list[list[dict[str, t.GeneralValueType]]]]:
         """Prepare records for batch processing.
 
         Args:
@@ -223,7 +224,7 @@ class OICRecordProcessor:
         """
         try:
             if not records:
-                return FlextResult[list[list[dict[str, object]]]].ok([])
+                return FlextResult[list[list[dict[str, t.GeneralValueType]]]].ok([])
 
             batches = []
             for i in range(0, len(records), batch_size):
@@ -235,10 +236,10 @@ class OICRecordProcessor:
                 len(batches),
                 len(records),
             )
-            return FlextResult[list[list[dict[str, object]]]].ok(batches)
+            return FlextResult[list[list[dict[str, t.GeneralValueType]]]].ok(batches)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Batch preparation failed")
-            return FlextResult[list[list[dict[str, object]]]].fail(
+            return FlextResult[list[list[dict[str, t.GeneralValueType]]]].fail(
                 f"Batch preparation failed: {e}",
             )

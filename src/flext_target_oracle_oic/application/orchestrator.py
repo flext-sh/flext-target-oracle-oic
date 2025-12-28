@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from typing import override
 
-from flext_core import FlextLogger, FlextResult
+from flext_core import FlextLogger, FlextResult, FlextTypes as t
 
 logger = FlextLogger(__name__)
 
@@ -18,7 +18,7 @@ class OICTargetOrchestrator:
     """Oracle OIC Target Orchestrator for FLEXT ecosystem integration."""
 
     @override
-    def __init__(self, config: dict[str, object] | None = None) -> None:
+    def __init__(self, config: dict[str, t.GeneralValueType] | None = None) -> None:
         """Initialize OIC target orchestrator.
 
         Args:
@@ -28,7 +28,7 @@ class OICTargetOrchestrator:
         object: Description of return value.
 
         """
-        self.config: dict[str, object] = config or {}
+        self.config: dict[str, t.GeneralValueType] = config or {}
         logger.debug("Initialized OIC target orchestrator")
 
     def validate_configuration(self: object) -> FlextResult[bool]:
@@ -79,8 +79,8 @@ class OICTargetOrchestrator:
 
     def orchestrate_target_pipeline(
         self,
-        records: list[dict[str, object]],
-    ) -> FlextResult[dict[str, object]]:
+        records: list[dict[str, t.GeneralValueType]],
+    ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Orchestrate OIC target pipeline execution.
 
         Args:
@@ -108,11 +108,11 @@ class OICTargetOrchestrator:
                 "OIC target pipeline completed: %d records processed",
                 processed_count,
             )
-            return FlextResult[dict[str, object]].ok(result)
+            return FlextResult[dict[str, t.GeneralValueType]].ok(result)
 
         except Exception as e:
             logger.exception("OIC target pipeline orchestration failed")
-            return FlextResult[dict[str, object]].fail(
+            return FlextResult[dict[str, t.GeneralValueType]].fail(
                 f"Pipeline orchestration failed: {e}",
             )
 

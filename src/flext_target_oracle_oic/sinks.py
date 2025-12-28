@@ -12,7 +12,7 @@ from typing import override
 
 from flext_api import FlextApiClient
 from flext_api.settings import FlextApiSettings
-from flext_core import FlextLogger, FlextResult
+from flext_core import FlextLogger, FlextResult, FlextTypes as t
 
 # Use FLEXT Meltano wrappers instead of direct singer_sdk imports (domain separation)
 from flext_meltano import FlextSink as Sink, FlextTarget as Target
@@ -34,7 +34,7 @@ class OICBaseSink(Sink):
         self,
         target: Target,
         stream_name: str,
-        schema: dict[str, object],
+        schema: dict[str, t.GeneralValueType],
         key_properties: Sequence[str] | None = None,
     ) -> None:
         """Initialize base sink with target and stream metadata."""
@@ -100,9 +100,9 @@ class OICBaseSink(Sink):
 
     def preprocess_record(
         self,
-        record: dict[str, object],
-        _context: dict[str, object] | None,
-    ) -> dict[str, object]:
+        record: dict[str, t.GeneralValueType],
+        _context: dict[str, t.GeneralValueType] | None,
+    ) -> dict[str, t.GeneralValueType]:
         """Preprocess record before batch processing.
 
         Args:
@@ -115,7 +115,7 @@ class OICBaseSink(Sink):
         """
         return record
 
-    def process_batch(self, context: dict[str, object]) -> None:
+    def process_batch(self, context: dict[str, t.GeneralValueType]) -> None:
         """Process batch of records to OIC API.
 
         Groups records by operation type and submits in batches
@@ -131,13 +131,13 @@ class OICBaseSink(Sink):
         if not context.get("records"):
             return
         records_obj = context["records"]
-        records: list[dict[str, object]] = (
+        records: list[dict[str, t.GeneralValueType]] = (
             records_obj if isinstance(records_obj, list) else []
         )
         batch_size = min(len(records), 100)  # OIC API batch limit
         # Group records by operation type for more efficient processing
-        create_records: list[dict[str, object]] = []
-        update_records: list[dict[str, object]] = []
+        create_records: list[dict[str, t.GeneralValueType]] = []
+        update_records: list[dict[str, t.GeneralValueType]] = []
         for record in records:
             if self._record_exists(record):
                 update_records.append(record)
@@ -154,14 +154,14 @@ class OICBaseSink(Sink):
                 batch = update_records[i : i + batch_size]
                 self._process_update_batch(batch, context)
 
-    def _record_exists(self, _record: dict[str, object]) -> bool:
+    def _record_exists(self, _record: dict[str, t.GeneralValueType]) -> bool:
         # Default implementation - subclasses should override
         return False
 
     def _process_create_batch(
         self,
-        records: list[dict[str, object]],
-        context: dict[str, object],
+        records: list[dict[str, t.GeneralValueType]],
+        context: dict[str, t.GeneralValueType],
     ) -> None:
         # Default implementation processes records individually
         # Subclasses should override for true batch operations
@@ -170,8 +170,8 @@ class OICBaseSink(Sink):
 
     def _process_update_batch(
         self,
-        records: list[dict[str, object]],
-        context: dict[str, object],
+        records: list[dict[str, t.GeneralValueType]],
+        context: dict[str, t.GeneralValueType],
     ) -> None:
         # Default implementation processes records individually
         # Subclasses should override for true batch operations
@@ -180,8 +180,8 @@ class OICBaseSink(Sink):
 
     def process_record(
         self,
-        _record: dict[str, object],
-        _context: dict[str, object],
+        _record: dict[str, t.GeneralValueType],
+        _context: dict[str, t.GeneralValueType],
     ) -> None:
         """Process a single record - default implementation for base sink."""
         # Default implementation: log and skip
@@ -200,8 +200,8 @@ class ConnectionsSink(OICBaseSink):
 
     def process_record(
         self,
-        record: dict[str, object],
-        _context: dict[str, object],
+        record: dict[str, t.GeneralValueType],
+        _context: dict[str, t.GeneralValueType],
     ) -> None:
         """Process a connection record.
 
@@ -224,7 +224,7 @@ class ConnectionsSink(OICBaseSink):
             # Update existing connection
             self._update_connection(connection_id, record)
 
-    def _create_connection(self, record: dict[str, object]) -> None:
+    def _create_connection(self, record: dict[str, t.GeneralValueType]) -> None:
         payload = {
             "connectionProperties": {
                 "name": record["name"],
@@ -243,7 +243,7 @@ class ConnectionsSink(OICBaseSink):
     def _update_connection(
         self,
         connection_id: str,
-        record: dict[str, object],
+        record: dict[str, t.GeneralValueType],
     ) -> None:
         payload = {
             "connectionProperties": {
@@ -265,8 +265,8 @@ class IntegrationsSink(OICBaseSink):
 
     def process_record(
         self,
-        record: dict[str, object],
-        _context: dict[str, object],
+        record: dict[str, t.GeneralValueType],
+        _context: dict[str, t.GeneralValueType],
     ) -> None:
         """Process an integration record.
 
@@ -293,7 +293,7 @@ class IntegrationsSink(OICBaseSink):
             # Update existing integration
             self._update_integration(integration_id, version, record)
 
-    def _create_integration(self, record: dict[str, object]) -> None:
+    def _create_integration(self, record: dict[str, t.GeneralValueType]) -> None:
         payload = {
             "name": record["name"],
             "identifier": record["id"],
@@ -306,7 +306,7 @@ class IntegrationsSink(OICBaseSink):
         )
         response.raise_for_status()
 
-    def _import_integration(self, record: dict[str, object]) -> None:
+    def _import_integration(self, record: dict[str, t.GeneralValueType]) -> None:
         archive_content = record.get("archive_content")
         if isinstance(archive_content, str):
             archive_content = archive_content.encode()
@@ -332,7 +332,7 @@ class IntegrationsSink(OICBaseSink):
         self,
         integration_id: str,
         version: str,
-        record: dict[str, object],
+        record: dict[str, t.GeneralValueType],
     ) -> None:
         payload = {
             "description": record.get("description", ""),
@@ -351,8 +351,8 @@ class PackagesSink(OICBaseSink):
 
     def process_record(
         self,
-        record: dict[str, object],
-        _context: dict[str, object],
+        record: dict[str, t.GeneralValueType],
+        _context: dict[str, t.GeneralValueType],
     ) -> None:
         """Process a package record.
 
@@ -375,7 +375,7 @@ class PackagesSink(OICBaseSink):
                 package_id,
             )
 
-    def _import_package(self, record: dict[str, object]) -> None:
+    def _import_package(self, record: dict[str, t.GeneralValueType]) -> None:
         archive_content = record.get("archive_content")
         if isinstance(archive_content, str):
             archive_content = archive_content.encode()
@@ -405,8 +405,8 @@ class LookupsSink(OICBaseSink):
 
     def process_record(
         self,
-        record: dict[str, object],
-        _context: dict[str, object],
+        record: dict[str, t.GeneralValueType],
+        _context: dict[str, t.GeneralValueType],
     ) -> None:
         """Process a lookup record.
 
@@ -427,7 +427,7 @@ class LookupsSink(OICBaseSink):
             # Update existing lookup
             self._update_lookup(lookup_name, record)
 
-    def _create_lookup(self, record: dict[str, object]) -> None:
+    def _create_lookup(self, record: dict[str, t.GeneralValueType]) -> None:
         payload = {
             "name": record["name"],
             "description": record.get("description", ""),
@@ -440,7 +440,9 @@ class LookupsSink(OICBaseSink):
         )
         response.raise_for_status()
 
-    def _update_lookup(self, lookup_name: str, record: dict[str, object]) -> None:
+    def _update_lookup(
+        self, lookup_name: str, record: dict[str, t.GeneralValueType]
+    ) -> None:
         payload = {
             "description": record.get("description", ""),
             "rows": record.get("rows", []),

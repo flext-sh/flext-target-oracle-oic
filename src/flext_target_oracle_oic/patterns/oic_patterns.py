@@ -10,7 +10,7 @@ from __future__ import annotations
 import json
 from typing import override
 
-from flext_core import FlextLogger, FlextResult
+from flext_core import FlextLogger, FlextResult, FlextTypes as t
 
 logger = FlextLogger(__name__)
 
@@ -73,21 +73,25 @@ class OICDataTransformer:
 
     def transform_record(
         self,
-        record: dict[str, object],
-        schema: dict[str, object] | None = None,
-    ) -> FlextResult[dict[str, object]]:
+        record: dict[str, t.GeneralValueType],
+        schema: dict[str, t.GeneralValueType] | None = None,
+    ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Transform Singer record for OIC storage."""
         try:
-            transformed: dict[str, object] = {}
+            transformed: dict[str, t.GeneralValueType] = {}
 
             for key, value in record.items():
                 # OIC-specific attribute naming (camelCase convention)
                 oic_key = self._normalize_oic_attribute_name(key)
 
                 if schema and isinstance(schema, dict):
-                    properties: dict[str, object] = schema.get("properties", {})
+                    properties: dict[str, t.GeneralValueType] = schema.get(
+                        "properties", {}
+                    )
                     if isinstance(properties, dict):
-                        prop_def: dict[str, object] = properties.get(key, {})
+                        prop_def: dict[str, t.GeneralValueType] = properties.get(
+                            key, {}
+                        )
                     singer_type = prop_def.get("type", "string")
 
                     convert_result = self.type_converter.convert_singer_to_oic(
@@ -101,11 +105,11 @@ class OICDataTransformer:
                 else:
                     transformed[oic_key] = value
 
-            return FlextResult[dict[str, object]].ok(transformed)
+            return FlextResult[dict[str, t.GeneralValueType]].ok(transformed)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("OIC record transformation failed")
-            return FlextResult[dict[str, object]].fail(
+            return FlextResult[dict[str, t.GeneralValueType]].fail(
                 f"Record transformation failed: {e}",
             )
 
@@ -124,12 +128,12 @@ class OICDataTransformer:
 
     def prepare_oic_payload(
         self,
-        _record: dict[str, object],
+        _record: dict[str, t.GeneralValueType],
         _resource_type: str,
-    ) -> FlextResult[dict[str, object]]:
+    ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Prepare payload for OIC API calls."""
         try:
-            payload: dict[str, object] = {
+            payload: dict[str, t.GeneralValueType] = {
                 "resourceType": _resource_type,
                 "properties": _record,
                 "metadata": {
@@ -138,11 +142,11 @@ class OICDataTransformer:
                 },
             }
 
-            return FlextResult[dict[str, object]].ok(payload)
+            return FlextResult[dict[str, t.GeneralValueType]].ok(payload)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("OIC payload preparation failed")
-            return FlextResult[dict[str, object]].fail(
+            return FlextResult[dict[str, t.GeneralValueType]].fail(
                 f"Payload preparation failed: {e}",
             )
 
@@ -156,20 +160,20 @@ class OICSchemaMapper:
 
     def map_singer_schema_to_oic(
         self,
-        schema: dict[str, object],
+        schema: dict[str, t.GeneralValueType],
         resource_type: str = "integration",
     ) -> FlextResult[dict[str, str]]:
         """Map Singer schema to OIC resource definitions."""
         try:
             oic_schema: dict[str, str] = {}
-            properties: dict[str, object] = schema.get("properties", {})
+            properties: dict[str, t.GeneralValueType] = schema.get("properties", {})
 
             if isinstance(properties, dict):
                 for prop_name, prop_def in properties.items():
                     if not isinstance(prop_name, str) or not isinstance(prop_def, dict):
                         continue
-                    # Ensure prop_def is properly typed as dict[str, object]
-                    typed_prop_def: dict[str, object] = prop_def
+                    # Ensure prop_def is properly typed as dict[str, t.GeneralValueType]
+                    typed_prop_def: dict[str, t.GeneralValueType] = prop_def
                     oic_name = self._normalize_attribute_name(prop_name)
                     oic_type_result = self._map_singer_type_to_oic(
                         typed_prop_def,
@@ -209,7 +213,7 @@ class OICSchemaMapper:
 
     def _map_singer_type_to_oic(
         self,
-        prop_def: dict[str, object],
+        prop_def: dict[str, t.GeneralValueType],
         _resource_type: str,
     ) -> FlextResult[str]:
         """Map Singer property definition to OIC resource type."""
@@ -241,9 +245,9 @@ class OICEntryManager:
 
     def prepare_integration_entry(
         self,
-        record: dict[str, object],
+        record: dict[str, t.GeneralValueType],
         integration_name: str,
-    ) -> FlextResult[dict[str, object]]:
+    ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Prepare integration entry for OIC."""
         try:
             entry = {
@@ -258,19 +262,19 @@ class OICEntryManager:
                 "properties": "record",
             }
 
-            return FlextResult[dict[str, object]].ok(entry)
+            return FlextResult[dict[str, t.GeneralValueType]].ok(entry)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Integration entry preparation failed")
-            return FlextResult[dict[str, object]].fail(
+            return FlextResult[dict[str, t.GeneralValueType]].fail(
                 f"Integration entry preparation failed: {e}",
             )
 
     def prepare_connection_entry(
         self,
-        record: dict[str, object],
+        record: dict[str, t.GeneralValueType],
         connection_name: str,
-    ) -> FlextResult[dict[str, object]]:
+    ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Prepare connection entry for OIC."""
         try:
             entry = {
@@ -281,19 +285,19 @@ class OICEntryManager:
                 "connectionProperties": "record",
             }
 
-            return FlextResult[dict[str, object]].ok(entry)
+            return FlextResult[dict[str, t.GeneralValueType]].ok(entry)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Connection entry preparation failed")
-            return FlextResult[dict[str, object]].fail(
+            return FlextResult[dict[str, t.GeneralValueType]].fail(
                 f"Connection entry preparation failed: {e}",
             )
 
     def prepare_package_entry(
         self,
-        record: dict[str, object],
+        record: dict[str, t.GeneralValueType],
         package_name: str,
-    ) -> FlextResult[dict[str, object]]:
+    ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Prepare package entry for OIC."""
         try:
             entry = {
@@ -304,19 +308,19 @@ class OICEntryManager:
                 "contents": "record",
             }
 
-            return FlextResult[dict[str, object]].ok(entry)
+            return FlextResult[dict[str, t.GeneralValueType]].ok(entry)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Package entry preparation failed")
-            return FlextResult[dict[str, object]].fail(
+            return FlextResult[dict[str, t.GeneralValueType]].fail(
                 f"Package entry preparation failed: {e}",
             )
 
     def prepare_lookup_entry(
         self,
-        record: dict[str, object],
+        record: dict[str, t.GeneralValueType],
         lookup_name: str,
-    ) -> FlextResult[dict[str, object]]:
+    ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Prepare lookup entry for OIC."""
         try:
             entry = {
@@ -326,17 +330,17 @@ class OICEntryManager:
                 "lookupData": "record",
             }
 
-            return FlextResult[dict[str, object]].ok(entry)
+            return FlextResult[dict[str, t.GeneralValueType]].ok(entry)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Lookup entry preparation failed")
-            return FlextResult[dict[str, object]].fail(
+            return FlextResult[dict[str, t.GeneralValueType]].fail(
                 f"Lookup entry preparation failed: {e}",
             )
 
     def validate_entry_structure(
         self,
-        entry: dict[str, object],
+        entry: dict[str, t.GeneralValueType],
         entry_type: str,
     ) -> FlextResult[bool]:
         """Validate OIC entry structure."""
@@ -348,7 +352,7 @@ class OICEntryManager:
                 "lookup": ["name", "lookupType"],
             }
 
-            required: list[object] = required_fields.get(entry_type, [])
+            required: list[t.GeneralValueType] = required_fields.get(entry_type, [])
             missing_fields = [field for field in required if field not in entry]
 
             if missing_fields:

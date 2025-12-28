@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from typing import Literal
 
-from flext_core import FlextTypes
+from flext_core import FlextTypes as _t
 
 # =============================================================================
 # TARGET ORACLE OIC-SPECIFIC TYPE VARIABLES - Domain-specific TypeVars for Singer Oracle OIC target operations
@@ -24,7 +24,7 @@ from flext_core import FlextTypes
 
 
 # Singer Oracle OIC target domain TypeVars
-class FlextTargetOracleOicTypes(FlextTypes):
+class FlextTargetOracleOicTypes(_t):
     """Singer Oracle OIC target-specific type definitions extending t.
 
     Domain-specific type system for Singer Oracle OIC target operations.
@@ -39,15 +39,17 @@ class FlextTargetOracleOicTypes(FlextTypes):
     class SingerTarget:
         """Singer target protocol complex types."""
 
-        type TargetConfiguration = dict[str, str | int | bool | dict[str, object]]
+        type TargetConfiguration = dict[
+            str, str | int | bool | dict[str, _t.Types.GeneralValueType]
+        ]
         type StreamConfiguration = dict[
             str,
-            str | bool | dict[str, FlextTypes.JsonValue],
+            str | bool | dict[str, _t.Types.JsonValue],
         ]
-        type MessageProcessing = dict[str, str | list[dict[str, FlextTypes.JsonValue]]]
-        type RecordHandling = dict[str, str | dict[str, FlextTypes.JsonValue] | bool]
-        type StateManagement = dict[str, str | dict[str, FlextTypes.JsonValue]]
-        type BatchProcessing = dict[str, str | int | dict[str, FlextTypes.JsonValue]]
+        type MessageProcessing = dict[str, str | list[dict[str, _t.Types.JsonValue]]]
+        type RecordHandling = dict[str, str | dict[str, _t.Types.JsonValue] | bool]
+        type StateManagement = dict[str, str | dict[str, _t.Types.JsonValue]]
+        type BatchProcessing = dict[str, str | int | dict[str, _t.Types.JsonValue]]
 
     # =========================================================================
     # ORACLE OIC INTEGRATION TYPES - Complex Oracle OIC integration types
@@ -56,15 +58,19 @@ class FlextTargetOracleOicTypes(FlextTypes):
     class OicIntegration:
         """Oracle OIC integration complex types."""
 
-        type IntegrationConfiguration = dict[str, str | int | bool | dict[str, object]]
+        type IntegrationConfiguration = dict[
+            str, str | int | bool | dict[str, _t.Types.GeneralValueType]
+        ]
         type IntegrationDefinition = dict[
             str,
-            str | list[str] | dict[str, FlextTypes.JsonValue],
+            str | list[str] | dict[str, _t.Types.JsonValue],
         ]
-        type IntegrationFlow = dict[str, str | dict[str, FlextTypes.JsonValue]]
-        type IntegrationMapping = dict[str, str | dict[str, object]]
-        type IntegrationMetadata = dict[str, str | dict[str, FlextTypes.JsonValue]]
-        type IntegrationStatus = dict[str, str | bool | dict[str, object]]
+        type IntegrationFlow = dict[str, str | dict[str, _t.Types.JsonValue]]
+        type IntegrationMapping = dict[str, str | dict[str, _t.Types.GeneralValueType]]
+        type IntegrationMetadata = dict[str, str | dict[str, _t.Types.JsonValue]]
+        type IntegrationStatus = dict[
+            str, str | bool | dict[str, _t.Types.GeneralValueType]
+        ]
 
     # =========================================================================
     # OIC CONNECTION TYPES - Complex Oracle OIC connection types
@@ -73,12 +79,20 @@ class FlextTargetOracleOicTypes(FlextTypes):
     class OicConnection:
         """Oracle OIC connection complex types."""
 
-        type ConnectionConfiguration = dict[str, str | int | bool | dict[str, object]]
-        type ConnectionCredentials = dict[str, str | dict[str, FlextTypes.JsonValue]]
-        type ConnectionSecurity = dict[str, str | bool | dict[str, object]]
-        type ConnectionValidation = dict[str, bool | str | dict[str, object]]
-        type ConnectionMetadata = dict[str, str | dict[str, FlextTypes.JsonValue]]
-        type ConnectionPool = dict[str, int | bool | dict[str, object]]
+        type ConnectionConfiguration = dict[
+            str, str | int | bool | dict[str, _t.Types.GeneralValueType]
+        ]
+        type ConnectionCredentials = dict[str, str | dict[str, _t.Types.JsonValue]]
+        type ConnectionSecurity = dict[
+            str, str | bool | dict[str, _t.Types.GeneralValueType]
+        ]
+        type ConnectionValidation = dict[
+            str, bool | str | dict[str, _t.Types.GeneralValueType]
+        ]
+        type ConnectionMetadata = dict[str, str | dict[str, _t.Types.JsonValue]]
+        type ConnectionPool = dict[
+            str, int | bool | dict[str, _t.Types.GeneralValueType]
+        ]
 
     # =========================================================================
     # OIC AUTHENTICATION TYPES - Complex OAuth2/IDCS authentication types
@@ -87,12 +101,20 @@ class FlextTargetOracleOicTypes(FlextTypes):
     class OicAuthentication:
         """Oracle OIC authentication complex types."""
 
-        type OAuth2Configuration = dict[str, str | int | dict[str, object]]
-        type IdcsConfiguration = dict[str, str | bool | dict[str, FlextTypes.JsonValue]]
-        type TokenManagement = dict[str, str | int | dict[str, object]]
-        type AuthenticationFlow = dict[str, str | dict[str, FlextTypes.JsonValue]]
-        type SecuritySettings = dict[str, bool | str | dict[str, object]]
-        type AuthenticationCache = dict[str, str | int | dict[str, object]]
+        type OAuth2Configuration = dict[
+            str, str | int | dict[str, _t.Types.GeneralValueType]
+        ]
+        type IdcsConfiguration = dict[str, str | bool | dict[str, _t.Types.JsonValue]]
+        type TokenManagement = dict[
+            str, str | int | dict[str, _t.Types.GeneralValueType]
+        ]
+        type AuthenticationFlow = dict[str, str | dict[str, _t.Types.JsonValue]]
+        type SecuritySettings = dict[
+            str, bool | str | dict[str, _t.Types.GeneralValueType]
+        ]
+        type AuthenticationCache = dict[
+            str, str | int | dict[str, _t.Types.GeneralValueType]
+        ]
 
     # =========================================================================
     # OIC DEPLOYMENT TYPES - Complex Oracle OIC deployment types
@@ -101,12 +123,18 @@ class FlextTargetOracleOicTypes(FlextTypes):
     class OicDeployment:
         """Oracle OIC deployment complex types."""
 
-        type DeploymentConfiguration = dict[str, str | bool | dict[str, object]]
-        type ArtifactManagement = dict[str, str | dict[str, FlextTypes.JsonValue]]
-        type DeploymentValidation = dict[str, bool | str | dict[str, object]]
-        type PackageDeployment = dict[str, str | dict[str, FlextTypes.JsonValue]]
-        type DeploymentStatus = dict[str, str | bool | dict[str, object]]
-        type RollbackStrategy = dict[str, str | dict[str, object]]
+        type DeploymentConfiguration = dict[
+            str, str | bool | dict[str, _t.Types.GeneralValueType]
+        ]
+        type ArtifactManagement = dict[str, str | dict[str, _t.Types.JsonValue]]
+        type DeploymentValidation = dict[
+            str, bool | str | dict[str, _t.Types.GeneralValueType]
+        ]
+        type PackageDeployment = dict[str, str | dict[str, _t.Types.JsonValue]]
+        type DeploymentStatus = dict[
+            str, str | bool | dict[str, _t.Types.GeneralValueType]
+        ]
+        type RollbackStrategy = dict[str, str | dict[str, _t.Types.GeneralValueType]]
 
     # =========================================================================
     # DATA TRANSFORMATION TYPES - Complex data transformation types
@@ -115,12 +143,18 @@ class FlextTargetOracleOicTypes(FlextTypes):
     class DataTransformation:
         """Data transformation complex types."""
 
-        type TransformationConfiguration = dict[str, str | bool | dict[str, object]]
-        type FieldMapping = dict[str, str | list[str] | dict[str, object]]
-        type DataValidation = dict[str, str | dict[str, FlextTypes.JsonValue]]
-        type TypeConversion = dict[str, bool | str | dict[str, object]]
-        type FilteringRules = dict[str, str | dict[str, FlextTypes.JsonValue]]
-        type TransformationResult = dict[str, dict[str, FlextTypes.JsonValue]]
+        type TransformationConfiguration = dict[
+            str, str | bool | dict[str, _t.Types.GeneralValueType]
+        ]
+        type FieldMapping = dict[
+            str, str | list[str] | dict[str, _t.Types.GeneralValueType]
+        ]
+        type DataValidation = dict[str, str | dict[str, _t.Types.JsonValue]]
+        type TypeConversion = dict[
+            str, bool | str | dict[str, _t.Types.GeneralValueType]
+        ]
+        type FilteringRules = dict[str, str | dict[str, _t.Types.JsonValue]]
+        type TransformationResult = dict[str, dict[str, _t.Types.JsonValue]]
 
     # =========================================================================
     # STREAM PROCESSING TYPES - Complex stream handling types
@@ -129,12 +163,18 @@ class FlextTargetOracleOicTypes(FlextTypes):
     class StreamProcessing:
         """Stream processing complex types."""
 
-        type StreamConfiguration = dict[str, str | bool | int | dict[str, object]]
-        type StreamMetadata = dict[str, str | dict[str, FlextTypes.JsonValue]]
-        type StreamRecord = dict[str, FlextTypes.JsonValue | dict[str, object]]
-        type StreamState = dict[str, str | int | dict[str, FlextTypes.JsonValue]]
-        type StreamBookmark = dict[str, str | int | dict[str, object]]
-        type StreamSchema = dict[str, str | dict[str, FlextTypes.JsonValue] | bool]
+        type StreamConfiguration = dict[
+            str, str | bool | int | dict[str, _t.Types.GeneralValueType]
+        ]
+        type StreamMetadata = dict[str, str | dict[str, _t.Types.JsonValue]]
+        type StreamRecord = dict[
+            str, _t.Types.JsonValue | dict[str, _t.Types.GeneralValueType]
+        ]
+        type StreamState = dict[str, str | int | dict[str, _t.Types.JsonValue]]
+        type StreamBookmark = dict[
+            str, str | int | dict[str, _t.Types.GeneralValueType]
+        ]
+        type StreamSchema = dict[str, str | dict[str, _t.Types.JsonValue] | bool]
 
     # =========================================================================
     # ERROR HANDLING TYPES - Complex error management types
@@ -143,14 +183,18 @@ class FlextTargetOracleOicTypes(FlextTypes):
     class ErrorHandling:
         """Error handling complex types."""
 
-        type ErrorConfiguration = dict[str, bool | str | int | dict[str, object]]
-        type ErrorRecovery = dict[str, str | bool | dict[str, object]]
-        type ErrorReporting = dict[str, str | int | dict[str, FlextTypes.JsonValue]]
-        type ErrorClassification = dict[str, str | int | dict[str, object]]
-        type ErrorMetrics = dict[str, int | float | dict[str, FlextTypes.JsonValue]]
-        type ErrorTracking = list[
-            dict[str, str | int | dict[str, FlextTypes.JsonValue]]
+        type ErrorConfiguration = dict[
+            str, bool | str | int | dict[str, _t.Types.GeneralValueType]
         ]
+        type ErrorRecovery = dict[
+            str, str | bool | dict[str, _t.Types.GeneralValueType]
+        ]
+        type ErrorReporting = dict[str, str | int | dict[str, _t.Types.JsonValue]]
+        type ErrorClassification = dict[
+            str, str | int | dict[str, _t.Types.GeneralValueType]
+        ]
+        type ErrorMetrics = dict[str, int | float | dict[str, _t.Types.JsonValue]]
+        type ErrorTracking = list[dict[str, str | int | dict[str, _t.Types.JsonValue]]]
 
     # =========================================================================
     # SINGER TARGET ORACLE OIC PROJECT TYPES - Domain-specific project types extending t
@@ -190,10 +234,12 @@ class FlextTargetOracleOicTypes(FlextTypes):
         ]
 
         # Singer target Oracle OIC-specific project configurations
-        type SingerTargetOracleOicProjectConfig = dict[str, object]
+        type SingerTargetOracleOicProjectConfig = dict[str, _t.Types.GeneralValueType]
         type OicLoaderConfig = dict[str, str | int | bool | list[str]]
-        type SingerProtocolConfig = dict[str, bool | str | dict[str, object]]
-        type TargetOracleOicPipelineConfig = dict[str, object]
+        type SingerProtocolConfig = dict[
+            str, bool | str | dict[str, _t.Types.GeneralValueType]
+        ]
+        type TargetOracleOicPipelineConfig = dict[str, _t.Types.GeneralValueType]
 
     class TargetOracleOic:
         """Target Oracle OIC types namespace for cross-project access.

@@ -208,7 +208,7 @@ def validate_oic_target_config(config: TargetOracleOicConfig) -> FlextResult[Non
     return config.validate_business_rules()
 
 
-def get_oic_target_config_schema() -> dict[str, object]:
+def get_oic_target_config_schema() -> dict[str, t.GeneralValueType]:
     """Get JSON schema for Oracle Integration Cloud target configuration.
 
     Returns:

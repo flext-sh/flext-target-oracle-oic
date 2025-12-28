@@ -235,7 +235,7 @@ class TargetOracleOicConfig(FlextSettings):
     )
 
     # Additional configuration fields
-    transformation_rules: list[dict[str, object]] = Field(
+    transformation_rules: list[dict[str, t.GeneralValueType]] = Field(
         default_factory=list,
         description="Custom transformation rules",
     )
