@@ -10,7 +10,7 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import ClassVar, override
 
-from flext_core import FlextResult
+from flext_core import FlextResult, FlextTypes as t
 
 # Use FLEXT Meltano wrappers instead of direct singer_sdk imports (domain separation)
 from flext_meltano import FlextSink as Sink, FlextTarget as Target, typing as th
@@ -86,7 +86,7 @@ class TargetOracleOic(Target):
     def __init__(
         self,
         *,
-        config: dict[str, object] | None = None,
+        config: dict[str, t.GeneralValueType] | None = None,
         parse_env_config: bool = False,
         validate_config: bool = True,
         **_kwargs: object,
@@ -105,7 +105,7 @@ class TargetOracleOic(Target):
         """Set up the target orchestrator."""
         if self._orchestrator is None:
             self._orchestrator = OICTargetOrchestrator(
-                dict[str, object](self.config) if self.config else None,
+                dict[str, t.GeneralValueType](self.config) if self.config else None,
             )
             setup_result: FlextResult[object] = self._orchestrator.setup()
             if not setup_result.success:
@@ -122,7 +122,9 @@ class TargetOracleOic(Target):
                 )
             self._orchestrator = None
 
-    def _process_schema_message(self, message_dict: dict[str, object]) -> None:
+    def _process_schema_message(
+        self, message_dict: dict[str, t.GeneralValueType]
+    ) -> None:
         """Process a schema message by creating and registering the appropriate sink.
 
         Args:
@@ -137,8 +139,10 @@ class TargetOracleOic(Target):
         schema_obj = message_dict["schema"]
         if not isinstance(schema_obj, dict):
             return
-        schema: dict[str, object] = schema_obj
-        key_properties_obj: list[object] = message_dict.get("key_properties", [])
+        schema: dict[str, t.GeneralValueType] = schema_obj
+        key_properties_obj: list[t.GeneralValueType] = message_dict.get(
+            "key_properties", []
+        )
         key_properties: Sequence[str] | None = (
             key_properties_obj if isinstance(key_properties_obj, list) else None
         )
@@ -150,9 +154,9 @@ class TargetOracleOic(Target):
         self,
         stream_name: str,
         *,
-        record: dict[str, object]
+        record: dict[str, t.GeneralValueType]
         | None = None,  # kept for interface compatibility, not used
-        schema: dict[str, object] | None = None,
+        schema: dict[str, t.GeneralValueType] | None = None,
         key_properties: Sequence[str] | None = None,
     ) -> Sink:
         """Get appropriate sink for the given stream.

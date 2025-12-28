@@ -18,6 +18,7 @@ from flext_core import (
     FlextConstants,
     FlextModels,
     FlextResult,
+    FlextTypes as t,
 )
 from flext_core.utilities import u
 from pydantic import ConfigDict, Field, SecretStr
@@ -146,7 +147,7 @@ class FlextTargetOracleOicModels(FlextModels):
             description="Connection adapter type",
             min_length=1,
         )
-        properties: dict[str, object] = Field(
+        properties: dict[str, t.GeneralValueType] = Field(
             default_factory=dict,
             description="Connection properties",
         )
@@ -265,11 +266,11 @@ class FlextTargetOracleOicModels(FlextModels):
 
         name: str = Field(..., description="Lookup name (identifier)", min_length=1)
         description: str = Field(default="", description="Lookup description")
-        columns: list[dict[str, object]] = Field(
+        columns: list[dict[str, t.GeneralValueType]] = Field(
             default_factory=list,
             description="Lookup column definitions",
         )
-        rows: list[dict[str, object]] = Field(
+        rows: list[dict[str, t.GeneralValueType]] = Field(
             default_factory=list,
             description="Lookup row data",
         )
@@ -311,7 +312,7 @@ class FlextTargetOracleOicModels(FlextModels):
 
         name: str = Field(..., description="Project display name", min_length=1)
         description: str = Field(default="", description="Project description")
-        folders: list[dict[str, object]] = Field(
+        folders: list[dict[str, t.GeneralValueType]] = Field(
             default_factory=list,
             description="Project folders",
         )
@@ -381,7 +382,7 @@ class FlextTargetOracleOicModels(FlextModels):
             ...,
             description="Action to perform",
         )
-        parameters: dict[str, object] = Field(
+        parameters: dict[str, t.GeneralValueType] = Field(
             default_factory=dict,
             description="Action parameters",
         )
@@ -422,7 +423,7 @@ class FlextTargetOracleOicModels(FlextModels):
             ...,
             description="Action to perform",
         )
-        parameters: dict[str, object] = Field(
+        parameters: dict[str, t.GeneralValueType] = Field(
             default_factory=dict,
             description="Action parameters",
         )
@@ -447,16 +448,18 @@ class FlextTargetOracleOicModels(FlextModels):
     class OicDataTransformation(FlextModels.Entity):
         """Data transformation model for OIC records."""
 
-        source_data: dict[str, object] = Field(
+        source_data: dict[str, t.GeneralValueType] = Field(
             ...,
             description="Source data to transform",
         )
-        target_schema: dict[str, object] = Field(..., description="Target OIC schema")
-        transformation_rules: list[dict[str, object]] = Field(
+        target_schema: dict[str, t.GeneralValueType] = Field(
+            ..., description="Target OIC schema"
+        )
+        transformation_rules: list[dict[str, t.GeneralValueType]] = Field(
             default_factory=list,
             description="Transformation rules to apply",
         )
-        transformed_data: dict[str, object] = Field(
+        transformed_data: dict[str, t.GeneralValueType] = Field(
             default_factory=dict,
             description="Transformed data result",
         )
@@ -475,11 +478,13 @@ class FlextTargetOracleOicModels(FlextModels):
     class OicSchemaMapping(FlextModels.Entity):
         """Schema mapping model for Singer to OIC transformation."""
 
-        singer_schema: dict[str, object] = Field(
+        singer_schema: dict[str, t.GeneralValueType] = Field(
             ...,
             description="Singer schema definition",
         )
-        oic_schema: dict[str, object] = Field(..., description="OIC schema definition")
+        oic_schema: dict[str, t.GeneralValueType] = Field(
+            ..., description="OIC schema definition"
+        )
         field_mappings: dict[str, str] = Field(
             default_factory=dict,
             description="Field mappings from Singer to OIC",
@@ -724,11 +729,11 @@ class FlextTargetOracleOicUtilities(u):
 
         @staticmethod
         def validate_oauth2_config(
-            config: dict[str, object],
-        ) -> FlextResult[dict[str, object]]:
+            config: dict[str, t.GeneralValueType],
+        ) -> FlextResult[dict[str, t.GeneralValueType]]:
             """Validate OAuth2 configuration for Oracle OIC connectivity."""
             if not config:
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[dict[str, t.GeneralValueType]].fail(
                     "OAuth2 configuration cannot be empty",
                 )
 
@@ -741,7 +746,7 @@ class FlextTargetOracleOicUtilities(u):
             ]
             missing_fields = [field for field in required_fields if field not in config]
             if missing_fields:
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[dict[str, t.GeneralValueType]].fail(
                     f"Missing OAuth2 fields: {missing_fields}",
                 )
 
@@ -749,11 +754,11 @@ class FlextTargetOracleOicUtilities(u):
             url_fields = ["base_url", "oauth_token_url"]
             for field in url_fields:
                 if not config[field].startswith(("http://", "https://")):
-                    return FlextResult[dict[str, object]].fail(
+                    return FlextResult[dict[str, t.GeneralValueType]].fail(
                         f"Invalid URL format for {field}",
                     )
 
-            return FlextResult[dict[str, object]].ok(config)
+            return FlextResult[dict[str, t.GeneralValueType]].ok(config)
 
         @staticmethod
         def create_oauth2_token_request(
@@ -761,10 +766,10 @@ class FlextTargetOracleOicUtilities(u):
             client_secret: str,
             token_url: str,
             audience: str,
-        ) -> FlextResult[dict[str, object]]:
+        ) -> FlextResult[dict[str, t.GeneralValueType]]:
             """Create OAuth2 token request payload for Oracle IDCS."""
             if not all([client_id, client_secret, token_url, audience]):
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[dict[str, t.GeneralValueType]].fail(
                     "All OAuth2 parameters are required",
                 )
 
@@ -775,15 +780,15 @@ class FlextTargetOracleOicUtilities(u):
                 "scope": f"{audience}:read {audience}:write",
             }
 
-            return FlextResult[dict[str, object]].ok(token_request)
+            return FlextResult[dict[str, t.GeneralValueType]].ok(token_request)
 
         @staticmethod
         def validate_oauth2_token_response(
-            response: dict[str, object],
-        ) -> FlextResult[dict[str, object]]:
+            response: dict[str, t.GeneralValueType],
+        ) -> FlextResult[dict[str, t.GeneralValueType]]:
             """Validate OAuth2 token response from Oracle IDCS."""
             if not response:
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[dict[str, t.GeneralValueType]].fail(
                     "OAuth2 token response cannot be empty",
                 )
 
@@ -792,12 +797,12 @@ class FlextTargetOracleOicUtilities(u):
                 field for field in required_fields if field not in response
             ]
             if missing_fields:
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[dict[str, t.GeneralValueType]].fail(
                     f"Missing token response fields: {missing_fields}",
                 )
 
             if response["token_type"].lower() != "bearer":
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[dict[str, t.GeneralValueType]].fail(
                     "Invalid token type, expected 'bearer'",
                 )
 
@@ -805,11 +810,11 @@ class FlextTargetOracleOicUtilities(u):
                 not isinstance(response["expires_in"], int)
                 or response["expires_in"] <= 0
             ):
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[dict[str, t.GeneralValueType]].fail(
                     "Invalid token expiration time",
                 )
 
-            return FlextResult[dict[str, object]].ok(response)
+            return FlextResult[dict[str, t.GeneralValueType]].ok(response)
 
     class _OicIntegrationHelper:
         """Helper for Oracle OIC integration management operations."""
@@ -817,22 +822,22 @@ class FlextTargetOracleOicUtilities(u):
         @staticmethod
         def validate_integration_package(
             package_data: bytes,
-        ) -> FlextResult[dict[str, object]]:
+        ) -> FlextResult[dict[str, t.GeneralValueType]]:
             """Validate Oracle OIC integration package (.iar file)."""
             if not package_data:
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[dict[str, t.GeneralValueType]].fail(
                     "Integration package data cannot be empty",
                 )
 
             # Check minimum package size (valid .iar files should be at least 1KB)
             if len(package_data) < FlextConstants.Utilities.BYTES_PER_KB:
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[dict[str, t.GeneralValueType]].fail(
                     "Integration package too small, likely corrupted",
                 )
 
             # Check for .iar magic bytes (ZIP format)
             if not package_data.startswith(b"PK"):
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[dict[str, t.GeneralValueType]].fail(
                     "Invalid integration package format, not a valid archive",
                 )
 
@@ -842,7 +847,7 @@ class FlextTargetOracleOicUtilities(u):
                 "is_valid": True,
             }
 
-            return FlextResult[dict[str, object]].ok(package_info)
+            return FlextResult[dict[str, t.GeneralValueType]].ok(package_info)
 
         @staticmethod
         def create_integration_deployment_payload(
@@ -850,16 +855,16 @@ class FlextTargetOracleOicUtilities(u):
             package_data: bytes,
             *,
             activate: bool = True,
-        ) -> FlextResult[dict[str, object]]:
+        ) -> FlextResult[dict[str, t.GeneralValueType]]:
             """Create deployment payload for Oracle OIC integration."""
             if not integration_id or not package_data:
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[dict[str, t.GeneralValueType]].fail(
                     "Integration ID and package data are required",
                 )
 
             # Validate integration ID format
             if not integration_id.replace("_", "").replace("-", "").isalnum():
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[dict[str, t.GeneralValueType]].fail(
                     "Integration ID contains invalid characters",
                 )
 
@@ -871,15 +876,15 @@ class FlextTargetOracleOicUtilities(u):
                 "import_mode": "create_or_update",
             }
 
-            return FlextResult[dict[str, object]].ok(deployment_payload)
+            return FlextResult[dict[str, t.GeneralValueType]].ok(deployment_payload)
 
         @staticmethod
         def parse_oic_error_response(
-            error_response: dict[str, object],
-        ) -> FlextResult[dict[str, object]]:
+            error_response: dict[str, t.GeneralValueType],
+        ) -> FlextResult[dict[str, t.GeneralValueType]]:
             """Parse Oracle OIC API error response for meaningful error information."""
             if not error_response:
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[dict[str, t.GeneralValueType]].fail(
                     "Error response cannot be empty",
                 )
 
@@ -906,18 +911,18 @@ class FlextTargetOracleOicUtilities(u):
                 error_info["is_retryable"] = True
                 error_info["suggested_action"] = "Retry operation after delay"
 
-            return FlextResult[dict[str, object]].ok(error_info)
+            return FlextResult[dict[str, t.GeneralValueType]].ok(error_info)
 
     class _SingerProtocolHelper:
         """Helper for Singer protocol compliance and message processing."""
 
         @staticmethod
         def validate_singer_schema_message(
-            message: dict[str, object],
-        ) -> FlextResult[dict[str, object]]:
+            message: dict[str, t.GeneralValueType],
+        ) -> FlextResult[dict[str, t.GeneralValueType]]:
             """Validate Singer SCHEMA message for OIC target compatibility."""
             if not message:
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[dict[str, t.GeneralValueType]].fail(
                     "Singer schema message cannot be empty",
                 )
 
@@ -926,35 +931,35 @@ class FlextTargetOracleOicUtilities(u):
                 field for field in required_fields if field not in message
             ]
             if missing_fields:
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[dict[str, t.GeneralValueType]].fail(
                     f"Missing schema message fields: {missing_fields}",
                 )
 
             if message["type"] != "SCHEMA":
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[dict[str, t.GeneralValueType]].fail(
                     "Message type must be 'SCHEMA'",
                 )
 
             if not message["stream"]:
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[dict[str, t.GeneralValueType]].fail(
                     "Stream name cannot be empty",
                 )
 
             if not isinstance(message["schema"], dict):
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[dict[str, t.GeneralValueType]].fail(
                     "Schema must be a dictionary",
                 )
 
-            return FlextResult[dict[str, object]].ok(message)
+            return FlextResult[dict[str, t.GeneralValueType]].ok(message)
 
         @staticmethod
         def transform_singer_record_to_oic_artifact(
-            record: dict[str, object],
+            record: dict[str, t.GeneralValueType],
             stream_name: str,
-        ) -> FlextResult[dict[str, object]]:
+        ) -> FlextResult[dict[str, t.GeneralValueType]]:
             """Transform Singer RECORD message to Oracle OIC artifact format."""
             if not record or not stream_name:
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[dict[str, t.GeneralValueType]].fail(
                     "Record and stream name are required",
                 )
 
@@ -979,23 +984,25 @@ class FlextTargetOracleOicUtilities(u):
                     "properties": record.get("properties", {}),
                 }
             else:
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[dict[str, t.GeneralValueType]].fail(
                     f"Unsupported stream type: {stream_name}",
                 )
 
             # Validate required fields are present
             if not oic_artifact.get("id"):
-                return FlextResult[dict[str, object]].fail("Artifact ID is required")
+                return FlextResult[dict[str, t.GeneralValueType]].fail(
+                    "Artifact ID is required"
+                )
 
-            return FlextResult[dict[str, object]].ok(oic_artifact)
+            return FlextResult[dict[str, t.GeneralValueType]].ok(oic_artifact)
 
         @staticmethod
         def create_singer_state_message(
-            bookmark_data: dict[str, object],
-        ) -> FlextResult[dict[str, object]]:
+            bookmark_data: dict[str, t.GeneralValueType],
+        ) -> FlextResult[dict[str, t.GeneralValueType]]:
             """Create Singer STATE message for OIC target state persistence."""
             if not bookmark_data:
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[dict[str, t.GeneralValueType]].fail(
                     "Bookmark data cannot be empty",
                 )
 
@@ -1010,14 +1017,14 @@ class FlextTargetOracleOicUtilities(u):
                 },
             }
 
-            return FlextResult[dict[str, object]].ok(state_message)
+            return FlextResult[dict[str, t.GeneralValueType]].ok(state_message)
 
     class _OicPerformanceHelper:
         """Helper for Oracle OIC performance optimization and monitoring."""
 
         @staticmethod
         def calculate_optimal_batch_size(
-            api_metrics: dict[str, object],
+            api_metrics: dict[str, t.GeneralValueType],
         ) -> FlextResult[int]:
             """Calculate optimal batch size based on OIC API performance metrics."""
             if not api_metrics:
@@ -1067,11 +1074,11 @@ class FlextTargetOracleOicUtilities(u):
 
         @staticmethod
         def create_oic_performance_metrics(
-            operation_results: list[dict[str, object]],
-        ) -> FlextResult[dict[str, object]]:
+            operation_results: list[dict[str, t.GeneralValueType]],
+        ) -> FlextResult[dict[str, t.GeneralValueType]]:
             """Create performance metrics from OIC operation results."""
             if not operation_results:
-                return FlextResult[dict[str, object]].fail(
+                return FlextResult[dict[str, t.GeneralValueType]].fail(
                     "Operation results cannot be empty",
                 )
 
@@ -1100,18 +1107,18 @@ class FlextTargetOracleOicUtilities(u):
                 "max_response_time_ms": max(response_times) if response_times else 0,
             }
 
-            return FlextResult[dict[str, object]].ok(metrics)
+            return FlextResult[dict[str, t.GeneralValueType]].ok(metrics)
 
     @classmethod
     def create_oic_target_configuration(
         cls,
         base_url: str,
-        oauth_config: dict[str, object],
-        performance_settings: dict[str, object] | None = None,
-    ) -> FlextResult[dict[str, object]]:
+        oauth_config: dict[str, t.GeneralValueType],
+        performance_settings: dict[str, t.GeneralValueType] | None = None,
+    ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Create complete Oracle OIC target configuration."""
         if not base_url or not oauth_config:
-            return FlextResult[dict[str, object]].fail(
+            return FlextResult[dict[str, t.GeneralValueType]].fail(
                 "Base URL and OAuth configuration are required",
             )
 
@@ -1120,7 +1127,7 @@ class FlextTargetOracleOicUtilities(u):
             oauth_config,
         )
         if oauth_validation.is_failure:
-            return FlextResult[dict[str, object]].fail(
+            return FlextResult[dict[str, t.GeneralValueType]].fail(
                 f"OAuth validation failed: {oauth_validation.error}",
             )
 
@@ -1146,18 +1153,20 @@ class FlextTargetOracleOicUtilities(u):
         if performance_settings:
             target_config.update(performance_settings)
 
-        return FlextResult[dict[str, object]].ok(target_config)
+        return FlextResult[dict[str, t.GeneralValueType]].ok(target_config)
 
     @classmethod
     def validate_oic_target_environment(
         cls,
-        config: dict[str, object],
-    ) -> FlextResult[dict[str, object]]:
+        config: dict[str, t.GeneralValueType],
+    ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Validate Oracle OIC target environment readiness."""
         if not config:
-            return FlextResult[dict[str, object]].fail("Configuration cannot be empty")
+            return FlextResult[dict[str, t.GeneralValueType]].fail(
+                "Configuration cannot be empty"
+            )
 
-        validation_results: dict[str, object] = {
+        validation_results: dict[str, t.GeneralValueType] = {
             "oauth_config": "pending",
             "oic_connectivity": "pending",
             "api_permissions": "pending",
@@ -1179,22 +1188,24 @@ class FlextTargetOracleOicUtilities(u):
             validation_results["api_permissions"] = "valid"
             validation_results["performance_baseline"] = "valid"
 
-        return FlextResult[dict[str, object]].ok(validation_results)
+        return FlextResult[dict[str, t.GeneralValueType]].ok(validation_results)
 
     @classmethod
     def process_singer_stream_to_oic_artifacts(
         cls,
-        singer_messages: list[dict[str, object]],
+        singer_messages: list[dict[str, t.GeneralValueType]],
         stream_name: str,
-    ) -> FlextResult[list[dict[str, object]]]:
+    ) -> FlextResult[list[dict[str, t.GeneralValueType]]]:
         """Process Singer stream messages to Oracle OIC artifacts."""
         if not singer_messages:
-            return FlextResult[list[dict[str, object]]].fail(
+            return FlextResult[list[dict[str, t.GeneralValueType]]].fail(
                 "Singer messages cannot be empty",
             )
 
         if not stream_name:
-            return FlextResult[list[dict[str, object]]].fail("Stream name is required")
+            return FlextResult[list[dict[str, t.GeneralValueType]]].fail(
+                "Stream name is required"
+            )
 
         oic_artifacts = []
 
@@ -1209,11 +1220,11 @@ class FlextTargetOracleOicUtilities(u):
                 if artifact_result.is_success:
                     oic_artifacts.append(artifact_result.value)
                 else:
-                    return FlextResult[list[dict[str, object]]].fail(
+                    return FlextResult[list[dict[str, t.GeneralValueType]]].fail(
                         f"Artifact transformation failed: {artifact_result.error}",
                     )
 
-        return FlextResult[list[dict[str, object]]].ok(oic_artifacts)
+        return FlextResult[list[dict[str, t.GeneralValueType]]].ok(oic_artifacts)
 
 
 # Backward compatibility - real inheritance classes

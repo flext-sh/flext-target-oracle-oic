@@ -7,7 +7,13 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_core import FlextConstants, FlextLogger, FlextModels, FlextResult
+from flext_core import (
+    FlextConstants,
+    FlextLogger,
+    FlextModels,
+    FlextResult,
+    FlextTypes as t,
+)
 from pydantic import Field
 
 logger = FlextLogger(__name__)
@@ -68,7 +74,7 @@ class OICConnectionSettings(FlextModels):
         }
 
     @classmethod
-    def from_dict(cls, data: dict[str, object]) -> OICConnectionSettings:
+    def from_dict(cls, data: dict[str, t.GeneralValueType]) -> OICConnectionSettings:
         """Create configuration from dictionary using modern Pydantic patterns."""
         try:
             return cls(**data)

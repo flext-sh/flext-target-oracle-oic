@@ -12,7 +12,7 @@ from typing import ClassVar, override
 
 from flext_api import FlextApiClient
 from flext_api.settings import FlextApiSettings
-from flext_core import FlextLogger, FlextResult
+from flext_core import FlextLogger, FlextResult, FlextTypes as t
 from flext_meltano import FlextMeltanoTarget as Target
 
 # Use FLEXT Meltano wrappers instead of direct singer_sdk imports (domain separation)
@@ -38,7 +38,7 @@ class OICBaseSink(Sink):
         self,
         target: Target,
         stream_name: str,
-        schema: dict[str, object],
+        schema: dict[str, t.GeneralValueType],
         key_properties: Sequence[str] | None = None,
     ) -> None:
         """Initialize base sink with target and stream metadata."""
@@ -54,7 +54,7 @@ class OICBaseSink(Sink):
         """Get unified OIC configuration."""
         if not self._oic_config:
             self._oic_config = TargetOracleOicConfig.model_validate(
-                dict[str, object](self.config) if self.config else {},
+                dict[str, t.GeneralValueType](self.config) if self.config else {},
             )
         return self._oic_config
 
@@ -77,9 +77,9 @@ class OICBaseSink(Sink):
 
     def preprocess_record(
         self,
-        record: dict[str, object],
-        _context: dict[str, object] | None,
-    ) -> dict[str, object]:
+        record: dict[str, t.GeneralValueType],
+        _context: dict[str, t.GeneralValueType] | None,
+    ) -> dict[str, t.GeneralValueType]:
         """Preprocess record before batch processing.
 
         Args:
@@ -92,7 +92,7 @@ class OICBaseSink(Sink):
         """
         return record
 
-    def process_batch(self, context: dict[str, object]) -> None:
+    def process_batch(self, context: dict[str, t.GeneralValueType]) -> None:
         """Process batch of records to OIC API.
 
         Groups records by operation type and submits in batches
@@ -109,14 +109,14 @@ class OICBaseSink(Sink):
             return
 
         records_obj = context.get("records")
-        records: list[dict[str, object]] = (
+        records: list[dict[str, t.GeneralValueType]] = (
             records_obj if isinstance(records_obj, list) else []
         )
         batch_size = min(len(records), self.oic_config.processing.batch_size)
 
         # Group records by operation type for more efficient processing
-        create_records: list[dict[str, object]] = []
-        update_records: list[dict[str, object]] = []
+        create_records: list[dict[str, t.GeneralValueType]] = []
+        update_records: list[dict[str, t.GeneralValueType]] = []
 
         for record in records:
             if self._record_exists(record):
@@ -136,14 +136,14 @@ class OICBaseSink(Sink):
                 batch = update_records[i : i + batch_size]
                 self._process_update_batch(batch, context)
 
-    def _record_exists(self, _record: dict[str, object]) -> bool:
+    def _record_exists(self, _record: dict[str, t.GeneralValueType]) -> bool:
         """Check if record exists in OIC - default implementation."""
         return False
 
     def _process_create_batch(
         self,
-        records: list[dict[str, object]],
-        context: dict[str, object],
+        records: list[dict[str, t.GeneralValueType]],
+        context: dict[str, t.GeneralValueType],
     ) -> None:
         """Process create batch - default implementation."""
         for record in records:
@@ -151,8 +151,8 @@ class OICBaseSink(Sink):
 
     def _process_update_batch(
         self,
-        records: list[dict[str, object]],
-        context: dict[str, object],
+        records: list[dict[str, t.GeneralValueType]],
+        context: dict[str, t.GeneralValueType],
     ) -> None:
         """Process update batch - default implementation."""
         for record in records:
@@ -160,8 +160,8 @@ class OICBaseSink(Sink):
 
     def process_record(
         self,
-        _record: dict[str, object],
-        _context: dict[str, object],
+        _record: dict[str, t.GeneralValueType],
+        _context: dict[str, t.GeneralValueType],
     ) -> None:
         """Process a single record - default implementation for base sink.
 
@@ -190,8 +190,8 @@ class ConnectionsSink(OICBaseSink):
 
     def process_record(
         self,
-        record: dict[str, object],
-        _context: dict[str, object],
+        record: dict[str, t.GeneralValueType],
+        _context: dict[str, t.GeneralValueType],
     ) -> None:
         """Process a connection record."""
         connection_id = str(record.get("id", ""))
@@ -207,8 +207,8 @@ class IntegrationsSink(OICBaseSink):
 
     def process_record(
         self,
-        record: dict[str, object],
-        _context: dict[str, object],
+        record: dict[str, t.GeneralValueType],
+        _context: dict[str, t.GeneralValueType],
     ) -> None:
         """Process an integration record."""
         integration_id = str(record.get("id", ""))
@@ -221,10 +221,10 @@ class IntegrationsSink(OICBaseSink):
         # Simplified implementation - detailed OIC operations will be handled by flext-oracle-oic
         # For now, just log the record to maintain Singer SDK compatibility
 
-    def _create_integration(self, record: dict[str, object]) -> None:
+    def _create_integration(self, record: dict[str, t.GeneralValueType]) -> None:
         """Create new integration in OIC."""
         try:
-            # Prepare creation payload - convert to string dict[str, object] for FlextApiClient compatibility
+            # Prepare creation payload - convert to string dict[str, t.GeneralValueType] for FlextApiClient compatibility
             payload = {
                 "name": str(record["name"]),
                 "identifier": str(record["id"]),
@@ -232,8 +232,10 @@ class IntegrationsSink(OICBaseSink):
                 "pattern": str(record.get("pattern", "ORCHESTRATION")),
             }
 
-            # Convert payload to string dict[str, object] for FlextApiClient compatibility
-            json_data: dict[str, object] = {str(k): str(v) for k, v in payload.items()}
+            # Convert payload to string dict[str, t.GeneralValueType] for FlextApiClient compatibility
+            json_data: dict[str, t.GeneralValueType] = {
+                str(k): str(v) for k, v in payload.items()
+            }
 
             response_result = self.client.post(
                 "/ic/api/integration/v1/integrations",
@@ -262,7 +264,7 @@ class IntegrationsSink(OICBaseSink):
             self.logger.exception("Failed to create integration")
             raise
 
-    def _import_integration(self, record: dict[str, object]) -> None:
+    def _import_integration(self, record: dict[str, t.GeneralValueType]) -> None:
         """Import integration package into OIC."""
         try:
             package_file = record.get("package_file")
@@ -270,7 +272,7 @@ class IntegrationsSink(OICBaseSink):
                 msg = "package_file is required for integration import"
                 raise ValueError(msg)
 
-            # Prepare import payload - convert to string dict[str, object] for FlextApiClient compatibility
+            # Prepare import payload - convert to string dict[str, t.GeneralValueType] for FlextApiClient compatibility
             payload = {
                 "type": "APPLICATION_IMPORT",
                 "name": str(record.get("name", "")),
@@ -283,8 +285,10 @@ class IntegrationsSink(OICBaseSink):
             if "importOptions" in record:
                 payload["importOptions"] = str(record["importOptions"])
 
-            # Convert payload to string dict[str, object] for FlextApiClient compatibility
-            json_data: dict[str, object] = {str(k): str(v) for k, v in payload.items()}
+            # Convert payload to string dict[str, t.GeneralValueType] for FlextApiClient compatibility
+            json_data: dict[str, t.GeneralValueType] = {
+                str(k): str(v) for k, v in payload.items()
+            }
 
             response_result = self.client.post(
                 "/ic/api/integration/v1/packages/archive/import",
@@ -317,11 +321,11 @@ class IntegrationsSink(OICBaseSink):
         self,
         integration_id: str,
         version: str,
-        record: dict[str, object],
+        record: dict[str, t.GeneralValueType],
     ) -> None:
         """Update existing integration in OIC."""
         try:
-            # Prepare update payload - convert to string dict[str, object] for FlextApiClient compatibility
+            # Prepare update payload - convert to string dict[str, t.GeneralValueType] for FlextApiClient compatibility
             payload = {}
 
             # Add updatable fields if present
@@ -337,8 +341,10 @@ class IntegrationsSink(OICBaseSink):
                 )
                 return
 
-            # Convert payload to string dict[str, object] for FlextApiClient compatibility
-            json_data: dict[str, object] = {str(k): str(v) for k, v in payload.items()}
+            # Convert payload to string dict[str, t.GeneralValueType] for FlextApiClient compatibility
+            json_data: dict[str, t.GeneralValueType] = {
+                str(k): str(v) for k, v in payload.items()
+            }
 
             response_result = self.client.put(
                 f"/ic/api/integration/v1/integrations/{integration_id}|{version}",
@@ -375,8 +381,8 @@ class PackagesSink(OICBaseSink):
 
     def process_record(
         self,
-        record: dict[str, object],
-        _context: dict[str, object],
+        record: dict[str, t.GeneralValueType],
+        _context: dict[str, t.GeneralValueType],
     ) -> None:
         """Process a package record."""
         # Implementation for package processing
@@ -390,8 +396,8 @@ class LookupsSink(OICBaseSink):
 
     def process_record(
         self,
-        record: dict[str, object],
-        _context: dict[str, object],
+        record: dict[str, t.GeneralValueType],
+        _context: dict[str, t.GeneralValueType],
     ) -> None:
         """Process a lookup record."""
         # Implementation for lookup processing
@@ -431,22 +437,28 @@ class TargetOracleOic(Target):
     default_sink_class = OICBaseSink
 
     # Use unified configuration schema
-    config_jsonschema: ClassVar[dict[str, object]] = create_singer_config_schema()
+    config_jsonschema: ClassVar[dict[str, t.GeneralValueType]] = (
+        create_singer_config_schema()
+    )
 
     @override
     def __init__(
         self,
         *,
-        config: dict[str, object] | None = None,
+        config: dict[str, t.GeneralValueType] | None = None,
         parse_env_config: bool = False,
         validate_config: bool = True,
         **_kwargs: object,
     ) -> None:
         """Initialize target with configuration and options."""
         # Preserve the flat config exactly as received for test expectations
-        self._original_flat_config: dict[str, object] = dict[str, object](config or {})
+        self._original_flat_config: dict[str, t.GeneralValueType] = dict[
+            str, t.GeneralValueType
+        ](config or {})
         # Map legacy flat config into unified model-compatible structure to satisfy tests
-        normalized_config: dict[str, object] = dict[str, object](config or {})
+        normalized_config: dict[str, t.GeneralValueType] = dict[
+            str, t.GeneralValueType
+        ](config or {})
         if (
             normalized_config
             and "auth" not in normalized_config
@@ -456,7 +468,9 @@ class TargetOracleOic(Target):
             )
         ):
             # Preserve flat keys for Singer validation; also inject nested structure for our usage
-            normalized_config: dict[str, object] = dict[str, object](normalized_config)
+            normalized_config: dict[str, t.GeneralValueType] = dict[
+                str, t.GeneralValueType
+            ](normalized_config)
             normalized_config.setdefault("auth", {})
             normalized_config.setdefault("connection", {})
             auth_section = normalized_config["auth"]
@@ -504,13 +518,13 @@ class TargetOracleOic(Target):
         """Get unified OIC configuration."""
         if not self._oic_config:
             self._oic_config = TargetOracleOicConfig.model_validate(
-                dict[str, object](self.config) if self.config else {},
+                dict[str, t.GeneralValueType](self.config) if self.config else {},
             )
         return self._oic_config
 
     # Override config property to return exactly the flat config passed by tests
     @property
-    def config(self: object) -> dict[str, object]:
+    def config(self: object) -> dict[str, t.GeneralValueType]:
         """Return the original flat configuration."""
         return self._original_flat_config
 
@@ -528,15 +542,17 @@ class TargetOracleOic(Target):
     def teardown(self: object) -> None:
         """Teardown the target."""
 
-    def _process_schema_message(self, message_dict: dict[str, object]) -> None:
+    def _process_schema_message(
+        self, message_dict: dict[str, t.GeneralValueType]
+    ) -> None:
         """Process a schema message by creating and registering the appropriate sink."""
         # Ensure sink is created and registered for this stream
         stream_name = str(message_dict["stream"])
         schema_obj = message_dict["schema"]
         if not isinstance(schema_obj, dict):
             return
-        schema: dict[str, object] = schema_obj
-        key_props_obj: list[object] = message_dict.get("key_properties", [])
+        schema: dict[str, t.GeneralValueType] = schema_obj
+        key_props_obj: list[t.GeneralValueType] = message_dict.get("key_properties", [])
         key_properties: Sequence[str] | None = (
             key_props_obj if isinstance(key_props_obj, list) else None
         )
@@ -549,9 +565,9 @@ class TargetOracleOic(Target):
         self,
         stream_name: str,
         *,
-        record: dict[str, object]
+        record: dict[str, t.GeneralValueType]
         | None = None,  # kept for interface compatibility, not used
-        schema: dict[str, object] | None = None,
+        schema: dict[str, t.GeneralValueType] | None = None,
         key_properties: Sequence[str] | None = None,
     ) -> Sink:
         """Get appropriate sink for the given stream."""

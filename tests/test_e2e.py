@@ -16,6 +16,7 @@ SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
+from flext_core import FlextTypes as t
 
 import json
 import os
@@ -93,7 +94,7 @@ class TestTargetOracleOicE2E:
     def test_target_initialization(
         self,
         target: TargetOracleOic,
-        config: dict[str, object],
+        config: dict[str, t.GeneralValueType],
     ) -> None:
         """Test target initialization with valid configuration."""
         if target.name != "target-oracle-oic":
