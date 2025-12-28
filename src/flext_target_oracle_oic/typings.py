@@ -252,9 +252,7 @@ class FlextTargetOracleOicTypes(_t):
         type DataOperationLiteral = Literal[
             "create_only", "update_only", "create_or_update"
         ]
-        type ErrorTypeLiteral = Literal[
-            "AUTHENTICATION", "AUTHORIZATION", "NETWORK"
-        ]
+        type ErrorTypeLiteral = Literal["AUTHENTICATION", "AUTHORIZATION", "NETWORK"]
 
         # Singer target Oracle OIC-specific project configurations
         type SingerTargetOracleOicProjectConfig = dict[str, _t.Types.GeneralValueType]
