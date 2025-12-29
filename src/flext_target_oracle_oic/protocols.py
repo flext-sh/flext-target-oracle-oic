@@ -2,8 +2,8 @@
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
+
 """
-                    ...
 
 from __future__ import annotations
 
@@ -42,11 +42,9 @@ class FlextTargetOracleOicProtocols(p_meltano, p_db_oracle):
     # Target Oracle OIC-specific protocols
     oic_integration: p.Target.OracleOic.OicIntegrationProtocol
     """
-                    ...
 
     class Target:
         """Singer Target domain protocols."""
-                    ...
 
         class OracleOic:
             """Singer Target Oracle OIC domain protocols for Oracle OIC loading.
@@ -55,7 +53,6 @@ class FlextTargetOracleOicProtocols(p_meltano, p_db_oracle):
             data integration, transformation, batch processing, payload validation,
             throughput optimization, and integration status tracking.
             """
-                    ...
 
             @runtime_checkable
             class OicIntegrationProtocol(p_db_oracle.Service[object], Protocol):
@@ -63,7 +60,6 @@ class FlextTargetOracleOicProtocols(p_meltano, p_db_oracle):
 
                 Defines the interface for integrating data with Oracle OIC.
                 """
-                    ...
 
                 def integrate(
                     self, data: dict[str, t.GeneralValueType]
