@@ -8,19 +8,19 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import json
-from typing import override
 
-from flext_core import FlextLogger, FlextResult, FlextTypes as t
+from flext_core import FlextResult, FlextTypes as t
+from flext_core.runtime import FlextRuntime
 
-logger = FlextLogger(__name__)
+logger = FlextRuntime.get_logger(__name__)
 
 
 class OICTypeConverter:
     """Convert data types for OIC storage using flext-core patterns."""
 
-    @override
-    def __init__(self: object) -> None:
+    def __init__(self) -> None:
         """Initialize OIC type converter."""
+        super().__init__()
 
     def convert_singer_to_oic(
         self,
@@ -40,22 +40,11 @@ class OICTypeConverter:
                 parsed_value = json.loads(value) if isinstance(value, str) else value
                 return FlextResult[object].ok(parsed_value)
 
-            # Handle simple types with mapping
-            type_converters = {
-                "string": "str",
-                "text": "str",
-                "boolean": "bool",
-                "integer": lambda: "x",  # OIC handles numbers natively
-                "number": lambda: "x",  # OIC handles numbers natively
-            }
-
-            if singer_type in type_converters:
-                converter = type_converters[singer_type]
-                if callable(converter):
-                    return FlextResult[object].ok(converter(value))
+            # Handle simple types - OIC handles numbers natively
+            if singer_type in {"integer", "number"}:
                 return FlextResult[object].ok(value)
 
-            # Default fallback
+            # Default: return value as-is for string, text, boolean, etc.
             return FlextResult[object].ok(value)
 
         except (RuntimeError, ValueError, TypeError) as e:
@@ -66,9 +55,9 @@ class OICTypeConverter:
 class OICDataTransformer:
     """Transform data for OIC storage using flext-core patterns."""
 
-    @override
     def __init__(self, type_converter: OICTypeConverter | None = None) -> None:
         """Initialize OIC data transformer."""
+        super().__init__()
         self.type_converter = type_converter or OICTypeConverter()
 
     def transform_record(
@@ -84,22 +73,36 @@ class OICDataTransformer:
                 # OIC-specific attribute naming (camelCase convention)
                 oic_key = self._normalize_oic_attribute_name(key)
 
-                if schema and isinstance(schema, dict):
-                    properties: dict[str, t.GeneralValueType] = schema.get(
-                        "properties", {}
-                    )
-                    if isinstance(properties, dict):
-                        prop_def: dict[str, t.GeneralValueType] = properties.get(
-                            key, {}
-                        )
-                    singer_type = prop_def.get("type", "string")
+                if schema is not None:
+                    properties_val = schema.get("properties", {})
+                    if isinstance(properties_val, dict):
+                        prop_def_val = properties_val.get(key, {})
+                        if isinstance(prop_def_val, dict):
+                            singer_type_val = prop_def_val.get("type", "string")
+                            singer_type = (
+                                str(singer_type_val) if singer_type_val else "string"
+                            )
 
-                    convert_result = self.type_converter.convert_singer_to_oic(
-                        singer_type,
-                        value,
-                    )
-                    if convert_result.success:
-                        transformed[oic_key] = convert_result.data
+                            convert_result = self.type_converter.convert_singer_to_oic(
+                                singer_type,
+                                value,
+                            )
+                            if convert_result.is_success:
+                                converted = convert_result.data
+                                # Ensure we assign GeneralValueType
+                                if (
+                                    isinstance(
+                                        converted, (str, int, float, bool, list, dict)
+                                    )
+                                    or converted is None
+                                ):
+                                    transformed[oic_key] = converted
+                                else:
+                                    transformed[oic_key] = str(converted)
+                            else:
+                                transformed[oic_key] = value
+                        else:
+                            transformed[oic_key] = value
                     else:
                         transformed[oic_key] = value
                 else:
@@ -154,9 +157,9 @@ class OICDataTransformer:
 class OICSchemaMapper:
     """Map Singer schemas to OIC schemas using flext-core patterns."""
 
-    @override
-    def __init__(self: object) -> None:
+    def __init__(self) -> None:
         """Initialize OIC schema mapper."""
+        super().__init__()
 
     def map_singer_schema_to_oic(
         self,
@@ -166,29 +169,27 @@ class OICSchemaMapper:
         """Map Singer schema to OIC resource definitions."""
         try:
             oic_schema: dict[str, str] = {}
-            properties: dict[str, t.GeneralValueType] = schema.get("properties", {})
+            properties_val = schema.get("properties", {})
 
-            if isinstance(properties, dict):
-                for prop_name, prop_def in properties.items():
-                    if not isinstance(prop_name, str) or not isinstance(prop_def, dict):
+            if isinstance(properties_val, dict):
+                for prop_name, prop_def in properties_val.items():
+                    if not isinstance(prop_def, dict):
                         continue
-                    # Ensure prop_def is properly typed as dict[str, t.GeneralValueType]
-                    typed_prop_def: dict[str, t.GeneralValueType] = prop_def
-                    oic_name = self._normalize_attribute_name(prop_name)
+                    # Ensure prop_def is properly typed
+                    typed_prop_def: dict[str, t.GeneralValueType] = {
+                        str(k): v for k, v in prop_def.items()
+                    }
+                    oic_name = self._normalize_attribute_name(str(prop_name))
                     oic_type_result = self._map_singer_type_to_oic(
                         typed_prop_def,
                         resource_type,
                     )
 
-                    if oic_type_result.success:
-                        # Ensure we have a string type
+                    if oic_type_result.is_success:
                         mapped_type = oic_type_result.data
-                        if mapped_type is not None:
-                            oic_schema[oic_name] = mapped_type
-                        else:
-                            oic_schema[oic_name] = "string"  # Fallback
+                        oic_schema[oic_name] = mapped_type or "string"
                     else:
-                        oic_schema[oic_name] = "string"  # Fallback
+                        oic_schema[oic_name] = "string"
 
             return FlextResult[dict[str, str]].ok(oic_schema)
 
@@ -239,9 +240,9 @@ class OICSchemaMapper:
 class OICEntryManager:
     """Manage OIC entries using flext-core patterns."""
 
-    @override
-    def __init__(self: object) -> None:
+    def __init__(self) -> None:
         """Initialize OIC entry manager."""
+        super().__init__()
 
     def prepare_integration_entry(
         self,
@@ -250,8 +251,8 @@ class OICEntryManager:
     ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Prepare integration entry for OIC."""
         try:
-            entry = {
-                "name": "integration_name",
+            entry: dict[str, t.GeneralValueType] = {
+                "name": integration_name,
                 "version": record.get("version", "01.00.0000"),
                 "description": record.get(
                     "description",
@@ -259,7 +260,7 @@ class OICEntryManager:
                 ),
                 "style": record.get("style", "ORCHESTRATION"),
                 "pattern": record.get("pattern", "SYNCHRONOUS"),
-                "properties": "record",
+                "properties": record,
             }
 
             return FlextResult[dict[str, t.GeneralValueType]].ok(entry)
@@ -277,12 +278,12 @@ class OICEntryManager:
     ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Prepare connection entry for OIC."""
         try:
-            entry = {
-                "name": "connection_name",
+            entry: dict[str, t.GeneralValueType] = {
+                "name": connection_name,
                 "identifier": record.get("identifier", connection_name),
                 "adapterType": record.get("adapterType", "rest"),
                 "connectionType": record.get("connectionType", "TRIGGER_CONNECTION"),
-                "connectionProperties": "record",
+                "connectionProperties": record,
             }
 
             return FlextResult[dict[str, t.GeneralValueType]].ok(entry)
@@ -300,12 +301,12 @@ class OICEntryManager:
     ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Prepare package entry for OIC."""
         try:
-            entry = {
-                "name": "package_name",
+            entry: dict[str, t.GeneralValueType] = {
+                "name": package_name,
                 "version": record.get("version", "1.0"),
                 "description": record.get("description", f"Package: {package_name}"),
                 "bundleType": record.get("bundleType", "INTEGRATION"),
-                "contents": "record",
+                "contents": record,
             }
 
             return FlextResult[dict[str, t.GeneralValueType]].ok(entry)
@@ -323,11 +324,11 @@ class OICEntryManager:
     ) -> FlextResult[dict[str, t.GeneralValueType]]:
         """Prepare lookup entry for OIC."""
         try:
-            entry = {
-                "name": "lookup_name",
+            entry: dict[str, t.GeneralValueType] = {
+                "name": lookup_name,
                 "description": record.get("description", f"Lookup: {lookup_name}"),
                 "lookupType": record.get("lookupType", "DIRECT"),
-                "lookupData": "record",
+                "lookupData": record,
             }
 
             return FlextResult[dict[str, t.GeneralValueType]].ok(entry)
@@ -345,14 +346,14 @@ class OICEntryManager:
     ) -> FlextResult[bool]:
         """Validate OIC entry structure."""
         try:
-            required_fields = {
+            required_fields: dict[str, list[str]] = {
                 "integration": ["name", "version"],
                 "connection": ["name", "identifier", "adapterType"],
                 "package": ["name", "version", "bundleType"],
                 "lookup": ["name", "lookupType"],
             }
 
-            required: list[t.GeneralValueType] = required_fields.get(entry_type, [])
+            required = required_fields.get(entry_type, [])
             missing_fields = [field for field in required if field not in entry]
 
             if missing_fields:
@@ -360,7 +361,7 @@ class OICEntryManager:
                     f"Missing required fields: {missing_fields}",
                 )
 
-            return FlextResult[bool].ok(data=True)
+            return FlextResult[bool].ok(value=True)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Entry validation failed")

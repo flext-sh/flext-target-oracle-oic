@@ -7,8 +7,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import override
-
 from flext_core import FlextLogger, FlextResult, FlextTypes as t
 
 logger = FlextLogger(__name__)
@@ -17,8 +15,7 @@ logger = FlextLogger(__name__)
 class OICRecordProcessor:
     """Process Singer records for OIC using flext-core patterns."""
 
-    @override
-    def __init__(self: object) -> None:
+    def __init__(self) -> None:
         """Initialize OIC record processor."""
 
     def process_singer_record(

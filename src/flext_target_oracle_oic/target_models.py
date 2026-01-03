@@ -70,7 +70,7 @@ class OICConnection(FlextOracleOicModels.OICConnectionInfo):
         description="Last update timestamp",
     )
 
-    def validate_business_rules(self: object) -> FlextResult[None]:
+    def validate_business_rules(self) -> FlextResult[None]:
         """Validate connection business rules."""
         try:
             if not self.id.strip():
@@ -133,7 +133,7 @@ class OICIntegration(FlextOracleOicModels.OICIntegrationInfo):
         description="Last update timestamp",
     )
 
-    def validate_business_rules(self: object) -> FlextResult[None]:
+    def validate_business_rules(self) -> FlextResult[None]:
         """Validate integration business rules."""
         try:
             if not self.id.strip():
@@ -197,7 +197,7 @@ class OICPackage(PackageBase):
         description="Last update timestamp",
     )
 
-    def validate_business_rules(self: object) -> FlextResult[None]:
+    def validate_business_rules(self) -> FlextResult[None]:
         """Validate package business rules."""
         try:
             if not self.id.strip():
@@ -243,7 +243,7 @@ class OICLookup(LookupBase):
         description="Last update timestamp",
     )
 
-    def validate_business_rules(self: object) -> FlextResult[None]:
+    def validate_business_rules(self) -> FlextResult[None]:
         """Validate lookup business rules."""
         try:
             # Check name
@@ -313,7 +313,7 @@ class OICProject(FlextModels):
         description="Last update timestamp",
     )
 
-    def validate_business_rules(self: object) -> FlextResult[None]:
+    def validate_business_rules(self) -> FlextResult[None]:
         """Validate project business rules."""
         try:
             if not self.id.strip():
@@ -359,7 +359,7 @@ class OICSchedule(FlextModels):
         description="Schedule enabled status",
     )
 
-    def validate_business_rules(self: object) -> FlextResult[None]:
+    def validate_business_rules(self) -> FlextResult[None]:
         """Validate schedule business rules."""
         try:
             if not self.integration_id.strip():
@@ -403,7 +403,7 @@ class OICIntegrationAction(FlextModels):
         description="Action execution timestamp",
     )
 
-    def validate_business_rules(self: object) -> FlextResult[None]:
+    def validate_business_rules(self) -> FlextResult[None]:
         """Validate integration action business rules."""
         try:
             if not self.integration_id.strip():
@@ -442,7 +442,7 @@ class OICConnectionAction(FlextModels):
         description="Action execution timestamp",
     )
 
-    def validate_business_rules(self: object) -> FlextResult[None]:
+    def validate_business_rules(self) -> FlextResult[None]:
         """Validate connection action business rules."""
         try:
             if not self.connection_id.strip():
@@ -479,7 +479,7 @@ class OICDataTransformation(FlextModels):
         description="Transformed data result",
     )
 
-    def validate_business_rules(self: object) -> FlextResult[None]:
+    def validate_business_rules(self) -> FlextResult[None]:
         """Validate transformation business rules."""
         try:
             if not self.source_data:
@@ -511,7 +511,7 @@ class OICSchemaMapping(FlextModels):
         description="Type conversions from Singer to OIC",
     )
 
-    def validate_business_rules(self: object) -> FlextResult[None]:
+    def validate_business_rules(self) -> FlextResult[None]:
         """Validate schema mapping business rules."""
         try:
             if not self.singer_schema:
@@ -535,7 +535,7 @@ def create_oic_connection(
     try:
         connection = OICConnection(**data)
         validation = connection.validate_business_rules()
-        if not validation.success:
+        if not validation.is_success:
             return FlextResult[OICConnection].fail(
                 f"Connection validation failed: {validation.error}",
             )
@@ -551,7 +551,7 @@ def create_oic_integration(
     try:
         integration = OICIntegration(**data)
         validation = integration.validate_business_rules()
-        if not validation.success:
+        if not validation.is_success:
             return FlextResult[OICIntegration].fail(
                 f"Integration validation failed: {validation.error}",
             )
@@ -565,7 +565,7 @@ def create_oic_package(data: dict[str, t.GeneralValueType]) -> FlextResult[OICPa
     try:
         package = OICPackage(**data)
         validation = package.validate_business_rules()
-        if not validation.success:
+        if not validation.is_success:
             return FlextResult[OICPackage].fail(
                 f"Package validation failed: {validation.error}",
             )
@@ -579,7 +579,7 @@ def create_oic_lookup(data: dict[str, t.GeneralValueType]) -> FlextResult[OICLoo
     try:
         lookup = OICLookup(**data)
         validation = lookup.validate_business_rules()
-        if not validation.success:
+        if not validation.is_success:
             return FlextResult[OICLookup].fail(
                 f"Lookup validation failed: {validation.error}",
             )

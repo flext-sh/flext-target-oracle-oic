@@ -347,7 +347,7 @@ class FlextTargetOracleOicErrorDetails(FlextModels):
     integration_name: str | None = None
     oic_instance: str | None = None
 
-    def validate_domain_rules(self: object) -> FlextResult[None]:
+    def validate_domain_rules(self) -> FlextResult[None]:
         """Validate domain-specific business rules."""
         try:
             # Validate error code format
