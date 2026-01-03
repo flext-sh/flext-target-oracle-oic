@@ -50,7 +50,7 @@ class OICBaseSink(Sink):
         self._client: FlextApiClient | None = None
 
     @property
-    def oic_config(self: object) -> TargetOracleOicConfig:
+    def oic_config(self) -> TargetOracleOicConfig:
         """Get unified OIC configuration."""
         if not self._oic_config:
             self._oic_config = TargetOracleOicConfig.model_validate(
@@ -59,7 +59,7 @@ class OICBaseSink(Sink):
         return self._oic_config
 
     @property
-    def client(self: object) -> FlextApiClient:
+    def client(self) -> FlextApiClient:
         """Get or create HTTP client with authentication headers.
 
         Returns:
@@ -514,7 +514,7 @@ class TargetOracleOic(Target):
         self._oic_config: TargetOracleOicConfig | None = None
 
     @property
-    def oic_config(self: object) -> TargetOracleOicConfig:
+    def oic_config(self) -> TargetOracleOicConfig:
         """Get unified OIC configuration."""
         if not self._oic_config:
             self._oic_config = TargetOracleOicConfig.model_validate(
@@ -524,14 +524,14 @@ class TargetOracleOic(Target):
 
     # Override config property to return exactly the flat config passed by tests
     @property
-    def config(self: object) -> dict[str, t.GeneralValueType]:
+    def config(self) -> dict[str, t.GeneralValueType]:
         """Return the original flat configuration."""
         return self._original_flat_config
 
-    def setup(self: object) -> None:
+    def setup(self) -> None:
         """Set up the target client."""
         validation_result: FlextResult[object] = self.oic_config.validate_domain_rules()
-        if not validation_result.success:
+        if not validation_result.is_success:
             error_msg = f"Configuration validation failed: {validation_result.error}"
             self.logger.error(
                 "Configuration validation failed: %s",
@@ -539,7 +539,7 @@ class TargetOracleOic(Target):
             )
             raise ValueError(error_msg)
 
-    def teardown(self: object) -> None:
+    def teardown(self) -> None:
         """Teardown the target."""
 
     def _process_schema_message(

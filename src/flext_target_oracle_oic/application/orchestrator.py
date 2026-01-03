@@ -7,31 +7,26 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import override
+from flext_core import FlextResult, FlextTypes as t
+from flext_core.runtime import FlextRuntime
 
-from flext_core import FlextLogger, FlextResult, FlextTypes as t
-
-logger = FlextLogger(__name__)
+logger = FlextRuntime.get_logger(__name__)
 
 
 class OICTargetOrchestrator:
     """Oracle OIC Target Orchestrator for FLEXT ecosystem integration."""
 
-    @override
     def __init__(self, config: dict[str, t.GeneralValueType] | None = None) -> None:
         """Initialize OIC target orchestrator.
 
         Args:
         config: Configuration dictionary
 
-        Returns:
-        object: Description of return value.
-
         """
         self.config: dict[str, t.GeneralValueType] = config or {}
         logger.debug("Initialized OIC target orchestrator")
 
-    def validate_configuration(self: object) -> FlextResult[bool]:
+    def validate_configuration(self) -> FlextResult[bool]:
         """Validate OIC target configuration.
 
         Returns:
@@ -45,11 +40,11 @@ class OICTargetOrchestrator:
                 if field not in self.config:
                     return FlextResult[bool].fail(f"Missing required field: {field}")
 
-            return FlextResult[bool].ok(data=True)
+            return FlextResult[bool].ok(value=True)
         except Exception as e:
             return FlextResult[bool].fail(f"Configuration validation failed: {e}")
 
-    def setup(self: object) -> FlextResult[None]:
+    def setup(self) -> FlextResult[None]:
         """Set up OIC target orchestrator.
 
         Returns:
@@ -63,7 +58,7 @@ class OICTargetOrchestrator:
             logger.exception("OIC orchestrator setup failed")
             return FlextResult[None].fail(f"Setup failed: {e}")
 
-    def teardown(self: object) -> FlextResult[None]:
+    def teardown(self) -> FlextResult[None]:
         """Teardown OIC target orchestrator.
 
         Returns:
@@ -99,8 +94,8 @@ class OICTargetOrchestrator:
                 # Process individual record
                 processed_count += 1
 
-            result = {
-                "processed_records": "processed_count",
+            result: dict[str, t.GeneralValueType] = {
+                "processed_records": processed_count,
                 "status": "completed",
             }
 

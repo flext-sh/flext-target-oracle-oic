@@ -101,21 +101,21 @@ class TargetOracleOic(Target):
         # Initialize the orchestrator for modular architecture
         self._orchestrator: OICTargetOrchestrator | None = None
 
-    def setup(self: object) -> None:
+    def setup(self) -> None:
         """Set up the target orchestrator."""
         if self._orchestrator is None:
             self._orchestrator = OICTargetOrchestrator(
                 dict[str, t.GeneralValueType](self.config) if self.config else None,
             )
             setup_result: FlextResult[object] = self._orchestrator.setup()
-            if not setup_result.success:
+            if not setup_result.is_success:
                 self.logger.error("Orchestrator setup failed: %s", setup_result.error)
 
-    def teardown(self: object) -> None:
+    def teardown(self) -> None:
         """Teardown the target orchestrator."""
         if self._orchestrator:
             teardown_result: FlextResult[object] = self._orchestrator.teardown()
-            if not teardown_result.success:
+            if not teardown_result.is_success:
                 self.logger.warning(
                     "Orchestrator teardown failed: %s",
                     teardown_result.error,

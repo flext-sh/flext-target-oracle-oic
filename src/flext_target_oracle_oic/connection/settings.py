@@ -48,17 +48,17 @@ class OICConnectionSettings(FlextModels):
     )
     verify_ssl: bool = Field(default=True, description="Verify SSL certificates")
 
-    def build_auth_url(self: object) -> str:
+    def build_auth_url(self) -> str:
         """Build OAuth2 authentication URL."""
         url = self.base_url.rstrip("/")
         return f"{url}/oauth2/v1/token"
 
-    def build_api_base_url(self: object) -> str:
+    def build_api_base_url(self) -> str:
         """Build OIC API base URL."""
         url = self.base_url.rstrip("/")
         return f"{url}/ic/api/integration/v1"
 
-    def get_auth_headers(self: object) -> dict[str, str]:
+    def get_auth_headers(self) -> dict[str, str]:
         """Get authentication headers."""
         return {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -82,7 +82,7 @@ class OICConnectionSettings(FlextModels):
             logger.exception("Failed to create OICConnectionSettings from dict")
             raise
 
-    def validate_business_rules(self: object) -> FlextResult[None]:
+    def validate_business_rules(self) -> FlextResult[None]:
         """Validate OIC connection configuration business rules."""
         errors: list[str] = []
 
