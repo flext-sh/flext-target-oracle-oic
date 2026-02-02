@@ -47,7 +47,7 @@ class FlextTargetOracleOicUtilities(u_core):
     OIC_API_RATE_LIMIT_PER_MINUTE: ClassVar[int] = 100
     DEFAULT_CIRCUIT_BREAKER_THRESHOLD: ClassVar[int] = 10
 
-    class SingerUtilities:
+    class TargetOracleOic:
         """Singer protocol utilities for Oracle OIC target operations."""
 
         @staticmethod

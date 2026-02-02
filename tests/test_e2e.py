@@ -16,7 +16,6 @@ SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
-from flext_core import FlextTypes as t
 
 import json
 import os
@@ -29,11 +28,11 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pytest
-from flext_meltano import FlextMeltanoValidationError as ConfigValidationError
+from flext_core import FlextTypes as t
+from singer_sdk.exceptions import ConfigValidationError
 from singer_sdk.testing import get_target_test_class
 
-
-
+from flext_target_oracle_oic.target import (
     ConnectionsSink,
     IntegrationsSink,
     LookupsSink,

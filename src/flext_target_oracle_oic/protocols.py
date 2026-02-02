@@ -43,7 +43,7 @@ class FlextTargetOracleOicProtocols(p_meltano, p_db_oracle):
     oic_integration: p.Target.OracleOic.OicIntegrationProtocol
     """
 
-    class Target:
+    class TargetOracleOic:
         """Singer Target domain protocols."""
 
         class OracleOic:
