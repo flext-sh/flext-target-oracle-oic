@@ -36,7 +36,7 @@ class FlextTargetOracleOicTypes(_t):
     # SINGER TARGET TYPES - Complex Singer target protocol types
     # =========================================================================
 
-    class SingerTarget:
+    class TargetOracleOic:
         """Singer target protocol complex types."""
 
         type TargetConfiguration = dict[
@@ -261,23 +261,6 @@ class FlextTargetOracleOicTypes(_t):
             str, bool | str | dict[str, _t.Types.GeneralValueType]
         ]
         type TargetOracleOicPipelineConfig = dict[str, _t.Types.GeneralValueType]
-
-    class TargetOracleOic:
-        """Target Oracle OIC types namespace for cross-project access.
-
-        Provides organized access to all Target Oracle OIC types for other FLEXT projects.
-        Usage: Other projects can reference `t.TargetOracleOic.OracleOicIntegration.*`, `t.TargetOracleOic.Project.*`, etc.
-        This enables consistent namespace patterns for cross-project type access.
-
-        Examples:
-            from flext_target_oracle_oic.typings import t
-            config: t.TargetOracleOic.Project.SingerTargetOracleOicProjectConfig = ...
-            integration: t.TargetOracleOic.OracleOicIntegration.IntegrationDefinition = ...
-
-        Note: Namespace composition via inheritance - no aliases needed.
-        Access parent namespaces directly through inheritance.
-
-        """
 
 
 # Alias for simplified usage

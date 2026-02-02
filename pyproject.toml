@@ -18,10 +18,19 @@
         "Typing :: Typed",
     ]
     dependencies = [
-        "pydantic-settings>=2.10.1",
+        "flext-api",
+        "flext-cli",
+        "flext-core",
+        "flext-db-oracle",
+        "flext-meltano",
+        "flext-oracle-oic",
+        "flext-observability",
         "pydantic (>=2.12.3)",
-        "requests>=2.31.0",
         "pydantic-core (>=2.41.4)",
+        "pydantic-settings (>=2.10.1)",
+        "requests (>=2.31.0)",
+        "singer-sdk (>=0.44.1)",
+        "urllib3 (>=2.3.0)",
     ]
     description = "FLEXT Target Oracle OIC - Singer Target for Oracle Integration Cloud"
     keywords = [
@@ -79,7 +88,37 @@
 [tool.deptry]
     known_first_party = [
         "flext_target_oracle_oic",
+        "flext_api",
+        "flext_core",
+        "flext_cli",
+        "flext_db_oracle",
+        "flext_meltano",
+        "flext_oracle_oic",
+        "flext_observability",
     ]
+    pep621_dev_dependency_groups = [
+        "dev",
+        "test",
+        "typings",
+        "security",
+    ]
+
+    [tool.deptry.per_rule_ignores]
+        DEP002 = [
+            # CLI tools (invoked from command line, not imported)
+            "autoflake", "bandit", "black", "codespell", "commitizen",
+            "detect-secrets", "isort", "pip-audit", "pre-commit", "pylint",
+            "pyrefly", "pyupgrade", "radon", "ruff", "vulture",
+            # Type stubs
+            "types-psutil", "types-python-dateutil", "types-pyyaml",
+            "types-redis", "types-requests", "types-setuptools", "types-toml",
+            # Runtime deps used indirectly (via pydantic, requests, flext)
+            "faker", "pydantic-core", "pydantic-settings", "requests",
+            "pytest", "pytest-cov",
+            # Transitive deps (used via flext-core)
+            "flext-api", "flext-cli", "flext-core", "flext-db-oracle", "flext-meltano",
+            "flext-observability", "flext-oracle-oic",
+        ]
 
     [tool.poetry.dependencies]
         python = ">=3.13,<3.14"
@@ -163,6 +202,18 @@
                                                                                                                                                                                                         [tool.poetry.dependencies.flext-observability]
             develop = true
             path    = "../flext-observability"
+
+        [tool.poetry.dependencies.flext-cli]
+            develop = true
+            path    = "../flext-cli"
+
+        [tool.poetry.dependencies.flext-api]
+            develop = true
+            path    = "../flext-api"
+
+        [tool.poetry.dependencies.flext-db-oracle]
+            develop = true
+            path    = "../flext-db-oracle"
 
     [tool.poetry.group.dev.dependencies]
         autoflake      = ">=2.3.1"

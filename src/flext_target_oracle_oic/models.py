@@ -14,7 +14,6 @@ import re
 from datetime import UTC, datetime
 
 from flext_core import (
-    FlextConstants,
     FlextModels,
     FlextResult,
     FlextTypes as t,
@@ -53,614 +52,617 @@ class FlextTargetOracleOicModels(FlextModels):
         hide_input_in_errors=True,
     )
 
-    class OicAuthenticationConfig(FlextModels.ArbitraryTypesModel):
-        """Oracle OIC authentication configuration with OAuth2 support."""
+    class TargetOracleOic:
+        """TargetOracleOic domain namespace."""
 
-        base_url: str = Field(..., description="Oracle OIC instance URL")
-        oauth_client_id: str = Field(..., description="OAuth2 client ID")
-        oauth_client_secret: SecretStr = Field(..., description="OAuth2 client secret")
-        oauth_token_url: str = Field(..., description="OAuth2 token endpoint URL")
-        oauth_client_aud: str = Field(..., description="OAuth2 audience")
+        class OicAuthenticationConfig(FlextModels.ArbitraryTypesModel):
+            """Oracle OIC authentication configuration with OAuth2 support."""
 
-        # Authentication options
-        auth_method: t.Project.AuthMethodLiteral = Field(
-            default="oauth2",
-            description="Authentication method",
-        )
-        token_cache_duration: int = Field(
-            default=3300,
-            ge=300,
-            le=7200,
-            description="Token cache duration in seconds",
-        )
-        token_refresh_threshold: int = Field(
-            default=300,
-            ge=60,
-            le=1800,
-            description="Token refresh threshold in seconds",
-        )
+            base_url: str = Field(..., description="Oracle OIC instance URL")
+            oauth_client_id: str = Field(..., description="OAuth2 client ID")
+            oauth_client_secret: SecretStr = Field(..., description="OAuth2 client secret")
+            oauth_token_url: str = Field(..., description="OAuth2 token endpoint URL")
+            oauth_client_aud: str = Field(..., description="OAuth2 audience")
 
-        # Connection settings
-        request_timeout: int = Field(
-            default=180,
-            ge=30,
-            le=600,
-            description="Request timeout in seconds",
-        )
-        max_retries: int = Field(
-            default=5,
-            ge=1,
-            le=10,
-            description="Maximum retry attempts",
-        )
-        retry_delay: int = Field(
-            default=3,
-            ge=1,
-            le=10,
-            description="Retry delay in seconds",
-        )
+            # Authentication options
+            auth_method: str = Field(
+                default="oauth2",
+                description="Authentication method (oauth2 or basic)",
+            )
+            token_cache_duration: int = Field(
+                default=3300,
+                ge=300,
+                le=7200,
+                description="Token cache duration in seconds",
+            )
+            token_refresh_threshold: int = Field(
+                default=300,
+                ge=60,
+                le=1800,
+                description="Token refresh threshold in seconds",
+            )
 
-    class OicConnection(FlextModels.Entity):
-        """Oracle Integration Cloud connection model."""
+            # Connection settings
+            request_timeout: int = Field(
+                default=180,
+                ge=30,
+                le=600,
+                description="Request timeout in seconds",
+            )
+            max_retries: int = Field(
+                default=5,
+                ge=1,
+                le=10,
+                description="Maximum retry attempts",
+            )
+            retry_delay: int = Field(
+                default=3,
+                ge=1,
+                le=10,
+                description="Retry delay in seconds",
+            )
 
-        name: str = Field(..., description="Connection display name", min_length=1)
-        description: str = Field(default="", description="Connection description")
-        adapter_type: str = Field(
-            ...,
-            description="Connection adapter type",
-            min_length=1,
-        )
-        properties: dict[str, t.GeneralValueType] = Field(
-            default_factory=dict,
-            description="Connection properties",
-        )
-        status: str = Field(
-            default="active",
-            description="Connection status",
-        )
+        class OicConnection(FlextModels.Entity):
+            """Oracle Integration Cloud connection model."""
 
-        def validate_business_rules(self) -> FlextResult[None]:
-            """Validate connection business rules."""
-            try:
-                if not self.id.strip():
-                    return FlextResult[None].fail("Connection ID cannot be empty")
-                if not self.name.strip():
-                    return FlextResult[None].fail("Connection name cannot be empty")
-                if not self.adapter_type.strip():
-                    return FlextResult[None].fail("Adapter type cannot be empty")
-                return FlextResult[None].ok(None)
-            except Exception as e:
-                return FlextResult[None].fail(f"Connection validation failed: {e}")
+            name: str = Field(..., description="Connection display name", min_length=1)
+            description: str = Field(default="", description="Connection description")
+            adapter_type: str = Field(
+                ...,
+                description="Connection adapter type",
+                min_length=1,
+            )
+            properties: dict[str, t.GeneralValueType] = Field(
+                default_factory=dict,
+                description="Connection properties",
+            )
+            status: str = Field(
+                default="active",
+                description="Connection status",
+            )
 
-    class OicIntegration(FlextModels.Entity):
-        """Oracle Integration Cloud integration model."""
+            def validate_business_rules(self) -> FlextResult[None]:
+                """Validate connection business rules."""
+                try:
+                    if not self.id.strip():
+                        return FlextResult[None].fail("Connection ID cannot be empty")
+                    if not self.name.strip():
+                        return FlextResult[None].fail("Connection name cannot be empty")
+                    if not self.adapter_type.strip():
+                        return FlextResult[None].fail("Adapter type cannot be empty")
+                    return FlextResult[None].ok(None)
+                except Exception as e:
+                    return FlextResult[None].fail(f"Connection validation failed: {e}")
 
-        name: str = Field(..., description="Integration display name", min_length=1)
-        description: str = Field(default="", description="Integration description")
-        oic_version: str = Field(
-            default="01.00.0000",
-            description="Oracle OIC integration version",
-            pattern=r"^\d{2}\.\d{2}\.\d{4}$",
-        )
-        pattern: str = Field(default="ORCHESTRATION", description="Integration pattern")
-        status: str = Field(
-            default="configured",
-            description="Integration status",
-        )
-        archive_content: bytes | None = Field(
-            None,
-            description="Integration archive content",
-        )
-        connections: list[str] = Field(
-            default_factory=list,
-            description="List of connection IDs used by this integration",
-        )
+        class OicIntegration(FlextModels.Entity):
+            """Oracle Integration Cloud integration model."""
 
-        def validate_business_rules(self) -> FlextResult[None]:
-            """Validate integration business rules."""
-            try:
-                if not self.id.strip():
-                    return FlextResult[None].fail("Integration ID cannot be empty")
-                if not self.name.strip():
-                    return FlextResult[None].fail("Integration name cannot be empty")
+            name: str = Field(..., description="Integration display name", min_length=1)
+            description: str = Field(default="", description="Integration description")
+            oic_version: str = Field(
+                default="01.00.0000",
+                description="Oracle OIC integration version",
+                pattern=r"^\d{2}\.\d{2}\.\d{4}$",
+            )
+            pattern: str = Field(default="ORCHESTRATION", description="Integration pattern")
+            status: str = Field(
+                default="configured",
+                description="Integration status",
+            )
+            archive_content: bytes | None = Field(
+                None,
+                description="Integration archive content",
+            )
+            connections: list[str] = Field(
+                default_factory=list,
+                description="List of connection IDs used by this integration",
+            )
 
-                # Validate version format
-                if not re.match(r"^\d{2}\.\d{2}\.\d{4}$", self.version):
-                    return FlextResult[None].fail(
-                        f"Invalid version format: {self.version}",
-                    )
+            def validate_business_rules(self) -> FlextResult[None]:
+                """Validate integration business rules."""
+                try:
+                    if not self.id.strip():
+                        return FlextResult[None].fail("Integration ID cannot be empty")
+                    if not self.name.strip():
+                        return FlextResult[None].fail("Integration name cannot be empty")
 
-                return FlextResult[None].ok(None)
-            except Exception as e:
-                return FlextResult[None].fail(f"Integration validation failed: {e}")
-
-    class OicPackage(FlextModels.Entity):
-        """Oracle Integration Cloud package model."""
-
-        name: str = Field(..., description="Package display name", min_length=1)
-        description: str = Field(default="", description="Package description")
-        oic_version: str = Field(
-            default="01.00.0000",
-            description="Package version",
-            pattern=r"^\d{2}\.\d{2}\.\d{4}$",
-        )
-        archive_content: bytes | None = Field(
-            None,
-            description="Package archive content",
-        )
-        integrations: list[str] = Field(
-            default_factory=list,
-            description="List of integration IDs in this package",
-        )
-        connections: list[str] = Field(
-            default_factory=list,
-            description="List of connection IDs in this package",
-        )
-        lookups: list[str] = Field(
-            default_factory=list,
-            description="List of lookup names in this package",
-        )
-
-        def validate_business_rules(self) -> FlextResult[None]:
-            """Validate package business rules."""
-            try:
-                if not self.id.strip():
-                    return FlextResult[None].fail("Package ID cannot be empty")
-                if not self.name.strip():
-                    return FlextResult[None].fail("Package name cannot be empty")
-
-                # Validate version format
-                if not re.match(r"^\d{2}\.\d{2}\.\d{4}$", self.version):
-                    return FlextResult[None].fail(
-                        f"Invalid version format: {self.version}",
-                    )
-
-                return FlextResult[None].ok(None)
-            except Exception as e:
-                return FlextResult[None].fail(f"Package validation failed: {e}")
-
-    class OicLookup(FlextModels.Entity):
-        """Oracle Integration Cloud lookup model."""
-
-        name: str = Field(..., description="Lookup name (identifier)", min_length=1)
-        description: str = Field(default="", description="Lookup description")
-        columns: list[dict[str, t.GeneralValueType]] = Field(
-            default_factory=list,
-            description="Lookup column definitions",
-        )
-        rows: list[dict[str, t.GeneralValueType]] = Field(
-            default_factory=list,
-            description="Lookup row data",
-        )
-
-        def validate_business_rules(self) -> FlextResult[None]:
-            """Validate lookup business rules."""
-            try:
-                # Check name
-                if not self.name.strip():
-                    return FlextResult[None].fail("Lookup name cannot be empty")
-
-                # Validate columns structure
-                validation_errors: list[str] = []
-                validation_errors.extend([
-                    "Column must have a name"
-                    for column in self.columns
-                    if "name" not in column
-                ])
-
-                # Validate rows have valid column references
-                if self.columns and self.rows:
-                    column_names = {col["name"] for col in self.columns}
-                    for row in self.rows:
-                        validation_errors.extend(
-                            f"Row contains unknown column: {key}"
-                            for key in row
-                            if key not in column_names
+                    # Validate version format
+                    if not re.match(r"^\d{2}\.\d{2}\.\d{4}$", self.version):
+                        return FlextResult[None].fail(
+                            f"Invalid version format: {self.version}",
                         )
 
-                if validation_errors:
-                    return FlextResult[None].fail("; ".join(validation_errors))
+                    return FlextResult[None].ok(None)
+                except Exception as e:
+                    return FlextResult[None].fail(f"Integration validation failed: {e}")
 
-                return FlextResult[None].ok(None)
-            except Exception as e:
-                return FlextResult[None].fail(f"Lookup validation failed: {e}")
+        class OicPackage(FlextModels.Entity):
+            """Oracle Integration Cloud package model."""
 
-    class OicProject(FlextModels.Entity):
-        """Oracle Integration Cloud project model."""
+            name: str = Field(..., description="Package display name", min_length=1)
+            description: str = Field(default="", description="Package description")
+            oic_version: str = Field(
+                default="01.00.0000",
+                description="Package version",
+                pattern=r"^\d{2}\.\d{2}\.\d{4}$",
+            )
+            archive_content: bytes | None = Field(
+                None,
+                description="Package archive content",
+            )
+            integrations: list[str] = Field(
+                default_factory=list,
+                description="List of integration IDs in this package",
+            )
+            connections: list[str] = Field(
+                default_factory=list,
+                description="List of connection IDs in this package",
+            )
+            lookups: list[str] = Field(
+                default_factory=list,
+                description="List of lookup names in this package",
+            )
 
-        name: str = Field(..., description="Project display name", min_length=1)
-        description: str = Field(default="", description="Project description")
-        folders: list[dict[str, t.GeneralValueType]] = Field(
-            default_factory=list,
-            description="Project folders",
-        )
+            def validate_business_rules(self) -> FlextResult[None]:
+                """Validate package business rules."""
+                try:
+                    if not self.id.strip():
+                        return FlextResult[None].fail("Package ID cannot be empty")
+                    if not self.name.strip():
+                        return FlextResult[None].fail("Package name cannot be empty")
 
-        def validate_business_rules(self) -> FlextResult[None]:
-            """Validate project business rules."""
-            try:
-                if not self.id.strip():
-                    return FlextResult[None].fail("Project ID cannot be empty")
-                if not self.name.strip():
-                    return FlextResult[None].fail("Project name cannot be empty")
-                return FlextResult[None].ok(None)
-            except Exception as e:
-                return FlextResult[None].fail(f"Project validation failed: {e}")
+                    # Validate version format
+                    if not re.match(r"^\d{2}\.\d{2}\.\d{4}$", self.version):
+                        return FlextResult[None].fail(
+                            f"Invalid version format: {self.version}",
+                        )
 
-    class OicSchedule(FlextModels.Entity):
-        """Oracle Integration Cloud schedule model."""
+                    return FlextResult[None].ok(None)
+                except Exception as e:
+                    return FlextResult[None].fail(f"Package validation failed: {e}")
 
-        integration_id: str = Field(
-            ...,
-            description="Integration identifier",
-            min_length=1,
-        )
-        schedule_type: str = Field(
-            default="ONCE",
-            description="Schedule type",
-        )
-        schedule_expression: str = Field(
-            default="",
-            description="Schedule expression (cron format for CRON type)",
-        )
-        timezone: str = Field(default="UTC", description="Schedule timezone")
-        start_time: datetime | None = Field(None, description="Schedule start time")
-        end_time: datetime | None = Field(None, description="Schedule end time")
-        enabled: bool = Field(default=True, description="Schedule enabled status")
+        class OicLookup(FlextModels.Entity):
+            """Oracle Integration Cloud lookup model."""
 
-        def validate_business_rules(self) -> FlextResult[None]:
-            """Validate schedule business rules."""
-            try:
-                if not self.integration_id.strip():
-                    return FlextResult[None].fail("Integration ID cannot be empty")
+            name: str = Field(..., description="Lookup name (identifier)", min_length=1)
+            description: str = Field(default="", description="Lookup description")
+            columns: list[dict[str, t.GeneralValueType]] = Field(
+                default_factory=list,
+                description="Lookup column definitions",
+            )
+            rows: list[dict[str, t.GeneralValueType]] = Field(
+                default_factory=list,
+                description="Lookup row data",
+            )
 
-                # Validate cron expression if CRON type
-                if self.schedule_type == "CRON" and not self.schedule_expression:
+            def validate_business_rules(self) -> FlextResult[None]:
+                """Validate lookup business rules."""
+                try:
+                    # Check name
+                    if not self.name.strip():
+                        return FlextResult[None].fail("Lookup name cannot be empty")
+
+                    # Validate columns structure
+                    validation_errors: list[str] = []
+                    validation_errors.extend([
+                        "Column must have a name"
+                        for column in self.columns
+                        if "name" not in column
+                    ])
+
+                    # Validate rows have valid column references
+                    if self.columns and self.rows:
+                        column_names = {col["name"] for col in self.columns}
+                        for row in self.rows:
+                            validation_errors.extend(
+                                f"Row contains unknown column: {key}"
+                                for key in row
+                                if key not in column_names
+                            )
+
+                    if validation_errors:
+                        return FlextResult[None].fail("; ".join(validation_errors))
+
+                    return FlextResult[None].ok(None)
+                except Exception as e:
+                    return FlextResult[None].fail(f"Lookup validation failed: {e}")
+
+        class OicProject(FlextModels.Entity):
+            """Oracle Integration Cloud project model."""
+
+            name: str = Field(..., description="Project display name", min_length=1)
+            description: str = Field(default="", description="Project description")
+            folders: list[dict[str, t.GeneralValueType]] = Field(
+                default_factory=list,
+                description="Project folders",
+            )
+
+            def validate_business_rules(self) -> FlextResult[None]:
+                """Validate project business rules."""
+                try:
+                    if not self.id.strip():
+                        return FlextResult[None].fail("Project ID cannot be empty")
+                    if not self.name.strip():
+                        return FlextResult[None].fail("Project name cannot be empty")
+                    return FlextResult[None].ok(None)
+                except Exception as e:
+                    return FlextResult[None].fail(f"Project validation failed: {e}")
+
+        class OicSchedule(FlextModels.Entity):
+            """Oracle Integration Cloud schedule model."""
+
+            integration_id: str = Field(
+                ...,
+                description="Integration identifier",
+                min_length=1,
+            )
+            schedule_type: str = Field(
+                default="ONCE",
+                description="Schedule type",
+            )
+            schedule_expression: str = Field(
+                default="",
+                description="Schedule expression (cron format for CRON type)",
+            )
+            timezone: str = Field(default="UTC", description="Schedule timezone")
+            start_time: datetime | None = Field(None, description="Schedule start time")
+            end_time: datetime | None = Field(None, description="Schedule end time")
+            enabled: bool = Field(default=True, description="Schedule enabled status")
+
+            def validate_business_rules(self) -> FlextResult[None]:
+                """Validate schedule business rules."""
+                try:
+                    if not self.integration_id.strip():
+                        return FlextResult[None].fail("Integration ID cannot be empty")
+
+                    # Validate cron expression if CRON type
+                    if self.schedule_type == "CRON" and not self.schedule_expression:
+                        return FlextResult[None].fail(
+                            "CRON schedule type requires schedule expression",
+                        )
+
+                    return FlextResult[None].ok(None)
+                except Exception as e:
+                    return FlextResult[None].fail(f"Schedule validation failed: {e}")
+
+        class OicIntegrationAction(FlextModels.Entity):
+            """Oracle Integration Cloud integration action model."""
+
+            integration_id: str = Field(
+                ...,
+                description="Integration identifier",
+                min_length=1,
+            )
+            oic_version: str = Field(
+                default="01.00.0000",
+                description="Integration version",
+                pattern=r"^\d{2}\.\d{2}\.\d{4}$",
+            )
+            action: str = Field(
+                ...,
+                description="Action to perform",
+            )
+            parameters: dict[str, t.GeneralValueType] = Field(
+                default_factory=dict,
+                description="Action parameters",
+            )
+            executed_at: datetime | None = Field(
+                None,
+                description="Action execution timestamp",
+            )
+
+            def validate_business_rules(self) -> FlextResult[None]:
+                """Validate integration action business rules."""
+                try:
+                    if not self.integration_id.strip():
+                        return FlextResult[None].fail("Integration ID cannot be empty")
+                    if not self.action:
+                        return FlextResult[None].fail("Action cannot be empty")
+
+                    # Validate version format
+                    if not re.match(r"^\d{2}\.\d{2}\.\d{4}$", self.version):
+                        return FlextResult[None].fail(
+                            f"Invalid version format: {self.version}",
+                        )
+
+                    return FlextResult[None].ok(None)
+                except Exception as e:
                     return FlextResult[None].fail(
-                        "CRON schedule type requires schedule expression",
+                        f"Integration action validation failed: {e}",
                     )
 
-                return FlextResult[None].ok(None)
-            except Exception as e:
-                return FlextResult[None].fail(f"Schedule validation failed: {e}")
+        class OicConnectionAction(FlextModels.Entity):
+            """Oracle Integration Cloud connection action model."""
 
-    class OicIntegrationAction(FlextModels.Entity):
-        """Oracle Integration Cloud integration action model."""
+            connection_id: str = Field(
+                ...,
+                description="Connection identifier",
+                min_length=1,
+            )
+            action: str = Field(
+                ...,
+                description="Action to perform",
+            )
+            parameters: dict[str, t.GeneralValueType] = Field(
+                default_factory=dict,
+                description="Action parameters",
+            )
+            executed_at: datetime | None = Field(
+                None,
+                description="Action execution timestamp",
+            )
 
-        integration_id: str = Field(
-            ...,
-            description="Integration identifier",
-            min_length=1,
-        )
-        oic_version: str = Field(
-            default="01.00.0000",
-            description="Integration version",
-            pattern=r"^\d{2}\.\d{2}\.\d{4}$",
-        )
-        action: str = Field(
-            ...,
-            description="Action to perform",
-        )
-        parameters: dict[str, t.GeneralValueType] = Field(
-            default_factory=dict,
-            description="Action parameters",
-        )
-        executed_at: datetime | None = Field(
-            None,
-            description="Action execution timestamp",
-        )
-
-        def validate_business_rules(self) -> FlextResult[None]:
-            """Validate integration action business rules."""
-            try:
-                if not self.integration_id.strip():
-                    return FlextResult[None].fail("Integration ID cannot be empty")
-                if not self.action:
-                    return FlextResult[None].fail("Action cannot be empty")
-
-                # Validate version format
-                if not re.match(r"^\d{2}\.\d{2}\.\d{4}$", self.version):
+            def validate_business_rules(self) -> FlextResult[None]:
+                """Validate connection action business rules."""
+                try:
+                    if not self.connection_id.strip():
+                        return FlextResult[None].fail("Connection ID cannot be empty")
+                    if not self.action:
+                        return FlextResult[None].fail("Action cannot be empty")
+                    return FlextResult[None].ok(None)
+                except Exception as e:
                     return FlextResult[None].fail(
-                        f"Invalid version format: {self.version}",
+                        f"Connection action validation failed: {e}",
                     )
 
-                return FlextResult[None].ok(None)
-            except Exception as e:
-                return FlextResult[None].fail(
-                    f"Integration action validation failed: {e}",
-                )
+        class OicDataTransformation(FlextModels.Entity):
+            """Data transformation model for OIC records."""
 
-    class OicConnectionAction(FlextModels.Entity):
-        """Oracle Integration Cloud connection action model."""
+            source_data: dict[str, t.GeneralValueType] = Field(
+                ...,
+                description="Source data to transform",
+            )
+            target_schema: dict[str, t.GeneralValueType] = Field(
+                ..., description="Target OIC schema"
+            )
+            transformation_rules: list[dict[str, t.GeneralValueType]] = Field(
+                default_factory=list,
+                description="Transformation rules to apply",
+            )
+            transformed_data: dict[str, t.GeneralValueType] = Field(
+                default_factory=dict,
+                description="Transformed data result",
+            )
 
-        connection_id: str = Field(
-            ...,
-            description="Connection identifier",
-            min_length=1,
-        )
-        action: str = Field(
-            ...,
-            description="Action to perform",
-        )
-        parameters: dict[str, t.GeneralValueType] = Field(
-            default_factory=dict,
-            description="Action parameters",
-        )
-        executed_at: datetime | None = Field(
-            None,
-            description="Action execution timestamp",
-        )
+            def validate_business_rules(self) -> FlextResult[None]:
+                """Validate transformation business rules."""
+                try:
+                    if not self.source_data:
+                        return FlextResult[None].fail("Source data cannot be empty")
+                    if not self.target_schema:
+                        return FlextResult[None].fail("Target schema cannot be empty")
+                    return FlextResult[None].ok(None)
+                except Exception as e:
+                    return FlextResult[None].fail(f"Transformation validation failed: {e}")
 
-        def validate_business_rules(self) -> FlextResult[None]:
-            """Validate connection action business rules."""
-            try:
-                if not self.connection_id.strip():
-                    return FlextResult[None].fail("Connection ID cannot be empty")
-                if not self.action:
-                    return FlextResult[None].fail("Action cannot be empty")
-                return FlextResult[None].ok(None)
-            except Exception as e:
-                return FlextResult[None].fail(
-                    f"Connection action validation failed: {e}",
-                )
+        class OicSchemaMapping(FlextModels.Entity):
+            """Schema mapping model for Singer to OIC transformation."""
 
-    class OicDataTransformation(FlextModels.Entity):
-        """Data transformation model for OIC records."""
+            singer_schema: dict[str, t.GeneralValueType] = Field(
+                ...,
+                description="Singer schema definition",
+            )
+            oic_schema: dict[str, t.GeneralValueType] = Field(
+                ..., description="OIC schema definition"
+            )
+            field_mappings: dict[str, str] = Field(
+                default_factory=dict,
+                description="Field mappings from Singer to OIC",
+            )
+            type_conversions: dict[str, str] = Field(
+                default_factory=dict,
+                description="Type conversions from Singer to OIC",
+            )
 
-        source_data: dict[str, t.GeneralValueType] = Field(
-            ...,
-            description="Source data to transform",
-        )
-        target_schema: dict[str, t.GeneralValueType] = Field(
-            ..., description="Target OIC schema"
-        )
-        transformation_rules: list[dict[str, t.GeneralValueType]] = Field(
-            default_factory=list,
-            description="Transformation rules to apply",
-        )
-        transformed_data: dict[str, t.GeneralValueType] = Field(
-            default_factory=dict,
-            description="Transformed data result",
-        )
+            def validate_business_rules(self) -> FlextResult[None]:
+                """Validate schema mapping business rules."""
+                try:
+                    if not self.singer_schema:
+                        return FlextResult[None].fail("Singer schema cannot be empty")
+                    if not self.oic_schema:
+                        return FlextResult[None].fail("OIC schema cannot be empty")
+                    return FlextResult[None].ok(None)
+                except Exception as e:
+                    return FlextResult[None].fail(f"Schema mapping validation failed: {e}")
 
-        def validate_business_rules(self) -> FlextResult[None]:
-            """Validate transformation business rules."""
-            try:
-                if not self.source_data:
-                    return FlextResult[None].fail("Source data cannot be empty")
-                if not self.target_schema:
-                    return FlextResult[None].fail("Target schema cannot be empty")
-                return FlextResult[None].ok(None)
-            except Exception as e:
-                return FlextResult[None].fail(f"Transformation validation failed: {e}")
+        class OicTargetConfig(FlextModels.ArbitraryTypesModel):
+            """Oracle OIC target configuration with Singer protocol integration."""
 
-    class OicSchemaMapping(FlextModels.Entity):
-        """Schema mapping model for Singer to OIC transformation."""
+            # Authentication configuration
+            auth_config: FlextTargetOracleOicModels.OicAuthenticationConfig = Field(
+                ...,
+                description="OAuth2 authentication configuration",
+            )
 
-        singer_schema: dict[str, t.GeneralValueType] = Field(
-            ...,
-            description="Singer schema definition",
-        )
-        oic_schema: dict[str, t.GeneralValueType] = Field(
-            ..., description="OIC schema definition"
-        )
-        field_mappings: dict[str, str] = Field(
-            default_factory=dict,
-            description="Field mappings from Singer to OIC",
-        )
-        type_conversions: dict[str, str] = Field(
-            default_factory=dict,
-            description="Type conversions from Singer to OIC",
-        )
+            # Import configuration
+            import_mode: str = Field(
+                default="create_or_update",
+                description="Import mode for OIC artifacts",
+            )
+            activate_integrations: bool = Field(
+                default=True,
+                description="Automatically activate integrations after import",
+            )
 
-        def validate_business_rules(self) -> FlextResult[None]:
-            """Validate schema mapping business rules."""
-            try:
-                if not self.singer_schema:
-                    return FlextResult[None].fail("Singer schema cannot be empty")
-                if not self.oic_schema:
-                    return FlextResult[None].fail("OIC schema cannot be empty")
-                return FlextResult[None].ok(None)
-            except Exception as e:
-                return FlextResult[None].fail(f"Schema mapping validation failed: {e}")
+            # Performance configuration
+            batch_size: int = Field(
+                default=25,
+                ge=1,
+                le=100,
+                description="Batch size for OIC operations",
+            )
+            concurrent_streams: int = Field(
+                default=2,
+                ge=1,
+                le=5,
+                description="Number of concurrent streams",
+            )
+            enable_connection_pooling: bool = Field(
+                default=True,
+                description="Enable HTTP connection pooling",
+            )
+            connection_pool_size: int = Field(
+                default=5,
+                ge=1,
+                le=20,
+                description="HTTP connection pool size",
+            )
 
-    class OicTargetConfig(FlextModels.ArbitraryTypesModel):
-        """Oracle OIC target configuration with Singer protocol integration."""
+            # Error handling configuration
+            enable_circuit_breaker: bool = Field(
+                default=True,
+                description="Enable circuit breaker for error handling",
+            )
+            circuit_breaker_threshold: int = Field(
+                default=10,
+                ge=3,
+                le=50,
+                description="Circuit breaker error threshold",
+            )
+            circuit_breaker_timeout: int = Field(
+                default=600,
+                ge=60,
+                le=3600,
+                description="Circuit breaker timeout in seconds",
+            )
 
-        # Authentication configuration
-        auth_config: FlextTargetOracleOicModels.OicAuthenticationConfig = Field(
-            ...,
-            description="OAuth2 authentication configuration",
-        )
+            # Debugging configuration
+            enable_debug_logging: bool = Field(
+                default=False,
+                description="Enable debug logging",
+            )
 
-        # Import configuration
-        import_mode: str = Field(
-            default="create_or_update",
-            description="Import mode for OIC artifacts",
-        )
-        activate_integrations: bool = Field(
-            default=True,
-            description="Automatically activate integrations after import",
-        )
+        class OicTargetResult(FlextModels.Entity):
+            """Result of Oracle OIC target operation processing."""
 
-        # Performance configuration
-        batch_size: int = Field(
-            default=25,
-            ge=1,
-            le=100,
-            description="Batch size for OIC operations",
-        )
-        concurrent_streams: int = Field(
-            default=2,
-            ge=1,
-            le=5,
-            description="Number of concurrent streams",
-        )
-        enable_connection_pooling: bool = Field(
-            default=True,
-            description="Enable HTTP connection pooling",
-        )
-        connection_pool_size: int = Field(
-            default=5,
-            ge=1,
-            le=20,
-            description="HTTP connection pool size",
-        )
+            stream_name: str = Field(..., description="Singer stream name")
+            records_processed: int = Field(
+                default=0,
+                ge=0,
+                description="Total records processed",
+            )
+            integrations_created: int = Field(
+                default=0,
+                ge=0,
+                description="Integrations created",
+            )
+            integrations_updated: int = Field(
+                default=0,
+                ge=0,
+                description="Integrations updated",
+            )
+            integrations_activated: int = Field(
+                default=0,
+                ge=0,
+                description="Integrations activated",
+            )
+            connections_created: int = Field(
+                default=0,
+                ge=0,
+                description="Connections created",
+            )
+            packages_imported: int = Field(default=0, ge=0, description="Packages imported")
+            lookups_created: int = Field(default=0, ge=0, description="Lookups created")
+            operation_failures: int = Field(
+                default=0,
+                ge=0,
+                description="Operations that failed",
+            )
 
-        # Error handling configuration
-        enable_circuit_breaker: bool = Field(
-            default=True,
-            description="Enable circuit breaker for error handling",
-        )
-        circuit_breaker_threshold: int = Field(
-            default=10,
-            ge=3,
-            le=50,
-            description="Circuit breaker error threshold",
-        )
-        circuit_breaker_timeout: int = Field(
-            default=600,
-            ge=60,
-            le=3600,
-            description="Circuit breaker timeout in seconds",
-        )
+            # Performance metrics
+            total_duration_ms: float = Field(
+                default=0.0,
+                ge=0.0,
+                description="Total processing duration",
+            )
+            average_processing_time_ms: float = Field(
+                default=0.0,
+                ge=0.0,
+                description="Average processing time per record",
+            )
 
-        # Debugging configuration
-        enable_debug_logging: bool = Field(
-            default=False,
-            description="Enable debug logging",
-        )
+            # Error tracking
+            error_messages: list[str] = Field(
+                default_factory=list,
+                description="Error messages encountered",
+            )
+            warnings: list[str] = Field(
+                default_factory=list,
+                description="Warning messages",
+            )
 
-    class OicTargetResult(FlextModels.Entity):
-        """Result of Oracle OIC target operation processing."""
-
-        stream_name: str = Field(..., description="Singer stream name")
-        records_processed: int = Field(
-            default=0,
-            ge=0,
-            description="Total records processed",
-        )
-        integrations_created: int = Field(
-            default=0,
-            ge=0,
-            description="Integrations created",
-        )
-        integrations_updated: int = Field(
-            default=0,
-            ge=0,
-            description="Integrations updated",
-        )
-        integrations_activated: int = Field(
-            default=0,
-            ge=0,
-            description="Integrations activated",
-        )
-        connections_created: int = Field(
-            default=0,
-            ge=0,
-            description="Connections created",
-        )
-        packages_imported: int = Field(default=0, ge=0, description="Packages imported")
-        lookups_created: int = Field(default=0, ge=0, description="Lookups created")
-        operation_failures: int = Field(
-            default=0,
-            ge=0,
-            description="Operations that failed",
-        )
-
-        # Performance metrics
-        total_duration_ms: float = Field(
-            default=0.0,
-            ge=0.0,
-            description="Total processing duration",
-        )
-        average_processing_time_ms: float = Field(
-            default=0.0,
-            ge=0.0,
-            description="Average processing time per record",
-        )
-
-        # Error tracking
-        error_messages: list[str] = Field(
-            default_factory=list,
-            description="Error messages encountered",
-        )
-        warnings: list[str] = Field(
-            default_factory=list,
-            description="Warning messages",
-        )
-
-        def validate_business_rules(self) -> FlextResult[None]:
-            """Validate OIC target result business rules."""
-            try:
-                # Validate operation counts
-                total_operations = (
-                    self.integrations_created
-                    + self.integrations_updated
-                    + self.connections_created
-                    + self.packages_imported
-                    + self.lookups_created
-                )
-
-                if total_operations > self.records_processed:
-                    return FlextResult[None].fail(
-                        "Total operations cannot exceed records processed",
+            def validate_business_rules(self) -> FlextResult[None]:
+                """Validate OIC target result business rules."""
+                try:
+                    # Validate operation counts
+                    total_operations = (
+                        self.integrations_created
+                        + self.integrations_updated
+                        + self.connections_created
+                        + self.packages_imported
+                        + self.lookups_created
                     )
 
-                return FlextResult[None].ok(None)
-            except Exception as e:
-                return FlextResult[None].fail(f"Target result validation failed: {e}")
+                    if total_operations > self.records_processed:
+                        return FlextResult[None].fail(
+                            "Total operations cannot exceed records processed",
+                        )
 
-        @property
-        def success_rate(self) -> float:
-            """Calculate success rate percentage."""
-            if self.records_processed == 0:
-                return 0.0
-            successful_operations = self.records_processed - self.operation_failures
-            return (successful_operations / self.records_processed) * 100.0
+                    return FlextResult[None].ok(None)
+                except Exception as e:
+                    return FlextResult[None].fail(f"Target result validation failed: {e}")
 
-        @property
-        def failure_rate(self) -> float:
-            """Calculate failure rate percentage."""
-            if self.records_processed == 0:
-                return 0.0
-            return (self.operation_failures / self.records_processed) * 100.0
+            @property
+            def success_rate(self) -> float:
+                """Calculate success rate percentage."""
+                if self.records_processed == 0:
+                    return 0.0
+                successful_operations = self.records_processed - self.operation_failures
+                return (successful_operations / self.records_processed) * 100.0
 
-    class OicErrorContext(FlextModels.ArbitraryTypesModel):
-        """Error context for Oracle OIC target error handling."""
+            @property
+            def failure_rate(self) -> float:
+                """Calculate failure rate percentage."""
+                if self.records_processed == 0:
+                    return 0.0
+                return (self.operation_failures / self.records_processed) * 100.0
 
-        error_type: str = Field(..., description="Error category")
+        class OicErrorContext(FlextModels.ArbitraryTypesModel):
+            """Error context for Oracle OIC target error handling."""
 
-        # Context information
-        oic_operation: str | None = Field(None, description="OIC operation that failed")
-        integration_id: str | None = Field(
-            None,
-            description="Integration ID causing error",
-        )
-        connection_id: str | None = Field(
-            None,
-            description="Connection ID causing error",
-        )
-        stream_name: str | None = Field(None, description="Singer stream name")
-        http_status_code: int | None = Field(None, description="HTTP status code")
-        oic_error_code: str | None = Field(None, description="OIC-specific error code")
+            error_type: str = Field(..., description="Error category")
 
-        # Recovery information
-        is_retryable: bool = Field(
-            default=False,
-            description="Whether error is retryable",
-        )
-        suggested_action: str | None = Field(
-            None,
-            description="Suggested recovery action",
-        )
-        max_retry_attempts: int | None = Field(
-            None,
-            description="Maximum retry attempts",
-        )
-        retry_delay_seconds: int | None = Field(
-            None,
-            description="Retry delay in seconds",
-        )
+            # Context information
+            oic_operation: str | None = Field(None, description="OIC operation that failed")
+            integration_id: str | None = Field(
+                None,
+                description="Integration ID causing error",
+            )
+            connection_id: str | None = Field(
+                None,
+                description="Connection ID causing error",
+            )
+            stream_name: str | None = Field(None, description="Singer stream name")
+            http_status_code: int | None = Field(None, description="HTTP status code")
+            oic_error_code: str | None = Field(None, description="OIC-specific error code")
+
+            # Recovery information
+            is_retryable: bool = Field(
+                default=False,
+                description="Whether error is retryable",
+            )
+            suggested_action: str | None = Field(
+                None,
+                description="Suggested recovery action",
+            )
+            max_retry_attempts: int | None = Field(
+                None,
+                description="Maximum retry attempts",
+            )
+            retry_delay_seconds: int | None = Field(
+                None,
+                description="Retry delay in seconds",
+            )
 
 
 class FlextTargetOracleOicUtilities(u):
