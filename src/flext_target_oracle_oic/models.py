@@ -60,7 +60,9 @@ class FlextTargetOracleOicModels(FlextModels):
 
             base_url: str = Field(..., description="Oracle OIC instance URL")
             oauth_client_id: str = Field(..., description="OAuth2 client ID")
-            oauth_client_secret: SecretStr = Field(..., description="OAuth2 client secret")
+            oauth_client_secret: SecretStr = Field(
+                ..., description="OAuth2 client secret"
+            )
             oauth_token_url: str = Field(..., description="OAuth2 token endpoint URL")
             oauth_client_aud: str = Field(..., description="OAuth2 audience")
 
@@ -144,7 +146,9 @@ class FlextTargetOracleOicModels(FlextModels):
                 description="Oracle OIC integration version",
                 pattern=r"^\d{2}\.\d{2}\.\d{4}$",
             )
-            pattern: str = Field(default="ORCHESTRATION", description="Integration pattern")
+            pattern: str = Field(
+                default="ORCHESTRATION", description="Integration pattern"
+            )
             status: str = Field(
                 default="configured",
                 description="Integration status",
@@ -164,7 +168,9 @@ class FlextTargetOracleOicModels(FlextModels):
                     if not self.id.strip():
                         return FlextResult[None].fail("Integration ID cannot be empty")
                     if not self.name.strip():
-                        return FlextResult[None].fail("Integration name cannot be empty")
+                        return FlextResult[None].fail(
+                            "Integration name cannot be empty"
+                        )
 
                     # Validate version format
                     if not re.match(r"^\d{2}\.\d{2}\.\d{4}$", self.version):
@@ -433,7 +439,9 @@ class FlextTargetOracleOicModels(FlextModels):
                         return FlextResult[None].fail("Target schema cannot be empty")
                     return FlextResult[None].ok(None)
                 except Exception as e:
-                    return FlextResult[None].fail(f"Transformation validation failed: {e}")
+                    return FlextResult[None].fail(
+                        f"Transformation validation failed: {e}"
+                    )
 
         class OicSchemaMapping(FlextModels.Entity):
             """Schema mapping model for Singer to OIC transformation."""
@@ -463,7 +471,9 @@ class FlextTargetOracleOicModels(FlextModels):
                         return FlextResult[None].fail("OIC schema cannot be empty")
                     return FlextResult[None].ok(None)
                 except Exception as e:
-                    return FlextResult[None].fail(f"Schema mapping validation failed: {e}")
+                    return FlextResult[None].fail(
+                        f"Schema mapping validation failed: {e}"
+                    )
 
         class OicTargetConfig(FlextModels.ArbitraryTypesModel):
             """Oracle OIC target configuration with Singer protocol integration."""
@@ -561,7 +571,9 @@ class FlextTargetOracleOicModels(FlextModels):
                 ge=0,
                 description="Connections created",
             )
-            packages_imported: int = Field(default=0, ge=0, description="Packages imported")
+            packages_imported: int = Field(
+                default=0, ge=0, description="Packages imported"
+            )
             lookups_created: int = Field(default=0, ge=0, description="Lookups created")
             operation_failures: int = Field(
                 default=0,
@@ -610,7 +622,9 @@ class FlextTargetOracleOicModels(FlextModels):
 
                     return FlextResult[None].ok(None)
                 except Exception as e:
-                    return FlextResult[None].fail(f"Target result validation failed: {e}")
+                    return FlextResult[None].fail(
+                        f"Target result validation failed: {e}"
+                    )
 
             @property
             def success_rate(self) -> float:
@@ -633,7 +647,9 @@ class FlextTargetOracleOicModels(FlextModels):
             error_type: str = Field(..., description="Error category")
 
             # Context information
-            oic_operation: str | None = Field(None, description="OIC operation that failed")
+            oic_operation: str | None = Field(
+                None, description="OIC operation that failed"
+            )
             integration_id: str | None = Field(
                 None,
                 description="Integration ID causing error",
@@ -644,7 +660,9 @@ class FlextTargetOracleOicModels(FlextModels):
             )
             stream_name: str | None = Field(None, description="Singer stream name")
             http_status_code: int | None = Field(None, description="HTTP status code")
-            oic_error_code: str | None = Field(None, description="OIC-specific error code")
+            oic_error_code: str | None = Field(
+                None, description="OIC-specific error code"
+            )
 
             # Recovery information
             is_retryable: bool = Field(
