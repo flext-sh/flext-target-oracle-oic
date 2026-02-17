@@ -483,7 +483,7 @@ class FlextTargetOracleOicUtilities(u_core):
         @staticmethod
         def validate_oic_api_response(
             response: dict[str, t.GeneralValueType],
-            expected_status_codes: t.IntList | None = None,
+            expected_status_codes: list[int] | None = None,
         ) -> FlextResult[dict[str, t.GeneralValueType]]:
             """Validate Oracle OIC API response.
 
