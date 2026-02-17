@@ -82,7 +82,7 @@ class OICConnectionSettings(FlextModels):
             logger.exception("Failed to create OICConnectionSettings from dict")
             raise
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self) -> FlextResult[bool]:
         """Validate OIC connection configuration business rules."""
         errors: list[str] = []
 
@@ -104,8 +104,8 @@ class OICConnectionSettings(FlextModels):
             errors.append("max_retries must be non-negative")
 
         if errors:
-            return FlextResult[None].fail(
+            return FlextResult[bool].fail(
                 f"OIC connection config validation failed: {'; '.join(errors)}",
             )
 
-        return FlextResult[None].ok(None)
+        return FlextResult[bool].ok(value=True)

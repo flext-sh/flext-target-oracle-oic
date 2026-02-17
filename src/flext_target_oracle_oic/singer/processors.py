@@ -72,7 +72,7 @@ class OICRecordProcessor:
         self,
         record: dict[str, t.GeneralValueType],
         schema: dict[str, t.GeneralValueType],
-    ) -> FlextResult[None]:
+    ) -> FlextResult[bool]:
         """Validate record against Singer schema.
 
         Args:
@@ -88,14 +88,14 @@ class OICRecordProcessor:
             required_fields: list[t.GeneralValueType] = schema.get("required", [])
 
             if not isinstance(properties, dict):
-                return FlextResult[None].fail("Schema properties must be a dictionary")
+                return FlextResult[bool].fail("Schema properties must be a dictionary")
             if not isinstance(required_fields, list):
-                return FlextResult[None].fail("Schema required fields must be a list")
+                return FlextResult[bool].fail("Schema required fields must be a list")
 
             # Check required fields
             missing_fields = [field for field in required_fields if field not in record]
             if missing_fields:
-                return FlextResult[None].fail(
+                return FlextResult[bool].fail(
                     f"Missing required fields: {missing_fields}",
                 )
 
@@ -112,16 +112,16 @@ class OICRecordProcessor:
                         expected_type = None
 
                     if not self._validate_field_type(field_value, expected_type):
-                        return FlextResult[None].fail(
+                        return FlextResult[bool].fail(
                             f"Field '{field_name}' type mismatch. "
                             f"Expected: {expected_type}, Got: {type(field_value).__name__}",
                         )
 
-            return FlextResult[None].ok(None)
+            return FlextResult[bool].ok(value=True)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("Schema validation failed")
-            return FlextResult[None].fail(f"Schema validation failed: {e}")
+            return FlextResult[bool].fail(f"Schema validation failed: {e}")
 
     def _validate_field_type(self, value: object, expected_type: str | None) -> bool:
         """Validate field value against expected type.

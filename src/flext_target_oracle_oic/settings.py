@@ -366,37 +366,37 @@ class TargetOracleOicConfig(FlextSettings):
         """Get the actual OAuth client secret value (safely extract from SecretStr)."""
         return self.oauth_client_secret.get_secret_value()
 
-    def validate_business_rules(self) -> FlextResult[None]:
+    def validate_business_rules(self) -> FlextResult[bool]:
         """Validate configuration business rules."""
         try:
             # Validate authentication configuration
             if not self.oauth_client_id:
-                return FlextResult[None].fail("OAuth client ID cannot be empty")
+                return FlextResult[bool].fail("OAuth client ID cannot be empty")
             if not str(self.oauth_token_url):
-                return FlextResult[None].fail("OAuth token URL cannot be empty")
+                return FlextResult[bool].fail("OAuth token URL cannot be empty")
 
             # Validate connection configuration
             if not str(self.base_url):
-                return FlextResult[None].fail("Base URL cannot be empty")
+                return FlextResult[bool].fail("Base URL cannot be empty")
             if self.timeout <= 0:
-                return FlextResult[None].fail("Timeout must be positive")
+                return FlextResult[bool].fail("Timeout must be positive")
 
             # Validate deployment configuration
             valid_modes = {"create_only", "update_only", "create_or_update"}
             if self.import_mode not in valid_modes:
-                return FlextResult[None].fail(
+                return FlextResult[bool].fail(
                     f"Invalid import mode: {self.import_mode}",
                 )
 
             # Validate processing configuration
             if self.batch_size <= 0:
-                return FlextResult[None].fail("Batch size must be positive")
+                return FlextResult[bool].fail("Batch size must be positive")
             if self.max_errors < 0:
-                return FlextResult[None].fail("Max errors cannot be negative")
+                return FlextResult[bool].fail("Max errors cannot be negative")
 
-            return FlextResult[None].ok(None)
+            return FlextResult[bool].ok(value=True)
         except Exception as e:
-            return FlextResult[None].fail(f"Configuration validation failed: {e}")
+            return FlextResult[bool].fail(f"Configuration validation failed: {e}")
 
     # Singleton pattern methods
     @classmethod

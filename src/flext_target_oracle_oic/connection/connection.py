@@ -37,11 +37,11 @@ class OICConnection:
         self._access_token: str | None = None
         self._session: requests.Session | None = None
 
-    def connect(self) -> FlextResult[None]:
+    def connect(self) -> FlextResult[bool]:
         """Establish OIC connection with OAuth2 authentication."""
         try:
             if self._session:
-                return FlextResult[None].ok(None)
+                return FlextResult[bool].ok(value=True)
 
             self._session = requests.Session()
 
@@ -54,21 +54,21 @@ class OICConnection:
             # Authenticate and get access token
             auth_result: FlextResult[str] = self._authenticate()
             if not auth_result.is_success:
-                return FlextResult[None].fail(
+                return FlextResult[bool].fail(
                     auth_result.error or "Authentication failed",
                 )
 
             logger.info("Connected to OIC server: %s", self.config.base_url)
-            return FlextResult[None].ok(None)
+            return FlextResult[bool].ok(value=True)
 
         except FlextTargetOracleOicAuthenticationError as e:
             logger.exception("OIC authentication failed")
-            return FlextResult[None].fail(f"Authentication failed: {e}")
+            return FlextResult[bool].fail(f"Authentication failed: {e}")
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("OIC connection failed")
-            return FlextResult[None].fail(f"Connection failed: {e}")
+            return FlextResult[bool].fail(f"Connection failed: {e}")
 
-    def disconnect(self) -> FlextResult[None]:
+    def disconnect(self) -> FlextResult[bool]:
         """Close OIC connection."""
         try:
             if self._session:
@@ -77,11 +77,11 @@ class OICConnection:
                 self._access_token = None
                 logger.info("OIC connection closed")
 
-            return FlextResult[None].ok(None)
+            return FlextResult[bool].ok(value=True)
 
         except (RuntimeError, ValueError, TypeError) as e:
             logger.exception("OIC disconnect failed")
-            return FlextResult[None].fail(f"Disconnect failed: {e}")
+            return FlextResult[bool].fail(f"Disconnect failed: {e}")
 
     def _authenticate(self) -> FlextResult[str]:
         """Authenticate with OAuth2 and get access token."""
@@ -122,7 +122,7 @@ class OICConnection:
                     f"Authentication failed: {response.status_code} - {response.text}",
                 )
 
-            token_data: dict[str, t.GeneralValueType] = response.json()
+            token_data: dict[str, t.GeneralValueType] = response.model_dump_json()
             access_token = token_data.get("access_token")
 
             if not access_token or not isinstance(access_token, str):
@@ -139,7 +139,7 @@ class OICConnection:
         """Test OIC connection."""
         try:
             if not self._session or not self._access_token:
-                connect_result: FlextResult[None] = self.connect()
+                connect_result: FlextResult[bool] = self.connect()
                 if not connect_result.is_success:
                     return FlextResult[bool].fail(
                         connect_result.error or "Connection failed",
@@ -183,7 +183,7 @@ class OICConnection:
         """Make authenticated request to OIC API."""
         try:
             if not self._session or not self._access_token:
-                connect_result: FlextResult[None] = self.connect()
+                connect_result: FlextResult[bool] = self.connect()
                 if not connect_result.is_success:
                     return FlextResult[dict[str, t.GeneralValueType]].fail(
                         connect_result.error or "Connection failed",
@@ -220,7 +220,7 @@ class OICConnection:
                 )
 
             try:
-                response_data_obj: object = response.json()
+                response_data_obj: object = response.model_dump_json()
             except json.JSONDecodeError:
                 response_data_obj = {"text": response.text}
 
