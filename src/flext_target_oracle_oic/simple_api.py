@@ -195,7 +195,7 @@ def create_testing_oic_target_config(
     return TargetOracleOicConfig.create_for_testing(**test_config_overrides)
 
 
-def validate_oic_target_config(config: TargetOracleOicConfig) -> FlextResult[None]:
+def validate_oic_target_config(config: TargetOracleOicConfig) -> FlextResult[bool]:
     """Validate Oracle Integration Cloud target configuration.
 
     Args:

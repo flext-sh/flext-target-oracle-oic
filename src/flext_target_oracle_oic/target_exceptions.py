@@ -347,16 +347,16 @@ class FlextTargetOracleOicErrorDetails(FlextModels):
     integration_name: str | None = None
     oic_instance: str | None = None
 
-    def validate_domain_rules(self) -> FlextResult[None]:
+    def validate_domain_rules(self) -> FlextResult[bool]:
         """Validate domain-specific business rules."""
         try:
             # Validate error code format
             if not self.error_code or not self.error_code.startswith("ORACLE_OIC"):
-                return FlextResult[None].fail("Error code must start with 'ORACLE_OIC'")
+                return FlextResult[bool].fail("Error code must start with 'ORACLE_OIC'")
 
             # Validate error type is not empty
             if not self.error_type:
-                return FlextResult[None].fail("Error type cannot be empty")
+                return FlextResult[bool].fail("Error type cannot be empty")
 
             # Validate source component is valid
             valid_components = {
@@ -371,13 +371,13 @@ class FlextTargetOracleOicErrorDetails(FlextModels):
                 "infrastructure",
             }
             if self.source_component not in valid_components:
-                return FlextResult[None].fail(
+                return FlextResult[bool].fail(
                     f"Invalid source component: {self.source_component}",
                 )
 
-            return FlextResult[None].ok(None)
+            return FlextResult[bool].ok(value=True)
         except Exception as e:
-            return FlextResult[None].fail(f"Domain validation failed: {e}")
+            return FlextResult[bool].fail(f"Domain validation failed: {e}")
 
 
 # ===============================================================================
@@ -496,7 +496,7 @@ def create_auth_error_result(
     auth_method: str | None = None,
     endpoint: str | None = None,
     oic_instance: str | None = None,
-) -> FlextResult[None]:
+) -> FlextResult[bool]:
     """Create authentication error result."""
     error = create_authentication_error(
         message,
@@ -504,7 +504,7 @@ def create_auth_error_result(
         endpoint=endpoint,
         oic_instance=oic_instance,
     )
-    return FlextResult[None].fail(str(error))
+    return FlextResult[bool].fail(str(error))
 
 
 def create_connection_error_result(
@@ -513,7 +513,7 @@ def create_connection_error_result(
     oic_instance: str | None = None,
     endpoint: str | None = None,
     connection_type: str | None = None,
-) -> FlextResult[None]:
+) -> FlextResult[bool]:
     """Create connection error result."""
     error = create_connection_error(
         message,
@@ -521,7 +521,7 @@ def create_connection_error_result(
         endpoint=endpoint,
         connection_type=connection_type,
     )
-    return FlextResult[None].fail(str(error))
+    return FlextResult[bool].fail(str(error))
 
 
 def create_processing_error_result(
@@ -530,7 +530,7 @@ def create_processing_error_result(
     integration_name: str | None = None,
     processing_stage: str | None = None,
     record_count: int | None = None,
-) -> FlextResult[None]:
+) -> FlextResult[bool]:
     """Create processing error result."""
     error = create_processing_error(
         message,
@@ -538,7 +538,7 @@ def create_processing_error_result(
         processing_stage=processing_stage,
         record_count=record_count,
     )
-    return FlextResult[None].fail(str(error))
+    return FlextResult[bool].fail(str(error))
 
 
 def create_validation_error_result(
@@ -548,7 +548,7 @@ def create_validation_error_result(
     value: object = None,
     integration_name: str | None = None,
     entity_type: str | None = None,
-) -> FlextResult[None]:
+) -> FlextResult[bool]:
     """Create validation error result."""
     error = create_validation_error(
         message,
@@ -557,7 +557,7 @@ def create_validation_error_result(
         integration_name=integration_name,
         entity_type=entity_type,
     )
-    return FlextResult[None].fail(str(error))
+    return FlextResult[bool].fail(str(error))
 
 
 # ===============================================================================

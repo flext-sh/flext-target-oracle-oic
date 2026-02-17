@@ -588,7 +588,7 @@ class ConnectionActionsSink(OICBaseSink):
         )
         response.raise_for_status()
         # Get test results
-        result: FlextResult[object] = response.json()
+        result: FlextResult[object] = response.model_dump_json()
         if result.get("status") != "SUCCESS":
             self.logger.warning(
                 "Connection test failed for %s: %s",

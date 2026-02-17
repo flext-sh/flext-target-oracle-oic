@@ -44,7 +44,7 @@ class OICTargetOrchestrator:
         except Exception as e:
             return FlextResult[bool].fail(f"Configuration validation failed: {e}")
 
-    def setup(self) -> FlextResult[None]:
+    def setup(self) -> FlextResult[bool]:
         """Set up OIC target orchestrator.
 
         Returns:
@@ -53,12 +53,12 @@ class OICTargetOrchestrator:
         """
         try:
             logger.info("Setting up OIC target orchestrator")
-            return FlextResult[None].ok(None)
+            return FlextResult[bool].ok(value=True)
         except Exception as e:
             logger.exception("OIC orchestrator setup failed")
-            return FlextResult[None].fail(f"Setup failed: {e}")
+            return FlextResult[bool].fail(f"Setup failed: {e}")
 
-    def teardown(self) -> FlextResult[None]:
+    def teardown(self) -> FlextResult[bool]:
         """Teardown OIC target orchestrator.
 
         Returns:
@@ -67,10 +67,10 @@ class OICTargetOrchestrator:
         """
         try:
             logger.info("Tearing down OIC target orchestrator")
-            return FlextResult[None].ok(None)
+            return FlextResult[bool].ok(value=True)
         except Exception as e:
             logger.exception("OIC orchestrator teardown failed")
-            return FlextResult[None].fail(f"Teardown failed: {e}")
+            return FlextResult[bool].fail(f"Teardown failed: {e}")
 
     def orchestrate_target_pipeline(
         self,

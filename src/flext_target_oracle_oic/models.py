@@ -123,18 +123,18 @@ class FlextTargetOracleOicModels(FlextModels):
                 description="Connection status",
             )
 
-            def validate_business_rules(self) -> FlextResult[None]:
+            def validate_business_rules(self) -> FlextResult[bool]:
                 """Validate connection business rules."""
                 try:
                     if not self.id.strip():
-                        return FlextResult[None].fail("Connection ID cannot be empty")
+                        return FlextResult[bool].fail("Connection ID cannot be empty")
                     if not self.name.strip():
-                        return FlextResult[None].fail("Connection name cannot be empty")
+                        return FlextResult[bool].fail("Connection name cannot be empty")
                     if not self.adapter_type.strip():
-                        return FlextResult[None].fail("Adapter type cannot be empty")
-                    return FlextResult[None].ok(None)
+                        return FlextResult[bool].fail("Adapter type cannot be empty")
+                    return FlextResult[bool].ok(value=True)
                 except Exception as e:
-                    return FlextResult[None].fail(f"Connection validation failed: {e}")
+                    return FlextResult[bool].fail(f"Connection validation failed: {e}")
 
         class OicIntegration(FlextModels.Entity):
             """Oracle Integration Cloud integration model."""
@@ -162,25 +162,25 @@ class FlextTargetOracleOicModels(FlextModels):
                 description="List of connection IDs used by this integration",
             )
 
-            def validate_business_rules(self) -> FlextResult[None]:
+            def validate_business_rules(self) -> FlextResult[bool]:
                 """Validate integration business rules."""
                 try:
                     if not self.id.strip():
-                        return FlextResult[None].fail("Integration ID cannot be empty")
+                        return FlextResult[bool].fail("Integration ID cannot be empty")
                     if not self.name.strip():
-                        return FlextResult[None].fail(
+                        return FlextResult[bool].fail(
                             "Integration name cannot be empty"
                         )
 
                     # Validate version format
                     if not re.match(r"^\d{2}\.\d{2}\.\d{4}$", self.version):
-                        return FlextResult[None].fail(
+                        return FlextResult[bool].fail(
                             f"Invalid version format: {self.version}",
                         )
 
-                    return FlextResult[None].ok(None)
+                    return FlextResult[bool].ok(value=True)
                 except Exception as e:
-                    return FlextResult[None].fail(f"Integration validation failed: {e}")
+                    return FlextResult[bool].fail(f"Integration validation failed: {e}")
 
         class OicPackage(FlextModels.Entity):
             """Oracle Integration Cloud package model."""
@@ -209,23 +209,23 @@ class FlextTargetOracleOicModels(FlextModels):
                 description="List of lookup names in this package",
             )
 
-            def validate_business_rules(self) -> FlextResult[None]:
+            def validate_business_rules(self) -> FlextResult[bool]:
                 """Validate package business rules."""
                 try:
                     if not self.id.strip():
-                        return FlextResult[None].fail("Package ID cannot be empty")
+                        return FlextResult[bool].fail("Package ID cannot be empty")
                     if not self.name.strip():
-                        return FlextResult[None].fail("Package name cannot be empty")
+                        return FlextResult[bool].fail("Package name cannot be empty")
 
                     # Validate version format
                     if not re.match(r"^\d{2}\.\d{2}\.\d{4}$", self.version):
-                        return FlextResult[None].fail(
+                        return FlextResult[bool].fail(
                             f"Invalid version format: {self.version}",
                         )
 
-                    return FlextResult[None].ok(None)
+                    return FlextResult[bool].ok(value=True)
                 except Exception as e:
-                    return FlextResult[None].fail(f"Package validation failed: {e}")
+                    return FlextResult[bool].fail(f"Package validation failed: {e}")
 
         class OicLookup(FlextModels.Entity):
             """Oracle Integration Cloud lookup model."""
@@ -241,12 +241,12 @@ class FlextTargetOracleOicModels(FlextModels):
                 description="Lookup row data",
             )
 
-            def validate_business_rules(self) -> FlextResult[None]:
+            def validate_business_rules(self) -> FlextResult[bool]:
                 """Validate lookup business rules."""
                 try:
                     # Check name
                     if not self.name.strip():
-                        return FlextResult[None].fail("Lookup name cannot be empty")
+                        return FlextResult[bool].fail("Lookup name cannot be empty")
 
                     # Validate columns structure
                     validation_errors: list[str] = []
@@ -267,11 +267,11 @@ class FlextTargetOracleOicModels(FlextModels):
                             )
 
                     if validation_errors:
-                        return FlextResult[None].fail("; ".join(validation_errors))
+                        return FlextResult[bool].fail("; ".join(validation_errors))
 
-                    return FlextResult[None].ok(None)
+                    return FlextResult[bool].ok(value=True)
                 except Exception as e:
-                    return FlextResult[None].fail(f"Lookup validation failed: {e}")
+                    return FlextResult[bool].fail(f"Lookup validation failed: {e}")
 
         class OicProject(FlextModels.Entity):
             """Oracle Integration Cloud project model."""
@@ -283,16 +283,16 @@ class FlextTargetOracleOicModels(FlextModels):
                 description="Project folders",
             )
 
-            def validate_business_rules(self) -> FlextResult[None]:
+            def validate_business_rules(self) -> FlextResult[bool]:
                 """Validate project business rules."""
                 try:
                     if not self.id.strip():
-                        return FlextResult[None].fail("Project ID cannot be empty")
+                        return FlextResult[bool].fail("Project ID cannot be empty")
                     if not self.name.strip():
-                        return FlextResult[None].fail("Project name cannot be empty")
-                    return FlextResult[None].ok(None)
+                        return FlextResult[bool].fail("Project name cannot be empty")
+                    return FlextResult[bool].ok(value=True)
                 except Exception as e:
-                    return FlextResult[None].fail(f"Project validation failed: {e}")
+                    return FlextResult[bool].fail(f"Project validation failed: {e}")
 
         class OicSchedule(FlextModels.Entity):
             """Oracle Integration Cloud schedule model."""
@@ -315,21 +315,21 @@ class FlextTargetOracleOicModels(FlextModels):
             end_time: datetime | None = Field(None, description="Schedule end time")
             enabled: bool = Field(default=True, description="Schedule enabled status")
 
-            def validate_business_rules(self) -> FlextResult[None]:
+            def validate_business_rules(self) -> FlextResult[bool]:
                 """Validate schedule business rules."""
                 try:
                     if not self.integration_id.strip():
-                        return FlextResult[None].fail("Integration ID cannot be empty")
+                        return FlextResult[bool].fail("Integration ID cannot be empty")
 
                     # Validate cron expression if CRON type
                     if self.schedule_type == "CRON" and not self.schedule_expression:
-                        return FlextResult[None].fail(
+                        return FlextResult[bool].fail(
                             "CRON schedule type requires schedule expression",
                         )
 
-                    return FlextResult[None].ok(None)
+                    return FlextResult[bool].ok(value=True)
                 except Exception as e:
-                    return FlextResult[None].fail(f"Schedule validation failed: {e}")
+                    return FlextResult[bool].fail(f"Schedule validation failed: {e}")
 
         class OicIntegrationAction(FlextModels.Entity):
             """Oracle Integration Cloud integration action model."""
@@ -357,23 +357,23 @@ class FlextTargetOracleOicModels(FlextModels):
                 description="Action execution timestamp",
             )
 
-            def validate_business_rules(self) -> FlextResult[None]:
+            def validate_business_rules(self) -> FlextResult[bool]:
                 """Validate integration action business rules."""
                 try:
                     if not self.integration_id.strip():
-                        return FlextResult[None].fail("Integration ID cannot be empty")
+                        return FlextResult[bool].fail("Integration ID cannot be empty")
                     if not self.action:
-                        return FlextResult[None].fail("Action cannot be empty")
+                        return FlextResult[bool].fail("Action cannot be empty")
 
                     # Validate version format
                     if not re.match(r"^\d{2}\.\d{2}\.\d{4}$", self.version):
-                        return FlextResult[None].fail(
+                        return FlextResult[bool].fail(
                             f"Invalid version format: {self.version}",
                         )
 
-                    return FlextResult[None].ok(None)
+                    return FlextResult[bool].ok(value=True)
                 except Exception as e:
-                    return FlextResult[None].fail(
+                    return FlextResult[bool].fail(
                         f"Integration action validation failed: {e}",
                     )
 
@@ -398,16 +398,16 @@ class FlextTargetOracleOicModels(FlextModels):
                 description="Action execution timestamp",
             )
 
-            def validate_business_rules(self) -> FlextResult[None]:
+            def validate_business_rules(self) -> FlextResult[bool]:
                 """Validate connection action business rules."""
                 try:
                     if not self.connection_id.strip():
-                        return FlextResult[None].fail("Connection ID cannot be empty")
+                        return FlextResult[bool].fail("Connection ID cannot be empty")
                     if not self.action:
-                        return FlextResult[None].fail("Action cannot be empty")
-                    return FlextResult[None].ok(None)
+                        return FlextResult[bool].fail("Action cannot be empty")
+                    return FlextResult[bool].ok(value=True)
                 except Exception as e:
-                    return FlextResult[None].fail(
+                    return FlextResult[bool].fail(
                         f"Connection action validation failed: {e}",
                     )
 
@@ -430,16 +430,16 @@ class FlextTargetOracleOicModels(FlextModels):
                 description="Transformed data result",
             )
 
-            def validate_business_rules(self) -> FlextResult[None]:
+            def validate_business_rules(self) -> FlextResult[bool]:
                 """Validate transformation business rules."""
                 try:
                     if not self.source_data:
-                        return FlextResult[None].fail("Source data cannot be empty")
+                        return FlextResult[bool].fail("Source data cannot be empty")
                     if not self.target_schema:
-                        return FlextResult[None].fail("Target schema cannot be empty")
-                    return FlextResult[None].ok(None)
+                        return FlextResult[bool].fail("Target schema cannot be empty")
+                    return FlextResult[bool].ok(value=True)
                 except Exception as e:
-                    return FlextResult[None].fail(
+                    return FlextResult[bool].fail(
                         f"Transformation validation failed: {e}"
                     )
 
@@ -462,16 +462,16 @@ class FlextTargetOracleOicModels(FlextModels):
                 description="Type conversions from Singer to OIC",
             )
 
-            def validate_business_rules(self) -> FlextResult[None]:
+            def validate_business_rules(self) -> FlextResult[bool]:
                 """Validate schema mapping business rules."""
                 try:
                     if not self.singer_schema:
-                        return FlextResult[None].fail("Singer schema cannot be empty")
+                        return FlextResult[bool].fail("Singer schema cannot be empty")
                     if not self.oic_schema:
-                        return FlextResult[None].fail("OIC schema cannot be empty")
-                    return FlextResult[None].ok(None)
+                        return FlextResult[bool].fail("OIC schema cannot be empty")
+                    return FlextResult[bool].ok(value=True)
                 except Exception as e:
-                    return FlextResult[None].fail(
+                    return FlextResult[bool].fail(
                         f"Schema mapping validation failed: {e}"
                     )
 
@@ -603,7 +603,7 @@ class FlextTargetOracleOicModels(FlextModels):
                 description="Warning messages",
             )
 
-            def validate_business_rules(self) -> FlextResult[None]:
+            def validate_business_rules(self) -> FlextResult[bool]:
                 """Validate OIC target result business rules."""
                 try:
                     # Validate operation counts
@@ -616,13 +616,13 @@ class FlextTargetOracleOicModels(FlextModels):
                     )
 
                     if total_operations > self.records_processed:
-                        return FlextResult[None].fail(
+                        return FlextResult[bool].fail(
                             "Total operations cannot exceed records processed",
                         )
 
-                    return FlextResult[None].ok(None)
+                    return FlextResult[bool].ok(value=True)
                 except Exception as e:
-                    return FlextResult[None].fail(
+                    return FlextResult[bool].fail(
                         f"Target result validation failed: {e}"
                     )
 

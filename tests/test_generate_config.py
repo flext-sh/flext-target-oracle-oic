@@ -29,7 +29,7 @@ class TestGenerateConfig:
             "OIC_IDCS_CLIENT_SECRET": "test_secret",
             "OIC_IDCS_URL": "https://test.identity.oraclecloud.com",
         }
-        with patch.dict(os.environ, env_vars):
+        with patch.model_dump(os.environ, env_vars):
             config = generate_config()
             # Check required fields
             if "base_url" not in config:
@@ -58,7 +58,7 @@ class TestGenerateConfig:
     def test_generate_config_defaults(self) -> None:
         """Test method."""
         """Test default values in config."""
-        with patch.dict(os.environ, {}, clear=True):
+        with patch.model_dump(os.environ, {}, clear=True):
             config = generate_config()
             # Check defaults
             if config.get("import_mode") != "create_or_update":
