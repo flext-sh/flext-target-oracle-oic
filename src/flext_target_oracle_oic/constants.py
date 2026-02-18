@@ -235,6 +235,18 @@ class FlextTargetOracleOicConstants(FlextOracleOicConstants):
             MIN_OPERATION_TIMEOUT: Final[int] = 60  # 1 minute
             MAX_OPERATION_TIMEOUT: Final[int] = 7200  # 2 hours
 
+        class Performance:
+            """Performance and operational constants."""
+
+            # API operation timeouts and limits
+            DEFAULT_API_TIMEOUT: Final[int] = 180
+            DEFAULT_BATCH_SIZE: Final[int] = 25
+            OAUTH2_TOKEN_REFRESH_THRESHOLD: Final[int] = 300
+            MAX_API_RETRIES: Final[int] = 5
+            DEFAULT_CONNECTION_POOL_SIZE: Final[int] = 5
+            API_RATE_LIMIT_PER_MINUTE: Final[int] = 100
+            DEFAULT_CIRCUIT_BREAKER_THRESHOLD: Final[int] = 10
+
         class ErrorMessages:
             """Error message constants."""
 
