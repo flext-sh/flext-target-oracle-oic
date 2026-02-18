@@ -8,10 +8,11 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from datetime import UTC, datetime, timedelta
-from typing import ClassVar
 
-from flext_core import FlextConstants, FlextResult, t
+from flext_core import FlextResult, t
 from flext_core.utilities import FlextUtilities as u_core
+
+from flext_target_oracle_oic.constants import c
 
 
 class FlextTargetOracleOicUtilities(u_core):
@@ -30,22 +31,9 @@ class FlextTargetOracleOicUtilities(u_core):
     - Enterprise security with OAuth2 token lifecycle management
     - OIC performance monitoring and optimization patterns
 
-    Attributes:
-    OIC_DEFAULT_API_TIMEOUT: Default API operation timeout (180 seconds)
-    OIC_DEFAULT_BATCH_SIZE: Default batch size for bulk operations (25)
-    OAUTH2_TOKEN_REFRESH_THRESHOLD: Threshold for token refresh (300 seconds)
-    MAX_API_RETRIES: Maximum API retry attempts (5)
-    DEFAULT_CONNECTION_POOL_SIZE: Default connection pool size (5)
+    Performance constants are defined in constants.py under c.TargetOracleOic.Performance.*
 
     """
-
-    OIC_DEFAULT_API_TIMEOUT: ClassVar[int] = 180
-    OIC_DEFAULT_BATCH_SIZE: ClassVar[int] = 25
-    OAUTH2_TOKEN_REFRESH_THRESHOLD: ClassVar[int] = 300
-    MAX_API_RETRIES: ClassVar[int] = 5
-    DEFAULT_CONNECTION_POOL_SIZE: ClassVar[int] = 5
-    OIC_API_RATE_LIMIT_PER_MINUTE: ClassVar[int] = 100
-    DEFAULT_CIRCUIT_BREAKER_THRESHOLD: ClassVar[int] = 10
 
     class TargetOracleOic:
         """Singer protocol utilities for Oracle OIC target operations."""
@@ -434,7 +422,7 @@ class FlextTargetOracleOicUtilities(u_core):
 
                 # Check if token expires within threshold
                 threshold_seconds = (
-                    FlextTargetOracleOicUtilities.OAUTH2_TOKEN_REFRESH_THRESHOLD
+                    c.TargetOracleOic.Performance.OAUTH2_TOKEN_REFRESH_THRESHOLD
                 )
                 time_until_expiry = (expiration_time - current_time).total_seconds()
 
@@ -616,14 +604,14 @@ class FlextTargetOracleOicUtilities(u_core):
 
             Args:
             records: List of Singer records
-            batch_size: Size of each batch (default: OIC_DEFAULT_BATCH_SIZE)
+            batch_size: Size of each batch (default: c.TargetOracleOic.Performance.DEFAULT_BATCH_SIZE)
 
             Returns:
             FlextResult containing list of batches or error
 
             """
             actual_batch_size = (
-                batch_size or FlextTargetOracleOicUtilities.OIC_DEFAULT_BATCH_SIZE
+                batch_size or c.TargetOracleOic.Performance.DEFAULT_BATCH_SIZE
             )
 
             if actual_batch_size <= 0:
@@ -705,31 +693,37 @@ class FlextTargetOracleOicUtilities(u_core):
             # Validate batch size
             batch_size = config.get(
                 "batch_size",
-                FlextTargetOracleOicUtilities.OIC_DEFAULT_BATCH_SIZE,
+                c.TargetOracleOic.Performance.DEFAULT_BATCH_SIZE,
             )
-            if batch_size <= 0 or batch_size > FlextConstants.Batch.DEFAULT_SIZE:
+            if (
+                batch_size <= 0
+                or batch_size > c.TargetOracleOic.OracleOic.MAX_BATCH_SIZE
+            ):
                 return FlextResult[dict[str, t.GeneralValueType]].fail(
-                    f"Batch size must be between 1 and {FlextConstants.Batch.DEFAULT_SIZE}",
+                    f"Batch size must be between 1 and {c.TargetOracleOic.OracleOic.MAX_BATCH_SIZE}",
                 )
 
             # Validate timeout
             timeout = config.get(
                 "request_timeout",
-                FlextTargetOracleOicUtilities.OIC_DEFAULT_API_TIMEOUT,
+                c.TargetOracleOic.Performance.DEFAULT_API_TIMEOUT,
             )
-            if timeout <= 0 or timeout > FlextConstants.Web.TOTAL_TIMEOUT:
+            if timeout <= 0 or timeout > c.TargetOracleOic.OracleOic.MAX_TIMEOUT:
                 return FlextResult[dict[str, t.GeneralValueType]].fail(
-                    f"Request timeout must be between 1 and {FlextConstants.Web.TOTAL_TIMEOUT} seconds",
+                    f"Request timeout must be between 1 and {c.TargetOracleOic.OracleOic.MAX_TIMEOUT} seconds",
                 )
 
             # Validate retry configuration
             max_retries = config.get(
                 "max_retries",
-                FlextTargetOracleOicUtilities.MAX_API_RETRIES,
+                c.TargetOracleOic.Performance.MAX_API_RETRIES,
             )
-            if max_retries < 0 or max_retries > FlextConstants.Batch.SMALL_SIZE:
+            if (
+                max_retries < 0
+                or max_retries > c.TargetOracleOic.OracleOic.MAX_MAX_RETRIES
+            ):
                 return FlextResult[dict[str, t.GeneralValueType]].fail(
-                    f"Max retries must be between 0 and {FlextConstants.Batch.SMALL_SIZE}",
+                    f"Max retries must be between 0 and {c.TargetOracleOic.OracleOic.MAX_MAX_RETRIES}",
                 )
 
             return FlextResult[dict[str, t.GeneralValueType]].ok(config)
@@ -838,7 +832,7 @@ class FlextTargetOracleOicUtilities(u_core):
                     1,
                     min(
                         max_batch_size,
-                        FlextTargetOracleOicUtilities.OIC_DEFAULT_BATCH_SIZE,
+                        c.TargetOracleOic.Performance.DEFAULT_BATCH_SIZE,
                     ),
                 )
 
