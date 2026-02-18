@@ -66,6 +66,14 @@
         flext-target-oracle-oic = "flext_target_oracle_oic.target:main"
         target-oracle-oic       = "flext_target_oracle_oic.target:main"
 
+    [tool.pyrefly]
+        search-path = [
+            "../typings",
+            "../typings/generated",
+            "src",
+            "tests",
+        ]
+
 [tool.ruff]
     extend = "../ruff-shared.toml"
 
