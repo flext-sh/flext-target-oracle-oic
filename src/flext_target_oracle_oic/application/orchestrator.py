@@ -1,117 +1,24 @@
-"""Oracle OIC Target Orchestrator using flext-core patterns.
-
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-
-"""
+"""Orchestrator entry points for Oracle OIC target lifecycle."""
 
 from __future__ import annotations
 
 from flext_core import FlextResult, FlextTypes as t
-from flext_core.runtime import FlextRuntime
-
-logger = FlextRuntime.get_logger(__name__)
 
 
 class OICTargetOrchestrator:
-    """Oracle OIC Target Orchestrator for FLEXT ecosystem integration."""
+    """Coordinates setup and teardown for target orchestration."""
 
     def __init__(self, config: dict[str, t.GeneralValueType] | None = None) -> None:
-        """Initialize OIC target orchestrator.
-
-        Args:
-        config: Configuration dictionary
-
-        """
-        self.config: dict[str, t.GeneralValueType] = config or {}
-        logger.debug("Initialized OIC target orchestrator")
-
-    def validate_configuration(self) -> FlextResult[bool]:
-        """Validate OIC target configuration.
-
-        Returns:
-        FlextResult indicating validation success
-
-        """
-        try:
-            # Basic validation for OIC
-            required_fields = ["base_url", "oauth_client_id"]
-            for field in required_fields:
-                if field not in self.config:
-                    return FlextResult[bool].fail(f"Missing required field: {field}")
-
-            return FlextResult[bool].ok(value=True)
-        except Exception as e:
-            return FlextResult[bool].fail(f"Configuration validation failed: {e}")
+        """Store runtime configuration used by orchestration steps."""
+        self.config = config or {}
 
     def setup(self) -> FlextResult[bool]:
-        """Set up OIC target orchestrator.
-
-        Returns:
-        FlextResult indicating setup success
-
-        """
-        try:
-            logger.info("Setting up OIC target orchestrator")
-            return FlextResult[bool].ok(value=True)
-        except Exception as e:
-            logger.exception("OIC orchestrator setup failed")
-            return FlextResult[bool].fail(f"Setup failed: {e}")
+        """Initialize orchestration dependencies."""
+        return FlextResult[bool].ok(value=True)
 
     def teardown(self) -> FlextResult[bool]:
-        """Teardown OIC target orchestrator.
-
-        Returns:
-        FlextResult indicating teardown success
-
-        """
-        try:
-            logger.info("Tearing down OIC target orchestrator")
-            return FlextResult[bool].ok(value=True)
-        except Exception as e:
-            logger.exception("OIC orchestrator teardown failed")
-            return FlextResult[bool].fail(f"Teardown failed: {e}")
-
-    def orchestrate_target_pipeline(
-        self,
-        records: list[dict[str, t.GeneralValueType]],
-    ) -> FlextResult[dict[str, t.GeneralValueType]]:
-        """Orchestrate OIC target pipeline execution.
-
-        Args:
-        records: Records to process
-
-        Returns:
-        FlextResult with execution status
-
-        """
-        try:
-            logger.info("Starting OIC target pipeline orchestration")
-
-            # Process records through target pipeline
-            processed_count = 0
-            for _record in records:
-                # Process individual record
-                processed_count += 1
-
-            result: dict[str, t.GeneralValueType] = {
-                "processed_records": processed_count,
-                "status": "completed",
-            }
-
-            logger.info(
-                "OIC target pipeline completed: %d records processed",
-                processed_count,
-            )
-            return FlextResult[dict[str, t.GeneralValueType]].ok(result)
-
-        except Exception as e:
-            logger.exception("OIC target pipeline orchestration failed")
-            return FlextResult[dict[str, t.GeneralValueType]].fail(
-                f"Pipeline orchestration failed: {e}",
-            )
+        """Release orchestration dependencies."""
+        return FlextResult[bool].ok(value=True)
 
 
-__all__: list[str] = [
-    "OICTargetOrchestrator",
-]
+__all__ = ["OICTargetOrchestrator"]
