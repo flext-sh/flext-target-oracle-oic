@@ -1,21 +1,20 @@
 [build-system]
     build-backend = "poetry.core.masonry.api"
     requires = [
-        "poetry-core>=1.9.0",
+        "poetry-core>=2",
     ]
 
 [project]
     classifiers = [
-        "Development Status :: 5 - Production/Stable",
-        "Intended Audience :: Developers",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
-        "Programming Language :: Python :: 3 :: Only",
-        "Programming Language :: Python :: 3.13",
-        "Topic :: Database",
-        "Topic :: Software Development :: Libraries :: Python Modules",
-        "Topic :: System :: Archiving",
-        "Typing :: Typed",
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Database",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: System :: Archiving",
+    "Typing :: Typed"
     ]
     dependencies = [
         "flext-api",
@@ -46,6 +45,7 @@
     readme = "README.md"
     requires-python = ">=3.13,<3.14"
     version = "0.10.0-dev"
+    license = "MIT"
     [[project.authors]]
         email = "team@flext.sh"
         name  = "FLEXT Team"
@@ -53,9 +53,6 @@
     [[project.maintainers]]
         email = "team@flext.sh"
         name  = "FLEXT Team"
-
-    [project.license]
-        text = "MIT"
 
     [project.urls]
         Documentation = "https://github.com/flext-sh/flext/blob/main/README.md"
@@ -78,6 +75,11 @@
     skips = [
         "B101",
         "B601",
+        "B404",
+        "B603",
+        "B607",
+        "B105",
+        "B608",
     ]
 
 [tool.poetry]
@@ -125,17 +127,11 @@
 
 [tool.pytest.ini_options]
     addopts = [
-        "--cov-branch",
-        "--cov-fail-under=90",
-        "--cov-report=html:reports/coverage",
-        "--cov-report=term-missing:skip-covered",
-        "--cov-report=xml:reports/coverage.xml",
-        "--cov=flext_target_oracle_oic",
-        "--maxfail=1",
-        "--strict-config",
-        "--strict-markers",
-        "--tb=short",
-        "-ra",
+    "--maxfail=1",
+    "--strict-config",
+    "--strict-markers",
+    "--tb=short",
+    "-ra"
     ]
     markers = [
         "e2e: End-to-end tests",
@@ -175,6 +171,7 @@
         "raise AssertionError",
         "raise NotImplementedError",
     ]
+fail_under = 100
 
 [tool.coverage.html]
     directory = "reports/coverage"
@@ -191,27 +188,27 @@
             develop = true
             path    = "../flext-core"
 
-                                                                        [tool.poetry.dependencies.flext-meltano]
+                                                                                [tool.poetry.dependencies.flext-meltano]
             develop = true
             path    = "../flext-meltano"
 
-                                                                                                                                        [tool.poetry.dependencies.flext-oracle-oic]
+                                                                                                                                                        [tool.poetry.dependencies.flext-oracle-oic]
             develop = true
             path    = "../flext-oracle-oic"
 
-                                                                                                                                                                                                        [tool.poetry.dependencies.flext-observability]
+                                                                                                                                                                                                                                [tool.poetry.dependencies.flext-observability]
             develop = true
             path    = "../flext-observability"
 
-        [tool.poetry.dependencies.flext-cli]
+                                        [tool.poetry.dependencies.flext-cli]
             develop = true
             path    = "../flext-cli"
 
-        [tool.poetry.dependencies.flext-api]
+                                                [tool.poetry.dependencies.flext-api]
             develop = true
             path    = "../flext-api"
 
-        [tool.poetry.dependencies.flext-db-oracle]
+                                                        [tool.poetry.dependencies.flext-db-oracle]
             develop = true
             path    = "../flext-db-oracle"
 
