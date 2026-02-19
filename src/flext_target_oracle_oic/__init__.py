@@ -13,7 +13,6 @@ from flext_meltano import (
     FlextMeltanoBridge,
     FlextMeltanoSettings,
 )
-
 from flext_target_oracle_oic.__version__ import __version__, __version_info__
 from flext_target_oracle_oic.application import OICTargetOrchestrator
 from flext_target_oracle_oic.cli import main, main as cli_main
@@ -70,9 +69,6 @@ from flext_target_oracle_oic.target_models import (
 from flext_target_oracle_oic.typings import t
 from flext_target_oracle_oic.utilities import FlextTargetOracleOicUtilities
 
-# Domain-specific aliases
-u = FlextTargetOracleOicUtilities  # Utilities (FlextTargetOracleOicUtilities extends FlextOracleOicUtilities)
-
 __all__: list[str] = [
     "ConnectionsSink",
     "FlextMeltanoBridge",
@@ -81,6 +77,7 @@ __all__: list[str] = [
     "FlextResult",
     "FlextTargetOracleOicModels",
     "FlextTargetOracleOicProtocols",
+    "FlextTargetOracleOicUtilities",
     "IntegrationsSink",
     "LegacyOICConnection",
     "LegacyOICConnectionSettings",
@@ -122,5 +119,4 @@ __all__: list[str] = [
     "m_target_oracle_oic",
     "main",
     "t",
-    "u",
 ]

@@ -13,7 +13,6 @@ import requests
 import urllib3
 from flext_core import FlextResult, FlextTypes as t
 from flext_core.runtime import FlextRuntime
-
 from flext_target_oracle_oic.connection.settings import OICConnectionSettings
 from flext_target_oracle_oic.target_exceptions import (
     FlextTargetOracleOicAuthenticationError,

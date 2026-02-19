@@ -11,7 +11,6 @@ from datetime import UTC, datetime, timedelta
 
 from flext_core import FlextResult, t
 from flext_core.utilities import FlextUtilities as u_core
-
 from flext_target_oracle_oic.constants import c
 
 
