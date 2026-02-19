@@ -14,13 +14,12 @@ from flext_api import FlextApiClient
 from flext_api.settings import FlextApiSettings
 from flext_core import FlextLogger, FlextResult, FlextTypes as t
 from flext_meltano import FlextMeltanoTarget as Target
-
-# Use FLEXT Meltano wrappers instead of direct singer_sdk imports (domain separation)
-from singer_sdk import Sink
-
 from flext_target_oracle_oic.constants import c
 from flext_target_oracle_oic.settings import TargetOracleOicConfig
 from flext_target_oracle_oic.target_config import create_singer_config_schema
+
+# Use FLEXT Meltano wrappers instead of direct singer_sdk imports (domain separation)
+from singer_sdk import Sink
 
 logger = FlextLogger(__name__)
 
