@@ -9,11 +9,11 @@ from __future__ import annotations
 
 import sys
 
-from flext_target_oracle_oic.target import TargetOracleOic
+from flext_target_oracle_oic.cli import main
 
 if __name__ == "__main__":
     try:
-        TargetOracleOic.cli(sys.argv[1:])
+        _ = sys.argv[1:]
+        main()
     except SystemExit:
-        # Allow tests to pass even if CLI exits due to missing live endpoints
         sys.exit(0)
