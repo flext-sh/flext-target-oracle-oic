@@ -36,6 +36,10 @@ class OICBaseSink(Sink):
             extra={"keys": list(record.keys())},
         )
 
+    def process_batch(self, context: dict[str, t.GeneralValueType]) -> None:
+        """Singer batch hook implementation."""
+        _ = context
+
 
 class ConnectionsSink(OICBaseSink):
     """Sink for OIC connections stream."""
