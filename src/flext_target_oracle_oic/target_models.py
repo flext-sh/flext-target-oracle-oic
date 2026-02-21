@@ -2,55 +2,27 @@
 
 from __future__ import annotations
 
-from flext_target_oracle_oic.typings import t
-
 from .models import OICConnection, OICIntegration, OICLookup, OICPackage
 
 
-def create_oic_connection(data: dict[str, t.GeneralValueType]) -> OICConnection:
-    """Create an OICConnection model from generic payload."""
-    return OICConnection(
-        id=str(data.get("id", "")),
-        name=str(data.get("name", "")),
-        adapter_type=str(data.get("adapter_type", "REST")),
-        properties=data if isinstance(data, dict) else {},
-    )
+def create_oic_connection(data: dict[str, object]) -> OICConnection:
+    """Create an OICConnection model from generic payload via Pydantic validation."""
+    return OICConnection.model_validate({**data, "properties": data})
 
 
-def create_oic_integration(data: dict[str, t.GeneralValueType]) -> OICIntegration:
-    """Create an OICIntegration model from generic payload."""
-    return OICIntegration(
-        id=str(data.get("id", "")),
-        name=str(data.get("name", "")),
-        version=str(data.get("version", "01.00.0000")),
-        pattern=str(data.get("pattern", "ORCHESTRATION")),
-    )
+def create_oic_integration(data: dict[str, object]) -> OICIntegration:
+    """Create an OICIntegration model from generic payload via Pydantic validation."""
+    return OICIntegration.model_validate(data)
 
 
-def create_oic_package(data: dict[str, t.GeneralValueType]) -> OICPackage:
-    """Create an OICPackage model from generic payload."""
-    return OICPackage(
-        id=str(data.get("id", "")),
-        name=str(data.get("name", "")),
-        version=str(data.get("version", "01.00.0000")),
-    )
+def create_oic_package(data: dict[str, object]) -> OICPackage:
+    """Create an OICPackage model from generic payload via Pydantic validation."""
+    return OICPackage.model_validate(data)
 
 
-def create_oic_lookup(data: dict[str, t.GeneralValueType]) -> OICLookup:
-    """Create an OICLookup model from generic payload."""
-    rows_obj = data.get("rows", [])
-    cols_obj = data.get("columns", [])
-    rows: list[dict[str, t.GeneralValueType]] = (
-        [r for r in rows_obj if isinstance(r, dict)]
-        if isinstance(rows_obj, list)
-        else []
-    )
-    cols: list[dict[str, t.GeneralValueType]] = (
-        [c for c in cols_obj if isinstance(c, dict)]
-        if isinstance(cols_obj, list)
-        else []
-    )
-    return OICLookup(name=str(data.get("name", "")), columns=cols, rows=rows)
+def create_oic_lookup(data: dict[str, object]) -> OICLookup:
+    """Create an OICLookup model from generic payload via Pydantic validation."""
+    return OICLookup.model_validate(data)
 
 
 __all__ = [
