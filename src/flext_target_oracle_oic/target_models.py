@@ -40,8 +40,16 @@ def create_oic_lookup(data: dict[str, t.GeneralValueType]) -> OICLookup:
     """Create an OICLookup model from generic payload."""
     rows_obj = data.get("rows", [])
     cols_obj = data.get("columns", [])
-    rows = rows_obj if isinstance(rows_obj, list) else []
-    cols = cols_obj if isinstance(cols_obj, list) else []
+    rows: list[dict[str, t.GeneralValueType]] = (
+        [r for r in rows_obj if isinstance(r, dict)]
+        if isinstance(rows_obj, list)
+        else []
+    )
+    cols: list[dict[str, t.GeneralValueType]] = (
+        [c for c in cols_obj if isinstance(c, dict)]
+        if isinstance(cols_obj, list)
+        else []
+    )
     return OICLookup(name=str(data.get("name", "")), columns=cols, rows=rows)
 
 

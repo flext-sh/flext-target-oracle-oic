@@ -30,13 +30,10 @@ def create_config_from_dict(
 
 
 def create_config_with_env_overrides(
-    **overrides: dict[str, t.GeneralValueType],
+    **overrides: t.GeneralValueType,
 ) -> TargetOracleOicConfig:
     """Create TargetOracleOicConfig with environment variable overrides."""
-    return TargetOracleOicConfig.get_or_create_shared_instance(
-        project_name="flext-target-oracle-oic",
-        **overrides,
-    )
+    return TargetOracleOicConfig.model_validate(overrides)
 
 
 def create_singer_config_schema() -> dict[str, t.GeneralValueType]:
