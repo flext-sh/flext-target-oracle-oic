@@ -34,7 +34,6 @@ from flext_target_oracle_oic.models import (
     OICSchedule,
     OICSchemaMapping,
     m,
-    m_target_oracle_oic,
 )
 from flext_target_oracle_oic.patterns import (
     OICDataTransformer,
@@ -116,7 +115,6 @@ __all__: list[str] = [
     "create_oic_package",
     "create_singer_config_schema",
     "m",
-    "m_target_oracle_oic",
     "main",
     "t",
 ]

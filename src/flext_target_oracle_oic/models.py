@@ -97,7 +97,6 @@ class FlextTargetOracleOicModels(FlextModels):
 
 
 m = FlextTargetOracleOicModels
-m_target_oracle_oic = FlextTargetOracleOicModels
 
 __all__ = [
     "FlextTargetOracleOicModels",
@@ -112,5 +111,4 @@ __all__ = [
     "OICSchedule",
     "OICSchemaMapping",
     "m",
-    "m_target_oracle_oic",
 ]
