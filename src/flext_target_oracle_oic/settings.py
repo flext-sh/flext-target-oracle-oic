@@ -9,7 +9,8 @@ from __future__ import annotations
 
 from typing import Self
 
-from flext_core import FlextConstants, FlextResult, FlextSettings, t
+from flext_core import FlextConstants, FlextResult, FlextSettings
+from flext_target_oracle_oic.typings import t
 from pydantic import (
     AnyUrl,
     BaseModel,

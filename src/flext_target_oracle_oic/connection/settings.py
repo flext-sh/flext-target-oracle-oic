@@ -12,7 +12,7 @@ from flext_core import (
     FlextLogger,
     FlextModels,
     FlextResult,
-    FlextTypes as t,
+    t,
 )
 from pydantic import Field
 

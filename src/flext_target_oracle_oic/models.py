@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from enum import StrEnum
 
-from flext_core import FlextModels, FlextResult, FlextTypes as t
+from flext_core import FlextModels, FlextResult, t
 from pydantic import Field
 
 

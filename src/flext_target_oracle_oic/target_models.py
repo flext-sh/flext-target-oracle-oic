@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from flext_core import FlextTypes as t
+from flext_target_oracle_oic.typings import t
 
 from .models import OICConnection, OICIntegration, OICLookup, OICPackage
 

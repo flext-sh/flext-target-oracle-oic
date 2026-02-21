@@ -7,7 +7,7 @@ import json
 import os
 from pathlib import Path
 
-from flext_core import FlextTypes as t
+from flext_core import t
 
 
 def generate_config() -> dict[str, t.GeneralValueType]:

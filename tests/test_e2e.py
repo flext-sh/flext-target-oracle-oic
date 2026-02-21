@@ -23,7 +23,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pytest
-from flext_core import FlextTypes as t
+from flext_target_oracle_oic import t
 
 from flext_target_oracle_oic.target_client import (
     ConnectionsSink,

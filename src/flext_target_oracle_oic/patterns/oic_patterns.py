@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from flext_core import FlextResult, FlextTypes as t
+from flext_core import FlextResult, t
 
 
 class OICTypeConverter:
