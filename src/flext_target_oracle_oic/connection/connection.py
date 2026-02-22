@@ -10,6 +10,7 @@ class OICConnection:
 
     def __init__(self, config: dict[str, t.GeneralValueType] | None = None) -> None:
         """Initialize connection with optional configuration mapping."""
+        super().__init__()
         self.config = config or {}
 
     def test_connection(self) -> FlextResult[bool]:

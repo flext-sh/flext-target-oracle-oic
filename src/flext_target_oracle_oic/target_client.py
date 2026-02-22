@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 
 from flext_core import FlextLogger, FlextResult, t
 from flext_meltano import FlextMeltanoTarget as Target
@@ -26,8 +26,8 @@ class OICBaseSink(Sink):
 
     def process_record(
         self,
-        record: dict[str, t.GeneralValueType],
-        context: dict[str, t.GeneralValueType],
+        record: Mapping[str, t.GeneralValueType],
+        context: Mapping[str, t.GeneralValueType],
     ) -> None:
         """Default sink behavior: log incoming record metadata."""
         _ = context
@@ -36,7 +36,7 @@ class OICBaseSink(Sink):
             extra={"keys": list(record.keys())},
         )
 
-    def process_batch(self, context: dict[str, t.GeneralValueType]) -> None:
+    def process_batch(self, context: Mapping[str, t.GeneralValueType]) -> None:
         """Singer batch hook implementation."""
         _ = context
 

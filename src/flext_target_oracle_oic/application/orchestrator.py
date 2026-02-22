@@ -10,6 +10,7 @@ class OICTargetOrchestrator:
 
     def __init__(self, config: dict[str, t.GeneralValueType] | None = None) -> None:
         """Store runtime configuration used by orchestration steps."""
+        super().__init__()
         self.config = config or {}
 
     def setup(self) -> FlextResult[bool]:

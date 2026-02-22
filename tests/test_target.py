@@ -58,15 +58,13 @@ class TestTargetOracleOic:
         }
         target = TargetOracleOic(config=config)
 
-        # Test known streams
-        if target.get_sink_class("connections") != ConnectionsSink:
+        if target.get_sink_class("connections") is not ConnectionsSink:
             msg: str = f"Expected {ConnectionsSink}, got {target.get_sink_class('connections')}"
             raise AssertionError(msg)
-        assert target.get_sink_class("integrations") == IntegrationsSink
+        assert target.get_sink_class("integrations") is IntegrationsSink
 
-        # Test unknown stream returns default
-        if target.get_sink_class("unknown_stream") != target.default_sink_class:
-            msg: str = f"Expected {target.default_sink_class}, got {target.get_sink_class('unknown_stream')}"
+        if target.get_sink_class("unknown_stream") is not target.default_sink_class:
+            msg = f"Expected {target.default_sink_class}, got {target.get_sink_class('unknown_stream')}"
             raise AssertionError(msg)
 
     def test_config_schema(self) -> None:
@@ -74,7 +72,7 @@ class TestTargetOracleOic:
         schema = TargetOracleOic.config_jsonschema
         assert isinstance(schema, dict)
         if "properties" not in schema:
-            msg: str = f"Expected {'properties'} in {schema}"
+            msg = f"Expected {'properties'} in {schema}"
             raise AssertionError(msg)
 
         # Check required properties

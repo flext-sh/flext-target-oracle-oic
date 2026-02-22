@@ -23,7 +23,6 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pytest
-from flext_target_oracle_oic import t
 
 from flext_target_oracle_oic.target_client import (
     ConnectionsSink,
@@ -94,28 +93,26 @@ class TestTargetOracleOicE2E:
             raise AssertionError(msg)
         assert target.config == test_config
         if target.config["base_url"] != test_config["base_url"]:
-            msg: str = (
+            msg = (
                 f"Expected {test_config['base_url']}, got {target.config['base_url']}"
             )
             raise AssertionError(msg)
 
     def test_sink_class_mapping(self, target: TargetOracleOic) -> None:
         """Test sink class mapping for known streams."""
-        # Test known sinks
-        if target.get_sink_class("connections") != ConnectionsSink:
-            msg: str = f"Expected {ConnectionsSink}, got {target.get_sink_class('connections')}"
+        if target.get_sink_class("connections") is not ConnectionsSink:
+            msg = f"Expected {ConnectionsSink}, got {target.get_sink_class('connections')}"
             raise AssertionError(msg)
-        assert target.get_sink_class("integrations") == IntegrationsSink
-        if target.get_sink_class("packages") != PackagesSink:
-            msg: str = (
+        assert target.get_sink_class("integrations") is IntegrationsSink
+        if target.get_sink_class("packages") is not PackagesSink:
+            msg = (
                 f"Expected {PackagesSink}, got {target.get_sink_class('packages')}"
             )
             raise AssertionError(msg)
-        assert target.get_sink_class("lookups") == LookupsSink
-        # Test unknown stream returns default
+        assert target.get_sink_class("lookups") is LookupsSink
         default_sink = target.get_sink_class("unknown_stream")
-        if default_sink != target.default_sink_class:
-            msg: str = f"Expected {target.default_sink_class}, got {default_sink}"
+        if default_sink is not target.default_sink_class:
+            msg = f"Expected {target.default_sink_class}, got {default_sink}"
             raise AssertionError(msg)
 
     def test_sink_initialization(self, target: TargetOracleOic) -> None:
@@ -202,8 +199,8 @@ class TestTargetOracleOicE2E:
             schema={"properties": {"id": {"type": "string"}}},
             key_properties=["id"],
         )
-        # Test authenticator initialization
-        authenticator = sink.authenticator
+        # Test authenticator initialization (Sink sets it at runtime)
+        authenticator = getattr(sink, "authenticator", None)
         assert authenticator is not None
         assert hasattr(authenticator, "auth_headers")
 
@@ -281,7 +278,7 @@ class TestTargetOracleOicE2E:
 
     def test_config_validation(self) -> None:
         """Test method."""
-        TargetOracleOic(config={})
+        _ = TargetOracleOic(config={})
         # Test with minimal valid config
         minimal_config = {
             "base_url": "https://test.integration.ocp.oraclecloud.com",
@@ -383,12 +380,12 @@ class TestTargetOracleOicE2E:
         """Test method."""
         schema = TargetOracleOic.config_jsonschema
         if "properties" not in schema:
-            msg: str = f"Expected {'properties'} in {schema}"
+            msg = f"Expected {'properties'} in {schema}"
             raise AssertionError(msg)
         properties = schema["properties"]
         assert isinstance(properties, dict)
         if "load_method" not in properties:
-            msg: str = f"Expected {'load_method'} in {properties}"
+            msg = f"Expected {'load_method'} in {properties}"
             raise AssertionError(msg)
         load_method = properties["load_method"]
         assert isinstance(load_method, dict)

@@ -26,7 +26,7 @@ class TestsFlextTargetOracleOicProtocols(
     - tp.TargetOracleOic.* (from FlextTargetOracleOicProtocols)
     """
 
-    class Tests:
+    class Tests(FlextTestsProtocols.Tests):
         """Project-specific test protocols.
 
         Extends FlextTestsProtocols.Tests with TargetOracleOic-specific protocols.
