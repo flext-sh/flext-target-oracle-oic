@@ -13,6 +13,7 @@ from flext_meltano import (
     FlextMeltanoBridge,
     FlextMeltanoSettings,
 )
+
 from flext_target_oracle_oic.__version__ import __version__, __version_info__
 from flext_target_oracle_oic.application import OICTargetOrchestrator
 from flext_target_oracle_oic.cli import main, main as cli_main
