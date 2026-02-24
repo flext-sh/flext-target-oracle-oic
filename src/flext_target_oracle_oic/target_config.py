@@ -7,6 +7,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from collections.abc import Mapping
+
 from flext_target_oracle_oic.settings import TargetOracleOicConfig
 from flext_target_oracle_oic.typings import t
 
@@ -23,20 +25,20 @@ OICEntityConfig = TargetOracleOicConfig
 
 
 def create_config_from_dict(
-    config_dict: dict[str, t.GeneralValueType],
+    config_dict: Mapping[str, t.JsonValue],
 ) -> TargetOracleOicConfig:
     """Create TargetOracleOicConfig from dictionary."""
     return TargetOracleOicConfig.model_validate(config_dict)
 
 
 def create_config_with_env_overrides(
-    **overrides: t.GeneralValueType,
+    **overrides: t.JsonValue,
 ) -> TargetOracleOicConfig:
     """Create TargetOracleOicConfig with environment variable overrides."""
     return TargetOracleOicConfig.model_validate(overrides)
 
 
-def create_singer_config_schema() -> dict[str, t.GeneralValueType]:
+def create_singer_config_schema() -> Mapping[str, t.JsonValue]:
     """Create Singer configuration schema from TargetOracleOicConfig."""
     return TargetOracleOicConfig.model_json_schema()
 

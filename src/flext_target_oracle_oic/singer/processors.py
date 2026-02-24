@@ -2,9 +2,10 @@
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from collections.abc import Mapping
 
 from flext_core import FlextResult, t
+from pydantic import BaseModel, Field
 
 
 class OICProcessedRecord(BaseModel):
@@ -20,7 +21,7 @@ class OICRecordProcessor:
     def process(
         self,
         stream_name: str,
-        record: dict[str, t.JsonValue],
+        record: Mapping[str, t.JsonValue],
     ) -> FlextResult[OICProcessedRecord]:
         """Return typed stream payload for downstream handling."""
         return FlextResult[OICProcessedRecord].ok(

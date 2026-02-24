@@ -18,7 +18,7 @@ class OICBaseSink(Sink):
         self,
         target: Target,
         stream_name: str,
-        schema: dict[str, t.JsonValue],
+        schema: Mapping[str, t.JsonValue],
         key_properties: Sequence[str] | None = None,
     ) -> None:
         """Initialize sink metadata and source context."""

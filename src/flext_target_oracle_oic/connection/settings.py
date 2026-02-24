@@ -7,6 +7,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from collections.abc import Mapping
+
 from flext_core import (
     FlextConstants,
     FlextLogger,
@@ -58,14 +60,14 @@ class OICConnectionSettings(FlextModels):
         url = self.base_url.rstrip("/")
         return f"{url}/ic/api/integration/v1"
 
-    def get_auth_headers(self) -> dict[str, str]:
+    def get_auth_headers(self) -> Mapping[str, str]:
         """Get authentication headers."""
         return {
             "Content-Type": "application/x-www-form-urlencoded",
             "Accept": "application/json",
         }
 
-    def get_api_headers(self, access_token: str) -> dict[str, str]:
+    def get_api_headers(self, access_token: str) -> Mapping[str, str]:
         """Get API request headers with authentication."""
         return {
             "Authorization": f"Bearer {access_token}",
@@ -74,7 +76,7 @@ class OICConnectionSettings(FlextModels):
         }
 
     @classmethod
-    def from_dict(cls, data: dict[str, t.GeneralValueType]) -> OICConnectionSettings:
+    def from_dict(cls, data: Mapping[str, t.JsonValue]) -> OICConnectionSettings:
         """Create configuration from dictionary using modern Pydantic patterns."""
         try:
             return cls(**data)

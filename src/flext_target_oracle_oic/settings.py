@@ -7,6 +7,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from typing import Self
 
 from flext_core import FlextConstants, FlextResult, FlextSettings
@@ -248,7 +249,7 @@ class TargetOracleOicConfig(FlextSettings):
     )
 
     # Additional configuration fields
-    transformation_rules: list[dict[str, t.GeneralValueType]] = Field(
+    transformation_rules: list[dict[str, t.JsonValue]] = Field(
         default_factory=list,
         description="Custom transformation rules",
     )
@@ -295,7 +296,7 @@ class TargetOracleOicConfig(FlextSettings):
 
     # Computed fields
     @computed_field
-    def auth_config(self) -> dict[str, str | None]:
+    def auth_config(self) -> Mapping[str, str | None]:
         """Get authentication configuration as dictionary."""
         return {
             "oauth_client_id": self.oauth_client_id,
@@ -306,7 +307,7 @@ class TargetOracleOicConfig(FlextSettings):
         }
 
     @computed_field
-    def connection_config(self) -> dict[str, str | int | bool]:
+    def connection_config(self) -> Mapping[str, str | int | bool]:
         """Get connection configuration as dictionary."""
         return {
             "base_url": str(self.base_url),
@@ -316,7 +317,7 @@ class TargetOracleOicConfig(FlextSettings):
         }
 
     @computed_field
-    def deployment_config(self) -> dict[str, str | bool | None]:
+    def deployment_config(self) -> Mapping[str, str | bool | None]:
         """Get deployment configuration as dictionary."""
         return {
             "import_mode": self.import_mode,
@@ -329,7 +330,7 @@ class TargetOracleOicConfig(FlextSettings):
         }
 
     @computed_field
-    def processing_config(self) -> dict[str, int | bool]:
+    def processing_config(self) -> Mapping[str, int | bool]:
         """Get processing configuration as dictionary."""
         return {
             "batch_size": self.batch_size,
@@ -342,7 +343,7 @@ class TargetOracleOicConfig(FlextSettings):
         }
 
     @computed_field
-    def entity_config(self) -> dict[str, str | dict[str, str]]:
+    def entity_config(self) -> Mapping[str, str | Mapping[str, str]]:
         """Get entity configuration as dictionary."""
         return {
             "integration_identifier_field": self.integration_identifier_field,
@@ -352,7 +353,7 @@ class TargetOracleOicConfig(FlextSettings):
         }
 
     # Utility methods
-    def get_oauth_headers(self) -> dict[str, str]:
+    def get_oauth_headers(self) -> Mapping[str, str]:
         """Get OAuth headers for API requests."""
         return {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -406,9 +407,9 @@ class TargetOracleOicConfig(FlextSettings):
         return cls()
 
     @classmethod
-    def create_for_development(cls, **overrides: t.GeneralValueType) -> Self:
+    def create_for_development(cls, **overrides: t.JsonValue) -> Self:
         """Create configuration for development environment."""
-        dev_overrides: dict[str, t.GeneralValueType] = {
+        dev_overrides: dict[str, t.JsonValue] = {
             "batch_size": FlextConstants.Performance.BatchProcessing.DEFAULT_SIZE
             // 100,
             "enable_validation": True,
@@ -421,9 +422,9 @@ class TargetOracleOicConfig(FlextSettings):
         return cls(**dev_overrides)
 
     @classmethod
-    def create_for_production(cls, **overrides: t.GeneralValueType) -> Self:
+    def create_for_production(cls, **overrides: t.JsonValue) -> Self:
         """Create configuration for production environment."""
-        prod_overrides: dict[str, t.GeneralValueType] = {
+        prod_overrides: dict[str, t.JsonValue] = {
             "batch_size": FlextConstants.Performance.BatchProcessing.DEFAULT_SIZE // 10,
             "enable_validation": True,
             "validation_strict_mode": False,
@@ -436,9 +437,9 @@ class TargetOracleOicConfig(FlextSettings):
         return cls(**prod_overrides)
 
     @classmethod
-    def create_for_testing(cls, **overrides: t.GeneralValueType) -> Self:
+    def create_for_testing(cls, **overrides: t.JsonValue) -> Self:
         """Create configuration for testing environment."""
-        test_overrides: dict[str, t.GeneralValueType] = {
+        test_overrides: dict[str, t.JsonValue] = {
             "batch_size": FlextConstants.Performance.BatchProcessing.DEFAULT_SIZE
             // 200,
             "enable_validation": True,

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
+
 from flext_core import FlextResult, t
 
 
@@ -14,9 +16,9 @@ class FlextTargetOracleOicUtilities:
         @staticmethod
         def create_schema_message(
             stream_name: str,
-            schema: dict[str, t.GeneralValueType],
+            schema: Mapping[str, t.JsonValue],
             key_properties: list[str] | None = None,
-        ) -> dict[str, t.GeneralValueType]:
+        ) -> Mapping[str, t.JsonValue]:
             """Build a Singer SCHEMA message payload."""
             return {
                 "type": "SCHEMA",
@@ -28,8 +30,8 @@ class FlextTargetOracleOicUtilities:
         @staticmethod
         def create_record_message(
             stream_name: str,
-            record: dict[str, t.GeneralValueType],
-        ) -> dict[str, t.GeneralValueType]:
+            record: Mapping[str, t.JsonValue],
+        ) -> Mapping[str, t.JsonValue]:
             """Build a Singer RECORD message payload."""
             return {"type": "RECORD", "stream": stream_name, "record": record}
 
@@ -38,7 +40,7 @@ class FlextTargetOracleOicUtilities:
 
         @staticmethod
         def validate_config(
-            config: dict[str, t.GeneralValueType],
+            config: Mapping[str, t.JsonValue],
         ) -> FlextResult[bool]:
             """Validate required OIC target configuration keys."""
             required = {"base_url", "oauth_client_id", "oauth_client_secret"}

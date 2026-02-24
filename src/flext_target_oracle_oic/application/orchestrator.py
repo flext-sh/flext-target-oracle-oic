@@ -2,13 +2,15 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
+
 from flext_core import FlextResult, t
 
 
 class OICTargetOrchestrator:
     """Coordinates setup and teardown for target orchestration."""
 
-    def __init__(self, config: dict[str, t.GeneralValueType] | None = None) -> None:
+    def __init__(self, config: Mapping[str, t.JsonValue] | None = None) -> None:
         """Store runtime configuration used by orchestration steps."""
         super().__init__()
         self.config = config or {}

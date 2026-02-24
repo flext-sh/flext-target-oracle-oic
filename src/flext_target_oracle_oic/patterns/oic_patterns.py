@@ -2,13 +2,15 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
+
 from flext_core import FlextResult, t
 
 
 class OICTypeConverter:
     """Converts incoming values for OIC payloads."""
 
-    def convert(self, value: t.GeneralValueType) -> t.GeneralValueType:
+    def convert(self, value: t.JsonValue) -> t.JsonValue:
         """Return value unchanged for baseline conversion behavior."""
         return value
 
@@ -19,10 +21,10 @@ class OICSchemaMapper:
     def map_schema(
         self,
         stream_name: str,
-        schema: dict[str, t.GeneralValueType],
-    ) -> FlextResult[dict[str, t.GeneralValueType]]:
+        schema: Mapping[str, t.JsonValue],
+    ) -> FlextResult[Mapping[str, t.JsonValue]]:
         """Build schema metadata payload for the given stream."""
-        return FlextResult[dict[str, t.GeneralValueType]].ok({
+        return FlextResult[Mapping[str, t.JsonValue]].ok({
             "stream": stream_name,
             "schema": schema,
         })
@@ -33,10 +35,10 @@ class OICDataTransformer:
 
     def transform(
         self,
-        record: dict[str, t.GeneralValueType],
-    ) -> FlextResult[dict[str, t.GeneralValueType]]:
+        record: Mapping[str, t.JsonValue],
+    ) -> FlextResult[Mapping[str, t.JsonValue]]:
         """Return transformed record payload."""
-        return FlextResult[dict[str, t.GeneralValueType]].ok(record)
+        return FlextResult[Mapping[str, t.JsonValue]].ok(record)
 
 
 class OICEntryManager:
@@ -44,10 +46,10 @@ class OICEntryManager:
 
     def build_entries(
         self,
-        records: list[dict[str, t.GeneralValueType]],
-    ) -> FlextResult[list[dict[str, t.GeneralValueType]]]:
+        records: list[Mapping[str, t.JsonValue]],
+    ) -> FlextResult[list[Mapping[str, t.JsonValue]]]:
         """Return entry list unchanged for baseline behavior."""
-        return FlextResult[list[dict[str, t.GeneralValueType]]].ok(records)
+        return FlextResult[list[Mapping[str, t.JsonValue]]].ok(records)
 
 
 __all__ = [

@@ -7,6 +7,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from typing import Protocol, runtime_checkable
 
 from flext_db_oracle.protocols import FlextDbOracleProtocols as p_db_oracle
@@ -62,7 +63,7 @@ class FlextTargetOracleOicProtocols(p_meltano, p_db_oracle):
                 """
 
                 def integrate(
-                    self, data: dict[str, t.GeneralValueType]
+                    self, data: Mapping[str, t.JsonValue]
                 ) -> p_meltano.Result[bool]:
                     """Integrate data with Oracle OIC.
 
@@ -77,8 +78,8 @@ class FlextTargetOracleOicProtocols(p_meltano, p_db_oracle):
 
                 def transform_to_oic(
                     self,
-                    record: dict[str, t.GeneralValueType],
-                ) -> p_meltano.Result[dict[str, t.GeneralValueType]]:
+                    record: Mapping[str, t.JsonValue],
+                ) -> p_meltano.Result[Mapping[str, t.JsonValue]]:
                     """Transform Singer record to OIC format.
 
                     Args:
@@ -92,8 +93,8 @@ class FlextTargetOracleOicProtocols(p_meltano, p_db_oracle):
 
                 def invoke_integration(
                     self,
-                    payload: dict[str, t.GeneralValueType],
-                ) -> p_meltano.Result[dict[str, t.GeneralValueType]]:
+                    payload: Mapping[str, t.JsonValue],
+                ) -> p_meltano.Result[Mapping[str, t.JsonValue]]:
                     """Invoke OIC integration with payload.
 
                     Args:
@@ -107,7 +108,7 @@ class FlextTargetOracleOicProtocols(p_meltano, p_db_oracle):
 
                 def process_batch(
                     self,
-                    records: list[dict[str, t.GeneralValueType]],
+                    records: list[Mapping[str, t.JsonValue]],
                 ) -> p_meltano.Result[bool]:
                     """Process batch of records for OIC.
 
@@ -122,7 +123,7 @@ class FlextTargetOracleOicProtocols(p_meltano, p_db_oracle):
 
                 def validate_payload(
                     self,
-                    payload: dict[str, t.GeneralValueType],
+                    payload: Mapping[str, t.JsonValue],
                 ) -> p_meltano.Result[bool]:
                     """Validate payload for OIC compatibility.
 
@@ -137,8 +138,8 @@ class FlextTargetOracleOicProtocols(p_meltano, p_db_oracle):
 
                 def optimize_throughput(
                     self,
-                    config: dict[str, t.GeneralValueType],
-                ) -> p_meltano.Result[dict[str, t.GeneralValueType]]:
+                    config: Mapping[str, t.JsonValue],
+                ) -> p_meltano.Result[Mapping[str, t.JsonValue]]:
                     """Optimize OIC throughput settings.
 
                     Args:
@@ -153,7 +154,7 @@ class FlextTargetOracleOicProtocols(p_meltano, p_db_oracle):
                 def track_integration_status(
                     self,
                     integration_id: str,
-                ) -> p_meltano.Result[dict[str, t.GeneralValueType]]:
+                ) -> p_meltano.Result[Mapping[str, t.JsonValue]]:
                     """Track integration execution status.
 
                     Args:
