@@ -11,7 +11,6 @@ from typing import Protocol, runtime_checkable
 
 from flext_db_oracle.protocols import FlextDbOracleProtocols as p_db_oracle
 from flext_meltano.protocols import FlextMeltanoProtocols as p_meltano
-
 from flext_target_oracle_oic.typings import t
 
 

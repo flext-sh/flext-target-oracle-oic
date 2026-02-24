@@ -18,7 +18,7 @@ class OICBaseSink(Sink):
         self,
         target: Target,
         stream_name: str,
-        schema: dict[str, t.GeneralValueType],
+        schema: dict[str, t.JsonValue],
         key_properties: Sequence[str] | None = None,
     ) -> None:
         """Initialize sink metadata and source context."""
@@ -26,8 +26,8 @@ class OICBaseSink(Sink):
 
     def process_record(
         self,
-        record: Mapping[str, t.GeneralValueType],
-        context: Mapping[str, t.GeneralValueType],
+        record: Mapping[str, t.JsonValue],
+        context: Mapping[str, t.JsonValue],
     ) -> None:
         """Default sink behavior: log incoming record metadata."""
         _ = context
@@ -36,7 +36,7 @@ class OICBaseSink(Sink):
             extra={"keys": list(record.keys())},
         )
 
-    def process_batch(self, context: Mapping[str, t.GeneralValueType]) -> None:
+    def process_batch(self, context: Mapping[str, t.JsonValue]) -> None:
         """Singer batch hook implementation."""
         _ = context
 

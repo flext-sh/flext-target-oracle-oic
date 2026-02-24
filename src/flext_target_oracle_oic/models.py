@@ -28,7 +28,7 @@ class OICConnection(FlextModels.ArbitraryTypesModel):
     id: str
     name: str
     adapter_type: str
-    properties: dict[str, t.GeneralValueType] = Field(default_factory=dict)
+    properties: dict[str, t.JsonValue] = Field(default_factory=dict)
 
 
 class OICIntegration(FlextModels.ArbitraryTypesModel):
@@ -52,8 +52,8 @@ class OICLookup(FlextModels.ArbitraryTypesModel):
     """Lookup payload model."""
 
     name: str
-    columns: list[dict[str, t.GeneralValueType]] = Field(default_factory=list)
-    rows: list[dict[str, t.GeneralValueType]] = Field(default_factory=list)
+    columns: list[dict[str, t.JsonValue]] = Field(default_factory=list)
+    rows: list[dict[str, t.JsonValue]] = Field(default_factory=list)
 
 
 class OICProject(FlextModels.ArbitraryTypesModel):
@@ -82,7 +82,7 @@ class OICSchemaMapping(FlextModels.ArbitraryTypesModel):
     """Schema mapping payload model."""
 
     stream_name: str
-    schema_mapping: dict[str, t.GeneralValueType] = Field(default_factory=dict)
+    schema_mapping: dict[str, t.JsonValue] = Field(default_factory=dict)
 
 
 class FlextTargetOracleOicModels(FlextModels):
