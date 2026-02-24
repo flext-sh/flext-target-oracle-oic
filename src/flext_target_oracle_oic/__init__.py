@@ -6,7 +6,15 @@ SPDX-License-Identifier: MIT.
 
 from __future__ import annotations
 
-from flext_core import FlextModels, FlextResult
+from flext_core import (
+    FlextDecorators,
+    FlextExceptions,
+    FlextHandlers,
+    FlextMixins,
+    FlextModels,
+    FlextResult,
+    FlextService,
+)
 
 # Use FLEXT Meltano wrapper instead of direct singer_sdk import (domain separation)
 from flext_meltano import (
@@ -21,6 +29,7 @@ from flext_target_oracle_oic.connection import (
     OICConnection as LegacyOICConnection,
     OICConnectionSettings as LegacyOICConnectionSettings,
 )
+from flext_target_oracle_oic.constants import FlextTargetOracleOicConstants
 from flext_target_oracle_oic.models import (
     FlextTargetOracleOicModels,
     OICConnection,
@@ -65,8 +74,19 @@ from flext_target_oracle_oic.target_models import (
     create_oic_lookup,
     create_oic_package,
 )
-from flext_target_oracle_oic.typings import t
+from flext_target_oracle_oic.typings import FlextTargetOracleOicTypes, t
 from flext_target_oracle_oic.utilities import FlextTargetOracleOicUtilities
+
+# Standard FLEXT aliases (11 total)
+c = FlextTargetOracleOicConstants
+d = FlextDecorators
+e = FlextExceptions
+h = FlextHandlers
+p = FlextTargetOracleOicProtocols
+r = FlextResult
+s = FlextService
+u = FlextTargetOracleOicUtilities
+x = FlextMixins
 
 __all__: list[str] = [
     "ConnectionsSink",
@@ -74,8 +94,10 @@ __all__: list[str] = [
     "FlextMeltanoSettings",
     "FlextModels",
     "FlextResult",
+    "FlextTargetOracleOicConstants",
     "FlextTargetOracleOicModels",
     "FlextTargetOracleOicProtocols",
+    "FlextTargetOracleOicTypes",
     "FlextTargetOracleOicUtilities",
     "IntegrationsSink",
     "LegacyOICConnection",
@@ -105,6 +127,7 @@ __all__: list[str] = [
     "TargetOracleOicConfig",
     "__version__",
     "__version_info__",
+    "c",
     "cli_main",
     "client_main",
     "create_config_from_dict",
@@ -114,7 +137,15 @@ __all__: list[str] = [
     "create_oic_lookup",
     "create_oic_package",
     "create_singer_config_schema",
+    "d",
+    "e",
+    "h",
     "m",
     "main",
+    "p",
+    "r",
+    "s",
     "t",
+    "u",
+    "x",
 ]

@@ -20,9 +20,9 @@ class TestsFlextTargetOracleOicProtocols(
     """Test protocols combining FlextTestsProtocols and FlextTargetOracleOicProtocols.
 
     Provides access to:
-    - tp.Tests.Docker.* (from FlextTestsProtocols)
-    - tp.Tests.Factory.* (from FlextTestsProtocols)
-    - tp.TargetOracleOic.* (from FlextTargetOracleOicProtocols)
+    - p.Tests.Docker.* (from FlextTestsProtocols)
+    - p.Tests.Factory.* (from FlextTestsProtocols)
+    - p.TargetOracleOic.* (from FlextTargetOracleOicProtocols)
     """
 
     class Tests(FlextTestsProtocols.Tests):
@@ -37,6 +37,6 @@ class TestsFlextTargetOracleOicProtocols(
 
 # Runtime aliases
 p = TestsFlextTargetOracleOicProtocols
-tp = TestsFlextTargetOracleOicProtocols
+p = TestsFlextTargetOracleOicProtocols
 
-__all__ = ["TestsFlextTargetOracleOicProtocols", "p", "tp"]
+__all__ = ["TestsFlextTargetOracleOicProtocols", "p"]
