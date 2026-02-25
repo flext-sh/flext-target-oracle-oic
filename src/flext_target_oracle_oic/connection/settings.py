@@ -80,7 +80,15 @@ class OICConnectionSettings(FlextModels):
         """Create configuration from dictionary using modern Pydantic patterns."""
         try:
             return cls(**data)
-        except (ValueError, TypeError, KeyError, AttributeError, OSError, RuntimeError, ImportError):
+        except (
+            ValueError,
+            TypeError,
+            KeyError,
+            AttributeError,
+            OSError,
+            RuntimeError,
+            ImportError,
+        ):
             logger.exception("Failed to create OICConnectionSettings from dict")
             raise
 
