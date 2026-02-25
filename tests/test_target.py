@@ -9,11 +9,13 @@ from __future__ import annotations
 
 import pytest
 
-from flext_target_oracle_oic.target_client import (
+from src.flext_target_oracle_oic.target_client import (
     ConnectionsSink,
     IntegrationsSink,
     TargetOracleOic,
 )
+from src.flext_target_oracle_oic.target_config import OICOAuth2Authenticator
+from src.flext_target_oracle_oic.target_config import TargetOracleOicConfig
 
 
 class TestTargetOracleOic:
@@ -79,3 +81,60 @@ class TestTargetOracleOic:
         properties = schema["properties"]
         assert isinstance(properties, dict)
         assert isinstance(properties, dict)
+
+
+def _build_auth_config(**overrides: object) -> TargetOracleOicConfig:
+    config: dict[str, object] = {
+        "oauth_client_id": "client-id",
+        "oauth_client_secret": "client-secret",
+        "oauth_token_url": "https://idcs.example.com/oauth2/v1/token",
+        "oauth_scope": "urn:opc:resource:consumer:all",
+        "oauth_client_aud": "https://idcs.example.com",
+        "base_url": "https://instance.integration.ocp.oraclecloud.com",
+    }
+    config.update(overrides)
+    return TargetOracleOicConfig.model_validate(config)
+
+
+def test_oic_authenticator_builds_payload() -> None:
+    authenticator = OICOAuth2Authenticator(_build_auth_config())
+
+    payload = authenticator.build_token_request_data()
+
+    assert payload["grant_type"] == "client_credentials"
+    assert payload["client_id"] == "client-id"
+    assert payload["client_secret"] == "client-secret"
+    assert payload["scope"] == "urn:opc:resource:consumer:all"
+    assert payload["audience"] == "https://idcs.example.com"
+
+
+def test_oic_authenticator_omits_optional_scope_and_audience() -> None:
+    authenticator = OICOAuth2Authenticator(
+        _build_auth_config(oauth_scope="", oauth_client_aud=None),
+    )
+
+    payload = authenticator.build_token_request_data()
+
+    assert "scope" not in payload
+    assert "audience" not in payload
+
+
+def test_oic_authenticator_rejects_invalid_token_response(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    authenticator = OICOAuth2Authenticator(_build_auth_config())
+
+    class InvalidTokenResponse:
+        def raise_for_status(self) -> None:
+            return None
+
+        def json(self) -> dict[str, str]:
+            return {"token_type": "Bearer"}
+
+    def fake_post(*_: object, **__: object) -> InvalidTokenResponse:
+        return InvalidTokenResponse()
+
+    monkeypatch.setattr(f"{OICOAuth2Authenticator.__module__}.requests.post", fake_post)
+
+    with pytest.raises(RuntimeError, match="access_token"):
+        authenticator.get_access_token()

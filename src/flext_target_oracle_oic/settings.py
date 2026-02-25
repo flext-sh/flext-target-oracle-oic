@@ -397,7 +397,7 @@ class TargetOracleOicConfig(FlextSettings):
                 return FlextResult[bool].fail("Max errors cannot be negative")
 
             return FlextResult[bool].ok(value=True)
-        except Exception as e:
+        except (ValueError, TypeError, KeyError, AttributeError, OSError, RuntimeError, ImportError) as e:
             return FlextResult[bool].fail(f"Configuration validation failed: {e}")
 
     # Singleton pattern methods
