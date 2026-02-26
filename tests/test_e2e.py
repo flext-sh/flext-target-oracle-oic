@@ -23,7 +23,6 @@ from pathlib import Path
 from unittest.mock import patch
 
 import pytest
-
 from flext_target_oracle_oic.target_client import (
     ConnectionsSink,
     IntegrationsSink,
@@ -93,9 +92,7 @@ class TestTargetOracleOicE2E:
             raise AssertionError(msg)
         assert target.config == test_config
         if target.config["base_url"] != test_config["base_url"]:
-            msg = (
-                f"Expected {test_config['base_url']}, got {target.config['base_url']}"
-            )
+            msg = f"Expected {test_config['base_url']}, got {target.config['base_url']}"
             raise AssertionError(msg)
 
     def test_sink_class_mapping(self, target: TargetOracleOic) -> None:
@@ -105,9 +102,7 @@ class TestTargetOracleOicE2E:
             raise AssertionError(msg)
         assert target.get_sink_class("integrations") is IntegrationsSink
         if target.get_sink_class("packages") is not PackagesSink:
-            msg = (
-                f"Expected {PackagesSink}, got {target.get_sink_class('packages')}"
-            )
+            msg = f"Expected {PackagesSink}, got {target.get_sink_class('packages')}"
             raise AssertionError(msg)
         assert target.get_sink_class("lookups") is LookupsSink
         default_sink = target.get_sink_class("unknown_stream")

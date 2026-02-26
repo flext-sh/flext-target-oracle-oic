@@ -16,12 +16,16 @@ from .typings import t
 
 
 class OICOAuth2Authenticator:
+    """OAuth2 Authenticator for Oracle Integration Cloud."""
+
     def __init__(self, config: TargetOracleOicConfig) -> None:
+        """Initialize the authenticator with target configuration."""
         self._config: TargetOracleOicConfig = config
         self._access_token: str | None = None
-        self._token_type: str = "Bearer"
+        self._token_type: str = "Bearer"  # noqa: S105
 
     def build_token_request_data(self) -> dict[str, str]:
+        """Build the payload for requesting an OAuth2 token."""
         payload = {
             "grant_type": "client_credentials",
             "client_id": self._config.oauth_client_id,
@@ -34,6 +38,7 @@ class OICOAuth2Authenticator:
         return payload
 
     def get_access_token(self, *, force_refresh: bool = False) -> str:
+        """Get the current access token, optionally forcing a refresh."""
         if self._access_token is not None and not force_refresh:
             return self._access_token
 
@@ -69,6 +74,7 @@ class OICOAuth2Authenticator:
 
     @property
     def auth_headers(self) -> Mapping[str, str]:
+        """Get the authentication headers block for requests."""
         token = self.get_access_token()
         return {"Authorization": f"{self._token_type} {token}"}
 

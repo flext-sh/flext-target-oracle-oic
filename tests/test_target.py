@@ -8,14 +8,15 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
-
 from src.flext_target_oracle_oic.target_client import (
     ConnectionsSink,
     IntegrationsSink,
     TargetOracleOic,
 )
-from src.flext_target_oracle_oic.target_config import OICOAuth2Authenticator
-from src.flext_target_oracle_oic.target_config import TargetOracleOicConfig
+from src.flext_target_oracle_oic.target_config import (
+    OICOAuth2Authenticator,
+    TargetOracleOicConfig,
+)
 
 
 class TestTargetOracleOic:
