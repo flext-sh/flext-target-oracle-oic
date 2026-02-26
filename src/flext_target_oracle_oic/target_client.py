@@ -22,7 +22,7 @@ class OICBaseSink(Sink):
         key_properties: Sequence[str] | None = None,
     ) -> None:
         """Initialize sink metadata and source context."""
-        super().__init__(target, stream_name, schema, key_properties)
+        super().__init__(target, stream_name, dict(schema), key_properties)
 
     def process_record(
         self,

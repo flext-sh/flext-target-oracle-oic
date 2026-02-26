@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Self
+from typing import Any, Self, cast
 
 from flext_core import FlextConstants, FlextResult, FlextSettings
 from flext_target_oracle_oic.typings import t
@@ -427,7 +427,7 @@ class TargetOracleOicConfig(FlextSettings):
             "validate_connections": True,
             **overrides,
         }
-        return cls(**dev_overrides)
+        return cls(**cast("dict[str, Any]", dev_overrides))
 
     @classmethod
     def create_for_production(cls, **overrides: t.JsonValue) -> Self:
@@ -442,7 +442,7 @@ class TargetOracleOicConfig(FlextSettings):
             "rollback_on_failure": True,
             **overrides,
         }
-        return cls(**prod_overrides)
+        return cls(**cast("dict[str, Any]", prod_overrides))
 
     @classmethod
     def create_for_testing(cls, **overrides: t.JsonValue) -> Self:
@@ -456,7 +456,7 @@ class TargetOracleOicConfig(FlextSettings):
             "base_url": "https://test-instance.integration.ocp.oraclecloud.com",
             **overrides,
         }
-        return cls(**test_overrides)
+        return cls(**cast("dict[str, Any]", test_overrides))
 
 
 # Export configuration class (single class only)
