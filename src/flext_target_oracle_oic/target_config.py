@@ -52,7 +52,7 @@ class OICOAuth2Authenticator:
         payload_raw = response.json()
         if not isinstance(payload_raw, dict):
             msg = "OAuth2 token response is not a JSON object"
-            raise RuntimeError(msg)
+            raise TypeError(msg)
 
         token_payload = payload_raw
         access_token = token_payload.get("access_token")
