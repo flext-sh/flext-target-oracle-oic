@@ -7,10 +7,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import override
-
 from collections.abc import Mapping
-from typing import Any, Self, cast
+from typing import Any, Self, cast, override
 
 from flext_core import FlextConstants, FlextResult, FlextSettings
 from flext_target_oracle_oic.typings import t
@@ -413,7 +411,6 @@ class TargetOracleOicConfig(FlextSettings):
     # Singleton pattern methods
     @classmethod
     @override
-
     def get_global_instance(cls) -> Self:
         """Get the global singleton instance using enhanced FlextSettings pattern."""
         return cls()

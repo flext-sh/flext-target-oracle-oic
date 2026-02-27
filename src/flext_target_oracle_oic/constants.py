@@ -2,13 +2,14 @@
 
 from __future__ import annotations
 
-from flext_core import FlextConstants
+from flext_meltano import FlextMeltanoConstants
+from flext_oracle_oic import FlextOracleOicConstants
 
 
-class FlextTargetOracleOicConstants(FlextConstants):
+class FlextMeltanoTargetOracleOicConstants(FlextMeltanoConstants, FlextOracleOicConstants):
     """Namespace class for OIC target constants."""
 
 
-c = FlextTargetOracleOicConstants
+c = FlextMeltanoTargetOracleOicConstants
 
-__all__ = ["FlextTargetOracleOicConstants", "c"]
+__all__ = ["FlextMeltanoTargetOracleOicConstants", "c"]

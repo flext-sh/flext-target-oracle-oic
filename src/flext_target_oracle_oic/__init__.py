@@ -29,7 +29,7 @@ from flext_target_oracle_oic.connection import (
     OICConnection as LegacyOICConnection,
     OICConnectionSettings as LegacyOICConnectionSettings,
 )
-from flext_target_oracle_oic.constants import FlextTargetOracleOicConstants
+from flext_target_oracle_oic.constants import FlextMeltanoTargetOracleOicConstants
 from flext_target_oracle_oic.models import (
     FlextTargetOracleOicModels,
     OICConnection,
@@ -78,7 +78,7 @@ from flext_target_oracle_oic.typings import FlextTargetOracleOicTypes, t
 from flext_target_oracle_oic.utilities import FlextTargetOracleOicUtilities
 
 # Standard FLEXT aliases (11 total)
-c = FlextTargetOracleOicConstants
+c = FlextMeltanoTargetOracleOicConstants
 d = FlextDecorators
 e = FlextExceptions
 h = FlextHandlers
