@@ -22,7 +22,7 @@ class OICOAuth2Authenticator:
         """Initialize the authenticator with target configuration."""
         self._config: TargetOracleOicConfig = config
         self._access_token: str | None = None
-        self._token_type: str = "Bearer"  # noqa: S105
+        self._token_type: str = "Bearer"
 
     def build_token_request_data(self) -> dict[str, str]:
         """Build the payload for requesting an OAuth2 token."""
