@@ -29,7 +29,7 @@ from flext_target_oracle_oic.connection import (
     OICConnection as LegacyOICConnection,
     OICConnectionSettings as LegacyOICConnectionSettings,
 )
-from flext_target_oracle_oic.constants import FlextMeltanoTargetOracleOicConstants
+from flext_target_oracle_oic.constants import FlextMeltanoTargetOracleOicConstants, c
 from flext_target_oracle_oic.models import (
     FlextTargetOracleOicModels,
     OICConnection,
