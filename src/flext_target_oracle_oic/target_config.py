@@ -22,7 +22,7 @@ class OICOAuth2Authenticator:
         """Initialize the authenticator with target configuration."""
         self._config: TargetOracleOicConfig = config
         self._access_token: str | None = None
-        self._token_type: str = "Bearer"
+        self._auth_scheme: str = "Bearer"
 
     def build_token_request_data(self) -> dict[str, str]:
         """Build the payload for requesting an OAuth2 token."""
@@ -67,7 +67,7 @@ class OICOAuth2Authenticator:
 
         token_type = token_payload.get("token_type")
         if isinstance(token_type, str) and token_type:
-            self._token_type = token_type
+            self._auth_scheme = token_type
 
         self._access_token = access_token
         return access_token
@@ -76,7 +76,7 @@ class OICOAuth2Authenticator:
     def auth_headers(self) -> Mapping[str, str]:
         """Get the authentication headers block for requests."""
         token = self.get_access_token()
-        return {"Authorization": f"{self._token_type} {token}"}
+        return {"Authorization": f"{self._auth_scheme} {token}"}
 
 
 # Backward compatibility aliases - all Config classes now use the single TargetOracleOicConfig
