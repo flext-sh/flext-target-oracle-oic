@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
+from typing import override
 
 from flext_core import FlextLogger, FlextResult, t
 from flext_meltano import FlextMeltanoTarget as Target
@@ -24,6 +25,7 @@ class OICBaseSink(Sink):
         """Initialize sink metadata and source context."""
         super().__init__(target, stream_name, dict(schema), key_properties)
 
+    @override
     def process_record(
         self,
         record: Mapping[str, t.JsonValue],
@@ -36,6 +38,7 @@ class OICBaseSink(Sink):
             extra={"keys": list(record.keys())},
         )
 
+    @override
     def process_batch(self, context: Mapping[str, t.JsonValue]) -> None:
         """Singer batch hook implementation."""
         _ = context
@@ -71,6 +74,7 @@ class TargetOracleOic(Target):
     name = "target-oracle-oic"
     default_sink_class = OICBaseSink
 
+    @override
     def get_sink_class(self, stream_name: str) -> type[OICBaseSink]:
         """Resolve sink class by stream name."""
         mapping: dict[str, type[OICBaseSink]] = {
