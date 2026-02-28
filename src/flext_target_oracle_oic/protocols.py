@@ -57,7 +57,7 @@ class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtoco
             """
 
             @runtime_checkable
-            class OicIntegrationProtocol(FlextProtocols.Service[object], Protocol):
+            class OicIntegrationProtocol(FlextProtocols.Service[t.GeneralValueType], Protocol):
                 """Protocol for Oracle OIC integration.
 
                 Defines the interface for integrating data with Oracle OIC.
