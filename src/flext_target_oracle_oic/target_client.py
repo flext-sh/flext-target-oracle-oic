@@ -7,6 +7,7 @@ from typing import override
 
 from flext_core import FlextLogger, FlextResult, t
 from flext_meltano import FlextMeltanoTarget as Target
+from flext_target_oracle_oic.constants import c
 from singer_sdk import Sink
 
 logger = FlextLogger(__name__)
@@ -47,31 +48,31 @@ class OICBaseSink(Sink):
 class ConnectionsSink(OICBaseSink):
     """Sink for OIC connections stream."""
 
-    name = "connections"
+    name = c.TargetOracleOic.STREAM_CONNECTIONS
 
 
 class IntegrationsSink(OICBaseSink):
     """Sink for OIC integrations stream."""
 
-    name = "integrations"
+    name = c.TargetOracleOic.STREAM_INTEGRATIONS
 
 
 class PackagesSink(OICBaseSink):
     """Sink for OIC packages stream."""
 
-    name = "packages"
+    name = c.TargetOracleOic.STREAM_PACKAGES
 
 
 class LookupsSink(OICBaseSink):
     """Sink for OIC lookups stream."""
 
-    name = "lookups"
+    name = c.TargetOracleOic.STREAM_LOOKUPS
 
 
 class TargetOracleOic(Target):
     """Singer target entry point for Oracle OIC."""
 
-    name = "target-oracle-oic"
+    name = c.TargetOracleOic.TARGET_NAME
     default_sink_class = OICBaseSink
 
     @override

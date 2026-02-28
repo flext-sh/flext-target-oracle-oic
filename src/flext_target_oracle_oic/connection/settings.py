@@ -16,6 +16,7 @@ from flext_core import (
     FlextResult,
     t,
 )
+from flext_target_oracle_oic.constants import c
 from pydantic import Field
 
 logger = FlextLogger(__name__)
@@ -27,7 +28,7 @@ class OICConnectionSettings(FlextModels):
     base_url: str = Field(..., description="Oracle OIC base URL")
     client_id: str = Field(..., description="OAuth2 client ID")
     client_secret: str = Field(..., description="OAuth2 client secret", repr=False)
-    scope: str = Field(default="oic_instance", description="OAuth2 scope")
+    scope: str = Field(default=c.TargetOracleOic.DEFAULT_OAUTH_SCOPE, description="OAuth2 scope")
     username: str | None = Field(
         default=None,
         description="Optional username for basic auth",
@@ -53,26 +54,26 @@ class OICConnectionSettings(FlextModels):
     def build_auth_url(self) -> str:
         """Build OAuth2 authentication URL."""
         url = self.base_url.rstrip("/")
-        return f"{url}/oauth2/v1/token"
+        return f"{url}{c.TargetOracleOic.API_PATH_OAUTH_TOKEN}"
 
     def build_api_base_url(self) -> str:
         """Build OIC API base URL."""
         url = self.base_url.rstrip("/")
-        return f"{url}/ic/api/integration/v1"
+        return f"{url}{c.TargetOracleOic.API_PATH_INTEGRATION}"
 
     def get_auth_headers(self) -> Mapping[str, str]:
         """Get authentication headers."""
         return {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Accept": "application/json",
+            c.TargetOracleOic.HEADER_CONTENT_TYPE: c.TargetOracleOic.HEADER_CONTENT_TYPE_FORM,
+            c.TargetOracleOic.HEADER_ACCEPT: c.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
         }
 
     def get_api_headers(self, access_token: str) -> Mapping[str, str]:
         """Get API request headers with authentication."""
         return {
-            "Authorization": f"Bearer {access_token}",
-            "Content-Type": "application/json",
-            "Accept": "application/json",
+            c.TargetOracleOic.HEADER_AUTHORIZATION: f"{c.TargetOracleOic.AUTH_SCHEME_BEARER} {access_token}",
+            c.TargetOracleOic.HEADER_CONTENT_TYPE: c.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
+            c.TargetOracleOic.HEADER_ACCEPT: c.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
         }
 
     @classmethod

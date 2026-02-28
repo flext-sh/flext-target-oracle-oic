@@ -10,6 +10,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 
 import requests
+from flext_target_oracle_oic.constants import c
 
 from .settings import TargetOracleOicConfig
 from .typings import t
@@ -22,7 +23,7 @@ class OICOAuth2Authenticator:
         """Initialize the authenticator with target configuration."""
         self._config: TargetOracleOicConfig = config
         self._access_token: str | None = None
-        self._auth_scheme: str = "Bearer"
+        self._auth_scheme: str = c.TargetOracleOic.AUTH_SCHEME_BEARER
 
     def build_token_request_data(self) -> dict[str, str]:
         """Build the payload for requesting an OAuth2 token."""

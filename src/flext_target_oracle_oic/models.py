@@ -7,6 +7,7 @@ from enum import StrEnum
 from flext_core import FlextResult, t
 from flext_meltano import FlextMeltanoModels
 from flext_oracle_oic import FlextOracleOicModels
+from flext_target_oracle_oic.constants import c
 from pydantic import Field
 
 
@@ -41,15 +42,15 @@ class FlextTargetOracleOicModels(FlextMeltanoModels, FlextOracleOicModels):
 
             id: str
             name: str
-            version: str = "01.00.0000"
-            pattern: str = "ORCHESTRATION"
+            version: str = c.TargetOracleOic.DEFAULT_VERSION
+            pattern: str = c.TargetOracleOic.DEFAULT_PATTERN
 
         class OICPackage(FlextMeltanoModels.ArbitraryTypesModel):
             """Package payload model."""
 
             id: str
             name: str
-            version: str = "01.00.0000"
+            version: str = c.TargetOracleOic.DEFAULT_VERSION
 
         class OICLookup(FlextMeltanoModels.ArbitraryTypesModel):
             """Lookup payload model."""
@@ -68,7 +69,7 @@ class FlextTargetOracleOicModels(FlextMeltanoModels, FlextOracleOicModels):
             """Schedule payload model."""
 
             name: str
-            schedule_type: str = "ONCE"
+            schedule_type: str = c.TargetOracleOic.DEFAULT_SCHEDULE_TYPE
 
         class OICDataTransformation(FlextMeltanoModels.ArbitraryTypesModel):
             """Transformation payload model."""
