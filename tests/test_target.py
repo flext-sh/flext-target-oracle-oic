@@ -94,7 +94,11 @@ def _build_auth_config(**overrides: object) -> TargetOracleOicConfig:
         "base_url": "https://instance.integration.ocp.oraclecloud.com",
     }
     config.update(overrides)
-    return TargetOracleOicConfig.model_validate(config)
+    # Use model_validate with context or just direct instantiation if needed,
+    # but model_validate should work if the dict is complete.
+    # The error "input_value={}, input_type=dict" suggests it's getting an empty dict.
+    return TargetOracleOicConfig(**config)
+
 
 
 def test_oic_authenticator_builds_payload() -> None:

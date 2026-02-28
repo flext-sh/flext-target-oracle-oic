@@ -122,7 +122,7 @@ class TargetOracleOicConfig(FlextSettings):
         ...,
         description="OAuth2 client secret for Oracle OIC authentication",
     )
-    oauth_token_url: AnyUrl = Field(
+    oauth_token_url: str = Field(
         ...,
         description="OAuth2 token URL for Oracle OIC authentication",
         pattern=r"^https?://",
@@ -137,7 +137,7 @@ class TargetOracleOicConfig(FlextSettings):
     )
 
     # Connection configuration fields
-    base_url: AnyUrl = Field(
+    base_url: str = Field(
         ...,
         description="Oracle OIC base URL",
         pattern=r"^https://.*\.integration\.ocp\.oraclecloud\.com$",
@@ -463,3 +463,4 @@ class TargetOracleOicConfig(FlextSettings):
 __all__: list[str] = [
     "TargetOracleOicConfig",
 ]
+
