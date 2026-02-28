@@ -29,7 +29,8 @@ class OICConnectionSettings(FlextModels):
     client_id: str = Field(..., description="OAuth2 client ID")
     client_secret: str = Field(..., description="OAuth2 client secret", repr=False)
     scope: str = Field(
-        default=c.TargetOracleOic.DEFAULT_OAUTH_SCOPE, description="OAuth2 scope"
+        default=c.TargetOracleOic.DEFAULT_OAUTH_SCOPE,
+        description="OAuth2 scope",
     )
     username: str | None = Field(
         default=None,

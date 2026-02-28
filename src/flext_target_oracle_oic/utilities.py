@@ -49,7 +49,7 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
             missing = sorted(key for key in required if key not in config)
             if missing:
                 return FlextResult[bool].fail(
-                    f"Missing required config fields: {missing}"
+                    f"Missing required config fields: {missing}",
                 )
             return FlextResult[bool].ok(value=True)
 

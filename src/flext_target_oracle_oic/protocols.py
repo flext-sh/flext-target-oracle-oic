@@ -58,7 +58,8 @@ class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtoco
 
             @runtime_checkable
             class OicIntegrationProtocol(
-                FlextProtocols.Service[t.GeneralValueType], Protocol
+                FlextProtocols.Service[t.GeneralValueType],
+                Protocol,
             ):
                 """Protocol for Oracle OIC integration.
 
@@ -66,7 +67,8 @@ class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtoco
                 """
 
                 def integrate(
-                    self, data: Mapping[str, t.JsonValue]
+                    self,
+                    data: Mapping[str, t.JsonValue],
                 ) -> FlextProtocols.Result[bool]:
                     """Integrate data with Oracle OIC.
 

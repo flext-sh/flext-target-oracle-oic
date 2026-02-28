@@ -25,7 +25,7 @@ class OICRecordProcessor:
     ) -> FlextResult[OICProcessedRecord]:
         """Return typed stream payload for downstream handling."""
         return FlextResult[OICProcessedRecord].ok(
-            OICProcessedRecord(stream_name=stream_name, record=record)
+            OICProcessedRecord(stream_name=stream_name, record=record),
         )
 
 
