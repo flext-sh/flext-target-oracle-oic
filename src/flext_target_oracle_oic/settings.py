@@ -275,6 +275,7 @@ class TargetOracleOicConfig(FlextSettings):
 
     # Model validator
     @model_validator(mode="after")
+    @override
     def validate_configuration(self) -> Self:
         """Validate complete configuration."""
         # Validate timeout
