@@ -25,10 +25,7 @@ from flext_target_oracle_oic.__version__ import __version__, __version_info__
 from flext_target_oracle_oic.application import OICTargetOrchestrator
 from flext_target_oracle_oic.cli import main, main as cli_main
 from flext_target_oracle_oic.client import OICClient
-from flext_target_oracle_oic.connection import (
-    OICConnection as LegacyOICConnection,
-    OICConnectionSettings as LegacyOICConnectionSettings,
-)
+from flext_target_oracle_oic.connection import OICConnection, OICConnectionSettings
 from flext_target_oracle_oic.constants import FlextTargetOracleOicConstants, c
 from flext_target_oracle_oic.models import FlextTargetOracleOicModels, m
 from flext_target_oracle_oic.patterns import (
@@ -87,11 +84,11 @@ __all__: list[str] = [
     "FlextTargetOracleOicTypes",
     "FlextTargetOracleOicUtilities",
     "IntegrationsSink",
-    "LegacyOICConnection",
-    "LegacyOICConnectionSettings",
     "LookupsSink",
     "OICBaseSink",
     "OICClient",
+    "OICConnection",
+    "OICConnectionSettings",
     "OICDataTransformer",
     "OICEntryManager",
     "OICOAuth2Authenticator",

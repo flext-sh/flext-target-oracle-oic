@@ -80,15 +80,6 @@ class OICOAuth2Authenticator:
         return {"Authorization": f"{self._auth_scheme} {token}"}
 
 
-# Backward compatibility aliases - all Config classes now use the single TargetOracleOicConfig
-# These provide compatibility for existing code while directing to the standardized Config
-OICAuthConfig = TargetOracleOicConfig
-OICConnectionConfig = TargetOracleOicConfig
-OICDeploymentConfig = TargetOracleOicConfig
-OICProcessingConfig = TargetOracleOicConfig
-OICEntityConfig = TargetOracleOicConfig
-
-
 def create_config_from_dict(
     config_dict: Mapping[str, t.JsonValue],
 ) -> TargetOracleOicConfig:
@@ -109,12 +100,7 @@ def create_singer_config_schema() -> Mapping[str, t.JsonValue]:
 
 
 __all__: list[str] = [
-    "OICAuthConfig",
-    "OICConnectionConfig",
-    "OICDeploymentConfig",
-    "OICEntityConfig",
     "OICOAuth2Authenticator",
-    "OICProcessingConfig",
     "TargetOracleOicConfig",
     "create_config_from_dict",
     "create_config_with_env_overrides",
