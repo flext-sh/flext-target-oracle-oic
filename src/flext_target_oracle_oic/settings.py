@@ -273,11 +273,9 @@ class TargetOracleOicConfig(FlextSettings):
             raise ValueError(msg)
         return v
 
-    # Model validator
     @model_validator(mode="after")
-    @override
-    def validate_configuration(self) -> Self:
-        """Validate complete configuration."""
+    def _validate_oic_settings(self) -> Self:
+        """Validate OIC-specific configuration."""
         # Validate timeout
         if self.timeout <= 0:
             msg = "Timeout must be positive"
