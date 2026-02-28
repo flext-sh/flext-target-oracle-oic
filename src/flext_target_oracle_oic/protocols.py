@@ -39,7 +39,7 @@ class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtoco
     oic: p.OracleOic.*
 
     # Meltano protocols (inherited)
-    target: p.Meltano.TargetProtocol
+    target: p.Meltano.Target
 
     # Target Oracle OIC-specific protocols
     oic_integration: p.TargetOracleOic.OracleOic.OicIntegrationProtocol
