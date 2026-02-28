@@ -10,21 +10,22 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Protocol, runtime_checkable
 
-from flext_db_oracle.protocols import FlextDbOracleProtocols as p_db_oracle
-from flext_meltano.protocols import FlextMeltanoProtocols as p_meltano
+from flext_core.protocols import FlextProtocols
+from flext_meltano.protocols import FlextMeltanoProtocols
+from flext_oracle_oic.protocols import FlextOracleOicProtocols
 from flext_target_oracle_oic.typings import t
 
 
-class FlextTargetOracleOicProtocols(p_meltano, p_db_oracle):
-    """Singer Target Oracle OIC protocols extending Oracle and Meltano protocols.
+class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtocols):
+    """Singer Target Oracle OIC protocols extending OracleOic and Meltano protocols.
 
-    Extends both FlextDbOracleProtocols and FlextMeltanoProtocols via multiple inheritance
-    to inherit all Oracle protocols, Meltano protocols, and foundation protocols.
+    Extends both FlextOracleOicProtocols and FlextMeltanoProtocols via multiple inheritance
+    to inherit all Oracle OIC protocols, Meltano protocols, and foundation protocols.
 
     Architecture:
-    - EXTENDS: FlextDbOracleProtocols (inherits .Database.* protocols)
+    - EXTENDS: FlextOracleOicProtocols (inherits .OracleOic.* protocols)
     - EXTENDS: FlextMeltanoProtocols (inherits .Meltano.* protocols)
-    - ADDS: Target Oracle OIC-specific protocols in Target.OracleOic namespace
+    - ADDS: Target Oracle OIC-specific protocols in TargetOracleOic namespace
     - PROVIDES: Root-level alias `p` for convenient access
 
     Usage:
@@ -34,14 +35,14 @@ class FlextTargetOracleOicProtocols(p_meltano, p_db_oracle):
     result: p.Result[str]
     service: p.Service[str]
 
-    # Oracle protocols (inherited)
-    connection: p.Database.ConnectionProtocol
+    # Oracle OIC protocols (inherited)
+    oic: p.OracleOic.*
 
     # Meltano protocols (inherited)
     target: p.Meltano.TargetProtocol
 
     # Target Oracle OIC-specific protocols
-    oic_integration: p.Target.OracleOic.OicIntegrationProtocol
+    oic_integration: p.TargetOracleOic.OracleOic.OicIntegrationProtocol
     """
 
     class TargetOracleOic:
@@ -56,7 +57,7 @@ class FlextTargetOracleOicProtocols(p_meltano, p_db_oracle):
             """
 
             @runtime_checkable
-            class OicIntegrationProtocol(p_db_oracle.Service[object], Protocol):
+            class OicIntegrationProtocol(FlextProtocols.Service[object], Protocol):
                 """Protocol for Oracle OIC integration.
 
                 Defines the interface for integrating data with Oracle OIC.
@@ -64,7 +65,7 @@ class FlextTargetOracleOicProtocols(p_meltano, p_db_oracle):
 
                 def integrate(
                     self, data: Mapping[str, t.JsonValue]
-                ) -> p_meltano.Result[bool]:
+                ) -> FlextProtocols.Result[bool]:
                     """Integrate data with Oracle OIC.
 
                     Args:
@@ -79,7 +80,7 @@ class FlextTargetOracleOicProtocols(p_meltano, p_db_oracle):
                 def transform_to_oic(
                     self,
                     record: Mapping[str, t.JsonValue],
-                ) -> p_meltano.Result[Mapping[str, t.JsonValue]]:
+                ) -> FlextProtocols.Result[Mapping[str, t.JsonValue]]:
                     """Transform Singer record to OIC format.
 
                     Args:
@@ -94,7 +95,7 @@ class FlextTargetOracleOicProtocols(p_meltano, p_db_oracle):
                 def invoke_integration(
                     self,
                     payload: Mapping[str, t.JsonValue],
-                ) -> p_meltano.Result[Mapping[str, t.JsonValue]]:
+                ) -> FlextProtocols.Result[Mapping[str, t.JsonValue]]:
                     """Invoke OIC integration with payload.
 
                     Args:
@@ -109,7 +110,7 @@ class FlextTargetOracleOicProtocols(p_meltano, p_db_oracle):
                 def process_batch(
                     self,
                     records: list[Mapping[str, t.JsonValue]],
-                ) -> p_meltano.Result[bool]:
+                ) -> FlextProtocols.Result[bool]:
                     """Process batch of records for OIC.
 
                     Args:
@@ -124,7 +125,7 @@ class FlextTargetOracleOicProtocols(p_meltano, p_db_oracle):
                 def validate_payload(
                     self,
                     payload: Mapping[str, t.JsonValue],
-                ) -> p_meltano.Result[bool]:
+                ) -> FlextProtocols.Result[bool]:
                     """Validate payload for OIC compatibility.
 
                     Args:
@@ -139,7 +140,7 @@ class FlextTargetOracleOicProtocols(p_meltano, p_db_oracle):
                 def optimize_throughput(
                     self,
                     config: Mapping[str, t.JsonValue],
-                ) -> p_meltano.Result[Mapping[str, t.JsonValue]]:
+                ) -> FlextProtocols.Result[Mapping[str, t.JsonValue]]:
                     """Optimize OIC throughput settings.
 
                     Args:
@@ -154,7 +155,7 @@ class FlextTargetOracleOicProtocols(p_meltano, p_db_oracle):
                 def track_integration_status(
                     self,
                     integration_id: str,
-                ) -> p_meltano.Result[Mapping[str, t.JsonValue]]:
+                ) -> FlextProtocols.Result[Mapping[str, t.JsonValue]]:
                     """Track integration execution status.
 
                     Args:

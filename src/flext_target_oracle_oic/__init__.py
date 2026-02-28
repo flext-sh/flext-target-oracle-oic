@@ -29,21 +29,8 @@ from flext_target_oracle_oic.connection import (
     OICConnection as LegacyOICConnection,
     OICConnectionSettings as LegacyOICConnectionSettings,
 )
-from flext_target_oracle_oic.constants import c
-from flext_target_oracle_oic.models import (
-    FlextTargetOracleOicModels,
-    OICConnection,
-    OICConnectionAction,
-    OICDataTransformation,
-    OICIntegration,
-    OICIntegrationAction,
-    OICLookup,
-    OICPackage,
-    OICProject,
-    OICSchedule,
-    OICSchemaMapping,
-    m,
-)
+from flext_target_oracle_oic.constants import FlextTargetOracleOicConstants, c
+from flext_target_oracle_oic.models import FlextTargetOracleOicModels, m
 from flext_target_oracle_oic.patterns import (
     OICDataTransformer,
     OICEntryManager,
@@ -105,21 +92,11 @@ __all__: list[str] = [
     "LookupsSink",
     "OICBaseSink",
     "OICClient",
-    "OICConnection",
-    "OICConnectionAction",
-    "OICDataTransformation",
     "OICDataTransformer",
     "OICEntryManager",
-    "OICIntegration",
-    "OICIntegrationAction",
-    "OICLookup",
     "OICOAuth2Authenticator",
-    "OICPackage",
-    "OICProject",
     "OICRecordProcessor",
-    "OICSchedule",
     "OICSchemaMapper",
-    "OICSchemaMapping",
     "OICTargetOrchestrator",
     "OICTypeConverter",
     "PackagesSink",

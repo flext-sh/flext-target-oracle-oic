@@ -6,12 +6,10 @@ from flext_meltano import FlextMeltanoConstants
 from flext_oracle_oic import FlextOracleOicConstants
 
 
-class FlextMeltanoTargetOracleOicConstants(
-    FlextMeltanoConstants, FlextOracleOicConstants
-):
+class FlextTargetOracleOicConstants(FlextMeltanoConstants, FlextOracleOicConstants):
     """Namespace class for OIC target constants."""
 
 
-c = FlextMeltanoTargetOracleOicConstants
+c = FlextTargetOracleOicConstants
 
-__all__ = ["FlextMeltanoTargetOracleOicConstants", "c"]
+__all__ = ["FlextTargetOracleOicConstants", "c"]

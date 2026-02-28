@@ -4,27 +4,31 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 
-from .models import OICConnection, OICIntegration, OICLookup, OICPackage
+from flext_target_oracle_oic.models import m
 
 
-def create_oic_connection(data: Mapping[str, object]) -> OICConnection:
+def create_oic_connection(
+    data: Mapping[str, object],
+) -> m.TargetOracleOic.OICConnection:
     """Create an OICConnection model from generic payload via Pydantic validation."""
-    return OICConnection.model_validate({**data, "properties": data})
+    return m.TargetOracleOic.OICConnection.model_validate({**data, "properties": data})
 
 
-def create_oic_integration(data: Mapping[str, object]) -> OICIntegration:
+def create_oic_integration(
+    data: Mapping[str, object],
+) -> m.TargetOracleOic.OICIntegration:
     """Create an OICIntegration model from generic payload via Pydantic validation."""
-    return OICIntegration.model_validate(data)
+    return m.TargetOracleOic.OICIntegration.model_validate(data)
 
 
-def create_oic_package(data: Mapping[str, object]) -> OICPackage:
+def create_oic_package(data: Mapping[str, object]) -> m.TargetOracleOic.OICPackage:
     """Create an OICPackage model from generic payload via Pydantic validation."""
-    return OICPackage.model_validate(data)
+    return m.TargetOracleOic.OICPackage.model_validate(data)
 
 
-def create_oic_lookup(data: Mapping[str, object]) -> OICLookup:
+def create_oic_lookup(data: Mapping[str, object]) -> m.TargetOracleOic.OICLookup:
     """Create an OICLookup model from generic payload via Pydantic validation."""
-    return OICLookup.model_validate(data)
+    return m.TargetOracleOic.OICLookup.model_validate(data)
 
 
 __all__ = [
