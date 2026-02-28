@@ -5,9 +5,11 @@ from __future__ import annotations
 from collections.abc import Mapping
 
 from flext_core import FlextResult, t
+from flext_meltano import FlextMeltanoUtilities
+from flext_oracle_oic import FlextOracleOicUtilities
 
 
-class FlextTargetOracleOicUtilities:
+class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtilities):
     """Namespace for message-building and validation helpers."""
 
     class TargetOracleOic:
@@ -52,4 +54,6 @@ class FlextTargetOracleOicUtilities:
             return FlextResult[bool].ok(value=True)
 
 
-__all__ = ["FlextTargetOracleOicUtilities"]
+u = FlextTargetOracleOicUtilities
+
+__all__ = ["FlextTargetOracleOicUtilities", "u"]

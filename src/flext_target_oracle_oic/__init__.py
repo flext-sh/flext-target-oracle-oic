@@ -29,7 +29,7 @@ from flext_target_oracle_oic.connection import (
     OICConnection as LegacyOICConnection,
     OICConnectionSettings as LegacyOICConnectionSettings,
 )
-from flext_target_oracle_oic.constants import FlextMeltanoTargetOracleOicConstants, c
+from flext_target_oracle_oic.constants import c
 from flext_target_oracle_oic.models import (
     FlextTargetOracleOicModels,
     OICConnection,
@@ -75,17 +75,17 @@ from flext_target_oracle_oic.target_models import (
     create_oic_package,
 )
 from flext_target_oracle_oic.typings import FlextTargetOracleOicTypes, t
-from flext_target_oracle_oic.utilities import FlextTargetOracleOicUtilities
+from flext_target_oracle_oic.utilities import FlextTargetOracleOicUtilities, u
 
 # Standard FLEXT aliases (11 total)
-c = FlextMeltanoTargetOracleOicConstants
+
 d = FlextDecorators
 e = FlextExceptions
 h = FlextHandlers
 p = FlextTargetOracleOicProtocols
 r = FlextResult
 s = FlextService
-u = FlextTargetOracleOicUtilities
+
 x = FlextMixins
 
 __all__: list[str] = [
