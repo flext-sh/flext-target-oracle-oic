@@ -10,8 +10,8 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Protocol, runtime_checkable
 
-from flext_core.protocols import FlextProtocols
-from flext_meltano.protocols import FlextMeltanoProtocols
+from flext_core import FlextProtocols
+from flext_meltano import FlextMeltanoProtocols
 from flext_oracle_oic.protocols import FlextOracleOicProtocols
 from flext_target_oracle_oic.typings import t
 
@@ -57,7 +57,9 @@ class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtoco
             """
 
             @runtime_checkable
-            class OicIntegrationProtocol(FlextProtocols.Service[t.GeneralValueType], Protocol):
+            class OicIntegrationProtocol(
+                FlextProtocols.Service[t.GeneralValueType], Protocol
+            ):
                 """Protocol for Oracle OIC integration.
 
                 Defines the interface for integrating data with Oracle OIC.

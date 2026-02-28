@@ -13,7 +13,6 @@ from typing import Self, override
 from flext_core import FlextConstants, FlextResult, FlextSettings
 from flext_target_oracle_oic.typings import t
 from pydantic import (
-    AnyUrl,
     BaseModel,
     ConfigDict,
     Field,
@@ -463,4 +462,3 @@ class TargetOracleOicConfig(FlextSettings):
 __all__: list[str] = [
     "TargetOracleOicConfig",
 ]
-

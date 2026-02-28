@@ -100,7 +100,6 @@ def _build_auth_config(**overrides: object) -> TargetOracleOicConfig:
     return TargetOracleOicConfig(**config)
 
 
-
 def test_oic_authenticator_builds_payload() -> None:
     authenticator = OICOAuth2Authenticator(_build_auth_config())
 
