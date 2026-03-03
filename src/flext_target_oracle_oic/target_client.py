@@ -7,8 +7,9 @@ from typing import override
 
 from flext_core import FlextLogger, FlextResult, t
 from flext_meltano import FlextMeltanoTarget as Target
-from flext_target_oracle_oic.constants import c
 from singer_sdk import Sink
+
+from flext_target_oracle_oic.constants import c
 
 logger = FlextLogger(__name__)
 

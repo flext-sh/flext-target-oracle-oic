@@ -13,6 +13,7 @@ from typing import Protocol, runtime_checkable
 from flext_core import FlextProtocols
 from flext_meltano import FlextMeltanoProtocols
 from flext_oracle_oic.protocols import FlextOracleOicProtocols
+
 from flext_target_oracle_oic.typings import t
 
 

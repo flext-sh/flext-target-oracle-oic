@@ -7,8 +7,9 @@ from enum import StrEnum
 from flext_core import FlextResult, t
 from flext_meltano import FlextMeltanoModels
 from flext_oracle_oic import FlextOracleOicModels
-from flext_target_oracle_oic.constants import c
 from pydantic import Field
+
+from flext_target_oracle_oic.constants import c
 
 
 class FlextTargetOracleOicModels(FlextMeltanoModels, FlextOracleOicModels):

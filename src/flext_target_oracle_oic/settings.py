@@ -11,7 +11,6 @@ from collections.abc import Mapping
 from typing import Self, override
 
 from flext_core import FlextConstants, FlextResult, FlextSettings
-from flext_target_oracle_oic.typings import t
 from pydantic import (
     BaseModel,
     ConfigDict,
@@ -22,6 +21,8 @@ from pydantic import (
     model_validator,
 )
 from pydantic_settings import SettingsConfigDict
+
+from flext_target_oracle_oic.typings import t
 
 
 class TargetOracleOicConfig(FlextSettings):

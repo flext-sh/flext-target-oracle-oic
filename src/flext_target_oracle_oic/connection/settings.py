@@ -16,8 +16,9 @@ from flext_core import (
     FlextResult,
     t,
 )
-from flext_target_oracle_oic.constants import c
 from pydantic import Field
+
+from flext_target_oracle_oic.constants import c
 
 logger = FlextLogger(__name__)
 

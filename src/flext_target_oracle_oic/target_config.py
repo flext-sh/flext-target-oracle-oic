@@ -10,6 +10,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 
 import requests
+
 from flext_target_oracle_oic.constants import c
 
 from .settings import TargetOracleOicConfig
