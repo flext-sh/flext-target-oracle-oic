@@ -57,8 +57,8 @@ class FlextTargetOracleOicModels(FlextMeltanoModels, FlextOracleOicModels):
             """Lookup payload model."""
 
             name: str
-            columns: list[dict[str, t.GeneralValueType]] = Field(default=[])
-            rows: list[dict[str, t.GeneralValueType]] = Field(default=[])
+            columns: list[dict[str, t.ContainerValue]] = Field(default=[])
+            rows: list[dict[str, t.ContainerValue]] = Field(default=[])
 
         class OICProject(FlextMeltanoModels.ArbitraryTypesModel):
             """Project payload model."""
