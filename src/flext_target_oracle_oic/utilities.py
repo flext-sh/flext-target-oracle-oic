@@ -16,6 +16,14 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
         """Singer message helper functions."""
 
         @staticmethod
+        def create_record_message(
+            stream_name: str,
+            record: Mapping[str, t.JsonValue],
+        ) -> Mapping[str, t.JsonValue]:
+            """Build a Singer RECORD message payload."""
+            return {"type": "RECORD", "stream": stream_name, "record": record}
+
+        @staticmethod
         def create_schema_message(
             stream_name: str,
             schema: Mapping[str, t.JsonValue],
@@ -28,14 +36,6 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
                 "schema": schema,
                 "key_properties": key_properties or [],
             }
-
-        @staticmethod
-        def create_record_message(
-            stream_name: str,
-            record: Mapping[str, t.JsonValue],
-        ) -> Mapping[str, t.JsonValue]:
-            """Build a Singer RECORD message payload."""
-            return {"type": "RECORD", "stream": stream_name, "record": record}
 
     class Validation:
         """Runtime configuration validation helper functions."""

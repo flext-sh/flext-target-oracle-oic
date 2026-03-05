@@ -26,6 +26,12 @@ class OICOAuth2Authenticator:
         self._access_token: str | None = None
         self._auth_scheme: str = c.TargetOracleOic.AUTH_SCHEME_BEARER
 
+    @property
+    def auth_headers(self) -> Mapping[str, str]:
+        """Get the authentication headers block for requests."""
+        token = self.get_access_token()
+        return {"Authorization": f"{self._auth_scheme} {token}"}
+
     def build_token_request_data(self) -> dict[str, str]:
         """Build the payload for requesting an OAuth2 token."""
         payload = {
@@ -73,12 +79,6 @@ class OICOAuth2Authenticator:
 
         self._access_token = access_token
         return access_token
-
-    @property
-    def auth_headers(self) -> Mapping[str, str]:
-        """Get the authentication headers block for requests."""
-        token = self.get_access_token()
-        return {"Authorization": f"{self._auth_scheme} {token}"}
 
 
 def create_config_from_dict(

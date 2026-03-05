@@ -263,37 +263,6 @@ class TargetOracleOicConfig(FlextSettings):
         description="Project version",
     )
 
-    # Field validators
-    @field_validator("import_mode")
-    @classmethod
-    def validate_import_mode(cls, v: str) -> str:
-        """Validate import mode."""
-        valid_modes = {"create_only", "update_only", "create_or_update"}
-        if v not in valid_modes:
-            msg = f"Invalid import mode: {v}. Must be one of: {', '.join(sorted(valid_modes))}"
-            raise ValueError(msg)
-        return v
-
-    @model_validator(mode="after")
-    def _validate_oic_settings(self) -> Self:
-        """Validate OIC-specific configuration."""
-        # Validate timeout
-        if self.timeout <= 0:
-            msg = "Timeout must be positive"
-            raise ValueError(msg)
-
-        # Validate batch size
-        if self.batch_size <= 0:
-            msg = "Batch size must be positive"
-            raise ValueError(msg)
-
-        # Validate max errors
-        if self.max_errors < 0:
-            msg = "Max errors cannot be negative"
-            raise ValueError(msg)
-
-        return self
-
     # Computed fields
     @computed_field
     def auth_config(self) -> Mapping[str, str | None]:
@@ -330,6 +299,16 @@ class TargetOracleOicConfig(FlextSettings):
         }
 
     @computed_field
+    def entity_config(self) -> Mapping[str, str | Mapping[str, str]]:
+        """Get entity configuration as dictionary."""
+        return {
+            "integration_identifier_field": self.integration_identifier_field,
+            "connection_identifier_field": self.connection_identifier_field,
+            "lookup_identifier_field": self.lookup_identifier_field,
+            "identifier_fields": self.identifier_fields,
+        }
+
+    @computed_field
     def processing_config(self) -> Mapping[str, int | bool]:
         """Get processing configuration as dictionary."""
         return {
@@ -341,79 +320,6 @@ class TargetOracleOicConfig(FlextSettings):
             "ignore_transformation_errors": self.ignore_transformation_errors,
             "dry_run_mode": self.dry_run_mode,
         }
-
-    @computed_field
-    def entity_config(self) -> Mapping[str, str | Mapping[str, str]]:
-        """Get entity configuration as dictionary."""
-        return {
-            "integration_identifier_field": self.integration_identifier_field,
-            "connection_identifier_field": self.connection_identifier_field,
-            "lookup_identifier_field": self.lookup_identifier_field,
-            "identifier_fields": self.identifier_fields,
-        }
-
-    # Utility methods
-    def get_oauth_headers(self) -> Mapping[str, str]:
-        """Get OAuth headers for API requests."""
-        return {
-            "Content-Type": "application/x-www-form-urlencoded",
-            "Accept": "application/json",
-        }
-
-    def get_entity_identifier_field(self, entity_type: str) -> str:
-        """Get identifier field for entity type."""
-        return self.identifier_fields.get(entity_type, "id")
-
-    def get_oauth_client_secret_value(self) -> str:
-        """Get the actual OAuth client secret value (safely extract from SecretStr)."""
-        return self.oauth_client_secret.get_secret_value()
-
-    def validate_business_rules(self) -> FlextResult[bool]:
-        """Validate configuration business rules."""
-        try:
-            # Validate authentication configuration
-            if not self.oauth_client_id:
-                return FlextResult[bool].fail("OAuth client ID cannot be empty")
-            if not str(self.oauth_token_url):
-                return FlextResult[bool].fail("OAuth token URL cannot be empty")
-
-            # Validate connection configuration
-            if not str(self.base_url):
-                return FlextResult[bool].fail("Base URL cannot be empty")
-            if self.timeout <= 0:
-                return FlextResult[bool].fail("Timeout must be positive")
-
-            # Validate deployment configuration
-            valid_modes = {"create_only", "update_only", "create_or_update"}
-            if self.import_mode not in valid_modes:
-                return FlextResult[bool].fail(
-                    f"Invalid import mode: {self.import_mode}",
-                )
-
-            # Validate processing configuration
-            if self.batch_size <= 0:
-                return FlextResult[bool].fail("Batch size must be positive")
-            if self.max_errors < 0:
-                return FlextResult[bool].fail("Max errors cannot be negative")
-
-            return FlextResult[bool].ok(value=True)
-        except (
-            ValueError,
-            TypeError,
-            KeyError,
-            AttributeError,
-            OSError,
-            RuntimeError,
-            ImportError,
-        ) as e:
-            return FlextResult[bool].fail(f"Configuration validation failed: {e}")
-
-    # Singleton pattern methods
-    @classmethod
-    @override
-    def get_global_instance(cls) -> Self:
-        """Get the global singleton instance using enhanced FlextSettings pattern."""
-        return cls()
 
     @classmethod
     def create_for_development(cls, **overrides: t.JsonValue) -> Self:
@@ -458,6 +364,100 @@ class TargetOracleOicConfig(FlextSettings):
             **overrides,
         }
         return cls.model_validate(test_overrides)
+
+    # Singleton pattern methods
+    @classmethod
+    @override
+    def get_global_instance(cls) -> Self:
+        """Get the global singleton instance using enhanced FlextSettings pattern."""
+        return cls()
+
+    # Field validators
+    @field_validator("import_mode")
+    @classmethod
+    def validate_import_mode(cls, v: str) -> str:
+        """Validate import mode."""
+        valid_modes = {"create_only", "update_only", "create_or_update"}
+        if v not in valid_modes:
+            msg = f"Invalid import mode: {v}. Must be one of: {', '.join(sorted(valid_modes))}"
+            raise ValueError(msg)
+        return v
+
+    def get_entity_identifier_field(self, entity_type: str) -> str:
+        """Get identifier field for entity type."""
+        return self.identifier_fields.get(entity_type, "id")
+
+    def get_oauth_client_secret_value(self) -> str:
+        """Get the actual OAuth client secret value (safely extract from SecretStr)."""
+        return self.oauth_client_secret.get_secret_value()
+
+    # Utility methods
+    def get_oauth_headers(self) -> Mapping[str, str]:
+        """Get OAuth headers for API requests."""
+        return {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Accept": "application/json",
+        }
+
+    def validate_business_rules(self) -> FlextResult[bool]:
+        """Validate configuration business rules."""
+        try:
+            # Validate authentication configuration
+            if not self.oauth_client_id:
+                return FlextResult[bool].fail("OAuth client ID cannot be empty")
+            if not str(self.oauth_token_url):
+                return FlextResult[bool].fail("OAuth token URL cannot be empty")
+
+            # Validate connection configuration
+            if not str(self.base_url):
+                return FlextResult[bool].fail("Base URL cannot be empty")
+            if self.timeout <= 0:
+                return FlextResult[bool].fail("Timeout must be positive")
+
+            # Validate deployment configuration
+            valid_modes = {"create_only", "update_only", "create_or_update"}
+            if self.import_mode not in valid_modes:
+                return FlextResult[bool].fail(
+                    f"Invalid import mode: {self.import_mode}",
+                )
+
+            # Validate processing configuration
+            if self.batch_size <= 0:
+                return FlextResult[bool].fail("Batch size must be positive")
+            if self.max_errors < 0:
+                return FlextResult[bool].fail("Max errors cannot be negative")
+
+            return FlextResult[bool].ok(value=True)
+        except (
+            ValueError,
+            TypeError,
+            KeyError,
+            AttributeError,
+            OSError,
+            RuntimeError,
+            ImportError,
+        ) as e:
+            return FlextResult[bool].fail(f"Configuration validation failed: {e}")
+
+    @model_validator(mode="after")
+    def _validate_oic_settings(self) -> Self:
+        """Validate OIC-specific configuration."""
+        # Validate timeout
+        if self.timeout <= 0:
+            msg = "Timeout must be positive"
+            raise ValueError(msg)
+
+        # Validate batch size
+        if self.batch_size <= 0:
+            msg = "Batch size must be positive"
+            raise ValueError(msg)
+
+        # Validate max errors
+        if self.max_errors < 0:
+            msg = "Max errors cannot be negative"
+            raise ValueError(msg)
+
+        return self
 
 
 # Export configuration class (single class only)

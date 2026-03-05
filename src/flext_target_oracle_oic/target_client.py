@@ -28,6 +28,11 @@ class OICBaseSink(Sink):
         super().__init__(target, stream_name, dict(schema), key_properties)
 
     @override
+    def process_batch(self, context: Mapping[str, t.JsonValue]) -> None:
+        """Singer batch hook implementation."""
+        _ = context
+
+    @override
     def process_record(
         self,
         record: Mapping[str, t.JsonValue],
@@ -39,11 +44,6 @@ class OICBaseSink(Sink):
             "Processing OIC record",
             extra={"keys": list(record.keys())},
         )
-
-    @override
-    def process_batch(self, context: Mapping[str, t.JsonValue]) -> None:
-        """Singer batch hook implementation."""
-        _ = context
 
 
 class ConnectionsSink(OICBaseSink):

@@ -55,31 +55,6 @@ class OICConnectionSettings(FlextModels):
     )
     verify_ssl: bool = Field(default=True, description="Verify SSL certificates")
 
-    def build_auth_url(self) -> str:
-        """Build OAuth2 authentication URL."""
-        url = self.base_url.rstrip("/")
-        return f"{url}{c.TargetOracleOic.API_PATH_OAUTH_TOKEN}"
-
-    def build_api_base_url(self) -> str:
-        """Build OIC API base URL."""
-        url = self.base_url.rstrip("/")
-        return f"{url}{c.TargetOracleOic.API_PATH_INTEGRATION}"
-
-    def get_auth_headers(self) -> Mapping[str, str]:
-        """Get authentication headers."""
-        return {
-            c.TargetOracleOic.HEADER_CONTENT_TYPE: c.TargetOracleOic.HEADER_CONTENT_TYPE_FORM,
-            c.TargetOracleOic.HEADER_ACCEPT: c.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
-        }
-
-    def get_api_headers(self, access_token: str) -> Mapping[str, str]:
-        """Get API request headers with authentication."""
-        return {
-            c.TargetOracleOic.HEADER_AUTHORIZATION: f"{c.TargetOracleOic.AUTH_SCHEME_BEARER} {access_token}",
-            c.TargetOracleOic.HEADER_CONTENT_TYPE: c.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
-            c.TargetOracleOic.HEADER_ACCEPT: c.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
-        }
-
     @classmethod
     def from_dict(cls, data: Mapping[str, t.JsonValue]) -> OICConnectionSettings:
         """Create configuration from dictionary using modern Pydantic patterns."""
@@ -96,6 +71,31 @@ class OICConnectionSettings(FlextModels):
         ):
             logger.exception("Failed to create OICConnectionSettings from dict")
             raise
+
+    def build_api_base_url(self) -> str:
+        """Build OIC API base URL."""
+        url = self.base_url.rstrip("/")
+        return f"{url}{c.TargetOracleOic.API_PATH_INTEGRATION}"
+
+    def build_auth_url(self) -> str:
+        """Build OAuth2 authentication URL."""
+        url = self.base_url.rstrip("/")
+        return f"{url}{c.TargetOracleOic.API_PATH_OAUTH_TOKEN}"
+
+    def get_api_headers(self, access_token: str) -> Mapping[str, str]:
+        """Get API request headers with authentication."""
+        return {
+            c.TargetOracleOic.HEADER_AUTHORIZATION: f"{c.TargetOracleOic.AUTH_SCHEME_BEARER} {access_token}",
+            c.TargetOracleOic.HEADER_CONTENT_TYPE: c.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
+            c.TargetOracleOic.HEADER_ACCEPT: c.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
+        }
+
+    def get_auth_headers(self) -> Mapping[str, str]:
+        """Get authentication headers."""
+        return {
+            c.TargetOracleOic.HEADER_CONTENT_TYPE: c.TargetOracleOic.HEADER_CONTENT_TYPE_FORM,
+            c.TargetOracleOic.HEADER_ACCEPT: c.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
+        }
 
     def validate_business_rules(self) -> FlextResult[bool]:
         """Validate OIC connection configuration business rules."""
