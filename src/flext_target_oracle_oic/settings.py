@@ -25,6 +25,7 @@ from pydantic_settings import SettingsConfigDict
 from flext_target_oracle_oic.typings import t
 
 
+@FlextSettings.auto_register("target_oracle_oic")
 class TargetOracleOicConfig(FlextSettings):
     """Single flat Config class for target-oracle-oic extending FlextSettings.
 
