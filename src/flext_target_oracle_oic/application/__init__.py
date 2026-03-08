@@ -10,7 +10,4 @@ from __future__ import annotations
 from flext_target_oracle_oic.application.orchestrator import OICTargetOrchestrator
 from flext_target_oracle_oic.typings import t
 
-__all__: list[str] = [
-    "OICTargetOrchestrator",
-    "t",
-]
+__all__: list[str] = ["OICTargetOrchestrator", "t"]

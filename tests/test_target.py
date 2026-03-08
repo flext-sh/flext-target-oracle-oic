@@ -34,8 +34,7 @@ class TestTargetOracleOic:
         }
 
     def test_target_initialization_with_valid_config(
-        self,
-        valid_config: dict[str, str],
+        self, valid_config: dict[str, str]
     ) -> None:
         """Test target initialization with valid configuration."""
         target = TargetOracleOic(config=valid_config)
@@ -60,12 +59,10 @@ class TestTargetOracleOic:
             "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
         }
         target = TargetOracleOic(config=config)
-
         if target.get_sink_class("connections") is not ConnectionsSink:
             msg: str = f"Expected {ConnectionsSink}, got {target.get_sink_class('connections')}"
             raise AssertionError(msg)
         assert target.get_sink_class("integrations") is IntegrationsSink
-
         if target.get_sink_class("unknown_stream") is not target.default_sink_class:
             msg = f"Expected {target.default_sink_class}, got {target.get_sink_class('unknown_stream')}"
             raise AssertionError(msg)
@@ -77,8 +74,6 @@ class TestTargetOracleOic:
         if "properties" not in schema:
             msg = f"Expected {'properties'} in {schema}"
             raise AssertionError(msg)
-
-        # Check required properties
         properties = schema["properties"]
         assert isinstance(properties, dict)
         assert isinstance(properties, dict)
@@ -94,17 +89,12 @@ def _build_auth_config(**overrides: object) -> TargetOracleOicConfig:
         "base_url": "https://instance.integration.ocp.oraclecloud.com",
     }
     config.update(overrides)
-    # Use model_validate with context or just direct instantiation if needed,
-    # but model_validate should work if the dict is complete.
-    # The error "input_value={}, input_type=dict" suggests it's getting an empty dict.
     return TargetOracleOicConfig(**config)
 
 
 def test_oic_authenticator_builds_payload() -> None:
     authenticator = OICOAuth2Authenticator(_build_auth_config())
-
     payload = authenticator.build_token_request_data()
-
     assert payload["grant_type"] == "client_credentials"
     assert payload["client_id"] == "client-id"
     assert payload["client_secret"] == "client-secret"
@@ -114,11 +104,9 @@ def test_oic_authenticator_builds_payload() -> None:
 
 def test_oic_authenticator_omits_optional_scope_and_audience() -> None:
     authenticator = OICOAuth2Authenticator(
-        _build_auth_config(oauth_scope="", oauth_client_aud=None),
+        _build_auth_config(oauth_scope="", oauth_client_aud=None)
     )
-
     payload = authenticator.build_token_request_data()
-
     assert "scope" not in payload
     assert "audience" not in payload
 
@@ -139,6 +127,5 @@ def test_oic_authenticator_rejects_invalid_token_response(
         return InvalidTokenResponse()
 
     monkeypatch.setattr(f"{OICOAuth2Authenticator.__module__}.requests.post", fake_post)
-
     with pytest.raises(RuntimeError, match="access_token"):
         authenticator.get_access_token()

@@ -47,9 +47,8 @@ class OICOAuth2Authenticator:
 
     def get_access_token(self, *, force_refresh: bool = False) -> str:
         """Get the current access token, optionally forcing a refresh."""
-        if self._access_token is not None and not force_refresh:
+        if self._access_token is not None and (not force_refresh):
             return self._access_token
-
         try:
             response = requests.post(
                 str(self._config.oauth_token_url),
@@ -61,22 +60,18 @@ class OICOAuth2Authenticator:
         except requests.RequestException as exc:
             msg = f"Failed to request OAuth2 token: {exc}"
             raise RuntimeError(msg) from exc
-
         payload_raw = response.json()
         if not isinstance(payload_raw, dict):
             msg = "OAuth2 token response is not a JSON object"
             raise TypeError(msg)
-
         token_payload = payload_raw
         access_token = token_payload.get("access_token")
         if not isinstance(access_token, str) or not access_token:
             msg = "OAuth2 token response did not include a valid access_token"
             raise RuntimeError(msg)
-
         token_type = token_payload.get("token_type")
         if isinstance(token_type, str) and token_type:
             self._auth_scheme = token_type
-
         self._access_token = access_token
         return access_token
 
@@ -88,9 +83,7 @@ def create_config_from_dict(
     return TargetOracleOicConfig.model_validate(config_dict)
 
 
-def create_config_with_env_overrides(
-    **overrides: t.JsonValue,
-) -> TargetOracleOicConfig:
+def create_config_with_env_overrides(**overrides: t.JsonValue) -> TargetOracleOicConfig:
     """Create TargetOracleOicConfig with environment variable overrides."""
     return TargetOracleOicConfig.model_validate(overrides)
 

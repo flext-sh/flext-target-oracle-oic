@@ -34,16 +34,11 @@ class OICBaseSink(Sink):
 
     @override
     def process_record(
-        self,
-        record: Mapping[str, t.JsonValue],
-        context: Mapping[str, t.JsonValue],
+        self, record: Mapping[str, t.JsonValue], context: Mapping[str, t.JsonValue]
     ) -> None:
         """Default sink behavior: log incoming record metadata."""
         _ = context
-        logger.debug(
-            "Processing OIC record",
-            extra={"keys": list(record.keys())},
-        )
+        logger.debug("Processing OIC record", extra={"keys": list(record.keys())})
 
 
 class ConnectionsSink(OICBaseSink):

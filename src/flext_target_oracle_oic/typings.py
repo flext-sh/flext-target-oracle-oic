@@ -11,5 +11,4 @@ class FlextTargetOracleOicTypes(FlextMeltanoTypes, FlextOracleOicTypes):
 
 
 t = FlextTargetOracleOicTypes
-
 __all__ = ["FlextTargetOracleOicTypes", "t"]

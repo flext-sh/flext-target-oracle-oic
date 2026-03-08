@@ -33,18 +33,15 @@ from flext_target_oracle_oic.target_client import (
 )
 
 
-# Load real configuration from environment
 def load_test_config() -> dict[str, str]:
     """Load real test configuration from environment variables."""
-    # Load .env file if it exists
     env_file = Path(".env")
     if env_file.exists():
         with env_file.open(encoding="utf-8") as f:
             for line in f:
-                if "=" in line and not line.strip().startswith("#"):
+                if "=" in line and (not line.strip().startswith("#")):
                     key, value = line.strip().split("=", 1)
                     os.environ[key] = value.strip("\"'")
-
     config = {
         "base_url": os.getenv("TARGET_ORACLE_OIC_BASE_URL", ""),
         "oauth_client_id": os.getenv("TARGET_ORACLE_OIC_OAUTH_CLIENT_ID", ""),
@@ -52,8 +49,6 @@ def load_test_config() -> dict[str, str]:
         "oauth_token_url": os.getenv("TARGET_ORACLE_OIC_OAUTH_TOKEN_URL", ""),
         "oauth_client_aud": os.getenv("TARGET_ORACLE_OIC_OAUTH_CLIENT_AUD", ""),
     }
-
-    # Validate required configuration
     required_keys = [
         "base_url",
         "oauth_client_id",
@@ -63,7 +58,6 @@ def load_test_config() -> dict[str, str]:
     missing_keys = [k for k in required_keys if not config[k]]
     if missing_keys:
         pytest.skip(f"Missing required environment variables: {missing_keys}")
-
     return config
 
 
@@ -83,9 +77,7 @@ class TestTargetOracleOicE2E:
     """End-to-end tests for target-oracle-oic using REAL configuration and NO MOCKS."""
 
     def test_target_initialization(
-        self,
-        target: TargetOracleOic,
-        test_config: dict[str, str],
+        self, target: TargetOracleOic, test_config: dict[str, str]
     ) -> None:
         """Test target initialization with valid configuration."""
         if target.name != "target-oracle-oic":
@@ -113,7 +105,6 @@ class TestTargetOracleOicE2E:
 
     def test_sink_initialization(self, target: TargetOracleOic) -> None:
         """Test sink initialization for each stream type."""
-        # Test each sink type
         sinks_to_test = [
             ("connections", ConnectionsSink),
             ("integrations", IntegrationsSink),
@@ -133,12 +124,9 @@ class TestTargetOracleOicE2E:
             assert sink.config == target.config
 
     def test_process_singer_messages(
-        self,
-        target: TargetOracleOic,
-        tmp_path: Path,
+        self, target: TargetOracleOic, tmp_path: Path
     ) -> None:
         """Test processing Singer messages end-to-end."""
-        # Create test Singer messages
         messages = [
             {
                 "type": "SCHEMA",
@@ -161,41 +149,32 @@ class TestTargetOracleOicE2E:
                 "type": "STATE",
                 "value": {
                     "bookmarks": {
-                        "connections": {
-                            "replication_key_value": "2024-01-01T00:00:00Z",
-                        },
-                    },
+                        "connections": {"replication_key_value": "2024-01-01T00:00:00Z"}
+                    }
                 },
             },
         ]
-        # Write messages to file
         input_file = tmp_path / "input.jsonl"
         with input_file.open("w", encoding="utf-8") as f:
             f.writelines(json.dumps(msg) + "\n" for msg in messages)
-        # Process messages using Singer SDK API
         with (
             patch.object(ConnectionsSink, "process_record") as mock_process,
             patch.object(ConnectionsSink, "client") as mock_client,
         ):
-            # Mock the HTTP client to avoid actual API calls
             mock_client.get.return_value.status_code = 404
             mock_client.post.return_value.status_code = 201
-            # Use the proper Singer SDK listen method with file input
             with input_file.open(encoding="utf-8") as f:
                 target.listen(file_input=f)
-            # Verify that the record was processed
             assert mock_process.called, "process_record should have been called"
 
     def test_sink_authenticator_setup(self, target: TargetOracleOic) -> None:
         """Test sink authenticator initialization."""
-        # Get a sink instance
         sink = ConnectionsSink(
             target=target,
             stream_name="connections",
             schema={"properties": {"id": {"type": "string"}}},
             key_properties=["id"],
         )
-        # Test authenticator initialization (Sink sets it at runtime)
         authenticator = getattr(sink, "authenticator", None)
         assert authenticator is not None
         assert hasattr(authenticator, "auth_headers")
@@ -210,24 +189,19 @@ class TestTargetOracleOicE2E:
                     "id": {"type": "string"},
                     "name": {"type": "string"},
                     "adapter_type": {"type": "string"},
-                },
+                }
             },
             key_properties=["id"],
         )
-        # Test record
         test_record = {
             "id": "TEST_CONNECTION_E2E",
             "name": "E2E Test Connection",
             "adapter_type": "REST",
         }
-        # Test that either succeeds or raises HTTP/auth-related exceptions
         try:
-            # Process the record
             sink.process_record(test_record, {})
         except (RuntimeError, ValueError, TypeError) as e:
             if any(code in str(e) for code in ["401", "403", "404", "500"]):
-                # HTTP errors are expected in test environment without live credentials/instance
-                # This confirms the sink is attempting real API calls as expected
                 pass
             else:
                 pytest.fail(f"Unexpected error: {e}")
@@ -242,24 +216,19 @@ class TestTargetOracleOicE2E:
                     "id": {"type": "string"},
                     "name": {"type": "string"},
                     "archive_content": {"type": "string"},
-                },
+                }
             },
             key_properties=["id"],
         )
-        # Mock the HTTP client to avoid actual API calls
         with patch.object(sink, "_client") as mock_client:
-            # Mock responses
-            mock_client.get.return_value.status_code = 404  # Integration doesn't exist
-            mock_client.post.return_value.status_code = 201  # Creation successful
-            # Test record with archive content
+            mock_client.get.return_value.status_code = 404
+            mock_client.post.return_value.status_code = 201
             test_record = {
                 "id": "TEST_INTEGRATION_E2E",
                 "name": "E2E Test Integration",
                 "archive_content": "base64_encoded_iar_content_here",
             }
-            # Process the record
             sink.process_record(test_record, {})
-            # Verify import endpoint was called
             mock_client.post.assert_called()
 
     def test_connections_sink_validation(self, target: TargetOracleOic) -> None:
@@ -275,7 +244,6 @@ class TestTargetOracleOicE2E:
     def test_config_validation(self) -> None:
         """Test method."""
         _ = TargetOracleOic(config={})
-        # Test with minimal valid config
         minimal_config = {
             "base_url": "https://test.integration.ocp.oraclecloud.com",
             "oauth_client_id": "test",
@@ -293,11 +261,10 @@ class TestTargetOracleOicE2E:
             target=target,
             stream_name="packages",
             schema={
-                "properties": {"id": {"type": "string"}, "name": {"type": "string"}},
+                "properties": {"id": {"type": "string"}, "name": {"type": "string"}}
             },
             key_properties=["id"],
         )
-        # Create batch of test records
         records = [
             {
                 "id": f"pkg-{i}",
@@ -306,14 +273,11 @@ class TestTargetOracleOicE2E:
             }
             for i in range(10)
         ]
-        # Mock the HTTP client properly by patching the underlying _client attribute
         with patch.object(sink, "_client") as mock_client:
             mock_client.get.return_value.status_code = 404
             mock_client.post.return_value.status_code = 201
-            # Process all records
             for record in records:
                 sink.process_record(record, {})
-            # Verify all records were processed
             if mock_client.post.call_count < len(records):
                 msg: str = f"Expected {mock_client.post.call_count} >= {len(records)}"
                 raise AssertionError(msg)
@@ -328,21 +292,17 @@ class TestTargetOracleOicE2E:
                     "id": {"type": "string"},
                     "name": {"type": "string"},
                     "version": {"type": "string"},
-                },
+                }
             },
             key_properties=["id"],
         )
         test_record = {"id": "test-lookup", "name": "Test Lookup", "version": "1.0"}
-        # Mock client responses
         with patch.object(sink, "_client") as mock_client:
-            # Test CREATE flow (entity doesn't exist)
             mock_client.get.return_value.status_code = 404
             mock_client.post.return_value.status_code = 201
             sink.process_record(test_record, {})
             mock_client.post.assert_called()
-            # Reset mocks
             mock_client.reset_mock()
-            # Test UPDATE flow (entity exists)
             mock_client.get.return_value.status_code = 200
             mock_client.get.return_value.json.return_value = {"version": "1.0"}
             mock_client.put.return_value.status_code = 200
@@ -351,7 +311,6 @@ class TestTargetOracleOicE2E:
 
     def test_cli_integration(self, test_config: dict[str, str], tmp_path: Path) -> None:
         """Test target processing path with Singer input."""
-        # Create test Singer input
         singer_input = [
             {
                 "type": "SCHEMA",

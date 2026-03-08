@@ -15,8 +15,7 @@ from flext_target_oracle_oic.protocols import FlextTargetOracleOicProtocols
 
 
 class TestsFlextTargetOracleOicProtocols(
-    FlextTestsProtocols,
-    FlextTargetOracleOicProtocols,
+    FlextTestsProtocols, FlextTargetOracleOicProtocols
 ):
     """Test protocols combining FlextTestsProtocols and FlextTargetOracleOicProtocols.
 
@@ -36,8 +35,6 @@ class TestsFlextTargetOracleOicProtocols(
             """TargetOracleOic-specific test protocols."""
 
 
-# Runtime aliases
 p = TestsFlextTargetOracleOicProtocols
 p = TestsFlextTargetOracleOicProtocols
-
 __all__ = ["TestsFlextTargetOracleOicProtocols", "p"]

@@ -19,9 +19,7 @@ class OICSchemaMapper:
     """Maps stream schemas to OIC-compatible schema payloads."""
 
     def map_schema(
-        self,
-        stream_name: str,
-        schema: Mapping[str, t.JsonValue],
+        self, stream_name: str, schema: Mapping[str, t.JsonValue]
     ) -> FlextResult[Mapping[str, t.JsonValue]]:
         """Build schema metadata payload for the given stream."""
         return FlextResult[Mapping[str, t.JsonValue]].ok({
@@ -34,8 +32,7 @@ class OICDataTransformer:
     """Transforms record payloads before sink submission."""
 
     def transform(
-        self,
-        record: Mapping[str, t.JsonValue],
+        self, record: Mapping[str, t.JsonValue]
     ) -> FlextResult[Mapping[str, t.JsonValue]]:
         """Return transformed record payload."""
         return FlextResult[Mapping[str, t.JsonValue]].ok(record)
@@ -45,8 +42,7 @@ class OICEntryManager:
     """Builds entry collections from transformed records."""
 
     def build_entries(
-        self,
-        records: list[Mapping[str, t.JsonValue]],
+        self, records: list[Mapping[str, t.JsonValue]]
     ) -> FlextResult[list[Mapping[str, t.JsonValue]]]:
         """Return entry list unchanged for baseline behavior."""
         return FlextResult[list[Mapping[str, t.JsonValue]]].ok(records)

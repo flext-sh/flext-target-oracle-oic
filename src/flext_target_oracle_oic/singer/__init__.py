@@ -10,7 +10,4 @@ from __future__ import annotations
 from flext_target_oracle_oic.singer.processors import OICRecordProcessor
 from flext_target_oracle_oic.typings import t
 
-__all__: list[str] = [
-    "OICRecordProcessor",
-    "t",
-]
+__all__: list[str] = ["OICRecordProcessor", "t"]

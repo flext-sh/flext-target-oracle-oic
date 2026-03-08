@@ -11,13 +11,11 @@ class OICRecordProcessor:
     """Transforms Singer records into OIC processing payloads."""
 
     def process(
-        self,
-        stream_name: str,
-        record: Mapping[str, t.JsonValue],
+        self, stream_name: str, record: Mapping[str, t.JsonValue]
     ) -> FlextResult[OICProcessedRecord]:
         """Return typed stream payload for downstream handling."""
         return FlextResult[OICProcessedRecord].ok(
-            OICProcessedRecord(stream_name=stream_name, record=record),
+            OICProcessedRecord(stream_name=stream_name, record=record)
         )
 
 

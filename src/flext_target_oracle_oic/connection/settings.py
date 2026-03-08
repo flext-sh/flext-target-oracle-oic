@@ -9,13 +9,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 
-from flext_core import (
-    FlextConstants,
-    FlextLogger,
-    FlextModels,
-    FlextResult,
-    t,
-)
+from flext_core import FlextConstants, FlextLogger, FlextModels, FlextResult, t
 from pydantic import Field
 
 from flext_target_oracle_oic.constants import c
@@ -30,17 +24,13 @@ class OICConnectionSettings(FlextModels):
     client_id: str = Field(..., description="OAuth2 client ID")
     client_secret: str = Field(..., description="OAuth2 client secret", repr=False)
     scope: str = Field(
-        default=c.TargetOracleOic.DEFAULT_OAUTH_SCOPE,
-        description="OAuth2 scope",
+        default=c.TargetOracleOic.DEFAULT_OAUTH_SCOPE, description="OAuth2 scope"
     )
     username: str | None = Field(
-        default=None,
-        description="Optional username for basic auth",
+        default=None, description="Optional username for basic auth"
     )
     password: str | None = Field(
-        default=None,
-        description="Optional password for basic auth",
-        repr=False,
+        default=None, description="Optional password for basic auth", repr=False
     )
     use_oauth2: bool = Field(default=True, description="Use OAuth2 authentication")
     timeout: int = Field(
@@ -100,27 +90,20 @@ class OICConnectionSettings(FlextModels):
     def validate_business_rules(self) -> FlextResult[bool]:
         """Validate OIC connection configuration business rules."""
         errors: list[str] = []
-
         if not self.base_url:
             errors.append("base_url is required")
         elif not self.base_url.startswith(("http://", "https://")):
             errors.append("base_url must be a valid URL")
-
         if not self.client_id:
             errors.append("client_id is required")
-
         if not self.client_secret:
             errors.append("client_secret is required")
-
         if self.timeout <= 0:
             errors.append("timeout must be positive")
-
         if self.max_retries < 0:
             errors.append("max_retries must be non-negative")
-
         if errors:
             return FlextResult[bool].fail(
-                f"OIC connection config validation failed: {'; '.join(errors)}",
+                f"OIC connection config validation failed: {'; '.join(errors)}"
             )
-
         return FlextResult[bool].ok(value=True)
