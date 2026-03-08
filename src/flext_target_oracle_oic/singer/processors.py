@@ -5,14 +5,6 @@ from __future__ import annotations
 from collections.abc import Mapping
 
 from flext_core import FlextResult, t
-from pydantic import BaseModel, Field
-
-
-class OICProcessedRecord(BaseModel):
-    """Strict payload for downstream OIC sink processing."""
-
-    stream_name: str = Field(min_length=1)
-    record: dict[str, t.JsonValue] = Field(default_factory=dict)
 
 
 class OICRecordProcessor:
