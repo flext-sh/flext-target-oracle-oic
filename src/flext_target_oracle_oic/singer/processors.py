@@ -5,6 +5,14 @@ from __future__ import annotations
 from collections.abc import Mapping
 
 from flext_core import FlextResult, t
+from flext_meltano import FlextMeltanoModels
+
+
+class OICProcessedRecord(FlextMeltanoModels.ArbitraryTypesModel):
+    """Normalized record payload produced by OIC processor."""
+
+    stream_name: str
+    record: Mapping[str, t.JsonValue]
 
 
 class OICRecordProcessor:
@@ -12,11 +20,12 @@ class OICRecordProcessor:
 
     def process(
         self, stream_name: str, record: Mapping[str, t.JsonValue]
-    ) -> FlextResult[OICProcessedRecord]:  # noqa: F821
+    ) -> FlextResult[OICProcessedRecord]:
         """Return typed stream payload for downstream handling."""
-        return FlextResult[OICProcessedRecord].ok(  # noqa: F821
-            OICProcessedRecord(stream_name=stream_name, record=record)  # noqa: F821
+        payload: dict[str, t.JsonValue] = {"stream_name": stream_name, "record": record}
+        return FlextResult[OICProcessedRecord].ok(
+            OICProcessedRecord.model_validate(payload)
         )
 
 
-__all__ = ["OICProcessedRecord", "OICRecordProcessor"]  # noqa: F822
+__all__ = ["OICProcessedRecord", "OICRecordProcessor"]

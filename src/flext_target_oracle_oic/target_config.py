@@ -10,6 +10,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 
 import requests
+from requests import Response
 
 from flext_target_oracle_oic.constants import c
 
@@ -34,7 +35,7 @@ class OICOAuth2Authenticator:
 
     def build_token_request_data(self) -> dict[str, str]:
         """Build the payload for requesting an OAuth2 token."""
-        payload = {
+        payload: dict[str, str] = {
             "grant_type": "client_credentials",
             "client_id": self._config.oauth_client_id,
             "client_secret": self._config.get_oauth_client_secret_value(),
@@ -50,7 +51,7 @@ class OICOAuth2Authenticator:
         if self._access_token is not None and (not force_refresh):
             return self._access_token
         try:
-            response = requests.post(
+            response: Response = requests.post(
                 str(self._config.oauth_token_url),
                 data=self.build_token_request_data(),
                 headers=dict(self._config.get_oauth_headers()),
@@ -60,11 +61,11 @@ class OICOAuth2Authenticator:
         except requests.RequestException as exc:
             msg = f"Failed to request OAuth2 token: {exc}"
             raise RuntimeError(msg) from exc
-        payload_raw = response.json()
-        if not isinstance(payload_raw, dict):
+        payload_raw: t.JsonValue = response.json()
+        if not isinstance(payload_raw, Mapping):
             msg = "OAuth2 token response is not a JSON object"
             raise TypeError(msg)
-        token_payload = payload_raw
+        token_payload: dict[str, t.JsonValue] = dict(payload_raw)
         access_token = token_payload.get("access_token")
         if not isinstance(access_token, str) or not access_token:
             msg = "OAuth2 token response did not include a valid access_token"
@@ -90,7 +91,8 @@ def create_config_with_env_overrides(**overrides: t.JsonValue) -> TargetOracleOi
 
 def create_singer_config_schema() -> Mapping[str, t.JsonValue]:
     """Create Singer configuration schema from TargetOracleOicConfig."""
-    return TargetOracleOicConfig.model_json_schema()
+    schema_payload: dict[str, t.JsonValue] = TargetOracleOicConfig.model_json_schema()
+    return schema_payload
 
 
 __all__: list[str] = [
