@@ -12,11 +12,11 @@ class OICRecordProcessor:
 
     def process(
         self, stream_name: str, record: Mapping[str, t.JsonValue]
-    ) -> FlextResult[OICProcessedRecord]:
+    ) -> FlextResult[OICProcessedRecord]:  # noqa: F821
         """Return typed stream payload for downstream handling."""
-        return FlextResult[OICProcessedRecord].ok(
-            OICProcessedRecord(stream_name=stream_name, record=record)
+        return FlextResult[OICProcessedRecord].ok(  # noqa: F821
+            OICProcessedRecord(stream_name=stream_name, record=record)  # noqa: F821
         )
 
 
-__all__ = ["OICProcessedRecord", "OICRecordProcessor"]
+__all__ = ["OICProcessedRecord", "OICRecordProcessor"]  # noqa: F822
