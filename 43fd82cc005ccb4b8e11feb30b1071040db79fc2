@@ -1,0 +1,23 @@
+src/flext_target_oracle_oic/target_client.py
+  5b6dd191b6cb846d 6,61-62
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.10",
+  "base_commit_sha": "43fd82cc005ccb4b8e11feb30b1071040db79fc2",
+  "prompts": {
+    "5b6dd191b6cb846d": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_326facca1ffeHPlA2nSY0yV9AR",
+        "model": "kimi-for-coding/k2p5"
+      },
+      "human_author": "FLEXT Bot <team@flext.sh>",
+      "messages": [],
+      "total_additions": 3,
+      "total_deletions": 3,
+      "accepted_lines": 3,
+      "overriden_lines": 0
+    }
+  }
+}
