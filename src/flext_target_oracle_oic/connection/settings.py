@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 
-from flext_core import FlextConstants, FlextLogger, FlextModels, FlextResult, t
+from flext_core import FlextConstants, FlextLogger, FlextModels, r, t
 from pydantic import Field
 
 from flext_target_oracle_oic.constants import c
@@ -87,7 +87,7 @@ class OICConnectionSettings(FlextModels):
             c.TargetOracleOic.HEADER_ACCEPT: c.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
         }
 
-    def validate_business_rules(self) -> FlextResult[bool]:
+    def validate_business_rules(self) -> r[bool]:
         """Validate OIC connection configuration business rules."""
         errors: list[str] = []
         if not self.base_url:
@@ -103,7 +103,7 @@ class OICConnectionSettings(FlextModels):
         if self.max_retries < 0:
             errors.append("max_retries must be non-negative")
         if errors:
-            return FlextResult[bool].fail(
+            return r[bool].fail(
                 f"OIC connection config validation failed: {'; '.join(errors)}"
             )
-        return FlextResult[bool].ok(value=True)
+        return r[bool].ok(value=True)

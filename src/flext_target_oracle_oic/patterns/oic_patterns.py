@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 
-from flext_core import FlextResult, t
+from flext_core import r, t
 
 
 class OICTypeConverter:
@@ -20,9 +20,9 @@ class OICSchemaMapper:
 
     def map_schema(
         self, stream_name: str, schema: Mapping[str, t.JsonValue]
-    ) -> FlextResult[Mapping[str, t.JsonValue]]:
+    ) -> r[Mapping[str, t.JsonValue]]:
         """Build schema metadata payload for the given stream."""
-        return FlextResult[Mapping[str, t.JsonValue]].ok({
+        return r[Mapping[str, t.JsonValue]].ok({
             "stream": stream_name,
             "schema": schema,
         })
@@ -33,9 +33,9 @@ class OICDataTransformer:
 
     def transform(
         self, record: Mapping[str, t.JsonValue]
-    ) -> FlextResult[Mapping[str, t.JsonValue]]:
+    ) -> r[Mapping[str, t.JsonValue]]:
         """Return transformed record payload."""
-        return FlextResult[Mapping[str, t.JsonValue]].ok(record)
+        return r[Mapping[str, t.JsonValue]].ok(record)
 
 
 class OICEntryManager:
@@ -43,9 +43,9 @@ class OICEntryManager:
 
     def build_entries(
         self, records: list[Mapping[str, t.JsonValue]]
-    ) -> FlextResult[list[Mapping[str, t.JsonValue]]]:
+    ) -> r[list[Mapping[str, t.JsonValue]]]:
         """Return entry list unchanged for baseline behavior."""
-        return FlextResult[list[Mapping[str, t.JsonValue]]].ok(records)
+        return r[list[Mapping[str, t.JsonValue]]].ok(records)
 
 
 __all__ = [

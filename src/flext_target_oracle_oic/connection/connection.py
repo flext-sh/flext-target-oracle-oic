@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 
-from flext_core import FlextResult, t
+from flext_core import r, t
 
 
 class OICConnection:
@@ -15,9 +15,9 @@ class OICConnection:
         super().__init__()
         self.config = config or {}
 
-    def test_connection(self) -> FlextResult[bool]:
+    def test_connection(self) -> r[bool]:
         """Return a successful health check result."""
-        return FlextResult[bool].ok(value=True)
+        return r[bool].ok(value=True)
 
 
 __all__ = ["OICConnection"]

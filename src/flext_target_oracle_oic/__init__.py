@@ -21,10 +21,9 @@ if TYPE_CHECKING:
         FlextMixins,
         FlextMixins as x,
         FlextModels,
-        FlextResult,
-        FlextResult as r,
         FlextService,
         FlextService as s,
+        r as r,
     )
     from flext_meltano import FlextMeltanoBridge, FlextMeltanoSettings
 
@@ -93,7 +92,7 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "FlextMeltanoSettings": ("flext_meltano", "FlextMeltanoSettings"),
     "FlextMixins": ("flext_core", "FlextMixins"),
     "FlextModels": ("flext_core", "FlextModels"),
-    "FlextResult": ("flext_core", "FlextResult"),
+    "r": ("flext_core", "r"),
     "FlextService": ("flext_core", "FlextService"),
     "FlextTargetOracleOicConstants": (
         "flext_target_oracle_oic.constants",
@@ -179,7 +178,6 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "m": ("flext_target_oracle_oic.models", "FlextTargetOracleOicModels"),
     "main": ("flext_target_oracle_oic.cli", "main"),
     "p": ("flext_target_oracle_oic.protocols", "FlextTargetOracleOicProtocols"),
-    "r": ("flext_core", "FlextResult"),
     "s": ("flext_core", "FlextService"),
     "t": ("flext_target_oracle_oic.typings", "FlextTargetOracleOicTypes"),
     "u": ("flext_target_oracle_oic.utilities", "FlextTargetOracleOicUtilities"),
@@ -195,7 +193,6 @@ __all__ = [
     "FlextMeltanoSettings",
     "FlextMixins",
     "FlextModels",
-    "FlextResult",
     "FlextService",
     "FlextTargetOracleOicConstants",
     "FlextTargetOracleOicModels",

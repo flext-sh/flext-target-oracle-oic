@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import override
 
-from flext_core import FlextLogger, FlextResult, t
+from flext_core import FlextLogger, r, t
 from flext_meltano import FlextMeltanoTargetAbstractions as Target
 from singer_sdk import Sink
 
@@ -71,13 +71,13 @@ class TargetOracleOic(Target):
         }
         return mapping.get(stream_name, OICBaseSink)
 
-    def setup(self) -> FlextResult[bool]:
+    def setup(self) -> r[bool]:
         """Setup target resources."""
-        return FlextResult[bool].ok(value=True)
+        return r[bool].ok(value=True)
 
-    def teardown(self) -> FlextResult[bool]:
+    def teardown(self) -> r[bool]:
         """Teardown target resources."""
-        return FlextResult[bool].ok(value=True)
+        return r[bool].ok(value=True)
 
 
 def main() -> None:

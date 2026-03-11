@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 
-from flext_core import FlextResult, t
+from flext_core import r, t
 from flext_meltano import FlextMeltanoModels
 
 
@@ -20,12 +20,10 @@ class OICRecordProcessor:
 
     def process(
         self, stream_name: str, record: Mapping[str, t.JsonValue]
-    ) -> FlextResult[OICProcessedRecord]:
+    ) -> r[OICProcessedRecord]:
         """Return typed stream payload for downstream handling."""
         payload: dict[str, t.JsonValue] = {"stream_name": stream_name, "record": record}
-        return FlextResult[OICProcessedRecord].ok(
-            OICProcessedRecord.model_validate(payload)
-        )
+        return r[OICProcessedRecord].ok(OICProcessedRecord.model_validate(payload))
 
 
 __all__ = ["OICProcessedRecord", "OICRecordProcessor"]
