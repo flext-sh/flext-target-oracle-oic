@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
+from typing import override
 
 from flext_core import FlextLogger, FlextResult, t
 from flext_meltano import FlextMeltanoTarget as Target
@@ -16,10 +17,12 @@ logger = FlextLogger(__name__)
 class OICBaseSink(Sink):
     """Base sink implementation used by OIC stream sinks."""
 
+    @override
     def process_batch(self, context: Mapping[str, t.JsonValue]) -> None:
         """Singer batch hook implementation."""
         _ = context
 
+    @override
     def process_record(
         self, record: Mapping[str, t.JsonValue], context: Mapping[str, t.JsonValue]
     ) -> None:
