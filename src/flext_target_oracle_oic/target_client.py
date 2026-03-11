@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import override
+from typing import ClassVar, override
 
 from flext_core import FlextLogger, r, t
 from flext_meltano import FlextMeltanoTargetAbstractions as Target
@@ -58,8 +58,8 @@ class LookupsSink(OICBaseSink):
 class TargetOracleOic(Target):
     """Singer target entry point for Oracle OIC."""
 
-    name = c.TargetOracleOic.TARGET_NAME
-    default_sink_class = OICBaseSink
+    name: ClassVar[str] = c.TargetOracleOic.TARGET_NAME
+    default_sink_class: ClassVar[type[OICBaseSink]] = OICBaseSink
 
     def get_sink_class(self, stream_name: str) -> type[OICBaseSink]:
         """Resolve sink class by stream name."""
