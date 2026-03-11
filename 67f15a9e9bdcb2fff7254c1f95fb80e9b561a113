@@ -1,0 +1,36 @@
+pyproject.toml
+  6b878df159bcb8b7 157-160
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.10",
+  "base_commit_sha": "67f15a9e9bdcb2fff7254c1f95fb80e9b561a113",
+  "prompts": {
+    "0d3e5eafd1c4d9d8": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_32697f3bbffeJYW8HyihR5eo0B",
+        "model": "anthropic/claude-haiku-4-5"
+      },
+      "human_author": "FLEXT Bot <team@flext.sh>",
+      "messages": [],
+      "total_additions": 3,
+      "total_deletions": 0,
+      "accepted_lines": 3,
+      "overriden_lines": 0
+    },
+    "6b878df159bcb8b7": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_326466792ffeFjj8UK0reNJMV8",
+        "model": "anthropic/claude-haiku-4-5"
+      },
+      "human_author": "FLEXT Bot <team@flext.sh>",
+      "messages": [],
+      "total_additions": 15,
+      "total_deletions": 11,
+      "accepted_lines": 5,
+      "overriden_lines": 0
+    }
+  }
+}
