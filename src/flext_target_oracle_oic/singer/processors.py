@@ -12,17 +12,17 @@ class OICProcessedRecord(FlextMeltanoModels.ArbitraryTypesModel):
     """Normalized record payload produced by OIC processor."""
 
     stream_name: str
-    record: Mapping[str, t.JsonValue]
+    record: Mapping[str, object
 
 
 class OICRecordProcessor:
     """Transforms Singer records into OIC processing payloads."""
 
     def process(
-        self, stream_name: str, record: Mapping[str, t.JsonValue]
+        self, stream_name: str, record: Mapping[str, object
     ) -> r[OICProcessedRecord]:
         """Return typed stream payload for downstream handling."""
-        payload: dict[str, t.JsonValue] = {"stream_name": stream_name, "record": record}
+        payload: dict[str, object"stream_name": stream_name, "record": record}
         return r[OICProcessedRecord].ok(OICProcessedRecord.model_validate(payload))
 
 

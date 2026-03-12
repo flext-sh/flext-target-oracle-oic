@@ -10,7 +10,7 @@ from flext_core import r, t
 class OICConnection:
     """Holds runtime connection configuration and health checks."""
 
-    def __init__(self, config: Mapping[str, t.JsonValue] | None = None) -> None:
+    def __init__(self, config: Mapping[str, objectone = None) -> None:
         """Initialize connection with optional configuration mapping."""
         super().__init__()
         self.config = config or {}

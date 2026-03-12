@@ -36,7 +36,7 @@ class FlextTargetOracleOicModels(FlextMeltanoModels, FlextOracleOicModels):
             id: str
             name: str
             adapter_type: str
-            properties: dict[str, t.JsonValue] = Field(default_factory=dict)
+            properties: dict[str, objectield(default_factory=dict)
 
         class OICIntegration(FlextMeltanoModels.ArbitraryTypesModel):
             """Integration payload model."""
@@ -83,7 +83,7 @@ class FlextTargetOracleOicModels(FlextMeltanoModels, FlextOracleOicModels):
             """Schema mapping payload model."""
 
             stream_name: str
-            schema_mapping: dict[str, t.JsonValue] = Field(default_factory=dict)
+            schema_mapping: dict[str, objectield(default_factory=dict)
 
     @staticmethod
     def validate_connection(

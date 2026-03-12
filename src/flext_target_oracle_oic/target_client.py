@@ -18,13 +18,13 @@ class OICBaseSink(Sink):
     """Base sink implementation used by OIC stream sinks."""
 
     @override
-    def process_batch(self, context: Mapping[str, t.JsonValue]) -> None:
+    def process_batch(self, context: Mapping[str, object None:
         """Singer batch hook implementation."""
         _ = context
 
     @override
     def process_record(
-        self, record: Mapping[str, t.JsonValue], context: Mapping[str, t.JsonValue]
+        self, record: Mapping[str, objectntext: Mapping[str, objecobject
     ) -> None:
         """Default sink behavior: log incoming record metadata."""
         _ = context

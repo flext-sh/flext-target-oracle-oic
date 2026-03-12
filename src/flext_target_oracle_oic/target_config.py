@@ -61,11 +61,11 @@ class OICOAuth2Authenticator:
         except requests.RequestException as exc:
             msg = f"Failed to request OAuth2 token: {exc}"
             raise RuntimeError(msg) from exc
-        payload_raw: t.JsonValue = response.json()
+        payload_raw: objectsponse.json()
         if not isinstance(payload_raw, Mapping):
             msg = "OAuth2 token response is not a JSON object"
             raise TypeError(msg)
-        token_payload: dict[str, t.JsonValue] = dict(payload_raw)
+        token_payload: dict[str, objectict(payload_raw)
         access_token = token_payload.get("access_token")
         if not isinstance(access_token, str) or not access_token:
             msg = "OAuth2 token response did not include a valid access_token"
@@ -78,20 +78,20 @@ class OICOAuth2Authenticator:
 
 
 def create_config_from_dict(
-    config_dict: Mapping[str, t.JsonValue],
+    config_dict: Mapping[str, object
 ) -> TargetOracleOicConfig:
     """Create TargetOracleOicConfig from dictionary."""
     return TargetOracleOicConfig.model_validate(config_dict)
 
 
-def create_config_with_env_overrides(**overrides: t.JsonValue) -> TargetOracleOicConfig:
+def create_config_with_env_overrides(**overrides: objectTargetOracleOicConfig:
     """Create TargetOracleOicConfig with environment variable overrides."""
     return TargetOracleOicConfig.model_validate(overrides)
 
 
-def create_singer_config_schema() -> Mapping[str, t.JsonValue]:
+def create_singer_config_schema() -> Mapping[str, object
     """Create Singer configuration schema from TargetOracleOicConfig."""
-    schema_payload: dict[str, t.JsonValue] = TargetOracleOicConfig.model_json_schema()
+    schema_payload: dict[str, objectargetOracleOicConfig.model_json_schema()
     return schema_payload
 
 

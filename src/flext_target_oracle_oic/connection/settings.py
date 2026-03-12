@@ -46,7 +46,7 @@ class OICConnectionSettings(FlextModels):
     verify_ssl: bool = Field(default=True, description="Verify SSL certificates")
 
     @classmethod
-    def from_dict(cls, data: Mapping[str, t.JsonValue]) -> OICConnectionSettings:
+    def from_dict(cls, data: Mapping[str, object OICConnectionSettings:
         """Create configuration from dictionary using modern Pydantic patterns."""
         try:
             return cls(**data)
