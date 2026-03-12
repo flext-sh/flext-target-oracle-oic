@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 
-from flext_target_oracle_oic.typings import t
 from flext_target_oracle_oic.models import m
+from flext_target_oracle_oic.typings import t
 
 
 def create_oic_connection(

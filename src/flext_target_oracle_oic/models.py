@@ -58,8 +58,8 @@ class FlextTargetOracleOicModels(FlextMeltanoModels, FlextOracleOicModels):
             """Lookup payload model."""
 
             name: str
-            columns: list[Mapping[str, t.Scalar]] = []
-            rows: list[Mapping[str, t.Scalar]] = []
+            columns: tuple[Mapping[str, t.Scalar], ...] = ()
+            rows: tuple[Mapping[str, t.Scalar], ...] = ()
 
         class OICProject(FlextMeltanoModels.ArbitraryTypesModel):
             """Project payload model."""

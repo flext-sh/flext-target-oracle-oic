@@ -62,9 +62,6 @@ class OICOAuth2Authenticator:
             msg = f"Failed to request OAuth2 token: {exc}"
             raise RuntimeError(msg) from exc
         payload_raw: t.Dict = response.json()
-        if not isinstance(payload_raw, Mapping):
-            msg = "OAuth2 token response is not a JSON object"
-            raise TypeError(msg)
         access_token = payload_raw.get("access_token")
         if not isinstance(access_token, str) or not access_token:
             msg = "OAuth2 token response did not include a valid access_token"
