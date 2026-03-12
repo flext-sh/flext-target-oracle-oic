@@ -61,16 +61,15 @@ class OICOAuth2Authenticator:
         except requests.RequestException as exc:
             msg = f"Failed to request OAuth2 token: {exc}"
             raise RuntimeError(msg) from exc
-        payload_raw: objectsponse.json()
+        payload_raw: t.Dict = response.json()
         if not isinstance(payload_raw, Mapping):
             msg = "OAuth2 token response is not a JSON object"
             raise TypeError(msg)
-        token_payload: dict[str, objectict(payload_raw)
-        access_token = token_payload.get("access_token")
+        access_token = payload_raw.get("access_token")
         if not isinstance(access_token, str) or not access_token:
             msg = "OAuth2 token response did not include a valid access_token"
             raise RuntimeError(msg)
-        token_type = token_payload.get("token_type")
+        token_type = payload_raw.get("token_type")
         if isinstance(token_type, str) and token_type:
             self._auth_scheme = token_type
         self._access_token = access_token
@@ -78,21 +77,20 @@ class OICOAuth2Authenticator:
 
 
 def create_config_from_dict(
-    config_dict: Mapping[str, object
+    config_dict: Mapping[str, t.Scalar],
 ) -> TargetOracleOicConfig:
     """Create TargetOracleOicConfig from dictionary."""
     return TargetOracleOicConfig.model_validate(config_dict)
 
 
-def create_config_with_env_overrides(**overrides: objectTargetOracleOicConfig:
+def create_config_with_env_overrides(**overrides: t.Scalar) -> TargetOracleOicConfig:
     """Create TargetOracleOicConfig with environment variable overrides."""
     return TargetOracleOicConfig.model_validate(overrides)
 
 
-def create_singer_config_schema() -> Mapping[str, object
+def create_singer_config_schema() -> Mapping[str, t.Container]:
     """Create Singer configuration schema from TargetOracleOicConfig."""
-    schema_payload: dict[str, objectargetOracleOicConfig.model_json_schema()
-    return schema_payload
+    return TargetOracleOicConfig.model_json_schema()
 
 
 __all__: list[str] = [

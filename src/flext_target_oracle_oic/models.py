@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from enum import StrEnum
 
 from flext_core import r, t
@@ -36,7 +37,7 @@ class FlextTargetOracleOicModels(FlextMeltanoModels, FlextOracleOicModels):
             id: str
             name: str
             adapter_type: str
-            properties: dict[str, objectield(default_factory=dict)
+            properties: dict[str, t.Container] = Field(default_factory=dict)
 
         class OICIntegration(FlextMeltanoModels.ArbitraryTypesModel):
             """Integration payload model."""
@@ -57,8 +58,8 @@ class FlextTargetOracleOicModels(FlextMeltanoModels, FlextOracleOicModels):
             """Lookup payload model."""
 
             name: str
-            columns: list[dict[str, object]] = Field(default=[])
-            rows: list[dict[str, object]] = Field(default=[])
+            columns: list[Mapping[str, t.Scalar]] = []
+            rows: list[Mapping[str, t.Scalar]] = []
 
         class OICProject(FlextMeltanoModels.ArbitraryTypesModel):
             """Project payload model."""
@@ -83,7 +84,7 @@ class FlextTargetOracleOicModels(FlextMeltanoModels, FlextOracleOicModels):
             """Schema mapping payload model."""
 
             stream_name: str
-            schema_mapping: dict[str, objectield(default_factory=dict)
+            schema_mapping: dict[str, t.Container] = Field(default_factory=dict)
 
     @staticmethod
     def validate_connection(

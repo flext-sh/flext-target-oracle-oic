@@ -17,17 +17,17 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
 
         @staticmethod
         def create_record_message(
-            stream_name: str, record: Mapping[str, object
-        ) -> Mapping[str, object
+            stream_name: str, record: Mapping[str, t.Scalar]
+        ) -> t.Dict:
             """Build a Singer RECORD message payload."""
             return {"type": "RECORD", "stream": stream_name, "record": record}
 
         @staticmethod
         def create_schema_message(
             stream_name: str,
-            schema: Mapping[str, object
+            schema: Mapping[str, t.Container],
             key_properties: list[str] | None = None,
-        ) -> Mapping[str, object
+        ) -> t.Dict:
             """Build a Singer SCHEMA message payload."""
             return {
                 "type": "SCHEMA",
@@ -40,7 +40,7 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
         """Runtime configuration validation helper functions."""
 
         @staticmethod
-        def validate_config(config: Mapping[str, object r[bool]:
+        def validate_config(config: Mapping[str, t.Scalar]) -> r[bool]:
             """Validate required OIC target configuration keys."""
             required = {"base_url", "oauth_client_id", "oauth_client_secret"}
             missing = sorted(key for key in required if key not in config)

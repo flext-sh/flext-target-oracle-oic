@@ -10,7 +10,7 @@ from flext_core import r, t
 class OICTargetOrchestrator:
     """Coordinates setup and teardown for target orchestration."""
 
-    def __init__(self, config: Mapping[str, objectone = None) -> None:
+    def __init__(self, config: Mapping[str, t.Scalar] | None = None) -> None:
         """Store runtime configuration used by orchestration steps."""
         super().__init__()
         self.config = config or {}

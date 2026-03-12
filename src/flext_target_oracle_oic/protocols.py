@@ -58,14 +58,14 @@ class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtoco
             """
 
             @runtime_checkable
-            class OicIntegrationProtocol(FlextProtocols.Service[object], Protocol):
+            class OicIntegrationProtocol(FlextProtocols.Service[t.Scalar], Protocol):
                 """Protocol for Oracle OIC integration.
 
                 Defines the interface for integrating data with Oracle OIC.
                 """
 
                 def integrate(
-                    self, data: Mapping[str, object
+                    self, data: Mapping[str, t.Scalar]
                 ) -> FlextProtocols.Result[bool]:
                     """Integrate data with Oracle OIC.
 
@@ -79,8 +79,8 @@ class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtoco
                     ...
 
                 def invoke_integration(
-                    self, payload: Mapping[str, object
-                ) -> FlextProtocols.Result[Mapping[str, object
+                    self, payload: Mapping[str, t.Scalar]
+                ) -> FlextProtocols.Result[Mapping[str, t.Scalar]]:
                     """Invoke OIC integration with payload.
 
                     Args:
@@ -93,8 +93,8 @@ class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtoco
                     ...
 
                 def optimize_throughput(
-                    self, config: Mapping[str, object
-                ) -> FlextProtocols.Result[Mapping[str, object
+                    self, config: Mapping[str, t.Scalar]
+                ) -> FlextProtocols.Result[Mapping[str, t.Scalar]]:
                     """Optimize OIC throughput settings.
 
                     Args:
@@ -107,7 +107,7 @@ class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtoco
                     ...
 
                 def process_batch(
-                    self, records: list[Mapping[str, object
+                    self, records: list[Mapping[str, t.Scalar]]
                 ) -> FlextProtocols.Result[bool]:
                     """Process batch of records for OIC.
 
@@ -122,7 +122,7 @@ class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtoco
 
                 def track_integration_status(
                     self, integration_id: str
-                ) -> FlextProtocols.Result[Mapping[str, object
+                ) -> FlextProtocols.Result[Mapping[str, t.Scalar]]:
                     """Track integration execution status.
 
                     Args:
@@ -135,8 +135,8 @@ class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtoco
                     ...
 
                 def transform_to_oic(
-                    self, record: Mapping[str, object
-                ) -> FlextProtocols.Result[Mapping[str, object
+                    self, record: Mapping[str, t.Scalar]
+                ) -> FlextProtocols.Result[Mapping[str, t.Scalar]]:
                     """Transform Singer record to OIC format.
 
                     Args:
@@ -149,7 +149,7 @@ class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtoco
                     ...
 
                 def validate_payload(
-                    self, payload: Mapping[str, object
+                    self, payload: Mapping[str, t.Scalar]
                 ) -> FlextProtocols.Result[bool]:
                     """Validate payload for OIC compatibility.
 
