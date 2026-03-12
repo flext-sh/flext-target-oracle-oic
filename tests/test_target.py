@@ -8,6 +8,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
+from flext_core import t
 from src.flext_target_oracle_oic.target_client import (
     ConnectionsSink,
     IntegrationsSink,
@@ -79,7 +80,7 @@ class TestTargetOracleOic:
         assert isinstance(properties, dict)
 
 
-def _build_auth_config(**overrides: object) -> TargetOracleOicConfig:
+def _build_auth_config(**overrides: t.Scalar) -> TargetOracleOicConfig:
     config: dict[str, object] = {
         "oauth_client_id": "client-id",
         "oauth_client_secret": "client-secret",
@@ -123,7 +124,7 @@ def test_oic_authenticator_rejects_invalid_token_response(
         def json(self) -> dict[str, str]:
             return {"token_type": "Bearer"}
 
-    def fake_post(*_: object, **__: object) -> InvalidTokenResponse:
+    def fake_post(*_: object, **__: t.Scalar) -> InvalidTokenResponse:
         return InvalidTokenResponse()
 
     monkeypatch.setattr(f"{OICOAuth2Authenticator.__module__}.requests.post", fake_post)
