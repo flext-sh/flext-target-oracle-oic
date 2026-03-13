@@ -12,24 +12,24 @@ def create_oic_connection(
     data: Mapping[str, t.Container],
 ) -> m.TargetOracleOic.OICConnection:
     """Create an OICConnection model from generic payload via Pydantic validation."""
-    return m.TargetOracleOic.OICConnection({**data, "properties": data})
+    return m.TargetOracleOic.OICConnection.model_validate({**data, "properties": data})
 
 
 def create_oic_integration(
     data: Mapping[str, t.Container],
 ) -> m.TargetOracleOic.OICIntegration:
     """Create an OICIntegration model from generic payload via Pydantic validation."""
-    return m.TargetOracleOic.OICIntegration(data)
+    return m.TargetOracleOic.OICIntegration.model_validate(data)
 
 
 def create_oic_package(data: Mapping[str, t.Container]) -> m.TargetOracleOic.OICPackage:
     """Create an OICPackage model from generic payload via Pydantic validation."""
-    return m.TargetOracleOic.OICPackage(data)
+    return m.TargetOracleOic.OICPackage.model_validate(data)
 
 
 def create_oic_lookup(data: Mapping[str, t.Container]) -> m.TargetOracleOic.OICLookup:
     """Create an OICLookup model from generic payload via Pydantic validation."""
-    return m.TargetOracleOic.OICLookup(data)
+    return m.TargetOracleOic.OICLookup.model_validate(data)
 
 
 __all__ = [
