@@ -23,7 +23,7 @@ class OICRecordProcessor:
     ) -> r[OICProcessedRecord]:
         """Return typed stream payload for downstream handling."""
         return r[OICProcessedRecord].ok(
-            OICProcessedRecord.model_validate({
+            OICProcessedRecord({
                 "stream_name": stream_name,
                 "record": record,
             })

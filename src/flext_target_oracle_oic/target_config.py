@@ -77,12 +77,12 @@ def create_config_from_dict(
     config_dict: Mapping[str, t.Scalar],
 ) -> TargetOracleOicConfig:
     """Create TargetOracleOicConfig from dictionary."""
-    return TargetOracleOicConfig.model_validate(config_dict)
+    return TargetOracleOicConfig(config_dict)
 
 
 def create_config_with_env_overrides(**overrides: t.Scalar) -> TargetOracleOicConfig:
     """Create TargetOracleOicConfig with environment variable overrides."""
-    return TargetOracleOicConfig.model_validate(overrides)
+    return TargetOracleOicConfig(overrides)
 
 
 def create_singer_config_schema() -> Mapping[str, t.Container]:
