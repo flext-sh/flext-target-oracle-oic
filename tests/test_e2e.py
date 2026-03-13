@@ -17,12 +17,12 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import json
 import os
 from pathlib import Path
 from unittest.mock import patch
 
 import pytest
+from pydantic import TypeAdapter
 
 from flext_target_oracle_oic.target_client import (
     ConnectionsSink,
@@ -155,8 +155,11 @@ class TestTargetOracleOicE2E:
             },
         ]
         input_file = tmp_path / "input.jsonl"
+        adapter = TypeAdapter(object)
         with input_file.open("w", encoding="utf-8") as f:
-            f.writelines(json.dumps(msg) + "\n" for msg in messages)
+            f.writelines(
+                adapter.dump_json(msg).decode("utf-8") + "\n" for msg in messages
+            )
         with (
             patch.object(ConnectionsSink, "process_record") as mock_process,
             patch.object(ConnectionsSink, "client") as mock_client,
@@ -325,8 +328,11 @@ class TestTargetOracleOicE2E:
             },
         ]
         input_file = tmp_path / "singer_input.jsonl"
+        adapter = TypeAdapter(object)
         with input_file.open("w", encoding="utf-8") as f:
-            f.writelines(json.dumps(msg) + "\n" for msg in singer_input)
+            f.writelines(
+                adapter.dump_json(msg).decode("utf-8") + "\n" for msg in singer_input
+            )
         target = TargetOracleOic(config=test_config)
         with input_file.open(encoding="utf-8") as f:
             target.listen(file_input=f)
