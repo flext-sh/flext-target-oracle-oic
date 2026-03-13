@@ -30,7 +30,7 @@ class OICBaseSink(Sink):
     ) -> None:
         """Default sink behavior: log incoming record metadata."""
         _ = context
-        logger.debug("Processing OIC record", extra={"keys": list(record.keys())})
+        logger.debug("Processing OIC record", keys=str(list(record.keys())))
 
 
 class ConnectionsSink(OICBaseSink):

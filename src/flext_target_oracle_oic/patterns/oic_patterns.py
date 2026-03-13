@@ -20,9 +20,9 @@ class OICSchemaMapper:
 
     def map_schema(
         self, stream_name: str, schema: Mapping[str, t.Container]
-    ) -> r[t.Dict]:
+    ) -> r[dict[str, str | Mapping[str, t.Container]]]:
         """Build schema metadata payload for the given stream."""
-        return r[t.Dict].ok({
+        return r[dict[str, str | Mapping[str, t.Container]]].ok({
             "stream": stream_name,
             "schema": schema,
         })

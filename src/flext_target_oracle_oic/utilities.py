@@ -18,7 +18,7 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
         @staticmethod
         def create_record_message(
             stream_name: str, record: Mapping[str, t.Scalar]
-        ) -> t.Dict:
+        ) -> dict[str, str | Mapping[str, t.Scalar]]:
             """Build a Singer RECORD message payload."""
             return {"type": "RECORD", "stream": stream_name, "record": record}
 
@@ -27,7 +27,7 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
             stream_name: str,
             schema: Mapping[str, t.Container],
             key_properties: list[str] | None = None,
-        ) -> t.Dict:
+        ) -> dict[str, str | Mapping[str, t.Container] | list[str]]:
             """Build a Singer SCHEMA message payload."""
             return {
                 "type": "SCHEMA",
