@@ -8,6 +8,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from collections.abc import Mapping
+from typing import Annotated
 
 from flext_core import FlextConstants, FlextLogger, FlextModels, r, t
 from pydantic import Field
@@ -20,30 +21,46 @@ logger = FlextLogger(__name__)
 class OICConnectionSettings(FlextModels):
     """Oracle OIC connection settings using flext-core patterns."""
 
-    base_url: str = Field(..., description="Oracle OIC base URL")
-    client_id: str = Field(..., description="OAuth2 client ID")
-    client_secret: str = Field(..., description="OAuth2 client secret", repr=False)
-    scope: str = Field(
-        default=c.TargetOracleOic.DEFAULT_OAUTH_SCOPE, description="OAuth2 scope"
-    )
-    username: str | None = Field(
-        default=None, description="Optional username for basic auth"
-    )
-    password: str | None = Field(
-        default=None, description="Optional password for basic auth", repr=False
-    )
-    use_oauth2: bool = Field(default=True, description="Use OAuth2 authentication")
-    timeout: int = Field(
-        default=FlextConstants.Network.DEFAULT_TIMEOUT,
-        description="Request timeout in seconds",
-        gt=0,
-    )
-    max_retries: int = Field(
-        default=FlextConstants.Reliability.MAX_RETRY_ATTEMPTS,
-        description="Maximum number of retries",
-        ge=0,
-    )
-    verify_ssl: bool = Field(default=True, description="Verify SSL certificates")
+    base_url: Annotated[str, Field(..., description="Oracle OIC base URL")]
+    client_id: Annotated[str, Field(..., description="OAuth2 client ID")]
+    client_secret: Annotated[
+        str, Field(..., description="OAuth2 client secret", repr=False)
+    ]
+    scope: Annotated[
+        str,
+        Field(
+            default=c.TargetOracleOic.DEFAULT_OAUTH_SCOPE, description="OAuth2 scope"
+        ),
+    ]
+    username: Annotated[
+        str | None, Field(default=None, description="Optional username for basic auth")
+    ]
+    password: Annotated[
+        str | None,
+        Field(default=None, description="Optional password for basic auth", repr=False),
+    ]
+    use_oauth2: Annotated[
+        bool, Field(default=True, description="Use OAuth2 authentication")
+    ]
+    timeout: Annotated[
+        int,
+        Field(
+            default=FlextConstants.Network.DEFAULT_TIMEOUT,
+            description="Request timeout in seconds",
+            gt=0,
+        ),
+    ]
+    max_retries: Annotated[
+        int,
+        Field(
+            default=FlextConstants.Reliability.MAX_RETRY_ATTEMPTS,
+            description="Maximum number of retries",
+            ge=0,
+        ),
+    ]
+    verify_ssl: Annotated[
+        bool, Field(default=True, description="Verify SSL certificates")
+    ]
 
     @classmethod
     def from_dict(cls, data: Mapping[str, t.Scalar]) -> OICConnectionSettings:
