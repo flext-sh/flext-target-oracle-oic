@@ -26,10 +26,7 @@ if TYPE_CHECKING:
 # Lazy import mapping: export_name -> (module_path, attr_name)
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "OICConnection": ("flext_target_oracle_oic.connection.connection", "OICConnection"),
-    "OICConnectionSettings": (
-        "flext_target_oracle_oic.connection.settings",
-        "OICConnectionSettings",
-    ),
+    "OICConnectionSettings": ("flext_target_oracle_oic.connection.settings", "OICConnectionSettings"),
     "logger": ("flext_target_oracle_oic.connection.settings", "logger"),
 }
 

@@ -24,14 +24,8 @@ if TYPE_CHECKING:
 
 # Lazy import mapping: export_name -> (module_path, attr_name)
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
-    "OICProcessedRecord": (
-        "flext_target_oracle_oic.singer.processors",
-        "OICProcessedRecord",
-    ),
-    "OICRecordProcessor": (
-        "flext_target_oracle_oic.singer.processors",
-        "OICRecordProcessor",
-    ),
+    "OICProcessedRecord": ("flext_target_oracle_oic.singer.processors", "OICProcessedRecord"),
+    "OICRecordProcessor": ("flext_target_oracle_oic.singer.processors", "OICRecordProcessor"),
 }
 
 __all__ = [
