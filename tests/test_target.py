@@ -124,7 +124,7 @@ def test_oic_authenticator_rejects_invalid_token_response(
         def json(self) -> dict[str, str]:
             return {"token_type": "Bearer"}
 
-    def fake_post(*_: object, **__: t.Scalar) -> InvalidTokenResponse:
+    def fake_post(*_, **__: t.Scalar) -> InvalidTokenResponse:
         return InvalidTokenResponse()
 
     monkeypatch.setattr(f"{OICOAuth2Authenticator.__module__}.requests.post", fake_post)
