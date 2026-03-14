@@ -11,8 +11,4 @@ from flext_target_oracle_oic.connection.connection import OICConnection
 from flext_target_oracle_oic.connection.settings import OICConnectionSettings
 from flext_target_oracle_oic.typings import t
 
-__all__: list[str] = [
-    "OICConnection",
-    "OICConnectionSettings",
-    "t",
-]
+__all__: list[str] = ["OICConnection", "OICConnectionSettings", "t"]

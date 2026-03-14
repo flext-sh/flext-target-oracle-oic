@@ -9,23 +9,23 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from flext_tests import FlextTestsProtocols
+
 from flext_target_oracle_oic.protocols import FlextTargetOracleOicProtocols
-from flext_tests.protocols import FlextTestsProtocols
 
 
 class TestsFlextTargetOracleOicProtocols(
-    FlextTestsProtocols,
-    FlextTargetOracleOicProtocols,
+    FlextTestsProtocols, FlextTargetOracleOicProtocols
 ):
     """Test protocols combining FlextTestsProtocols and FlextTargetOracleOicProtocols.
 
     Provides access to:
-    - tp.Tests.Docker.* (from FlextTestsProtocols)
-    - tp.Tests.Factory.* (from FlextTestsProtocols)
-    - tp.TargetOracleOic.* (from FlextTargetOracleOicProtocols)
+    - p.Tests.Docker.* (from FlextTestsProtocols)
+    - p.Tests.Factory.* (from FlextTestsProtocols)
+    - p.TargetOracleOic.* (from FlextTargetOracleOicProtocols)
     """
 
-    class Tests:
+    class Tests(FlextTestsProtocols.Tests):
         """Project-specific test protocols.
 
         Extends FlextTestsProtocols.Tests with TargetOracleOic-specific protocols.
@@ -35,8 +35,6 @@ class TestsFlextTargetOracleOicProtocols(
             """TargetOracleOic-specific test protocols."""
 
 
-# Runtime aliases
 p = TestsFlextTargetOracleOicProtocols
-tp = TestsFlextTargetOracleOicProtocols
-
-__all__ = ["TestsFlextTargetOracleOicProtocols", "p", "tp"]
+p = TestsFlextTargetOracleOicProtocols
+__all__ = ["TestsFlextTargetOracleOicProtocols", "p"]

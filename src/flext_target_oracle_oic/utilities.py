@@ -2,21 +2,32 @@
 
 from __future__ import annotations
 
-from flext_core import FlextResult, FlextTypes as t
+from collections.abc import Mapping
+
+from flext_core import r, t
+from flext_meltano import FlextMeltanoUtilities
+from flext_oracle_oic import FlextOracleOicUtilities
 
 
-class FlextTargetOracleOicUtilities:
+class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtilities):
     """Namespace for message-building and validation helpers."""
 
     class TargetOracleOic:
         """Singer message helper functions."""
 
         @staticmethod
+        def create_record_message(
+            stream_name: str, record: Mapping[str, t.Scalar]
+        ) -> dict[str, str | Mapping[str, t.Scalar]]:
+            """Build a Singer RECORD message payload."""
+            return {"type": "RECORD", "stream": stream_name, "record": record}
+
+        @staticmethod
         def create_schema_message(
             stream_name: str,
-            schema: dict[str, t.GeneralValueType],
+            schema: Mapping[str, t.Container],
             key_properties: list[str] | None = None,
-        ) -> dict[str, t.GeneralValueType]:
+        ) -> dict[str, str | Mapping[str, t.Container] | list[str]]:
             """Build a Singer SCHEMA message payload."""
             return {
                 "type": "SCHEMA",
@@ -25,29 +36,18 @@ class FlextTargetOracleOicUtilities:
                 "key_properties": key_properties or [],
             }
 
-        @staticmethod
-        def create_record_message(
-            stream_name: str,
-            record: dict[str, t.GeneralValueType],
-        ) -> dict[str, t.GeneralValueType]:
-            """Build a Singer RECORD message payload."""
-            return {"type": "RECORD", "stream": stream_name, "record": record}
-
     class Validation:
         """Runtime configuration validation helper functions."""
 
         @staticmethod
-        def validate_config(
-            config: dict[str, t.GeneralValueType],
-        ) -> FlextResult[bool]:
+        def validate_config(config: Mapping[str, t.Scalar]) -> r[bool]:
             """Validate required OIC target configuration keys."""
             required = {"base_url", "oauth_client_id", "oauth_client_secret"}
             missing = sorted(key for key in required if key not in config)
             if missing:
-                return FlextResult[bool].fail(
-                    f"Missing required config fields: {missing}"
-                )
-            return FlextResult[bool].ok(value=True)
+                return r[bool].fail(f"Missing required config fields: {missing}")
+            return r[bool].ok(value=True)
 
 
-__all__ = ["FlextTargetOracleOicUtilities"]
+u = FlextTargetOracleOicUtilities
+__all__ = ["FlextTargetOracleOicUtilities", "u"]

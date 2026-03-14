@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
-from collections.abc import Sequence
+from collections.abc import Mapping
+from typing import ClassVar, override
 
-from flext_core import FlextLogger, FlextResult, FlextTypes as t
-from flext_meltano import FlextMeltanoTarget as Target
+from flext_core import FlextLogger, r, t
+from flext_meltano import FlextMeltanoTargetAbstractions as Target
 from singer_sdk import Sink
+
+from flext_target_oracle_oic.constants import c
 
 logger = FlextLogger(__name__)
 
@@ -14,58 +17,51 @@ logger = FlextLogger(__name__)
 class OICBaseSink(Sink):
     """Base sink implementation used by OIC stream sinks."""
 
-    def __init__(
-        self,
-        target: Target,
-        stream_name: str,
-        schema: dict[str, t.GeneralValueType],
-        key_properties: Sequence[str] | None = None,
-    ) -> None:
-        """Initialize sink metadata and source context."""
-        super().__init__(target, stream_name, schema, key_properties)
+    @override
+    def process_batch(self, context: Mapping[str, t.Scalar]) -> None:
+        """Singer batch hook implementation."""
+        _ = context
 
+    @override
     def process_record(
         self,
-        record: dict[str, t.GeneralValueType],
-        context: dict[str, t.GeneralValueType],
+        record: Mapping[str, t.Scalar],
+        context: Mapping[str, t.Scalar],
     ) -> None:
         """Default sink behavior: log incoming record metadata."""
         _ = context
-        logger.debug(
-            "Processing OIC record",
-            extra={"keys": list(record.keys())},
-        )
+        logger.debug("Processing OIC record", keys=str(list(record.keys())))
 
 
 class ConnectionsSink(OICBaseSink):
     """Sink for OIC connections stream."""
 
-    name = "connections"
+    name = c.TargetOracleOic.STREAM_CONNECTIONS
 
 
 class IntegrationsSink(OICBaseSink):
     """Sink for OIC integrations stream."""
 
-    name = "integrations"
+    name = c.TargetOracleOic.STREAM_INTEGRATIONS
 
 
 class PackagesSink(OICBaseSink):
     """Sink for OIC packages stream."""
 
-    name = "packages"
+    name = c.TargetOracleOic.STREAM_PACKAGES
 
 
 class LookupsSink(OICBaseSink):
     """Sink for OIC lookups stream."""
 
-    name = "lookups"
+    name = c.TargetOracleOic.STREAM_LOOKUPS
 
 
 class TargetOracleOic(Target):
     """Singer target entry point for Oracle OIC."""
 
-    name = "target-oracle-oic"
-    default_sink_class = OICBaseSink
+    name: ClassVar[str] = c.TargetOracleOic.TARGET_NAME
+    default_sink_class: ClassVar[type[OICBaseSink]] = OICBaseSink
 
     def get_sink_class(self, stream_name: str) -> type[OICBaseSink]:
         """Resolve sink class by stream name."""
@@ -77,13 +73,13 @@ class TargetOracleOic(Target):
         }
         return mapping.get(stream_name, OICBaseSink)
 
-    def setup(self) -> FlextResult[bool]:
+    def setup(self) -> r[bool]:
         """Setup target resources."""
-        return FlextResult[bool].ok(value=True)
+        return r[bool].ok(value=True)
 
-    def teardown(self) -> FlextResult[bool]:
+    def teardown(self) -> r[bool]:
         """Teardown target resources."""
-        return FlextResult[bool].ok(value=True)
+        return r[bool].ok(value=True)
 
 
 def main() -> None:

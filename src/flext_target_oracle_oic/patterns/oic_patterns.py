@@ -2,13 +2,15 @@
 
 from __future__ import annotations
 
-from flext_core import FlextResult, FlextTypes as t
+from collections.abc import Mapping
+
+from flext_core import r, t
 
 
 class OICTypeConverter:
     """Converts incoming values for OIC payloads."""
 
-    def convert(self, value: t.GeneralValueType) -> t.GeneralValueType:
+    def convert(self, value: t.Scalar) -> t.Scalar:
         """Return value unchanged for baseline conversion behavior."""
         return value
 
@@ -17,12 +19,10 @@ class OICSchemaMapper:
     """Maps stream schemas to OIC-compatible schema payloads."""
 
     def map_schema(
-        self,
-        stream_name: str,
-        schema: dict[str, t.GeneralValueType],
-    ) -> FlextResult[dict[str, t.GeneralValueType]]:
+        self, stream_name: str, schema: Mapping[str, t.Container]
+    ) -> r[dict[str, str | Mapping[str, t.Container]]]:
         """Build schema metadata payload for the given stream."""
-        return FlextResult[dict[str, t.GeneralValueType]].ok({
+        return r[dict[str, str | Mapping[str, t.Container]]].ok({
             "stream": stream_name,
             "schema": schema,
         })
@@ -31,23 +31,19 @@ class OICSchemaMapper:
 class OICDataTransformer:
     """Transforms record payloads before sink submission."""
 
-    def transform(
-        self,
-        record: dict[str, t.GeneralValueType],
-    ) -> FlextResult[dict[str, t.GeneralValueType]]:
+    def transform(self, record: Mapping[str, t.Scalar]) -> r[Mapping[str, t.Scalar]]:
         """Return transformed record payload."""
-        return FlextResult[dict[str, t.GeneralValueType]].ok(record)
+        return r[Mapping[str, t.Scalar]].ok(record)
 
 
 class OICEntryManager:
     """Builds entry collections from transformed records."""
 
     def build_entries(
-        self,
-        records: list[dict[str, t.GeneralValueType]],
-    ) -> FlextResult[list[dict[str, t.GeneralValueType]]]:
+        self, records: list[Mapping[str, t.Scalar]]
+    ) -> r[list[Mapping[str, t.Scalar]]]:
         """Return entry list unchanged for baseline behavior."""
-        return FlextResult[list[dict[str, t.GeneralValueType]]].ok(records)
+        return r[list[Mapping[str, t.Scalar]]].ok(records)
 
 
 __all__ = [

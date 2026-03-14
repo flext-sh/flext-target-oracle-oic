@@ -2,115 +2,103 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from enum import StrEnum
+from typing import Annotated
 
-from flext_core import FlextModels, FlextResult, FlextTypes as t
+from flext_core import r, t
+from flext_meltano import FlextMeltanoModels
+from flext_oracle_oic import FlextOracleOicModels
 from pydantic import Field
 
-
-class OICConnectionAction(StrEnum):
-    """Supported connection actions."""
-
-    CREATE = "create"
-    UPDATE = "update"
+from flext_target_oracle_oic.constants import c
 
 
-class OICIntegrationAction(StrEnum):
-    """Supported integration actions."""
-
-    IMPORT = "import"
-    ACTIVATE = "activate"
-
-
-class OICConnection(FlextModels.ArbitraryTypesModel):
-    """Connection payload model."""
-
-    id: str
-    name: str
-    adapter_type: str
-    properties: dict[str, t.GeneralValueType] = Field(default_factory=dict)
-
-
-class OICIntegration(FlextModels.ArbitraryTypesModel):
-    """Integration payload model."""
-
-    id: str
-    name: str
-    version: str = "01.00.0000"
-    pattern: str = "ORCHESTRATION"
-
-
-class OICPackage(FlextModels.ArbitraryTypesModel):
-    """Package payload model."""
-
-    id: str
-    name: str
-    version: str = "01.00.0000"
-
-
-class OICLookup(FlextModels.ArbitraryTypesModel):
-    """Lookup payload model."""
-
-    name: str
-    columns: list[dict[str, t.GeneralValueType]] = Field(default_factory=list)
-    rows: list[dict[str, t.GeneralValueType]] = Field(default_factory=list)
-
-
-class OICProject(FlextModels.ArbitraryTypesModel):
-    """Project payload model."""
-
-    id: str
-    name: str
-
-
-class OICSchedule(FlextModels.ArbitraryTypesModel):
-    """Schedule payload model."""
-
-    name: str
-    schedule_type: str = "ONCE"
-
-
-class OICDataTransformation(FlextModels.ArbitraryTypesModel):
-    """Transformation payload model."""
-
-    source_stream: str
-    target_entity: str
-    mapping: dict[str, str] = Field(default_factory=dict)
-
-
-class OICSchemaMapping(FlextModels.ArbitraryTypesModel):
-    """Schema mapping payload model."""
-
-    stream_name: str
-    schema_mapping: dict[str, t.GeneralValueType] = Field(default_factory=dict)
-
-
-class FlextTargetOracleOicModels(FlextModels):
+class FlextTargetOracleOicModels(FlextMeltanoModels, FlextOracleOicModels):
     """Namespace class for OIC target models."""
 
+    class TargetOracleOic:
+        """TargetOracleOic domain namespace."""
+
+        class OICConnectionAction(StrEnum):
+            """Supported connection actions."""
+
+            CREATE = "create"
+            UPDATE = "update"
+
+        class OICIntegrationAction(StrEnum):
+            """Supported integration actions."""
+
+            IMPORT = "import"
+            ACTIVATE = "activate"
+
+        class OICConnection(FlextMeltanoModels.ArbitraryTypesModel):
+            """Connection payload model."""
+
+            id: str
+            name: str
+            adapter_type: str
+            properties: Annotated[dict[str, t.Container], Field(default_factory=dict)]
+
+        class OICIntegration(FlextMeltanoModels.ArbitraryTypesModel):
+            """Integration payload model."""
+
+            id: str
+            name: str
+            version: str = c.TargetOracleOic.DEFAULT_VERSION
+            pattern: str = c.TargetOracleOic.DEFAULT_PATTERN
+
+        class OICPackage(FlextMeltanoModels.ArbitraryTypesModel):
+            """Package payload model."""
+
+            id: str
+            name: str
+            version: str = c.TargetOracleOic.DEFAULT_VERSION
+
+        class OICLookup(FlextMeltanoModels.ArbitraryTypesModel):
+            """Lookup payload model."""
+
+            name: str
+            columns: tuple[Mapping[str, t.Scalar], ...] = ()
+            rows: tuple[Mapping[str, t.Scalar], ...] = ()
+
+        class OICProject(FlextMeltanoModels.ArbitraryTypesModel):
+            """Project payload model."""
+
+            id: str
+            name: str
+
+        class OICSchedule(FlextMeltanoModels.ArbitraryTypesModel):
+            """Schedule payload model."""
+
+            name: str
+            schedule_type: str = c.TargetOracleOic.DEFAULT_SCHEDULE_TYPE
+
+        class OICDataTransformation(FlextMeltanoModels.ArbitraryTypesModel):
+            """Transformation payload model."""
+
+            source_stream: str
+            target_entity: str
+            mapping: Annotated[dict[str, str], Field(default_factory=dict)]
+
+        class OICSchemaMapping(FlextMeltanoModels.ArbitraryTypesModel):
+            """Schema mapping payload model."""
+
+            stream_name: str
+            schema_mapping: Annotated[
+                dict[str, t.Container], Field(default_factory=dict)
+            ]
+
     @staticmethod
-    def validate_connection(connection: OICConnection) -> FlextResult[bool]:
+    def validate_connection(
+        connection: TargetOracleOic.OICConnection,
+    ) -> r[bool]:
         """Validate minimal connection invariants."""
         if not connection.id.strip() or not connection.name.strip():
-            return FlextResult[bool].fail("Connection id/name cannot be empty")
-        return FlextResult[bool].ok(value=True)
+            return r[bool].fail("Connection id/name cannot be empty")
+        return r[bool].ok(value=True)
 
 
 m = FlextTargetOracleOicModels
-m_target_oracle_oic = FlextTargetOracleOicModels
 
-__all__ = [
-    "FlextTargetOracleOicModels",
-    "OICConnection",
-    "OICConnectionAction",
-    "OICDataTransformation",
-    "OICIntegration",
-    "OICIntegrationAction",
-    "OICLookup",
-    "OICPackage",
-    "OICProject",
-    "OICSchedule",
-    "OICSchemaMapping",
-    "m",
-    "m_target_oracle_oic",
-]
+__all__ = ["FlextTargetOracleOicModels", "m"]

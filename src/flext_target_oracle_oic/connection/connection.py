@@ -2,19 +2,22 @@
 
 from __future__ import annotations
 
-from flext_core import FlextResult, FlextTypes as t
+from collections.abc import Mapping
+
+from flext_core import r, t
 
 
 class OICConnection:
     """Holds runtime connection configuration and health checks."""
 
-    def __init__(self, config: dict[str, t.GeneralValueType] | None = None) -> None:
+    def __init__(self, config: Mapping[str, t.Scalar] | None = None) -> None:
         """Initialize connection with optional configuration mapping."""
+        super().__init__()
         self.config = config or {}
 
-    def test_connection(self) -> FlextResult[bool]:
+    def test_connection(self) -> r[bool]:
         """Return a successful health check result."""
-        return FlextResult[bool].ok(value=True)
+        return r[bool].ok(value=True)
 
 
 __all__ = ["OICConnection"]
