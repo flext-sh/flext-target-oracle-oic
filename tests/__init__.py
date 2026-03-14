@@ -49,15 +49,29 @@ if TYPE_CHECKING:
         TestsFlextTargetOracleOicUtilities as u,
     )
 
-# Lazy import mapping: export_name -> (module_path, attr_name)
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "TestTargetOracleOic": ("tests.test_target", "TestTargetOracleOic"),
     "TestTargetOracleOicE2E": ("tests.test_e2e", "TestTargetOracleOicE2E"),
-    "TestsFlextTargetOracleOicConstants": ("tests.constants", "TestsFlextTargetOracleOicConstants"),
-    "TestsFlextTargetOracleOicModels": ("tests.models", "TestsFlextTargetOracleOicModels"),
-    "TestsFlextTargetOracleOicProtocols": ("tests.protocols", "TestsFlextTargetOracleOicProtocols"),
-    "TestsFlextTargetOracleOicTypes": ("tests.typings", "TestsFlextTargetOracleOicTypes"),
-    "TestsFlextTargetOracleOicUtilities": ("tests.utilities", "TestsFlextTargetOracleOicUtilities"),
+    "TestsFlextTargetOracleOicConstants": (
+        "tests.constants",
+        "TestsFlextTargetOracleOicConstants",
+    ),
+    "TestsFlextTargetOracleOicModels": (
+        "tests.models",
+        "TestsFlextTargetOracleOicModels",
+    ),
+    "TestsFlextTargetOracleOicProtocols": (
+        "tests.protocols",
+        "TestsFlextTargetOracleOicProtocols",
+    ),
+    "TestsFlextTargetOracleOicTypes": (
+        "tests.typings",
+        "TestsFlextTargetOracleOicTypes",
+    ),
+    "TestsFlextTargetOracleOicUtilities": (
+        "tests.utilities",
+        "TestsFlextTargetOracleOicUtilities",
+    ),
     "c": ("tests.constants", "TestsFlextTargetOracleOicConstants"),
     "load_test_config": ("tests.test_e2e", "load_test_config"),
     "m": ("tests.models", "m"),
@@ -65,10 +79,22 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "t": ("tests.typings", "TestsFlextTargetOracleOicTypes"),
     "target": ("tests.test_e2e", "target"),
     "test_config": ("tests.test_e2e", "test_config"),
-    "test_main_entrypoint_returns_none": ("tests.test_cli_entrypoint", "test_main_entrypoint_returns_none"),
-    "test_oic_authenticator_builds_payload": ("tests.test_target", "test_oic_authenticator_builds_payload"),
-    "test_oic_authenticator_omits_optional_scope_and_audience": ("tests.test_target", "test_oic_authenticator_omits_optional_scope_and_audience"),
-    "test_oic_authenticator_rejects_invalid_token_response": ("tests.test_target", "test_oic_authenticator_rejects_invalid_token_response"),
+    "test_main_entrypoint_returns_none": (
+        "tests.test_cli_entrypoint",
+        "test_main_entrypoint_returns_none",
+    ),
+    "test_oic_authenticator_builds_payload": (
+        "tests.test_target",
+        "test_oic_authenticator_builds_payload",
+    ),
+    "test_oic_authenticator_omits_optional_scope_and_audience": (
+        "tests.test_target",
+        "test_oic_authenticator_omits_optional_scope_and_audience",
+    ),
+    "test_oic_authenticator_rejects_invalid_token_response": (
+        "tests.test_target",
+        "test_oic_authenticator_rejects_invalid_token_response",
+    ),
     "test_target_smoke_class": ("tests.test_e2e", "test_target_smoke_class"),
     "tm": ("tests.models", "tm"),
     "u": ("tests.utilities", "TestsFlextTargetOracleOicUtilities"),
