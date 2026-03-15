@@ -1,11 +1,7 @@
 # AUTO-GENERATED FILE — DO NOT EDIT MANUALLY.
 # Regenerate with: make codegen
 #
-"""FlextTargetOracleOic - Oracle Integration Cloud Target using flext-core patterns.
-
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT.
-"""
+"""Flext target oracle oic package."""
 
 from __future__ import annotations
 
@@ -16,6 +12,7 @@ from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 if TYPE_CHECKING:
     from flext_core.typings import FlextTypes
 
+    from flext_target_oracle_oic import application, connection, patterns, singer
     from flext_target_oracle_oic.__version__ import (
         __all__,
         __author__,
@@ -148,7 +145,9 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "__url__": ("flext_target_oracle_oic.__version__", "__url__"),
     "__version__": ("flext_target_oracle_oic.__version__", "__version__"),
     "__version_info__": ("flext_target_oracle_oic.__version__", "__version_info__"),
+    "application": ("flext_target_oracle_oic.application", ""),
     "c": ("flext_target_oracle_oic.constants", "c"),
+    "connection": ("flext_target_oracle_oic.connection", ""),
     "create_config_from_dict": (
         "flext_target_oracle_oic.target_config",
         "create_config_from_dict",
@@ -178,6 +177,8 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "m": ("flext_target_oracle_oic.models", "m"),
     "main": ("flext_target_oracle_oic.target_client", "main"),
     "p": ("flext_target_oracle_oic.protocols", "p"),
+    "patterns": ("flext_target_oracle_oic.patterns", ""),
+    "singer": ("flext_target_oracle_oic.singer", ""),
     "t": ("flext_target_oracle_oic.typings", "t"),
     "u": ("flext_target_oracle_oic.utilities", "u"),
 }
@@ -214,7 +215,9 @@ __all__ = [
     "__url__",
     "__version__",
     "__version_info__",
+    "application",
     "c",
+    "connection",
     "create_config_from_dict",
     "create_config_with_env_overrides",
     "create_oic_connection",
@@ -226,6 +229,8 @@ __all__ = [
     "m",
     "main",
     "p",
+    "patterns",
+    "singer",
     "t",
     "u",
 ]
