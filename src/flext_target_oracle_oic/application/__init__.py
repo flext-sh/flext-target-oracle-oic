@@ -20,10 +20,7 @@ if TYPE_CHECKING:
     from flext_target_oracle_oic.application.orchestrator import OICTargetOrchestrator
 
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
-    "OICTargetOrchestrator": (
-        "flext_target_oracle_oic.application.orchestrator",
-        "OICTargetOrchestrator",
-    ),
+    "OICTargetOrchestrator": ("flext_target_oracle_oic.application.orchestrator", "OICTargetOrchestrator"),
 }
 
 __all__ = [
