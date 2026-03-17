@@ -20,31 +20,31 @@ from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 if TYPE_CHECKING:
     from flext_core.typings import FlextTypes
 
-    from tests.constants import (
+    from .constants import (
         TestsFlextTargetOracleOicConstants,
         TestsFlextTargetOracleOicConstants as c,
     )
-    from tests.models import TestsFlextTargetOracleOicModels, m, tm
-    from tests.protocols import TestsFlextTargetOracleOicProtocols, p
-    from tests.test_cli_entrypoint import test_main_entrypoint_returns_none
-    from tests.test_e2e import (
+    from .models import TestsFlextTargetOracleOicModels, m, tm
+    from .protocols import TestsFlextTargetOracleOicProtocols, p
+    from .test_cli_entrypoint import test_main_entrypoint_returns_none
+    from .test_e2e import (
         TestTargetOracleOicE2E,
         load_test_config,
         target,
         test_config,
         test_target_smoke_class,
     )
-    from tests.test_target import (
+    from .test_target import (
         TestTargetOracleOic,
         test_oic_authenticator_builds_payload,
         test_oic_authenticator_omits_optional_scope_and_audience,
         test_oic_authenticator_rejects_invalid_token_response,
     )
-    from tests.typings import (
+    from .typings import (
         TestsFlextTargetOracleOicTypes,
         TestsFlextTargetOracleOicTypes as t,
     )
-    from tests.utilities import (
+    from .utilities import (
         TestsFlextTargetOracleOicUtilities,
         TestsFlextTargetOracleOicUtilities as u,
     )
