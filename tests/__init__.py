@@ -32,7 +32,9 @@ if TYPE_CHECKING:
         test_target_smoke_class,
     )
     from .test_target import (
+        DummySingerTarget,
         TestTargetOracleOic,
+        singer_target,
         test_oic_authenticator_builds_payload,
         test_oic_authenticator_omits_optional_scope_and_audience,
         test_oic_authenticator_rejects_invalid_token_response,
@@ -41,6 +43,7 @@ if TYPE_CHECKING:
     from .utilities import TestsFlextTargetOracleOicUtilities, u
 
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
+    "DummySingerTarget": ("tests.test_target", "DummySingerTarget"),
     "TestTargetOracleOic": ("tests.test_target", "TestTargetOracleOic"),
     "TestTargetOracleOicE2E": ("tests.test_e2e", "TestTargetOracleOicE2E"),
     "TestsFlextTargetOracleOicConstants": (
@@ -67,6 +70,7 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "load_test_config": ("tests.test_e2e", "load_test_config"),
     "m": ("tests.models", "m"),
     "p": ("tests.protocols", "p"),
+    "singer_target": ("tests.test_target", "singer_target"),
     "t": ("tests.typings", "t"),
     "target": ("tests.test_e2e", "target"),
     "test_config": ("tests.test_e2e", "test_config"),
@@ -92,6 +96,7 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
 }
 
 __all__ = [
+    "DummySingerTarget",
     "TestTargetOracleOic",
     "TestTargetOracleOicE2E",
     "TestsFlextTargetOracleOicConstants",
@@ -103,6 +108,7 @@ __all__ = [
     "load_test_config",
     "m",
     "p",
+    "singer_target",
     "t",
     "target",
     "test_config",

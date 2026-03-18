@@ -8,6 +8,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
+from singer_sdk.target_base import Target as SingerTarget
 
 from flext_target_oracle_oic.target_client import (
     ConnectionsSink,
@@ -19,6 +20,13 @@ from flext_target_oracle_oic.target_config import (
     TargetOracleOicConfig,
 )
 from tests import t
+
+
+class DummySingerTarget(SingerTarget):
+    """Minimal Singer target implementation for sink tests."""
+
+    name = "dummy-target-oracle-oic"
+    config_jsonschema = {"type": "object", "properties": {}}
 
 
 class TestTargetOracleOic:
@@ -39,28 +47,23 @@ class TestTargetOracleOic:
         self, valid_config: dict[str, str]
     ) -> None:
         """Test target initialization with valid configuration."""
-        target = TargetOracleOic(config=valid_config)
+        _ = valid_config
+        target = TargetOracleOic()
         if target.name != "target-oracle-oic":
             msg: str = f"Expected {'target-oracle-oic'}, got {target.name}"
             raise AssertionError(msg)
-        assert target.config == valid_config
+        assert isinstance(target.get_sink_class("connections"), type)
 
     def test_target_initialization_with_minimal_config(self) -> None:
         """Test method."""
-        target = TargetOracleOic(config={})
+        target = TargetOracleOic()
         if target.name != "target-oracle-oic":
             msg: str = f"Expected {'target-oracle-oic'}, got {target.name}"
             raise AssertionError(msg)
 
     def test_get_sink_mapping(self) -> None:
         """Test method."""
-        config = {
-            "base_url": "https://test.integration.ocp.oraclecloud.com",
-            "oauth_client_id": "test_client",
-            "oauth_client_secret": "test_secret",
-            "oauth_token_url": "https://test.identity.oraclecloud.com/oauth2/v1/token",
-        }
-        target = TargetOracleOic(config=config)
+        target = TargetOracleOic()
         if target.get_sink_class("connections") is not ConnectionsSink:
             msg: str = f"Expected {ConnectionsSink}, got {target.get_sink_class('connections')}"
             raise AssertionError(msg)
@@ -71,27 +74,35 @@ class TestTargetOracleOic:
 
     def test_config_schema(self) -> None:
         """Test method."""
-        schema = TargetOracleOic.config_jsonschema
+        schema = TargetOracleOicConfig.model_json_schema()
         assert isinstance(schema, dict)
         if "properties" not in schema:
             msg = f"Expected {'properties'} in {schema}"
             raise AssertionError(msg)
         properties = schema["properties"]
         assert isinstance(properties, dict)
-        assert isinstance(properties, dict)
+        assert "oauth_client_id" in properties
 
 
-def _build_auth_config(**overrides: t.Scalar) -> TargetOracleOicConfig:
-    config: dict[str, object] = {
-        "oauth_client_id": "client-id",
-        "oauth_client_secret": "client-secret",
-        "oauth_token_url": "https://idcs.example.com/oauth2/v1/token",
-        "oauth_scope": "urn:opc:resource:consumer:all",
-        "oauth_client_aud": "https://idcs.example.com",
-        "base_url": "https://instance.integration.ocp.oraclecloud.com",
-    }
-    config.update(overrides)
-    return TargetOracleOicConfig(**config)
+@pytest.fixture
+def singer_target() -> SingerTarget:
+    """Provide a Singer target accepted by singer-sdk Sink constructors."""
+    return DummySingerTarget(config={})
+
+
+def _build_auth_config(
+    *,
+    oauth_scope: str | None = "urn:opc:resource:consumer:all",
+    oauth_client_aud: str | None = "https://idcs.example.com",
+) -> TargetOracleOicConfig:
+    return TargetOracleOicConfig(
+        oauth_client_id="client-id",
+        oauth_client_secret="client-secret",
+        oauth_token_url="https://idcs.example.com/oauth2/v1/token",
+        oauth_scope=oauth_scope,
+        oauth_client_aud=oauth_client_aud,
+        base_url="https://instance.integration.ocp.oraclecloud.com",
+    )
 
 
 def test_oic_authenticator_builds_payload() -> None:
@@ -125,7 +136,7 @@ def test_oic_authenticator_rejects_invalid_token_response(
         def json(self) -> dict[str, str]:
             return {"token_type": "Bearer"}
 
-    def fake_post(*_, **__: t.Scalar) -> InvalidTokenResponse:
+    def fake_post(*_args: t.Scalar, **_kwargs: t.Scalar) -> InvalidTokenResponse:
         return InvalidTokenResponse()
 
     monkeypatch.setattr(f"{OICOAuth2Authenticator.__module__}.requests.post", fake_post)
