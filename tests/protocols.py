@@ -14,9 +14,7 @@ from flext_tests import p
 from flext_target_oracle_oic.protocols import FlextTargetOracleOicProtocols
 
 
-class TestsFlextTargetOracleOicProtocols(
-    p, FlextTargetOracleOicProtocols
-):
+class TestsFlextTargetOracleOicProtocols(p, FlextTargetOracleOicProtocols):
     """Test protocols combining p and FlextTargetOracleOicProtocols.
 
     Provides access to:
