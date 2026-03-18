@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
+from typing import ClassVar
 
 import pytest
 from singer_sdk.target_base import Target as SingerTarget
@@ -35,7 +36,7 @@ from flext_target_oracle_oic.target_config import TargetOracleOicConfig
 
 class DummySingerTarget(SingerTarget):
     name = "dummy-target-oracle-oic"
-    config_jsonschema: dict[str, str | dict[str, dict[str, str]]] = {
+    config_jsonschema: ClassVar[dict[str, str | dict[str, dict[str, str]]]] = {
         "type": "object",
         "properties": {},
     }
@@ -285,18 +286,14 @@ class TestTargetOracleOicE2E:
     def test_conditional_config_generation(self) -> None:
         """Test schema generation from pydantic configuration model."""
         schema_raw = TargetOracleOicConfig.model_json_schema()
-        if not isinstance(schema_raw, dict):
-            msg = "Expected model_json_schema() to return a dict"
-            raise AssertionError(msg)
         properties_raw = schema_raw.get("properties")
         if not isinstance(properties_raw, dict):
             msg = f"Expected {'properties'} in {schema_raw}"
             raise AssertionError(msg)
-        assert isinstance(properties_raw, dict)
         if "oauth_token_url" not in properties_raw:
             msg = f"Expected {'oauth_token_url'} in {properties_raw}"
             raise AssertionError(msg)
-        assert isinstance(properties_raw.get("oauth_token_url"), dict)
+        assert isinstance(properties_raw["oauth_token_url"], dict)
 
 
 def test_target_smoke_class() -> None:

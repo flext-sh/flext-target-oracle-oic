@@ -7,7 +7,10 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from typing import ClassVar
+
 import pytest
+from pydantic import SecretStr
 from singer_sdk.target_base import Target as SingerTarget
 
 from flext_target_oracle_oic.target_client import (
@@ -21,12 +24,21 @@ from flext_target_oracle_oic.target_config import (
 )
 from tests import t
 
+_DEFAULT_PROPERTIES: dict[str, dict[str, str]] = {"id": {"type": "string"}}
+
+
+class AuthTestConfig(TargetOracleOicConfig):
+    pass
+
 
 class DummySingerTarget(SingerTarget):
     """Minimal Singer target implementation for sink tests."""
 
     name = "dummy-target-oracle-oic"
-    config_jsonschema = {"type": "object", "properties": {}}
+    config_jsonschema: ClassVar[dict[str, str | dict[str, dict[str, str]]]] = {
+        "type": "object",
+        "properties": _DEFAULT_PROPERTIES,
+    }
 
 
 class TestTargetOracleOic:
@@ -95,14 +107,16 @@ def _build_auth_config(
     oauth_scope: str | None = "urn:opc:resource:consumer:all",
     oauth_client_aud: str | None = "https://idcs.example.com",
 ) -> TargetOracleOicConfig:
-    return TargetOracleOicConfig(
-        oauth_client_id="client-id",
-        oauth_client_secret="client-secret",
-        oauth_token_url="https://idcs.example.com/oauth2/v1/token",
-        oauth_scope=oauth_scope,
-        oauth_client_aud=oauth_client_aud,
-        base_url="https://instance.integration.ocp.oraclecloud.com",
+    config = AuthTestConfig.__new__(AuthTestConfig)
+    object.__setattr__(config, "oauth_client_id", "client-id")
+    object.__setattr__(config, "oauth_client_secret", SecretStr("client-secret"))
+    object.__setattr__(
+        config, "oauth_token_url", "https://idcs.example.com/oauth2/v1/token"
     )
+    object.__setattr__(config, "oauth_scope", oauth_scope)
+    object.__setattr__(config, "oauth_client_aud", oauth_client_aud)
+    object.__setattr__(config, "timeout", 30)
+    return config
 
 
 def test_oic_authenticator_builds_payload() -> None:

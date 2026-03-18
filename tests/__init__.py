@@ -32,6 +32,7 @@ if TYPE_CHECKING:
         test_target_smoke_class,
     )
     from .test_target import (
+        AuthTestConfig,
         DummySingerTarget,
         TestTargetOracleOic,
         singer_target,
@@ -43,6 +44,7 @@ if TYPE_CHECKING:
     from .utilities import TestsFlextTargetOracleOicUtilities, u
 
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
+    "AuthTestConfig": ("tests.test_target", "AuthTestConfig"),
     "DummySingerTarget": ("tests.test_target", "DummySingerTarget"),
     "TestTargetOracleOic": ("tests.test_target", "TestTargetOracleOic"),
     "TestTargetOracleOicE2E": ("tests.test_e2e", "TestTargetOracleOicE2E"),
@@ -96,6 +98,7 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
 }
 
 __all__ = [
+    "AuthTestConfig",
     "DummySingerTarget",
     "TestTargetOracleOic",
     "TestTargetOracleOicE2E",
