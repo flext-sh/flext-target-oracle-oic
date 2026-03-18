@@ -354,3 +354,6 @@ staging/
 .reports/
 .venv/
 __pycache__/
+
+# --- workspace-migrate: required ignores (auto-managed) ---
+base.mk
