@@ -35,6 +35,6 @@ class TestsFlextTargetOracleOicProtocols(
             """TargetOracleOic-specific test protocols."""
 
 
-p = TestsFlextTargetOracleOicProtocols
-p = TestsFlextTargetOracleOicProtocols
 __all__ = ["TestsFlextTargetOracleOicProtocols", "p"]
+
+p = TestsFlextTargetOracleOicProtocols
