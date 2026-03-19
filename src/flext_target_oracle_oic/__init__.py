@@ -11,12 +11,7 @@ from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 
 if TYPE_CHECKING:
     from flext_core.typings import FlextTypes
-    from flext_meltano.decorators import d
-    from flext_meltano.exceptions import e
-    from flext_meltano.handlers import h
-    from flext_meltano.mixins import x
-    from flext_meltano.result import r
-    from flext_meltano.service import s
+    from flext_meltano import d, e, h, r, s, x
 
     from flext_target_oracle_oic import application, connection, patterns, singer
     from flext_target_oracle_oic.__version__ import (
@@ -179,20 +174,20 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "flext_target_oracle_oic.target_config",
         "create_singer_config_schema",
     ),
-    "d": ("flext_meltano.decorators", "d"),
-    "e": ("flext_meltano.exceptions", "e"),
-    "h": ("flext_meltano.handlers", "h"),
+    "d": ("flext_meltano", "d"),
+    "e": ("flext_meltano", "e"),
+    "h": ("flext_meltano", "h"),
     "logger": ("flext_target_oracle_oic.connection.settings", "logger"),
     "m": ("flext_target_oracle_oic.models", "m"),
     "main": ("flext_target_oracle_oic.target_client", "main"),
     "p": ("flext_target_oracle_oic.protocols", "p"),
     "patterns": ("flext_target_oracle_oic.patterns", ""),
-    "r": ("flext_meltano.result", "r"),
-    "s": ("flext_meltano.service", "s"),
+    "r": ("flext_meltano", "r"),
+    "s": ("flext_meltano", "s"),
     "singer": ("flext_target_oracle_oic.singer", ""),
     "t": ("flext_target_oracle_oic.typings", "t"),
     "u": ("flext_target_oracle_oic.utilities", "u"),
-    "x": ("flext_meltano.mixins", "x"),
+    "x": ("flext_meltano", "x"),
 }
 
 __all__ = [
