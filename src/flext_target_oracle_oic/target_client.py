@@ -5,11 +5,11 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import ClassVar, override
 
-from flext_core import FlextLogger, r, t
+from flext_core import FlextLogger, r
 from flext_meltano import FlextMeltanoTargetAbstractions as Target
 from singer_sdk import Sink
 
-from flext_target_oracle_oic import c
+from flext_target_oracle_oic import c, t
 
 logger = FlextLogger(__name__)
 

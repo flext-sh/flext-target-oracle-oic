@@ -6,12 +6,12 @@ from collections.abc import Mapping
 from enum import StrEnum, unique
 from typing import Annotated
 
-from flext_core import r, t
+from flext_core import r
 from flext_meltano import FlextMeltanoModels
 from flext_oracle_oic import FlextOracleOicModels
 from pydantic import Field
 
-from flext_target_oracle_oic import c
+from flext_target_oracle_oic import c, t
 
 
 class FlextTargetOracleOicModels(FlextMeltanoModels, FlextOracleOicModels):

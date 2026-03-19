@@ -10,10 +10,10 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Annotated
 
-from flext_core import FlextConstants, FlextLogger, FlextModels, r, t
+from flext_core import FlextConstants, FlextLogger, FlextModels, r
 from pydantic import Field
 
-from flext_target_oracle_oic import c
+from flext_target_oracle_oic import c, t
 
 logger = FlextLogger(__name__)
 
