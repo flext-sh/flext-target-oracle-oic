@@ -12,7 +12,7 @@ from collections.abc import Mapping
 import requests
 from requests import Response
 
-from flext_target_oracle_oic.constants import c
+from flext_target_oracle_oic import c
 
 from .settings import TargetOracleOicConfig
 from .typings import t

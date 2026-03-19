@@ -14,7 +14,7 @@ from flext_core import FlextProtocols
 from flext_meltano import FlextMeltanoProtocols
 from flext_oracle_oic.protocols import FlextOracleOicProtocols
 
-from flext_target_oracle_oic.typings import t
+from flext_target_oracle_oic import t
 
 
 class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtocols):

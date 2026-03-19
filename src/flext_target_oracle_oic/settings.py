@@ -13,7 +13,7 @@ from typing import Annotated
 from flext_core import FlextSettings
 from pydantic import Field, SecretStr
 
-from flext_target_oracle_oic.constants import c
+from flext_target_oracle_oic import c
 
 
 class TargetOracleOicConfig(FlextSettings):

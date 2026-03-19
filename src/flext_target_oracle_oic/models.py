@@ -11,7 +11,7 @@ from flext_meltano import FlextMeltanoModels
 from flext_oracle_oic import FlextOracleOicModels
 from pydantic import Field
 
-from flext_target_oracle_oic.constants import c
+from flext_target_oracle_oic import c
 
 
 class FlextTargetOracleOicModels(FlextMeltanoModels, FlextOracleOicModels):
