@@ -26,6 +26,7 @@ if TYPE_CHECKING:
         __version_info__,
     )
     from flext_target_oracle_oic.application.orchestrator import OICTargetOrchestrator
+    from flext_target_oracle_oic.cli import main
     from flext_target_oracle_oic.connection.connection import OICConnection
     from flext_target_oracle_oic.connection.settings import (
         OICConnectionSettings,
@@ -45,14 +46,12 @@ if TYPE_CHECKING:
         OICProcessedRecord,
         OICRecordProcessor,
     )
+    from flext_target_oracle_oic.target import OICBaseSink, TargetOracleOic
     from flext_target_oracle_oic.target_client import (
         ConnectionsSink,
         IntegrationsSink,
         LookupsSink,
-        OICBaseSink,
         PackagesSink,
-        TargetOracleOic,
-        main,
     )
     from flext_target_oracle_oic.target_config import (
         OICOAuth2Authenticator,
@@ -93,7 +92,7 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     ),
     "IntegrationsSink": ("flext_target_oracle_oic.target_client", "IntegrationsSink"),
     "LookupsSink": ("flext_target_oracle_oic.target_client", "LookupsSink"),
-    "OICBaseSink": ("flext_target_oracle_oic.target_client", "OICBaseSink"),
+    "OICBaseSink": ("flext_target_oracle_oic.target", "OICBaseSink"),
     "OICConnection": ("flext_target_oracle_oic.connection.connection", "OICConnection"),
     "OICConnectionSettings": (
         "flext_target_oracle_oic.connection.settings",
@@ -132,7 +131,7 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "OICTypeConverter",
     ),
     "PackagesSink": ("flext_target_oracle_oic.target_client", "PackagesSink"),
-    "TargetOracleOic": ("flext_target_oracle_oic.target_client", "TargetOracleOic"),
+    "TargetOracleOic": ("flext_target_oracle_oic.target", "TargetOracleOic"),
     "TargetOracleOicConfig": (
         "flext_target_oracle_oic.settings",
         "TargetOracleOicConfig",
@@ -179,7 +178,7 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "h": ("flext_meltano", "h"),
     "logger": ("flext_target_oracle_oic.connection.settings", "logger"),
     "m": ("flext_target_oracle_oic.models", "m"),
-    "main": ("flext_target_oracle_oic.target_client", "main"),
+    "main": ("flext_target_oracle_oic.cli", "main"),
     "p": ("flext_target_oracle_oic.protocols", "p"),
     "patterns": ("flext_target_oracle_oic.patterns", ""),
     "r": ("flext_meltano", "r"),
