@@ -45,7 +45,7 @@ class OICConnectionSettings(FlextModels):
     timeout: Annotated[
         int,
         Field(
-            default=FlextConstants.Network.DEFAULT_TIMEOUT,
+            default=FlextConstants.DEFAULT_TIMEOUT_SECONDS,
             description="Request timeout in seconds",
             gt=0,
         ),
