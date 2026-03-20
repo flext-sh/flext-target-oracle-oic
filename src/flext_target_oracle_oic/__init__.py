@@ -32,15 +32,24 @@ if TYPE_CHECKING:
         OICConnectionSettings,
         logger,
     )
-    from flext_target_oracle_oic.constants import FlextTargetOracleOicConstants, c
-    from flext_target_oracle_oic.models import FlextTargetOracleOicModels, m
+    from flext_target_oracle_oic.constants import (
+        FlextTargetOracleOicConstants,
+        FlextTargetOracleOicConstants as c,
+    )
+    from flext_target_oracle_oic.models import (
+        FlextTargetOracleOicModels,
+        FlextTargetOracleOicModels as m,
+    )
     from flext_target_oracle_oic.patterns.oic_patterns import (
         OICDataTransformer,
         OICEntryManager,
         OICSchemaMapper,
         OICTypeConverter,
     )
-    from flext_target_oracle_oic.protocols import FlextTargetOracleOicProtocols, p
+    from flext_target_oracle_oic.protocols import (
+        FlextTargetOracleOicProtocols,
+        FlextTargetOracleOicProtocols as p,
+    )
     from flext_target_oracle_oic.settings import TargetOracleOicConfig
     from flext_target_oracle_oic.singer.processors import (
         OICProcessedRecord,
@@ -65,8 +74,14 @@ if TYPE_CHECKING:
         create_oic_lookup,
         create_oic_package,
     )
-    from flext_target_oracle_oic.typings import FlextTargetOracleOicTypes, t
-    from flext_target_oracle_oic.utilities import FlextTargetOracleOicUtilities, u
+    from flext_target_oracle_oic.typings import (
+        FlextTargetOracleOicTypes,
+        FlextTargetOracleOicTypes as t,
+    )
+    from flext_target_oracle_oic.utilities import (
+        FlextTargetOracleOicUtilities,
+        FlextTargetOracleOicUtilities as u,
+    )
 
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "ConnectionsSink": ("flext_target_oracle_oic.target_client", "ConnectionsSink"),
@@ -146,7 +161,7 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "__version__": ("flext_target_oracle_oic.__version__", "__version__"),
     "__version_info__": ("flext_target_oracle_oic.__version__", "__version_info__"),
     "application": ("flext_target_oracle_oic.application", ""),
-    "c": ("flext_target_oracle_oic.constants", "c"),
+    "c": ("flext_target_oracle_oic.constants", "FlextTargetOracleOicConstants"),
     "connection": ("flext_target_oracle_oic.connection", ""),
     "create_config_from_dict": (
         "flext_target_oracle_oic.target_config",
@@ -177,15 +192,15 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "e": ("flext_meltano", "e"),
     "h": ("flext_meltano", "h"),
     "logger": ("flext_target_oracle_oic.connection.settings", "logger"),
-    "m": ("flext_target_oracle_oic.models", "m"),
+    "m": ("flext_target_oracle_oic.models", "FlextTargetOracleOicModels"),
     "main": ("flext_target_oracle_oic.cli", "main"),
-    "p": ("flext_target_oracle_oic.protocols", "p"),
+    "p": ("flext_target_oracle_oic.protocols", "FlextTargetOracleOicProtocols"),
     "patterns": ("flext_target_oracle_oic.patterns", ""),
     "r": ("flext_meltano", "r"),
     "s": ("flext_meltano", "s"),
     "singer": ("flext_target_oracle_oic.singer", ""),
-    "t": ("flext_target_oracle_oic.typings", "t"),
-    "u": ("flext_target_oracle_oic.utilities", "u"),
+    "t": ("flext_target_oracle_oic.typings", "FlextTargetOracleOicTypes"),
+    "u": ("flext_target_oracle_oic.utilities", "FlextTargetOracleOicUtilities"),
     "x": ("flext_meltano", "x"),
 }
 
