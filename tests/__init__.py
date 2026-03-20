@@ -20,9 +20,19 @@ from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 if TYPE_CHECKING:
     from flext_core.typings import FlextTypes
 
-    from .constants import TestsFlextTargetOracleOicConstants, c
-    from .models import TestsFlextTargetOracleOicModels, m, tm
-    from .protocols import TestsFlextTargetOracleOicProtocols, p
+    from .constants import (
+        TestsFlextTargetOracleOicConstants,
+        TestsFlextTargetOracleOicConstants as c,
+    )
+    from .models import (
+        TestsFlextTargetOracleOicModels,
+        TestsFlextTargetOracleOicModels as m,
+        tm,
+    )
+    from .protocols import (
+        TestsFlextTargetOracleOicProtocols,
+        TestsFlextTargetOracleOicProtocols as p,
+    )
     from .test_cli_entrypoint import test_main_entrypoint_returns_none
     from .test_e2e import (
         TestTargetOracleOicE2E,
@@ -40,8 +50,14 @@ if TYPE_CHECKING:
         test_oic_authenticator_omits_optional_scope_and_audience,
         test_oic_authenticator_rejects_invalid_token_response,
     )
-    from .typings import TestsFlextTargetOracleOicTypes, t
-    from .utilities import TestsFlextTargetOracleOicUtilities, u
+    from .typings import (
+        TestsFlextTargetOracleOicTypes,
+        TestsFlextTargetOracleOicTypes as t,
+    )
+    from .utilities import (
+        TestsFlextTargetOracleOicUtilities,
+        TestsFlextTargetOracleOicUtilities as u,
+    )
 
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "AuthTestConfig": ("tests.test_target", "AuthTestConfig"),
@@ -68,12 +84,12 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "tests.utilities",
         "TestsFlextTargetOracleOicUtilities",
     ),
-    "c": ("tests.constants", "c"),
+    "c": ("tests.constants", "TestsFlextTargetOracleOicConstants"),
     "load_test_config": ("tests.test_e2e", "load_test_config"),
-    "m": ("tests.models", "m"),
-    "p": ("tests.protocols", "p"),
+    "m": ("tests.models", "TestsFlextTargetOracleOicModels"),
+    "p": ("tests.protocols", "TestsFlextTargetOracleOicProtocols"),
     "singer_target": ("tests.test_target", "singer_target"),
-    "t": ("tests.typings", "t"),
+    "t": ("tests.typings", "TestsFlextTargetOracleOicTypes"),
     "target": ("tests.test_e2e", "target"),
     "test_config": ("tests.test_e2e", "test_config"),
     "test_main_entrypoint_returns_none": (
@@ -94,7 +110,7 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     ),
     "test_target_smoke_class": ("tests.test_e2e", "test_target_smoke_class"),
     "tm": ("tests.models", "tm"),
-    "u": ("tests.utilities", "u"),
+    "u": ("tests.utilities", "TestsFlextTargetOracleOicUtilities"),
 }
 
 __all__ = [
