@@ -5,9 +5,10 @@ from __future__ import annotations
 from collections.abc import Mapping
 
 from flext_core import r
-from flext_core.typings import t
 from flext_meltano import FlextMeltanoUtilities
 from flext_oracle_oic import FlextOracleOicUtilities
+
+from flext_target_oracle_oic.typings import t
 
 
 class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtilities):

@@ -6,10 +6,11 @@ from collections.abc import Mapping
 from typing import ClassVar, override
 
 from flext_core import FlextLogger, r
-from flext_core.constants import c
-from flext_core.typings import t
 from flext_meltano import FlextMeltanoTargetAbstractions as Target
 from singer_sdk import Sink
+
+from flext_target_oracle_oic.constants import c
+from flext_target_oracle_oic.typings import t
 
 logger = FlextLogger(__name__)
 
