@@ -53,7 +53,7 @@ class OICConnectionSettings(FlextModels):
     max_retries: Annotated[
         int,
         Field(
-            default=FlextConstants.Reliability.MAX_RETRY_ATTEMPTS,
+            default=FlextConstants.MAX_RETRY_ATTEMPTS,
             description="Maximum number of retries",
             ge=0,
         ),
