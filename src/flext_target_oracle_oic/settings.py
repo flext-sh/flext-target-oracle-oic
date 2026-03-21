@@ -11,9 +11,8 @@ from collections.abc import Mapping
 from typing import Annotated
 
 from flext_core import FlextSettings
+from flext_core.constants import c
 from pydantic import Field, SecretStr
-
-from flext_target_oracle_oic import c
 
 
 class TargetOracleOicConfig(FlextSettings):

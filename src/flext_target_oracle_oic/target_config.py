@@ -10,9 +10,8 @@ from __future__ import annotations
 from collections.abc import Mapping
 
 import requests
+from flext_core.constants import c
 from requests import Response
-
-from flext_target_oracle_oic import c
 
 from .settings import TargetOracleOicConfig
 from .typings import t
