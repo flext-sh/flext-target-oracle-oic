@@ -20,22 +20,10 @@ if TYPE_CHECKING:
     )
 
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
-    "OICDataTransformer": (
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "OICDataTransformer",
-    ),
-    "OICEntryManager": (
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "OICEntryManager",
-    ),
-    "OICSchemaMapper": (
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "OICSchemaMapper",
-    ),
-    "OICTypeConverter": (
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "OICTypeConverter",
-    ),
+    "OICDataTransformer": ("flext_target_oracle_oic.patterns.oic_patterns", "OICDataTransformer"),
+    "OICEntryManager": ("flext_target_oracle_oic.patterns.oic_patterns", "OICEntryManager"),
+    "OICSchemaMapper": ("flext_target_oracle_oic.patterns.oic_patterns", "OICSchemaMapper"),
+    "OICTypeConverter": ("flext_target_oracle_oic.patterns.oic_patterns", "OICTypeConverter"),
 }
 
 __all__ = [

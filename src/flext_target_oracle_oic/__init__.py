@@ -85,72 +85,27 @@ if TYPE_CHECKING:
 
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "ConnectionsSink": ("flext_target_oracle_oic.target_client", "ConnectionsSink"),
-    "FlextTargetOracleOicConstants": (
-        "flext_target_oracle_oic.constants",
-        "FlextTargetOracleOicConstants",
-    ),
-    "FlextTargetOracleOicModels": (
-        "flext_target_oracle_oic.models",
-        "FlextTargetOracleOicModels",
-    ),
-    "FlextTargetOracleOicProtocols": (
-        "flext_target_oracle_oic.protocols",
-        "FlextTargetOracleOicProtocols",
-    ),
-    "FlextTargetOracleOicTypes": (
-        "flext_target_oracle_oic.typings",
-        "FlextTargetOracleOicTypes",
-    ),
-    "FlextTargetOracleOicUtilities": (
-        "flext_target_oracle_oic.utilities",
-        "FlextTargetOracleOicUtilities",
-    ),
+    "FlextTargetOracleOicConstants": ("flext_target_oracle_oic.constants", "FlextTargetOracleOicConstants"),
+    "FlextTargetOracleOicModels": ("flext_target_oracle_oic.models", "FlextTargetOracleOicModels"),
+    "FlextTargetOracleOicProtocols": ("flext_target_oracle_oic.protocols", "FlextTargetOracleOicProtocols"),
+    "FlextTargetOracleOicTypes": ("flext_target_oracle_oic.typings", "FlextTargetOracleOicTypes"),
+    "FlextTargetOracleOicUtilities": ("flext_target_oracle_oic.utilities", "FlextTargetOracleOicUtilities"),
     "IntegrationsSink": ("flext_target_oracle_oic.target_client", "IntegrationsSink"),
     "LookupsSink": ("flext_target_oracle_oic.target_client", "LookupsSink"),
     "OICBaseSink": ("flext_target_oracle_oic.target", "OICBaseSink"),
     "OICConnection": ("flext_target_oracle_oic.connection.connection", "OICConnection"),
-    "OICConnectionSettings": (
-        "flext_target_oracle_oic.connection.settings",
-        "OICConnectionSettings",
-    ),
-    "OICDataTransformer": (
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "OICDataTransformer",
-    ),
-    "OICEntryManager": (
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "OICEntryManager",
-    ),
-    "OICOAuth2Authenticator": (
-        "flext_target_oracle_oic.target_config",
-        "OICOAuth2Authenticator",
-    ),
-    "OICProcessedRecord": (
-        "flext_target_oracle_oic.singer.processors",
-        "OICProcessedRecord",
-    ),
-    "OICRecordProcessor": (
-        "flext_target_oracle_oic.singer.processors",
-        "OICRecordProcessor",
-    ),
-    "OICSchemaMapper": (
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "OICSchemaMapper",
-    ),
-    "OICTargetOrchestrator": (
-        "flext_target_oracle_oic.application.orchestrator",
-        "OICTargetOrchestrator",
-    ),
-    "OICTypeConverter": (
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "OICTypeConverter",
-    ),
+    "OICConnectionSettings": ("flext_target_oracle_oic.connection.settings", "OICConnectionSettings"),
+    "OICDataTransformer": ("flext_target_oracle_oic.patterns.oic_patterns", "OICDataTransformer"),
+    "OICEntryManager": ("flext_target_oracle_oic.patterns.oic_patterns", "OICEntryManager"),
+    "OICOAuth2Authenticator": ("flext_target_oracle_oic.target_config", "OICOAuth2Authenticator"),
+    "OICProcessedRecord": ("flext_target_oracle_oic.singer.processors", "OICProcessedRecord"),
+    "OICRecordProcessor": ("flext_target_oracle_oic.singer.processors", "OICRecordProcessor"),
+    "OICSchemaMapper": ("flext_target_oracle_oic.patterns.oic_patterns", "OICSchemaMapper"),
+    "OICTargetOrchestrator": ("flext_target_oracle_oic.application.orchestrator", "OICTargetOrchestrator"),
+    "OICTypeConverter": ("flext_target_oracle_oic.patterns.oic_patterns", "OICTypeConverter"),
     "PackagesSink": ("flext_target_oracle_oic.target_client", "PackagesSink"),
     "TargetOracleOic": ("flext_target_oracle_oic.target", "TargetOracleOic"),
-    "TargetOracleOicConfig": (
-        "flext_target_oracle_oic.settings",
-        "TargetOracleOicConfig",
-    ),
+    "TargetOracleOicConfig": ("flext_target_oracle_oic.settings", "TargetOracleOicConfig"),
     "__all__": ("flext_target_oracle_oic.__version__", "__all__"),
     "__author__": ("flext_target_oracle_oic.__version__", "__author__"),
     "__author_email__": ("flext_target_oracle_oic.__version__", "__author_email__"),
@@ -163,31 +118,13 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
     "application": ("flext_target_oracle_oic.application", ""),
     "c": ("flext_target_oracle_oic.constants", "FlextTargetOracleOicConstants"),
     "connection": ("flext_target_oracle_oic.connection", ""),
-    "create_config_from_dict": (
-        "flext_target_oracle_oic.target_config",
-        "create_config_from_dict",
-    ),
-    "create_config_with_env_overrides": (
-        "flext_target_oracle_oic.target_config",
-        "create_config_with_env_overrides",
-    ),
-    "create_oic_connection": (
-        "flext_target_oracle_oic.target_models",
-        "create_oic_connection",
-    ),
-    "create_oic_integration": (
-        "flext_target_oracle_oic.target_models",
-        "create_oic_integration",
-    ),
+    "create_config_from_dict": ("flext_target_oracle_oic.target_config", "create_config_from_dict"),
+    "create_config_with_env_overrides": ("flext_target_oracle_oic.target_config", "create_config_with_env_overrides"),
+    "create_oic_connection": ("flext_target_oracle_oic.target_models", "create_oic_connection"),
+    "create_oic_integration": ("flext_target_oracle_oic.target_models", "create_oic_integration"),
     "create_oic_lookup": ("flext_target_oracle_oic.target_models", "create_oic_lookup"),
-    "create_oic_package": (
-        "flext_target_oracle_oic.target_models",
-        "create_oic_package",
-    ),
-    "create_singer_config_schema": (
-        "flext_target_oracle_oic.target_config",
-        "create_singer_config_schema",
-    ),
+    "create_oic_package": ("flext_target_oracle_oic.target_models", "create_oic_package"),
+    "create_singer_config_schema": ("flext_target_oracle_oic.target_config", "create_singer_config_schema"),
     "d": ("flext_meltano", "d"),
     "e": ("flext_meltano", "e"),
     "h": ("flext_meltano", "h"),
