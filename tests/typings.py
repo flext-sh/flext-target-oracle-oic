@@ -1,6 +1,6 @@
-"""Module skeleton for TestsFlextTargetOracleOicTypes.
+"""Module skeleton for FlextTargetOracleOicTestTypes.
 
-Test type aliases for flexttargetoracleoic.
+Test type aliases for flext-target-oracle-oic.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -8,12 +8,14 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_tests import t
+from flext_tests import FlextTestsTypes
+
+from flext_target_oracle_oic.typings import FlextTargetOracleOicTypes
 
 
-class TestsFlextTargetOracleOicTypes(t):
-    """Test type aliases for flexttargetoracleoic."""
+class FlextTargetOracleOicTestTypes(FlextTestsTypes, FlextTargetOracleOicTypes):
+    """Test type aliases for flext-target-oracle-oic."""
 
 
-t = TestsFlextTargetOracleOicTypes
-__all__ = ["TestsFlextTargetOracleOicTypes", "t"]
+t = FlextTargetOracleOicTestTypes
+__all__ = ["FlextTargetOracleOicTestTypes", "t"]
