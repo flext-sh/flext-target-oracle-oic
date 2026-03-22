@@ -8,6 +8,7 @@ from flext_core import r
 from flext_meltano import FlextMeltanoUtilities
 from flext_oracle_oic import FlextOracleOicUtilities
 
+from flext_target_oracle_oic.models import m
 from flext_target_oracle_oic.typings import t
 
 
@@ -50,6 +51,75 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
                 return r[bool].fail(f"Missing required config fields: {missing}")
             return r[bool].ok(value=True)
 
+    class Factories:
+        """Factory helpers for OIC model instances."""
+
+        @staticmethod
+        def create_oic_connection(
+            data: Mapping[str, t.Container],
+        ) -> m.TargetOracleOic.OICConnection:
+            """Create an OICConnection model from generic payload via Pydantic validation."""
+            return m.TargetOracleOic.OICConnection.model_validate({
+                **data,
+                "properties": data,
+            })
+
+        @staticmethod
+        def create_oic_integration(
+            data: Mapping[str, t.Container],
+        ) -> m.TargetOracleOic.OICIntegration:
+            """Create an OICIntegration model from generic payload via Pydantic validation."""
+            return m.TargetOracleOic.OICIntegration.model_validate(data)
+
+        @staticmethod
+        def create_oic_package(
+            data: Mapping[str, t.Container],
+        ) -> m.TargetOracleOic.OICPackage:
+            """Create an OICPackage model from generic payload via Pydantic validation."""
+            return m.TargetOracleOic.OICPackage.model_validate(data)
+
+        @staticmethod
+        def create_oic_lookup(
+            data: Mapping[str, t.Container],
+        ) -> m.TargetOracleOic.OICLookup:
+            """Create an OICLookup model from generic payload via Pydantic validation."""
+            return m.TargetOracleOic.OICLookup.model_validate(data)
+
+
+def create_oic_connection(
+    data: Mapping[str, t.Container],
+) -> m.TargetOracleOic.OICConnection:
+    """Create an OICConnection model from generic payload via Pydantic validation."""
+    return m.TargetOracleOic.OICConnection.model_validate({**data, "properties": data})
+
+
+def create_oic_integration(
+    data: Mapping[str, t.Container],
+) -> m.TargetOracleOic.OICIntegration:
+    """Create an OICIntegration model from generic payload via Pydantic validation."""
+    return m.TargetOracleOic.OICIntegration.model_validate(data)
+
+
+def create_oic_package(
+    data: Mapping[str, t.Container],
+) -> m.TargetOracleOic.OICPackage:
+    """Create an OICPackage model from generic payload via Pydantic validation."""
+    return m.TargetOracleOic.OICPackage.model_validate(data)
+
+
+def create_oic_lookup(
+    data: Mapping[str, t.Container],
+) -> m.TargetOracleOic.OICLookup:
+    """Create an OICLookup model from generic payload via Pydantic validation."""
+    return m.TargetOracleOic.OICLookup.model_validate(data)
+
 
 u = FlextTargetOracleOicUtilities
-__all__ = ["FlextTargetOracleOicUtilities", "u"]
+__all__ = [
+    "FlextTargetOracleOicUtilities",
+    "create_oic_connection",
+    "create_oic_integration",
+    "create_oic_lookup",
+    "create_oic_package",
+    "u",
+]

@@ -68,12 +68,6 @@ if TYPE_CHECKING:
         create_config_with_env_overrides,
         create_singer_config_schema,
     )
-    from flext_target_oracle_oic.target_models import (
-        create_oic_connection,
-        create_oic_integration,
-        create_oic_lookup,
-        create_oic_package,
-    )
     from flext_target_oracle_oic.typings import (
         FlextTargetOracleOicTypes,
         FlextTargetOracleOicTypes as t,
@@ -81,6 +75,10 @@ if TYPE_CHECKING:
     from flext_target_oracle_oic.utilities import (
         FlextTargetOracleOicUtilities,
         FlextTargetOracleOicUtilities as u,
+        create_oic_connection,
+        create_oic_integration,
+        create_oic_lookup,
+        create_oic_package,
     )
 
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
@@ -172,18 +170,15 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "create_config_with_env_overrides",
     ),
     "create_oic_connection": (
-        "flext_target_oracle_oic.target_models",
+        "flext_target_oracle_oic.utilities",
         "create_oic_connection",
     ),
     "create_oic_integration": (
-        "flext_target_oracle_oic.target_models",
+        "flext_target_oracle_oic.utilities",
         "create_oic_integration",
     ),
-    "create_oic_lookup": ("flext_target_oracle_oic.target_models", "create_oic_lookup"),
-    "create_oic_package": (
-        "flext_target_oracle_oic.target_models",
-        "create_oic_package",
-    ),
+    "create_oic_lookup": ("flext_target_oracle_oic.utilities", "create_oic_lookup"),
+    "create_oic_package": ("flext_target_oracle_oic.utilities", "create_oic_package"),
     "create_singer_config_schema": (
         "flext_target_oracle_oic.target_config",
         "create_singer_config_schema",
