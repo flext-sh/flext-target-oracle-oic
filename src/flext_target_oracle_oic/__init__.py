@@ -75,10 +75,6 @@ if TYPE_CHECKING:
     from flext_target_oracle_oic.utilities import (
         FlextTargetOracleOicUtilities,
         FlextTargetOracleOicUtilities as u,
-        create_oic_connection,
-        create_oic_integration,
-        create_oic_lookup,
-        create_oic_package,
     )
 
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
@@ -169,16 +165,6 @@ _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
         "flext_target_oracle_oic.target_config",
         "create_config_with_env_overrides",
     ),
-    "create_oic_connection": (
-        "flext_target_oracle_oic.utilities",
-        "create_oic_connection",
-    ),
-    "create_oic_integration": (
-        "flext_target_oracle_oic.utilities",
-        "create_oic_integration",
-    ),
-    "create_oic_lookup": ("flext_target_oracle_oic.utilities", "create_oic_lookup"),
-    "create_oic_package": ("flext_target_oracle_oic.utilities", "create_oic_package"),
     "create_singer_config_schema": (
         "flext_target_oracle_oic.target_config",
         "create_singer_config_schema",
@@ -236,10 +222,6 @@ __all__ = [
     "connection",
     "create_config_from_dict",
     "create_config_with_env_overrides",
-    "create_oic_connection",
-    "create_oic_integration",
-    "create_oic_lookup",
-    "create_oic_package",
     "create_singer_config_schema",
     "d",
     "e",

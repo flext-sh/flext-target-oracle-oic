@@ -37,7 +37,7 @@ from flext_target_oracle_oic.target_config import TargetOracleOicConfig
 class DummySingerTarget(SingerTarget):
     name = "dummy-target-oracle-oic"
     config_jsonschema: ClassVar[dict[str, str | dict[str, dict[str, str]]]] = {
-        "type": "object",
+        "type": "t.NormalizedValue",
         "properties": {},
     }
 
@@ -278,7 +278,10 @@ class TestTargetOracleOicE2E:
         sink = ConnectionsSink(
             target=singer_target,
             stream_name="connections",
-            schema={"type": "object", "properties": {"id": {"type": "string"}}},
+            schema={
+                "type": "t.NormalizedValue",
+                "properties": {"id": {"type": "string"}},
+            },
             key_properties=["id"],
         )
         sink.process_record({"id": "test-cli-connection"}, {})

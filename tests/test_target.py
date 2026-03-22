@@ -36,7 +36,7 @@ class DummySingerTarget(SingerTarget):
 
     name = "dummy-target-oracle-oic"
     config_jsonschema: ClassVar[dict[str, str | dict[str, dict[str, str]]]] = {
-        "type": "object",
+        "type": "t.NormalizedValue",
         "properties": _DEFAULT_PROPERTIES,
     }
 
