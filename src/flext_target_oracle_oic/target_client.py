@@ -66,7 +66,7 @@ class TargetOracleOic(Target):
 
     def get_sink_class(self, stream_name: str) -> type[OICBaseSink]:
         """Resolve sink class by stream name."""
-        mapping: dict[str, type[OICBaseSink]] = {
+        mapping: Mapping[str, type[OICBaseSink]] = {
             "connections": ConnectionsSink,
             "integrations": IntegrationsSink,
             "packages": PackagesSink,

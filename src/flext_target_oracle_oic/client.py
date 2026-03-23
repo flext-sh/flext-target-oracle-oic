@@ -9,6 +9,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from collections.abc import Sequence
+
 from flext_target_oracle_oic.connection.connection import OICConnection as OICClient
 
-__all__: list[str] = ["OICClient"]
+__all__: Sequence[str] = ["OICClient"]

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 
 from flext_core import r
 from flext_meltano import FlextMeltanoUtilities
@@ -20,7 +20,7 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
         @staticmethod
         def create_record_message(
             stream_name: str, record: Mapping[str, t.Scalar]
-        ) -> dict[str, str | Mapping[str, t.Scalar]]:
+        ) -> Mapping[str, str | Mapping[str, t.Scalar]]:
             """Build a Singer RECORD message payload."""
             return {"type": "RECORD", "stream": stream_name, "record": record}
 
@@ -28,8 +28,8 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
         def create_schema_message(
             stream_name: str,
             schema: Mapping[str, t.Container],
-            key_properties: list[str] | None = None,
-        ) -> dict[str, str | Mapping[str, t.Container] | list[str]]:
+            key_properties: Sequence[str] | None = None,
+        ) -> Mapping[str, str | Mapping[str, t.Container] | Sequence[str]]:
             """Build a Singer SCHEMA message payload."""
             return {
                 "type": "SCHEMA",

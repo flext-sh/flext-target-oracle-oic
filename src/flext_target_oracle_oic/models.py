@@ -41,7 +41,9 @@ class FlextTargetOracleOicModels(FlextMeltanoModels, FlextOracleOicModels):
             id: str
             name: str
             adapter_type: str
-            properties: Annotated[dict[str, t.Container], Field(default_factory=dict)]
+            properties: Annotated[
+                Mapping[str, t.Container], Field(default_factory=dict)
+            ]
 
         class OICIntegration(FlextMeltanoModels.ArbitraryTypesModel):
             """Integration payload model."""
@@ -82,14 +84,14 @@ class FlextTargetOracleOicModels(FlextMeltanoModels, FlextOracleOicModels):
 
             source_stream: str
             target_entity: str
-            mapping: Annotated[dict[str, str], Field(default_factory=dict)]
+            mapping: Annotated[Mapping[str, str], Field(default_factory=dict)]
 
         class OICSchemaMapping(FlextMeltanoModels.ArbitraryTypesModel):
             """Schema mapping payload model."""
 
             stream_name: str
             schema_mapping: Annotated[
-                dict[str, t.Container], Field(default_factory=dict)
+                Mapping[str, t.Container], Field(default_factory=dict)
             ]
 
     @staticmethod

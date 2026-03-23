@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 
 from flext_core import r
 
@@ -22,9 +22,9 @@ class OICSchemaMapper:
 
     def map_schema(
         self, stream_name: str, schema: Mapping[str, t.Container]
-    ) -> r[dict[str, str | Mapping[str, t.Container]]]:
+    ) -> r[Mapping[str, str | Mapping[str, t.Container]]]:
         """Build schema metadata payload for the given stream."""
-        return r[dict[str, str | Mapping[str, t.Container]]].ok({
+        return r[Mapping[str, str | Mapping[str, t.Container]]].ok({
             "stream": stream_name,
             "schema": schema,
         })
@@ -42,10 +42,10 @@ class OICEntryManager:
     """Builds entry collections from transformed records."""
 
     def build_entries(
-        self, records: list[Mapping[str, t.Scalar]]
-    ) -> r[list[Mapping[str, t.Scalar]]]:
+        self, records: Sequence[Mapping[str, t.Scalar]]
+    ) -> r[Sequence[Mapping[str, t.Scalar]]]:
         """Return entry list unchanged for baseline behavior."""
-        return r[list[Mapping[str, t.Scalar]]].ok(records)
+        return r[Sequence[Mapping[str, t.Scalar]]].ok(records)
 
 
 __all__ = [

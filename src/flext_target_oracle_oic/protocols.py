@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from typing import Protocol, runtime_checkable
 
 from flext_core import FlextProtocols
@@ -107,7 +107,7 @@ class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtoco
                     ...
 
                 def process_batch(
-                    self, records: list[Mapping[str, t.Scalar]]
+                    self, records: Sequence[Mapping[str, t.Scalar]]
                 ) -> FlextProtocols.Result[bool]:
                     """Process batch of records for OIC.
 

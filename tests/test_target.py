@@ -7,6 +7,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from typing import ClassVar
 
 import pytest
@@ -24,7 +25,7 @@ from flext_target_oracle_oic.target_config import (
 )
 from tests import t
 
-_DEFAULT_PROPERTIES: dict[str, dict[str, str]] = {"id": {"type": "string"}}
+_DEFAULT_PROPERTIES: Mapping[str, Mapping[str, str]] = {"id": {"type": "string"}}
 
 
 class AuthTestConfig(TargetOracleOicConfig):
@@ -35,7 +36,7 @@ class DummySingerTarget(SingerTarget):
     """Minimal Singer target implementation for sink tests."""
 
     name = "dummy-target-oracle-oic"
-    config_jsonschema: ClassVar[dict[str, str | dict[str, dict[str, str]]]] = {
+    config_jsonschema: ClassVar[Mapping[str, str | Mapping[str, Mapping[str, str]]]] = {
         "type": "t.NormalizedValue",
         "properties": _DEFAULT_PROPERTIES,
     }
@@ -45,7 +46,7 @@ class TestTargetOracleOic:
     """Test cases for TargetOracleOic with proper enterprise validation."""
 
     @pytest.fixture
-    def valid_config(self) -> dict[str, str]:
+    def valid_config(self) -> Mapping[str, str]:
         """Create valid configuration for testing."""
         return {
             "base_url": "https://test-instance-region.integration.ocp.oraclecloud.com",
@@ -56,7 +57,7 @@ class TestTargetOracleOic:
         }
 
     def test_target_initialization_with_valid_config(
-        self, valid_config: dict[str, str]
+        self, valid_config: Mapping[str, str]
     ) -> None:
         """Test target initialization with valid configuration."""
         _ = valid_config
@@ -147,7 +148,7 @@ def test_oic_authenticator_rejects_invalid_token_response(
         def raise_for_status(self) -> None:
             return None
 
-        def json(self) -> dict[str, str]:
+        def json(self) -> Mapping[str, str]:
             return {"token_type": "Bearer"}
 
     def fake_post(*_args: t.Scalar, **_kwargs: t.Scalar) -> InvalidTokenResponse:

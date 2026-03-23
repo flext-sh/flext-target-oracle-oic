@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 
 import requests
 from requests import Response
@@ -33,9 +33,9 @@ class OICOAuth2Authenticator:
         token = self.get_access_token()
         return {"Authorization": f"{self._auth_scheme} {token}"}
 
-    def build_token_request_data(self) -> dict[str, str]:
+    def build_token_request_data(self) -> Mapping[str, str]:
         """Build the payload for requesting an OAuth2 token."""
-        payload: dict[str, str] = {
+        payload: Mapping[str, str] = {
             "grant_type": "client_credentials",
             "client_id": self._config.oauth_client_id,
             "client_secret": self._config.get_oauth_client_secret_value(),
@@ -90,7 +90,7 @@ def create_singer_config_schema() -> Mapping[str, t.Container]:
     return TargetOracleOicConfig.model_json_schema()
 
 
-__all__: list[str] = [
+__all__: Sequence[str] = [
     "OICOAuth2Authenticator",
     "TargetOracleOicConfig",
     "create_config_from_dict",
