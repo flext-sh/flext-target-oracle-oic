@@ -21,28 +21,28 @@ if TYPE_CHECKING:
     from flext_core import FlextTypes
     from flext_tests import d, e, h, r, s, x
 
-    from .constants import (
+    from tests.constants import (
         FlextTargetOracleOicTestConstants,
         FlextTargetOracleOicTestConstants as c,
     )
-    from .models import (
+    from tests.models import (
         FlextTargetOracleOicTestModels,
         FlextTargetOracleOicTestModels as m,
         tm,
     )
-    from .protocols import (
+    from tests.protocols import (
         FlextTargetOracleOicTestProtocols,
         FlextTargetOracleOicTestProtocols as p,
     )
-    from .test_cli_entrypoint import test_main_entrypoint_returns_none
-    from .test_e2e import (
+    from tests.test_cli_entrypoint import test_main_entrypoint_returns_none
+    from tests.test_e2e import (
         TestTargetOracleOicE2E,
         load_test_config,
         target,
         test_config,
         test_target_smoke_class,
     )
-    from .test_target import (
+    from tests.test_target import (
         AuthTestConfig,
         DummySingerTarget,
         TestTargetOracleOic,
@@ -51,11 +51,11 @@ if TYPE_CHECKING:
         test_oic_authenticator_omits_optional_scope_and_audience,
         test_oic_authenticator_rejects_invalid_token_response,
     )
-    from .typings import (
+    from tests.typings import (
         FlextTargetOracleOicTestTypes,
         FlextTargetOracleOicTestTypes as t,
     )
-    from .utilities import (
+    from tests.utilities import (
         FlextTargetOracleOicTestUtilities,
         FlextTargetOracleOicTestUtilities as u,
     )
