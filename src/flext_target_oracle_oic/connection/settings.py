@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
+from collections.abc import Mapping, MutableSequence
 from typing import Annotated
 
 from flext_core import FlextConstants, FlextLogger, FlextModels, r
@@ -107,7 +107,7 @@ class OICConnectionSettings(FlextModels):
 
     def validate_business_rules(self) -> r[bool]:
         """Validate OIC connection configuration business rules."""
-        errors: Sequence[str] = []
+        errors: MutableSequence[str] = []
         if not self.base_url:
             errors.append("base_url is required")
         elif not self.base_url.startswith(("http://", "https://")):

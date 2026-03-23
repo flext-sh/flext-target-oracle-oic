@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
+from collections.abc import Mapping, MutableMapping, Sequence
 
 import requests
 from requests import Response
@@ -35,7 +35,7 @@ class OICOAuth2Authenticator:
 
     def build_token_request_data(self) -> Mapping[str, str]:
         """Build the payload for requesting an OAuth2 token."""
-        payload: Mapping[str, str] = {
+        payload: MutableMapping[str, str] = {
             "grant_type": "client_credentials",
             "client_id": self._config.oauth_client_id,
             "client_secret": self._config.get_oauth_client_secret_value(),
