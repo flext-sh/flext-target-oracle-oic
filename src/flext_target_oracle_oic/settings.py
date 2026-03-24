@@ -7,12 +7,13 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 from typing import Annotated
 
 from flext_core import FlextSettings
 from pydantic import Field, SecretStr
 
-from flext_target_oracle_oic.constants import c
+from flext_target_oracle_oic import c
 
 
 class TargetOracleOicConfig(FlextSettings):
@@ -45,7 +46,7 @@ class TargetOracleOicConfig(FlextSettings):
         """Return the plaintext secret value for outgoing requests."""
         return self.oauth_client_secret.get_secret_value()
 
-    def get_oauth_headers(self) -> t.StrMapping:
+    def get_oauth_headers(self) -> Mapping[str, str]:
         """Return static HTTP headers required for token requests."""
         return {
             c.TargetOracleOic.HEADER_CONTENT_TYPE: c.TargetOracleOic.HEADER_CONTENT_TYPE_FORM,

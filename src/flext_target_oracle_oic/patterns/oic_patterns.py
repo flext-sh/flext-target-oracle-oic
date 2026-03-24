@@ -6,7 +6,7 @@ from collections.abc import Mapping, Sequence
 
 from flext_core import r
 
-from flext_target_oracle_oic.typings import t
+from flext_target_oracle_oic import t
 
 
 class OICTypeConverter:

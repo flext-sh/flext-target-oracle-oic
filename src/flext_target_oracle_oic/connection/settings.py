@@ -1,25 +1,24 @@
 """Oracle OIC connection configuration using flext-core patterns.
 
-Copyright (c) 2025 FLEXT Team. All rights reserved.
+Copyright (m) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 
 """
 
 from __future__ import annotations
 
-from collections.abc import MutableSequence
+from collections.abc import Mapping, MutableSequence
 from typing import Annotated
 
-from flext_core import FlextConstants, FlextLogger, FlextModels, r
+from flext_core import FlextLogger, r
 from pydantic import Field
 
-from flext_target_oracle_oic.constants import c
-from flext_target_oracle_oic.typings import t
+from flext_target_oracle_oic import c, m, t
 
 logger = FlextLogger(__name__)
 
 
-class OICConnectionSettings(FlextModels):
+class OICConnectionSettings(m):
     """Oracle OIC connection settings using flext-core patterns."""
 
     base_url: Annotated[t.NonEmptyStr, Field(..., description="Oracle OIC base URL")]
@@ -30,7 +29,7 @@ class OICConnectionSettings(FlextModels):
     scope: Annotated[
         str,
         Field(
-            default=c.TargetOracleOic.DEFAULT_OAUTH_SCOPE, description="OAuth2 scope"
+            default=m.TargetOracleOic.DEFAULT_OAUTH_SCOPE, description="OAuth2 scope"
         ),
     ]
     username: Annotated[
@@ -46,14 +45,14 @@ class OICConnectionSettings(FlextModels):
     timeout: Annotated[
         t.PositiveInt,
         Field(
-            default=FlextConstants.DEFAULT_TIMEOUT_SECONDS,
+            default=c.DEFAULT_TIMEOUT_SECONDS,
             description="Request timeout in seconds",
         ),
     ]
     max_retries: Annotated[
         t.RetryCount,
         Field(
-            default=FlextConstants.MAX_RETRY_ATTEMPTS,
+            default=c.MAX_RETRY_ATTEMPTS,
             description="Maximum number of retries",
         ),
     ]
@@ -81,26 +80,26 @@ class OICConnectionSettings(FlextModels):
     def build_api_base_url(self) -> str:
         """Build OIC API base URL."""
         url = self.base_url.rstrip("/")
-        return f"{url}{c.TargetOracleOic.API_PATH_INTEGRATION}"
+        return f"{url}{m.TargetOracleOic.API_PATH_INTEGRATION}"
 
     def build_auth_url(self) -> str:
         """Build OAuth2 authentication URL."""
         url = self.base_url.rstrip("/")
-        return f"{url}{c.TargetOracleOic.API_PATH_OAUTH_TOKEN}"
+        return f"{url}{m.TargetOracleOic.API_PATH_OAUTH_TOKEN}"
 
-    def get_api_headers(self, access_token: str) -> t.StrMapping:
+    def get_api_headers(self, access_token: str) -> Mapping[str, str]:
         """Get API request headers with authentication."""
         return {
-            c.TargetOracleOic.HEADER_AUTHORIZATION: f"{c.TargetOracleOic.AUTH_SCHEME_BEARER} {access_token}",
-            c.TargetOracleOic.HEADER_CONTENT_TYPE: c.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
-            c.TargetOracleOic.HEADER_ACCEPT: c.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
+            m.TargetOracleOic.HEADER_AUTHORIZATION: f"{m.TargetOracleOic.AUTH_SCHEME_BEARER} {access_token}",
+            m.TargetOracleOic.HEADER_CONTENT_TYPE: m.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
+            m.TargetOracleOic.HEADER_ACCEPT: m.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
         }
 
-    def get_auth_headers(self) -> t.StrMapping:
+    def get_auth_headers(self) -> Mapping[str, str]:
         """Get authentication headers."""
         return {
-            c.TargetOracleOic.HEADER_CONTENT_TYPE: c.TargetOracleOic.HEADER_CONTENT_TYPE_FORM,
-            c.TargetOracleOic.HEADER_ACCEPT: c.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
+            m.TargetOracleOic.HEADER_CONTENT_TYPE: m.TargetOracleOic.HEADER_CONTENT_TYPE_FORM,
+            m.TargetOracleOic.HEADER_ACCEPT: m.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
         }
 
     def validate_business_rules(self) -> r[bool]:

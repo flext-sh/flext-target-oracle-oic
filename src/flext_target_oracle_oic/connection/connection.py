@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from flext_core import r
 
-from flext_target_oracle_oic.typings import t
+from flext_target_oracle_oic import t
 
 
 class OICConnection:

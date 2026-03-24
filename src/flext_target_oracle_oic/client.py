@@ -11,6 +11,6 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 
-from flext_target_oracle_oic.connection.connection import OICConnection as OICClient
+from flext_target_oracle_oic import OICConnection as OICClient
 
 __all__: Sequence[str] = ["OICClient"]

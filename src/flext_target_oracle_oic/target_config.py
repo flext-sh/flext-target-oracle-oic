@@ -7,15 +7,12 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import MutableMapping, Sequence
+from collections.abc import Mapping, MutableMapping, Sequence
 
 import requests
 from requests import Response
 
-from flext_target_oracle_oic.constants import c
-
-from .settings import TargetOracleOicConfig
-from .typings import t
+from flext_target_oracle_oic import TargetOracleOicConfig, c, t
 
 
 class OICOAuth2Authenticator:
@@ -28,12 +25,12 @@ class OICOAuth2Authenticator:
         self._auth_scheme: str = c.TargetOracleOic.AUTH_SCHEME_BEARER
 
     @property
-    def auth_headers(self) -> t.StrMapping:
+    def auth_headers(self) -> Mapping[str, str]:
         """Get the authentication headers block for requests."""
         token = self.get_access_token()
         return {"Authorization": f"{self._auth_scheme} {token}"}
 
-    def build_token_request_data(self) -> t.StrMapping:
+    def build_token_request_data(self) -> Mapping[str, str]:
         """Build the payload for requesting an OAuth2 token."""
         payload: MutableMapping[str, str] = {
             "grant_type": "client_credentials",

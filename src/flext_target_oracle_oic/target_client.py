@@ -6,11 +6,10 @@ from collections.abc import Mapping
 from typing import ClassVar, override
 
 from flext_core import FlextLogger, r
-from flext_meltano import FlextMeltanoTargetAbstractions as Target
+from flext_meltano import FlextMeltanoTargetAbstractions
 from singer_sdk import Sink
 
-from flext_target_oracle_oic.constants import c
-from flext_target_oracle_oic.typings import t
+from flext_target_oracle_oic import c, t
 
 logger = FlextLogger(__name__)
 
@@ -58,7 +57,7 @@ class LookupsSink(OICBaseSink):
     name = c.TargetOracleOic.STREAM_LOOKUPS
 
 
-class TargetOracleOic(Target):
+class TargetOracleOic(FlextMeltanoTargetAbstractions):
     """Singer target entry point for Oracle OIC."""
 
     name: ClassVar[str] = c.TargetOracleOic.TARGET_NAME

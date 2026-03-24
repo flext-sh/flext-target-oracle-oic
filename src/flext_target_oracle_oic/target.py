@@ -2,6 +2,6 @@
 
 from __future__ import annotations
 
-from .target_client import OICBaseSink, TargetOracleOic, main
+from flext_target_oracle_oic import OICBaseSink, TargetOracleOic, main
 
 __all__ = ["OICBaseSink", "TargetOracleOic", "main"]

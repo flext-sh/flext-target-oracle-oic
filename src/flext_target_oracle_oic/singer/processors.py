@@ -3,12 +3,11 @@
 from __future__ import annotations
 
 from flext_core import r
-from flext_meltano import FlextMeltanoModels
 
-from flext_target_oracle_oic.typings import t
+from flext_target_oracle_oic import m, t
 
 
-class OICProcessedRecord(FlextMeltanoModels.ArbitraryTypesModel):
+class OICProcessedRecord(m.ArbitraryTypesModel):
     """Normalized record payload produced by OIC processor."""
 
     stream_name: str
