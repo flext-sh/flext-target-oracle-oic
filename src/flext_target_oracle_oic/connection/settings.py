@@ -29,7 +29,7 @@ class OICConnectionSettings(m):
     scope: Annotated[
         str,
         Field(
-            default=m.TargetOracleOic.DEFAULT_OAUTH_SCOPE, description="OAuth2 scope"
+            default=c.TargetOracleOic.DEFAULT_OAUTH_SCOPE, description="OAuth2 scope"
         ),
     ]
     username: Annotated[
@@ -80,26 +80,26 @@ class OICConnectionSettings(m):
     def build_api_base_url(self) -> str:
         """Build OIC API base URL."""
         url = self.base_url.rstrip("/")
-        return f"{url}{m.TargetOracleOic.API_PATH_INTEGRATION}"
+        return f"{url}{c.TargetOracleOic.API_PATH_INTEGRATION}"
 
     def build_auth_url(self) -> str:
         """Build OAuth2 authentication URL."""
         url = self.base_url.rstrip("/")
-        return f"{url}{m.TargetOracleOic.API_PATH_OAUTH_TOKEN}"
+        return f"{url}{c.TargetOracleOic.API_PATH_OAUTH_TOKEN}"
 
     def get_api_headers(self, access_token: str) -> t.StrMapping:
         """Get API request headers with authentication."""
         return {
-            m.TargetOracleOic.HEADER_AUTHORIZATION: f"{m.TargetOracleOic.AUTH_SCHEME_BEARER} {access_token}",
-            m.TargetOracleOic.HEADER_CONTENT_TYPE: m.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
-            m.TargetOracleOic.HEADER_ACCEPT: m.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
+            c.TargetOracleOic.HEADER_AUTHORIZATION: f"{c.TargetOracleOic.AUTH_SCHEME_BEARER} {access_token}",
+            c.TargetOracleOic.HEADER_CONTENT_TYPE: c.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
+            c.TargetOracleOic.HEADER_ACCEPT: c.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
         }
 
     def get_auth_headers(self) -> t.StrMapping:
         """Get authentication headers."""
         return {
-            m.TargetOracleOic.HEADER_CONTENT_TYPE: m.TargetOracleOic.HEADER_CONTENT_TYPE_FORM,
-            m.TargetOracleOic.HEADER_ACCEPT: m.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
+            c.TargetOracleOic.HEADER_CONTENT_TYPE: c.TargetOracleOic.HEADER_CONTENT_TYPE_FORM,
+            c.TargetOracleOic.HEADER_ACCEPT: c.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
         }
 
     def validate_business_rules(self) -> r[bool]:
