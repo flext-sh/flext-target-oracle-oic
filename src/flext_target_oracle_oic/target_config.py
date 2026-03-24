@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Mapping, MutableMapping, Sequence
+from collections.abc import MutableMapping
 
 import requests
 from requests import Response
@@ -25,12 +25,12 @@ class OICOAuth2Authenticator:
         self._auth_scheme: str = c.TargetOracleOic.AUTH_SCHEME_BEARER
 
     @property
-    def auth_headers(self) -> Mapping[str, str]:
+    def auth_headers(self) -> t.StrMapping:
         """Get the authentication headers block for requests."""
         token = self.get_access_token()
         return {"Authorization": f"{self._auth_scheme} {token}"}
 
-    def build_token_request_data(self) -> Mapping[str, str]:
+    def build_token_request_data(self) -> t.StrMapping:
         """Build the payload for requesting an OAuth2 token."""
         payload: MutableMapping[str, str] = {
             "grant_type": "client_credentials",
@@ -87,7 +87,7 @@ def create_singer_config_schema() -> t.FlatContainerMapping:
     return TargetOracleOicConfig.model_json_schema()
 
 
-__all__: Sequence[str] = [
+__all__: t.StrSequence = [
     "OICOAuth2Authenticator",
     "TargetOracleOicConfig",
     "create_config_from_dict",

@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Mapping, MutableSequence
+from collections.abc import MutableSequence
 from typing import Annotated
 
 from flext_core import FlextLogger, r
@@ -87,7 +87,7 @@ class OICConnectionSettings(m):
         url = self.base_url.rstrip("/")
         return f"{url}{m.TargetOracleOic.API_PATH_OAUTH_TOKEN}"
 
-    def get_api_headers(self, access_token: str) -> Mapping[str, str]:
+    def get_api_headers(self, access_token: str) -> t.StrMapping:
         """Get API request headers with authentication."""
         return {
             m.TargetOracleOic.HEADER_AUTHORIZATION: f"{m.TargetOracleOic.AUTH_SCHEME_BEARER} {access_token}",
@@ -95,7 +95,7 @@ class OICConnectionSettings(m):
             m.TargetOracleOic.HEADER_ACCEPT: m.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
         }
 
-    def get_auth_headers(self) -> Mapping[str, str]:
+    def get_auth_headers(self) -> t.StrMapping:
         """Get authentication headers."""
         return {
             m.TargetOracleOic.HEADER_CONTENT_TYPE: m.TargetOracleOic.HEADER_CONTENT_TYPE_FORM,
