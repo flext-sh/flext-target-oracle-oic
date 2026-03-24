@@ -21,7 +21,8 @@ class FlextTargetOracleOicConfig(FlextSettings):
 
     oauth_client_id: Annotated[str, Field(..., description="OAuth client identifier")]
     oauth_client_secret: Annotated[
-        SecretStr, Field(..., description="OAuth client secret")
+        SecretStr,
+        Field(..., description="OAuth client secret"),
     ]
     oauth_token_url: Annotated[str, Field(..., description="OAuth token endpoint URL")]
     oauth_scope: Annotated[
@@ -39,7 +40,8 @@ class FlextTargetOracleOicConfig(FlextSettings):
         ),
     ]
     timeout: Annotated[
-        int, Field(default=30, ge=1, description="HTTP timeout in seconds")
+        int,
+        Field(default=30, ge=1, description="HTTP timeout in seconds"),
     ]
 
     def get_oauth_client_secret_value(self) -> str:

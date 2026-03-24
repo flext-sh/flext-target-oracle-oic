@@ -24,23 +24,27 @@ class FlextTargetOracleOicConnectionSettings(m):
     base_url: Annotated[t.NonEmptyStr, Field(..., description="Oracle OIC base URL")]
     client_id: Annotated[t.NonEmptyStr, Field(..., description="OAuth2 client ID")]
     client_secret: Annotated[
-        t.NonEmptyStr, Field(..., description="OAuth2 client secret", repr=False)
+        t.NonEmptyStr,
+        Field(..., description="OAuth2 client secret", repr=False),
     ]
     scope: Annotated[
         str,
         Field(
-            default=c.TargetOracleOic.DEFAULT_OAUTH_SCOPE, description="OAuth2 scope"
+            default=c.TargetOracleOic.DEFAULT_OAUTH_SCOPE,
+            description="OAuth2 scope",
         ),
     ]
     username: Annotated[
-        str | None, Field(default=None, description="Optional username for basic auth")
+        str | None,
+        Field(default=None, description="Optional username for basic auth"),
     ]
     password: Annotated[
         str | None,
         Field(default=None, description="Optional password for basic auth", repr=False),
     ]
     use_oauth2: Annotated[
-        bool, Field(default=True, description="Use OAuth2 authentication")
+        bool,
+        Field(default=True, description="Use OAuth2 authentication"),
     ]
     timeout: Annotated[
         t.PositiveInt,
@@ -57,12 +61,14 @@ class FlextTargetOracleOicConnectionSettings(m):
         ),
     ]
     verify_ssl: Annotated[
-        bool, Field(default=True, description="Verify SSL certificates")
+        bool,
+        Field(default=True, description="Verify SSL certificates"),
     ]
 
     @classmethod
     def from_dict(
-        cls, data: t.ConfigurationMapping
+        cls,
+        data: t.ConfigurationMapping,
     ) -> FlextTargetOracleOicConnectionSettings:
         """Create configuration from dictionary using modern Pydantic patterns."""
         try:
@@ -77,7 +83,7 @@ class FlextTargetOracleOicConnectionSettings(m):
             ImportError,
         ):
             logger.exception(
-                "Failed to create FlextTargetOracleOicConnectionSettings from dict"
+                "Failed to create FlextTargetOracleOicConnectionSettings from dict",
             )
             raise
 
@@ -119,6 +125,6 @@ class FlextTargetOracleOicConnectionSettings(m):
             errors.append("client_secret is required")
         if errors:
             return r[bool].fail(
-                f"OIC connection config validation failed: {'; '.join(errors)}"
+                f"OIC connection config validation failed: {'; '.join(errors)}",
             )
         return r[bool].ok(value=True)

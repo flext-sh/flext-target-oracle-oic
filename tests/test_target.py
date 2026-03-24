@@ -57,7 +57,8 @@ class TestTargetOracleOic:
         }
 
     def test_target_initialization_with_valid_config(
-        self, valid_config: t.StrMapping
+        self,
+        valid_config: t.StrMapping,
     ) -> None:
         """Test target initialization with valid configuration."""
         _ = valid_config
@@ -118,7 +119,9 @@ def _build_auth_config(
     object.__setattr__(config, "oauth_client_id", "client-id")
     object.__setattr__(config, "oauth_client_secret", SecretStr("client-secret"))
     object.__setattr__(
-        config, "oauth_token_url", "https://idcs.example.com/oauth2/v1/token"
+        config,
+        "oauth_token_url",
+        "https://idcs.example.com/oauth2/v1/token",
     )
     object.__setattr__(config, "oauth_scope", oauth_scope)
     object.__setattr__(config, "oauth_client_aud", oauth_client_aud)
@@ -138,7 +141,7 @@ def test_oic_authenticator_builds_payload() -> None:
 
 def test_oic_authenticator_omits_optional_scope_and_audience() -> None:
     authenticator = FlextTargetOracleOicAuthenticator(
-        _build_auth_config(oauth_scope="", oauth_client_aud=None)
+        _build_auth_config(oauth_scope="", oauth_client_aud=None),
     )
     payload = authenticator.build_token_request_data()
     assert "scope" not in payload
@@ -161,7 +164,8 @@ def test_oic_authenticator_rejects_invalid_token_response(
         return InvalidTokenResponse()
 
     monkeypatch.setattr(
-        f"{FlextTargetOracleOicAuthenticator.__module__}.requests.post", fake_post
+        f"{FlextTargetOracleOicAuthenticator.__module__}.requests.post",
+        fake_post,
     )
     with pytest.raises(RuntimeError, match="access_token"):
         authenticator.get_access_token()

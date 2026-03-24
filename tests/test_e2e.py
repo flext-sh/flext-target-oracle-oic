@@ -94,7 +94,9 @@ class TestTargetOracleOicE2E:
     """End-to-end tests for target-oracle-oic using REAL configuration and NO MOCKS."""
 
     def test_target_initialization(
-        self, target: FlextTargetOracleOic, test_config: t.StrMapping
+        self,
+        target: FlextTargetOracleOic,
+        test_config: t.StrMapping,
     ) -> None:
         """Test target initialization with valid configuration."""
         _ = test_config
@@ -171,7 +173,8 @@ class TestTargetOracleOicE2E:
         assert hasattr(sink, "process_record")
 
     def test_connections_sink_record_processing(
-        self, singer_target: SingerTarget
+        self,
+        singer_target: SingerTarget,
     ) -> None:
         """Test connections sink record processing."""
         sink = FlextTargetOracleOicConnectionsSink(
@@ -182,7 +185,7 @@ class TestTargetOracleOicE2E:
                     "id": {"type": "string"},
                     "name": {"type": "string"},
                     "adapter_type": {"type": "string"},
-                }
+                },
             },
             key_properties=["id"],
         )
@@ -194,7 +197,8 @@ class TestTargetOracleOicE2E:
         sink.process_record(test_record, {})
 
     def test_integrations_sink_record_processing(
-        self, singer_target: SingerTarget
+        self,
+        singer_target: SingerTarget,
     ) -> None:
         """Test integrations sink record processing."""
         sink = FlextTargetOracleOicIntegrationsSink(
@@ -205,7 +209,7 @@ class TestTargetOracleOicE2E:
                     "id": {"type": "string"},
                     "name": {"type": "string"},
                     "archive_content": {"type": "string"},
-                }
+                },
             },
             key_properties=["id"],
         )
@@ -245,7 +249,7 @@ class TestTargetOracleOicE2E:
             target=singer_target,
             stream_name="packages",
             schema={
-                "properties": {"id": {"type": "string"}, "name": {"type": "string"}}
+                "properties": {"id": {"type": "string"}, "name": {"type": "string"}},
             },
             key_properties=["id"],
         )
@@ -271,12 +275,13 @@ class TestTargetOracleOicE2E:
                     "id": {"type": "string"},
                     "name": {"type": "string"},
                     "version": {"type": "string"},
-                }
+                },
             },
             key_properties=["id"],
         )
         sink.process_record(
-            {"id": "test-lookup", "name": "Test Lookup", "version": "1.0"}, {}
+            {"id": "test-lookup", "name": "Test Lookup", "version": "1.0"},
+            {},
         )
         assert sink.stream_name == "lookups"
 

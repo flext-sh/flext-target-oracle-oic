@@ -19,7 +19,8 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
 
         @staticmethod
         def create_record_message(
-            stream_name: str, record: t.ConfigurationMapping
+            stream_name: str,
+            record: t.ConfigurationMapping,
         ) -> Mapping[str, str | t.ScalarMapping]:
             """Build a Singer RECORD message payload."""
             return {"type": "RECORD", "stream": stream_name, "record": record}

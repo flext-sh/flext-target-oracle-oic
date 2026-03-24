@@ -21,7 +21,9 @@ class FlextTargetOracleOicSchemaMapper:
     """Maps stream schemas to OIC-compatible schema payloads."""
 
     def map_schema(
-        self, stream_name: str, schema: t.FlatContainerMapping
+        self,
+        stream_name: str,
+        schema: t.FlatContainerMapping,
     ) -> r[Mapping[str, str | t.FlatContainerMapping]]:
         """Build schema metadata payload for the given stream."""
         return r[Mapping[str, str | t.FlatContainerMapping]].ok({
@@ -42,7 +44,8 @@ class FlextTargetOracleOicEntryManager:
     """Builds entry collections from transformed records."""
 
     def build_entries(
-        self, records: Sequence[t.ConfigurationMapping]
+        self,
+        records: Sequence[t.ConfigurationMapping],
     ) -> r[Sequence[t.ConfigurationMapping]]:
         """Return entry list unchanged for baseline behavior."""
         return r[Sequence[t.ScalarMapping]].ok(records)

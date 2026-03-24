@@ -102,7 +102,7 @@ def create_config_with_env_overrides(
 ) -> FlextTargetOracleOicConfig:
     """Create FlextTargetOracleOicConfig with environment variable overrides."""
     return FlextTargetOracleOicAuthenticator.create_config_with_env_overrides(
-        **overrides
+        **overrides,
     )
 
 

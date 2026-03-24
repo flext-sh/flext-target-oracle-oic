@@ -18,14 +18,16 @@ class FlextTargetOracleOicRecordProcessor:
     """Transforms Singer records into OIC processing payloads."""
 
     def process(
-        self, stream_name: str, record: t.ConfigurationMapping
+        self,
+        stream_name: str,
+        record: t.ConfigurationMapping,
     ) -> r[FlextTargetOracleOicProcessedRecord]:
         """Return typed stream payload for downstream handling."""
         return r[FlextTargetOracleOicProcessedRecord].ok(
             FlextTargetOracleOicProcessedRecord.model_validate({
                 "stream_name": stream_name,
                 "record": record,
-            })
+            }),
         )
 
 

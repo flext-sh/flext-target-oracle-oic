@@ -14,7 +14,8 @@ from flext_target_oracle_oic.utilities import FlextTargetOracleOicUtilities
 
 
 class FlextTargetOracleOicTestUtilities(
-    FlextTestsUtilities, FlextTargetOracleOicUtilities
+    FlextTestsUtilities,
+    FlextTargetOracleOicUtilities,
 ):
     """Test utilities for flext-target-oracle-oic."""
 

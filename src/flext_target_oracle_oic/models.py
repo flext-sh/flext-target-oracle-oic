@@ -88,7 +88,8 @@ class FlextTargetOracleOicModels(FlextMeltanoModels, FlextOracleOicModels):
 
             stream_name: t.NonEmptyStr
             schema_mapping: Annotated[
-                t.FlatContainerMapping, Field(default_factory=dict)
+                t.FlatContainerMapping,
+                Field(default_factory=dict),
             ]
 
     @staticmethod
