@@ -27,14 +27,8 @@ if TYPE_CHECKING:
     )
 
 _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
-    "FlextTargetOracleOicConnection": [
-        "flext_target_oracle_oic.connection.connection",
-        "FlextTargetOracleOicConnection",
-    ],
-    "FlextTargetOracleOicConnectionSettings": [
-        "flext_target_oracle_oic.connection.settings",
-        "FlextTargetOracleOicConnectionSettings",
-    ],
+    "FlextTargetOracleOicConnection": ["flext_target_oracle_oic.connection.connection", "FlextTargetOracleOicConnection"],
+    "FlextTargetOracleOicConnectionSettings": ["flext_target_oracle_oic.connection.settings", "FlextTargetOracleOicConnectionSettings"],
     "logger": ["flext_target_oracle_oic.connection.settings", "logger"],
 }
 
