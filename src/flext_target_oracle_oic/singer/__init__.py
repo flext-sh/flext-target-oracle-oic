@@ -23,15 +23,15 @@ if TYPE_CHECKING:
         FlextTargetOracleOicRecordProcessor,
     )
 
-_LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
-    "FlextTargetOracleOicProcessedRecord": (
+_LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
+    "FlextTargetOracleOicProcessedRecord": [
         "flext_target_oracle_oic.singer.processors",
         "FlextTargetOracleOicProcessedRecord",
-    ),
-    "FlextTargetOracleOicRecordProcessor": (
+    ],
+    "FlextTargetOracleOicRecordProcessor": [
         "flext_target_oracle_oic.singer.processors",
         "FlextTargetOracleOicRecordProcessor",
-    ),
+    ],
 }
 
 __all__ = [

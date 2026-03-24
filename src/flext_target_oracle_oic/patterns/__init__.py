@@ -20,23 +20,23 @@ if TYPE_CHECKING:
         FlextTargetOracleOicTypeConverter,
     )
 
-_LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
-    "FlextTargetOracleOicDataTransformer": (
+_LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
+    "FlextTargetOracleOicDataTransformer": [
         "flext_target_oracle_oic.patterns.oic_patterns",
         "FlextTargetOracleOicDataTransformer",
-    ),
-    "FlextTargetOracleOicEntryManager": (
+    ],
+    "FlextTargetOracleOicEntryManager": [
         "flext_target_oracle_oic.patterns.oic_patterns",
         "FlextTargetOracleOicEntryManager",
-    ),
-    "FlextTargetOracleOicSchemaMapper": (
+    ],
+    "FlextTargetOracleOicSchemaMapper": [
         "flext_target_oracle_oic.patterns.oic_patterns",
         "FlextTargetOracleOicSchemaMapper",
-    ),
-    "FlextTargetOracleOicTypeConverter": (
+    ],
+    "FlextTargetOracleOicTypeConverter": [
         "flext_target_oracle_oic.patterns.oic_patterns",
         "FlextTargetOracleOicTypeConverter",
-    ),
+    ],
 }
 
 __all__ = [

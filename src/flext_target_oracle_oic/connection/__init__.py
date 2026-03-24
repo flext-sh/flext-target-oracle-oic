@@ -26,16 +26,16 @@ if TYPE_CHECKING:
         logger,
     )
 
-_LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
-    "FlextTargetOracleOicConnection": (
+_LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
+    "FlextTargetOracleOicConnection": [
         "flext_target_oracle_oic.connection.connection",
         "FlextTargetOracleOicConnection",
-    ),
-    "FlextTargetOracleOicConnectionSettings": (
+    ],
+    "FlextTargetOracleOicConnectionSettings": [
         "flext_target_oracle_oic.connection.settings",
         "FlextTargetOracleOicConnectionSettings",
-    ),
-    "logger": ("flext_target_oracle_oic.connection.settings", "logger"),
+    ],
+    "logger": ["flext_target_oracle_oic.connection.settings", "logger"],
 }
 
 __all__ = [

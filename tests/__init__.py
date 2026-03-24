@@ -61,61 +61,61 @@ if TYPE_CHECKING:
         FlextTargetOracleOicTestUtilities as u,
     )
 
-_LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
-    "AuthTestConfig": ("tests.test_target", "AuthTestConfig"),
-    "DummySingerTarget": ("tests.test_target", "DummySingerTarget"),
-    "FlextTargetOracleOicTestConstants": (
+_LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
+    "AuthTestConfig": ["tests.test_target", "AuthTestConfig"],
+    "DummySingerTarget": ["tests.test_target", "DummySingerTarget"],
+    "FlextTargetOracleOicTestConstants": [
         "tests.constants",
         "FlextTargetOracleOicTestConstants",
-    ),
-    "FlextTargetOracleOicTestModels": (
+    ],
+    "FlextTargetOracleOicTestModels": [
         "tests.models",
         "FlextTargetOracleOicTestModels",
-    ),
-    "FlextTargetOracleOicTestProtocols": (
+    ],
+    "FlextTargetOracleOicTestProtocols": [
         "tests.protocols",
         "FlextTargetOracleOicTestProtocols",
-    ),
-    "FlextTargetOracleOicTestTypes": ("tests.typings", "FlextTargetOracleOicTestTypes"),
-    "FlextTargetOracleOicTestUtilities": (
+    ],
+    "FlextTargetOracleOicTestTypes": ["tests.typings", "FlextTargetOracleOicTestTypes"],
+    "FlextTargetOracleOicTestUtilities": [
         "tests.utilities",
         "FlextTargetOracleOicTestUtilities",
-    ),
-    "TestTargetOracleOic": ("tests.test_target", "TestTargetOracleOic"),
-    "TestTargetOracleOicE2E": ("tests.test_e2e", "TestTargetOracleOicE2E"),
-    "c": ("tests.constants", "FlextTargetOracleOicTestConstants"),
-    "d": ("flext_tests", "d"),
-    "e": ("flext_tests", "e"),
-    "h": ("flext_tests", "h"),
-    "load_test_config": ("tests.test_e2e", "load_test_config"),
-    "m": ("tests.models", "FlextTargetOracleOicTestModels"),
-    "p": ("tests.protocols", "FlextTargetOracleOicTestProtocols"),
-    "r": ("flext_tests", "r"),
-    "s": ("flext_tests", "s"),
-    "singer_target": ("tests.test_target", "singer_target"),
-    "t": ("tests.typings", "FlextTargetOracleOicTestTypes"),
-    "target": ("tests.test_e2e", "target"),
-    "test_config": ("tests.test_e2e", "test_config"),
-    "test_main_entrypoint_returns_none": (
+    ],
+    "TestTargetOracleOic": ["tests.test_target", "TestTargetOracleOic"],
+    "TestTargetOracleOicE2E": ["tests.test_e2e", "TestTargetOracleOicE2E"],
+    "c": ["tests.constants", "FlextTargetOracleOicTestConstants"],
+    "d": ["flext_tests", "d"],
+    "e": ["flext_tests", "e"],
+    "h": ["flext_tests", "h"],
+    "load_test_config": ["tests.test_e2e", "load_test_config"],
+    "m": ["tests.models", "FlextTargetOracleOicTestModels"],
+    "p": ["tests.protocols", "FlextTargetOracleOicTestProtocols"],
+    "r": ["flext_tests", "r"],
+    "s": ["flext_tests", "s"],
+    "singer_target": ["tests.test_target", "singer_target"],
+    "t": ["tests.typings", "FlextTargetOracleOicTestTypes"],
+    "target": ["tests.test_e2e", "target"],
+    "test_config": ["tests.test_e2e", "test_config"],
+    "test_main_entrypoint_returns_none": [
         "tests.test_cli_entrypoint",
         "test_main_entrypoint_returns_none",
-    ),
-    "test_oic_authenticator_builds_payload": (
+    ],
+    "test_oic_authenticator_builds_payload": [
         "tests.test_target",
         "test_oic_authenticator_builds_payload",
-    ),
-    "test_oic_authenticator_omits_optional_scope_and_audience": (
+    ],
+    "test_oic_authenticator_omits_optional_scope_and_audience": [
         "tests.test_target",
         "test_oic_authenticator_omits_optional_scope_and_audience",
-    ),
-    "test_oic_authenticator_rejects_invalid_token_response": (
+    ],
+    "test_oic_authenticator_rejects_invalid_token_response": [
         "tests.test_target",
         "test_oic_authenticator_rejects_invalid_token_response",
-    ),
-    "test_target_smoke_class": ("tests.test_e2e", "test_target_smoke_class"),
-    "tm": ("tests.models", "tm"),
-    "u": ("tests.utilities", "FlextTargetOracleOicTestUtilities"),
-    "x": ("flext_tests", "x"),
+    ],
+    "test_target_smoke_class": ["tests.test_e2e", "test_target_smoke_class"],
+    "tm": ["tests.models", "tm"],
+    "u": ["tests.utilities", "FlextTargetOracleOicTestUtilities"],
+    "x": ["flext_tests", "x"],
 }
 
 __all__ = [

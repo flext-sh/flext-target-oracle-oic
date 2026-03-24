@@ -85,130 +85,130 @@ if TYPE_CHECKING:
         FlextTargetOracleOicUtilities as u,
     )
 
-_LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
-    "FlextTargetOracleOic": ("flext_target_oracle_oic.target", "FlextTargetOracleOic"),
-    "FlextTargetOracleOicAuthenticator": (
+_LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
+    "FlextTargetOracleOic": ["flext_target_oracle_oic.target", "FlextTargetOracleOic"],
+    "FlextTargetOracleOicAuthenticator": [
         "flext_target_oracle_oic.target_config",
         "FlextTargetOracleOicAuthenticator",
-    ),
-    "FlextTargetOracleOicBaseSink": (
+    ],
+    "FlextTargetOracleOicBaseSink": [
         "flext_target_oracle_oic.target",
         "FlextTargetOracleOicBaseSink",
-    ),
-    "FlextTargetOracleOicConfig": (
+    ],
+    "FlextTargetOracleOicConfig": [
         "flext_target_oracle_oic.settings",
         "FlextTargetOracleOicConfig",
-    ),
-    "FlextTargetOracleOicConnection": (
+    ],
+    "FlextTargetOracleOicConnection": [
         "flext_target_oracle_oic.connection.connection",
         "FlextTargetOracleOicConnection",
-    ),
-    "FlextTargetOracleOicConnectionSettings": (
+    ],
+    "FlextTargetOracleOicConnectionSettings": [
         "flext_target_oracle_oic.connection.settings",
         "FlextTargetOracleOicConnectionSettings",
-    ),
-    "FlextTargetOracleOicConnectionsSink": (
+    ],
+    "FlextTargetOracleOicConnectionsSink": [
         "flext_target_oracle_oic.target_client",
         "FlextTargetOracleOicConnectionsSink",
-    ),
-    "FlextTargetOracleOicConstants": (
+    ],
+    "FlextTargetOracleOicConstants": [
         "flext_target_oracle_oic.constants",
         "FlextTargetOracleOicConstants",
-    ),
-    "FlextTargetOracleOicDataTransformer": (
+    ],
+    "FlextTargetOracleOicDataTransformer": [
         "flext_target_oracle_oic.patterns.oic_patterns",
         "FlextTargetOracleOicDataTransformer",
-    ),
-    "FlextTargetOracleOicEntryManager": (
+    ],
+    "FlextTargetOracleOicEntryManager": [
         "flext_target_oracle_oic.patterns.oic_patterns",
         "FlextTargetOracleOicEntryManager",
-    ),
-    "FlextTargetOracleOicIntegrationsSink": (
+    ],
+    "FlextTargetOracleOicIntegrationsSink": [
         "flext_target_oracle_oic.target_client",
         "FlextTargetOracleOicIntegrationsSink",
-    ),
-    "FlextTargetOracleOicLookupsSink": (
+    ],
+    "FlextTargetOracleOicLookupsSink": [
         "flext_target_oracle_oic.target_client",
         "FlextTargetOracleOicLookupsSink",
-    ),
-    "FlextTargetOracleOicModels": (
+    ],
+    "FlextTargetOracleOicModels": [
         "flext_target_oracle_oic.models",
         "FlextTargetOracleOicModels",
-    ),
-    "FlextTargetOracleOicOrchestrator": (
+    ],
+    "FlextTargetOracleOicOrchestrator": [
         "flext_target_oracle_oic.application.orchestrator",
         "FlextTargetOracleOicOrchestrator",
-    ),
-    "FlextTargetOracleOicPackagesSink": (
+    ],
+    "FlextTargetOracleOicPackagesSink": [
         "flext_target_oracle_oic.target_client",
         "FlextTargetOracleOicPackagesSink",
-    ),
-    "FlextTargetOracleOicProcessedRecord": (
+    ],
+    "FlextTargetOracleOicProcessedRecord": [
         "flext_target_oracle_oic.singer.processors",
         "FlextTargetOracleOicProcessedRecord",
-    ),
-    "FlextTargetOracleOicProtocols": (
+    ],
+    "FlextTargetOracleOicProtocols": [
         "flext_target_oracle_oic.protocols",
         "FlextTargetOracleOicProtocols",
-    ),
-    "FlextTargetOracleOicRecordProcessor": (
+    ],
+    "FlextTargetOracleOicRecordProcessor": [
         "flext_target_oracle_oic.singer.processors",
         "FlextTargetOracleOicRecordProcessor",
-    ),
-    "FlextTargetOracleOicSchemaMapper": (
+    ],
+    "FlextTargetOracleOicSchemaMapper": [
         "flext_target_oracle_oic.patterns.oic_patterns",
         "FlextTargetOracleOicSchemaMapper",
-    ),
-    "FlextTargetOracleOicTypeConverter": (
+    ],
+    "FlextTargetOracleOicTypeConverter": [
         "flext_target_oracle_oic.patterns.oic_patterns",
         "FlextTargetOracleOicTypeConverter",
-    ),
-    "FlextTargetOracleOicTypes": (
+    ],
+    "FlextTargetOracleOicTypes": [
         "flext_target_oracle_oic.typings",
         "FlextTargetOracleOicTypes",
-    ),
-    "FlextTargetOracleOicUtilities": (
+    ],
+    "FlextTargetOracleOicUtilities": [
         "flext_target_oracle_oic.utilities",
         "FlextTargetOracleOicUtilities",
-    ),
-    "__all__": ("flext_target_oracle_oic.__version__", "__all__"),
-    "__author__": ("flext_target_oracle_oic.__version__", "__author__"),
-    "__author_email__": ("flext_target_oracle_oic.__version__", "__author_email__"),
-    "__description__": ("flext_target_oracle_oic.__version__", "__description__"),
-    "__license__": ("flext_target_oracle_oic.__version__", "__license__"),
-    "__title__": ("flext_target_oracle_oic.__version__", "__title__"),
-    "__url__": ("flext_target_oracle_oic.__version__", "__url__"),
-    "__version__": ("flext_target_oracle_oic.__version__", "__version__"),
-    "__version_info__": ("flext_target_oracle_oic.__version__", "__version_info__"),
-    "application": ("flext_target_oracle_oic.application", ""),
-    "c": ("flext_target_oracle_oic.constants", "FlextTargetOracleOicConstants"),
-    "connection": ("flext_target_oracle_oic.connection", ""),
-    "create_config_from_dict": (
+    ],
+    "__all__": ["flext_target_oracle_oic.__version__", "__all__"],
+    "__author__": ["flext_target_oracle_oic.__version__", "__author__"],
+    "__author_email__": ["flext_target_oracle_oic.__version__", "__author_email__"],
+    "__description__": ["flext_target_oracle_oic.__version__", "__description__"],
+    "__license__": ["flext_target_oracle_oic.__version__", "__license__"],
+    "__title__": ["flext_target_oracle_oic.__version__", "__title__"],
+    "__url__": ["flext_target_oracle_oic.__version__", "__url__"],
+    "__version__": ["flext_target_oracle_oic.__version__", "__version__"],
+    "__version_info__": ["flext_target_oracle_oic.__version__", "__version_info__"],
+    "application": ["flext_target_oracle_oic.application", ""],
+    "c": ["flext_target_oracle_oic.constants", "FlextTargetOracleOicConstants"],
+    "connection": ["flext_target_oracle_oic.connection", ""],
+    "create_config_from_dict": [
         "flext_target_oracle_oic.target_config",
         "create_config_from_dict",
-    ),
-    "create_config_with_env_overrides": (
+    ],
+    "create_config_with_env_overrides": [
         "flext_target_oracle_oic.target_config",
         "create_config_with_env_overrides",
-    ),
-    "create_singer_config_schema": (
+    ],
+    "create_singer_config_schema": [
         "flext_target_oracle_oic.target_config",
         "create_singer_config_schema",
-    ),
-    "d": ("flext_meltano", "d"),
-    "e": ("flext_meltano", "e"),
-    "h": ("flext_meltano", "h"),
-    "logger": ("flext_target_oracle_oic.connection.settings", "logger"),
-    "m": ("flext_target_oracle_oic.models", "FlextTargetOracleOicModels"),
-    "main": ("flext_target_oracle_oic.cli", "main"),
-    "p": ("flext_target_oracle_oic.protocols", "FlextTargetOracleOicProtocols"),
-    "patterns": ("flext_target_oracle_oic.patterns", ""),
-    "r": ("flext_meltano", "r"),
-    "s": ("flext_meltano", "s"),
-    "singer": ("flext_target_oracle_oic.singer", ""),
-    "t": ("flext_target_oracle_oic.typings", "FlextTargetOracleOicTypes"),
-    "u": ("flext_target_oracle_oic.utilities", "FlextTargetOracleOicUtilities"),
-    "x": ("flext_meltano", "x"),
+    ],
+    "d": ["flext_meltano", "d"],
+    "e": ["flext_meltano", "e"],
+    "h": ["flext_meltano", "h"],
+    "logger": ["flext_target_oracle_oic.connection.settings", "logger"],
+    "m": ["flext_target_oracle_oic.models", "FlextTargetOracleOicModels"],
+    "main": ["flext_target_oracle_oic.cli", "main"],
+    "p": ["flext_target_oracle_oic.protocols", "FlextTargetOracleOicProtocols"],
+    "patterns": ["flext_target_oracle_oic.patterns", ""],
+    "r": ["flext_meltano", "r"],
+    "s": ["flext_meltano", "s"],
+    "singer": ["flext_target_oracle_oic.singer", ""],
+    "t": ["flext_target_oracle_oic.typings", "FlextTargetOracleOicTypes"],
+    "u": ["flext_target_oracle_oic.utilities", "FlextTargetOracleOicUtilities"],
+    "x": ["flext_meltano", "x"],
 }
 
 __all__ = [

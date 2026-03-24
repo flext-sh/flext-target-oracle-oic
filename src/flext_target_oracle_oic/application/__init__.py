@@ -22,11 +22,11 @@ if TYPE_CHECKING:
         FlextTargetOracleOicOrchestrator,
     )
 
-_LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
-    "FlextTargetOracleOicOrchestrator": (
+_LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
+    "FlextTargetOracleOicOrchestrator": [
         "flext_target_oracle_oic.application.orchestrator",
         "FlextTargetOracleOicOrchestrator",
-    ),
+    ],
 }
 
 __all__ = [
