@@ -37,13 +37,13 @@ from flext_target_oracle_oic.target_config import TargetOracleOicConfig
 
 class DummySingerTarget(SingerTarget):
     name = "dummy-target-oracle-oic"
-    config_jsonschema: ClassVar[Mapping[str, str | Mapping[str, Mapping[str, str]]]] = {
+    config_jsonschema: ClassVar[Mapping[str, str | Mapping[str, t.StrMapping]]] = {
         "type": "t.NormalizedValue",
         "properties": {},
     }
 
 
-def load_test_config() -> Mapping[str, str]:
+def load_test_config() -> t.StrMapping:
     """Load real test configuration from environment variables."""
     env_file = Path(".env")
     if env_file.exists():
@@ -72,7 +72,7 @@ def load_test_config() -> Mapping[str, str]:
 
 
 @pytest.fixture
-def test_config() -> Mapping[str, str]:
+def test_config() -> t.StrMapping:
     """Provide real test configuration."""
     return load_test_config()
 
@@ -93,7 +93,7 @@ class TestTargetOracleOicE2E:
     """End-to-end tests for target-oracle-oic using REAL configuration and NO MOCKS."""
 
     def test_target_initialization(
-        self, target: TargetOracleOic, test_config: Mapping[str, str]
+        self, target: TargetOracleOic, test_config: t.StrMapping
     ) -> None:
         """Test target initialization with valid configuration."""
         _ = test_config

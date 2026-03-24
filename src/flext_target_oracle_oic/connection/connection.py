@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping
-
 from flext_core import r
 
 from flext_target_oracle_oic.typings import t
@@ -12,7 +10,7 @@ from flext_target_oracle_oic.typings import t
 class OICConnection:
     """Holds runtime connection configuration and health checks."""
 
-    def __init__(self, config: Mapping[str, t.Scalar] | None = None) -> None:
+    def __init__(self, config: t.ConfigurationMapping | None = None) -> None:
         """Initialize connection with optional configuration mapping."""
         super().__init__()
         self.config = config or {}

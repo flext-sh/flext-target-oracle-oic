@@ -21,10 +21,10 @@ class OICSchemaMapper:
     """Maps stream schemas to OIC-compatible schema payloads."""
 
     def map_schema(
-        self, stream_name: str, schema: Mapping[str, t.Container]
-    ) -> r[Mapping[str, str | Mapping[str, t.Container]]]:
+        self, stream_name: str, schema: t.FlatContainerMapping
+    ) -> r[Mapping[str, str | t.FlatContainerMapping]]:
         """Build schema metadata payload for the given stream."""
-        return r[Mapping[str, str | Mapping[str, t.Container]]].ok({
+        return r[Mapping[str, str | t.FlatContainerMapping]].ok({
             "stream": stream_name,
             "schema": schema,
         })
@@ -33,7 +33,7 @@ class OICSchemaMapper:
 class OICDataTransformer:
     """Transforms record payloads before sink submission."""
 
-    def transform(self, record: Mapping[str, t.Scalar]) -> r[Mapping[str, t.Scalar]]:
+    def transform(self, record: t.ConfigurationMapping) -> r[t.ConfigurationMapping]:
         """Return transformed record payload."""
         return r[t.ScalarMapping].ok(record)
 
@@ -42,8 +42,8 @@ class OICEntryManager:
     """Builds entry collections from transformed records."""
 
     def build_entries(
-        self, records: Sequence[Mapping[str, t.Scalar]]
-    ) -> r[Sequence[Mapping[str, t.Scalar]]]:
+        self, records: Sequence[t.ConfigurationMapping]
+    ) -> r[Sequence[t.ConfigurationMapping]]:
         """Return entry list unchanged for baseline behavior."""
         return r[Sequence[t.ScalarMapping]].ok(records)
 

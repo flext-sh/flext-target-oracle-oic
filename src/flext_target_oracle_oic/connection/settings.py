@@ -7,7 +7,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Mapping, MutableSequence
+from collections.abc import MutableSequence
 from typing import Annotated
 
 from flext_core import FlextConstants, FlextLogger, FlextModels, r
@@ -22,10 +22,10 @@ logger = FlextLogger(__name__)
 class OICConnectionSettings(FlextModels):
     """Oracle OIC connection settings using flext-core patterns."""
 
-    base_url: Annotated[str, Field(..., description="Oracle OIC base URL")]
-    client_id: Annotated[str, Field(..., description="OAuth2 client ID")]
+    base_url: Annotated[t.NonEmptyStr, Field(..., description="Oracle OIC base URL")]
+    client_id: Annotated[t.NonEmptyStr, Field(..., description="OAuth2 client ID")]
     client_secret: Annotated[
-        str, Field(..., description="OAuth2 client secret", repr=False)
+        t.NonEmptyStr, Field(..., description="OAuth2 client secret", repr=False)
     ]
     scope: Annotated[
         str,
@@ -44,19 +44,17 @@ class OICConnectionSettings(FlextModels):
         bool, Field(default=True, description="Use OAuth2 authentication")
     ]
     timeout: Annotated[
-        int,
+        t.PositiveInt,
         Field(
             default=FlextConstants.DEFAULT_TIMEOUT_SECONDS,
             description="Request timeout in seconds",
-            gt=0,
         ),
     ]
     max_retries: Annotated[
-        int,
+        t.RetryCount,
         Field(
             default=FlextConstants.MAX_RETRY_ATTEMPTS,
             description="Maximum number of retries",
-            ge=0,
         ),
     ]
     verify_ssl: Annotated[
@@ -64,7 +62,7 @@ class OICConnectionSettings(FlextModels):
     ]
 
     @classmethod
-    def from_dict(cls, data: Mapping[str, t.Scalar]) -> OICConnectionSettings:
+    def from_dict(cls, data: t.ConfigurationMapping) -> OICConnectionSettings:
         """Create configuration from dictionary using modern Pydantic patterns."""
         try:
             return cls(**data)
@@ -90,7 +88,7 @@ class OICConnectionSettings(FlextModels):
         url = self.base_url.rstrip("/")
         return f"{url}{c.TargetOracleOic.API_PATH_OAUTH_TOKEN}"
 
-    def get_api_headers(self, access_token: str) -> Mapping[str, str]:
+    def get_api_headers(self, access_token: str) -> t.StrMapping:
         """Get API request headers with authentication."""
         return {
             c.TargetOracleOic.HEADER_AUTHORIZATION: f"{c.TargetOracleOic.AUTH_SCHEME_BEARER} {access_token}",
@@ -98,7 +96,7 @@ class OICConnectionSettings(FlextModels):
             c.TargetOracleOic.HEADER_ACCEPT: c.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
         }
 
-    def get_auth_headers(self) -> Mapping[str, str]:
+    def get_auth_headers(self) -> t.StrMapping:
         """Get authentication headers."""
         return {
             c.TargetOracleOic.HEADER_CONTENT_TYPE: c.TargetOracleOic.HEADER_CONTENT_TYPE_FORM,
@@ -116,10 +114,6 @@ class OICConnectionSettings(FlextModels):
             errors.append("client_id is required")
         if not self.client_secret:
             errors.append("client_secret is required")
-        if self.timeout <= 0:
-            errors.append("timeout must be positive")
-        if self.max_retries < 0:
-            errors.append("max_retries must be non-negative")
         if errors:
             return r[bool].fail(
                 f"OIC connection config validation failed: {'; '.join(errors)}"

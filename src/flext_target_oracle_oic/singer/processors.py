@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping
-
 from flext_core import r
 from flext_meltano import FlextMeltanoModels
 
@@ -14,14 +12,14 @@ class OICProcessedRecord(FlextMeltanoModels.ArbitraryTypesModel):
     """Normalized record payload produced by OIC processor."""
 
     stream_name: str
-    record: Mapping[str, t.Scalar]
+    record: t.ConfigurationMapping
 
 
 class OICRecordProcessor:
     """Transforms Singer records into OIC processing payloads."""
 
     def process(
-        self, stream_name: str, record: Mapping[str, t.Scalar]
+        self, stream_name: str, record: t.ConfigurationMapping
     ) -> r[OICProcessedRecord]:
         """Return typed stream payload for downstream handling."""
         return r[OICProcessedRecord].ok(

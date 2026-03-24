@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
+from collections.abc import Mapping
 
 from flext_core import r
 from flext_meltano import FlextMeltanoUtilities
@@ -19,7 +19,7 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
 
         @staticmethod
         def create_record_message(
-            stream_name: str, record: Mapping[str, t.Scalar]
+            stream_name: str, record: t.ConfigurationMapping
         ) -> Mapping[str, str | t.ScalarMapping]:
             """Build a Singer RECORD message payload."""
             return {"type": "RECORD", "stream": stream_name, "record": record}
@@ -27,9 +27,9 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
         @staticmethod
         def create_schema_message(
             stream_name: str,
-            schema: Mapping[str, t.Container],
-            key_properties: Sequence[str] | None = None,
-        ) -> Mapping[str, str | Mapping[str, t.Container] | Sequence[str]]:
+            schema: t.FlatContainerMapping,
+            key_properties: t.StrSequence | None = None,
+        ) -> Mapping[str, str | t.FlatContainerMapping | t.StrSequence]:
             """Build a Singer SCHEMA message payload."""
             return {
                 "type": "SCHEMA",
@@ -42,7 +42,7 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
             """Runtime configuration validation helper functions."""
 
             @staticmethod
-            def validate_config(config: Mapping[str, t.Scalar]) -> r[bool]:
+            def validate_config(config: t.ConfigurationMapping) -> r[bool]:
                 """Validate required OIC target configuration keys."""
                 required = {"base_url", "oauth_client_id", "oauth_client_secret"}
                 missing = sorted(key for key in required if key not in config)
@@ -55,7 +55,7 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
 
             @staticmethod
             def create_oic_connection(
-                data: Mapping[str, t.Container],
+                data: t.FlatContainerMapping,
             ) -> m.TargetOracleOic.OICConnection:
                 """Create an OICConnection model from generic payload via Pydantic validation."""
                 return m.TargetOracleOic.OICConnection.model_validate({
@@ -65,21 +65,21 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
 
             @staticmethod
             def create_oic_integration(
-                data: Mapping[str, t.Container],
+                data: t.FlatContainerMapping,
             ) -> m.TargetOracleOic.OICIntegration:
                 """Create an OICIntegration model from generic payload via Pydantic validation."""
                 return m.TargetOracleOic.OICIntegration.model_validate(data)
 
             @staticmethod
             def create_oic_package(
-                data: Mapping[str, t.Container],
+                data: t.FlatContainerMapping,
             ) -> m.TargetOracleOic.OICPackage:
                 """Create an OICPackage model from generic payload via Pydantic validation."""
                 return m.TargetOracleOic.OICPackage.model_validate(data)
 
             @staticmethod
             def create_oic_lookup(
-                data: Mapping[str, t.Container],
+                data: t.FlatContainerMapping,
             ) -> m.TargetOracleOic.OICLookup:
                 """Create an OICLookup model from generic payload via Pydantic validation."""
                 return m.TargetOracleOic.OICLookup.model_validate(data)
