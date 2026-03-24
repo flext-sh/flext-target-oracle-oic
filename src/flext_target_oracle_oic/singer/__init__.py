@@ -19,24 +19,18 @@ if TYPE_CHECKING:
     from flext_core import FlextTypes
 
     from flext_target_oracle_oic.singer.processors import (
-        OICProcessedRecord,
-        OICRecordProcessor,
+        FlextTargetOracleOicProcessedRecord,
+        FlextTargetOracleOicRecordProcessor,
     )
 
 _LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
-    "OICProcessedRecord": (
-        "flext_target_oracle_oic.singer.processors",
-        "OICProcessedRecord",
-    ),
-    "OICRecordProcessor": (
-        "flext_target_oracle_oic.singer.processors",
-        "OICRecordProcessor",
-    ),
+    "FlextTargetOracleOicProcessedRecord": ("flext_target_oracle_oic.singer.processors", "FlextTargetOracleOicProcessedRecord"),
+    "FlextTargetOracleOicRecordProcessor": ("flext_target_oracle_oic.singer.processors", "FlextTargetOracleOicRecordProcessor"),
 }
 
 __all__ = [
-    "OICProcessedRecord",
-    "OICRecordProcessor",
+    "FlextTargetOracleOicProcessedRecord",
+    "FlextTargetOracleOicRecordProcessor",
 ]
 
 

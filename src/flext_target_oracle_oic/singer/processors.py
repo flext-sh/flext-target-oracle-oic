@@ -7,26 +7,26 @@ from flext_core import r
 from flext_target_oracle_oic import m, t
 
 
-class OICProcessedRecord(m.ArbitraryTypesModel):
+class FlextTargetOracleOicProcessedRecord(m.ArbitraryTypesModel):
     """Normalized record payload produced by OIC processor."""
 
     stream_name: str
     record: t.ConfigurationMapping
 
 
-class OICRecordProcessor:
+class FlextTargetOracleOicRecordProcessor:
     """Transforms Singer records into OIC processing payloads."""
 
     def process(
         self, stream_name: str, record: t.ConfigurationMapping
-    ) -> r[OICProcessedRecord]:
+    ) -> r[FlextTargetOracleOicProcessedRecord]:
         """Return typed stream payload for downstream handling."""
-        return r[OICProcessedRecord].ok(
-            OICProcessedRecord.model_validate({
+        return r[FlextTargetOracleOicProcessedRecord].ok(
+            FlextTargetOracleOicProcessedRecord.model_validate({
                 "stream_name": stream_name,
                 "record": record,
             })
         )
 
 
-__all__ = ["OICProcessedRecord", "OICRecordProcessor"]
+__all__ = ["FlextTargetOracleOicProcessedRecord", "FlextTargetOracleOicRecordProcessor"]

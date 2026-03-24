@@ -14,7 +14,7 @@ from flext_target_oracle_oic import c, t
 logger = FlextLogger(__name__)
 
 
-class OICBaseSink(Sink):
+class FlextTargetOracleOicBaseSink(Sink):
     """Base sink implementation used by OIC stream sinks."""
 
     @override
@@ -33,45 +33,45 @@ class OICBaseSink(Sink):
         logger.debug("Processing OIC record", keys=str(list(record.keys())))
 
 
-class ConnectionsSink(OICBaseSink):
+class FlextTargetOracleOicConnectionsSink(FlextTargetOracleOicBaseSink):
     """Sink for OIC connections stream."""
 
     name = c.TargetOracleOic.STREAM_CONNECTIONS
 
 
-class IntegrationsSink(OICBaseSink):
+class FlextTargetOracleOicIntegrationsSink(FlextTargetOracleOicBaseSink):
     """Sink for OIC integrations stream."""
 
     name = c.TargetOracleOic.STREAM_INTEGRATIONS
 
 
-class PackagesSink(OICBaseSink):
+class FlextTargetOracleOicPackagesSink(FlextTargetOracleOicBaseSink):
     """Sink for OIC packages stream."""
 
     name = c.TargetOracleOic.STREAM_PACKAGES
 
 
-class LookupsSink(OICBaseSink):
+class FlextTargetOracleOicLookupsSink(FlextTargetOracleOicBaseSink):
     """Sink for OIC lookups stream."""
 
     name = c.TargetOracleOic.STREAM_LOOKUPS
 
 
-class TargetOracleOic(FlextMeltanoTargetAbstractions):
+class FlextTargetOracleOic(FlextMeltanoTargetAbstractions):
     """Singer target entry point for Oracle OIC."""
 
     name: ClassVar[str] = c.TargetOracleOic.TARGET_NAME
-    default_sink_class: ClassVar[type[OICBaseSink]] = OICBaseSink
+    default_sink_class: ClassVar[type[FlextTargetOracleOicBaseSink]] = FlextTargetOracleOicBaseSink
 
-    def get_sink_class(self, stream_name: str) -> type[OICBaseSink]:
+    def get_sink_class(self, stream_name: str) -> type[FlextTargetOracleOicBaseSink]:
         """Resolve sink class by stream name."""
-        mapping: Mapping[str, type[OICBaseSink]] = {
-            "connections": ConnectionsSink,
-            "integrations": IntegrationsSink,
-            "packages": PackagesSink,
-            "lookups": LookupsSink,
+        mapping: Mapping[str, type[FlextTargetOracleOicBaseSink]] = {
+            "connections": FlextTargetOracleOicConnectionsSink,
+            "integrations": FlextTargetOracleOicIntegrationsSink,
+            "packages": FlextTargetOracleOicPackagesSink,
+            "lookups": FlextTargetOracleOicLookupsSink,
         }
-        return mapping.get(stream_name, OICBaseSink)
+        return mapping.get(stream_name, FlextTargetOracleOicBaseSink)
 
     def setup(self) -> r[bool]:
         """Setup target resources."""
@@ -88,11 +88,11 @@ def main() -> None:
 
 
 __all__ = [
-    "ConnectionsSink",
-    "IntegrationsSink",
-    "LookupsSink",
-    "OICBaseSink",
-    "PackagesSink",
-    "TargetOracleOic",
+    "FlextTargetOracleOicConnectionsSink",
+    "FlextTargetOracleOicIntegrationsSink",
+    "FlextTargetOracleOicLookupsSink",
+    "FlextTargetOracleOicBaseSink",
+    "FlextTargetOracleOicPackagesSink",
+    "FlextTargetOracleOic",
     "main",
 ]

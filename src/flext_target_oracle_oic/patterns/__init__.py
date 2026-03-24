@@ -14,36 +14,24 @@ if TYPE_CHECKING:
     from flext_core import FlextTypes
 
     from flext_target_oracle_oic.patterns.oic_patterns import (
-        OICDataTransformer,
-        OICEntryManager,
-        OICSchemaMapper,
-        OICTypeConverter,
+        FlextTargetOracleOicDataTransformer,
+        FlextTargetOracleOicEntryManager,
+        FlextTargetOracleOicSchemaMapper,
+        FlextTargetOracleOicTypeConverter,
     )
 
 _LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
-    "OICDataTransformer": (
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "OICDataTransformer",
-    ),
-    "OICEntryManager": (
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "OICEntryManager",
-    ),
-    "OICSchemaMapper": (
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "OICSchemaMapper",
-    ),
-    "OICTypeConverter": (
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "OICTypeConverter",
-    ),
+    "FlextTargetOracleOicDataTransformer": ("flext_target_oracle_oic.patterns.oic_patterns", "FlextTargetOracleOicDataTransformer"),
+    "FlextTargetOracleOicEntryManager": ("flext_target_oracle_oic.patterns.oic_patterns", "FlextTargetOracleOicEntryManager"),
+    "FlextTargetOracleOicSchemaMapper": ("flext_target_oracle_oic.patterns.oic_patterns", "FlextTargetOracleOicSchemaMapper"),
+    "FlextTargetOracleOicTypeConverter": ("flext_target_oracle_oic.patterns.oic_patterns", "FlextTargetOracleOicTypeConverter"),
 }
 
 __all__ = [
-    "OICDataTransformer",
-    "OICEntryManager",
-    "OICSchemaMapper",
-    "OICTypeConverter",
+    "FlextTargetOracleOicDataTransformer",
+    "FlextTargetOracleOicEntryManager",
+    "FlextTargetOracleOicSchemaMapper",
+    "FlextTargetOracleOicTypeConverter",
 ]
 
 

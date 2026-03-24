@@ -18,24 +18,23 @@ from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 if TYPE_CHECKING:
     from flext_core import FlextTypes
 
-    from flext_target_oracle_oic.connection.connection import OICConnection
+    from flext_target_oracle_oic.connection.connection import (
+        FlextTargetOracleOicConnection,
+    )
     from flext_target_oracle_oic.connection.settings import (
-        OICConnectionSettings,
+        FlextTargetOracleOicConnectionSettings,
         logger,
     )
 
 _LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
-    "OICConnection": ("flext_target_oracle_oic.connection.connection", "OICConnection"),
-    "OICConnectionSettings": (
-        "flext_target_oracle_oic.connection.settings",
-        "OICConnectionSettings",
-    ),
+    "FlextTargetOracleOicConnection": ("flext_target_oracle_oic.connection.connection", "FlextTargetOracleOicConnection"),
+    "FlextTargetOracleOicConnectionSettings": ("flext_target_oracle_oic.connection.settings", "FlextTargetOracleOicConnectionSettings"),
     "logger": ("flext_target_oracle_oic.connection.settings", "logger"),
 }
 
 __all__ = [
-    "OICConnection",
-    "OICConnectionSettings",
+    "FlextTargetOracleOicConnection",
+    "FlextTargetOracleOicConnectionSettings",
     "logger",
 ]
 

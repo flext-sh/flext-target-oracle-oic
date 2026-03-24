@@ -30,7 +30,7 @@ class FlextTargetOracleOicTestModels(FlextTestsModels, FlextTargetOracleOicModel
     class Tests(FlextTestsModels.Tests):
         """Project-specific test fixtures namespace."""
 
-        class TargetOracleOic:
+        class FlextTargetOracleOic:
             """Target Oracle OIC-specific test fixtures."""
 
 

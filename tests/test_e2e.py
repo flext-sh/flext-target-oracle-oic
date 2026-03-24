@@ -27,13 +27,13 @@ from singer_sdk.target_base import Target as SingerTarget
 
 from flext_target_oracle_oic import t
 from flext_target_oracle_oic.target_client import (
-    ConnectionsSink,
-    IntegrationsSink,
-    LookupsSink,
-    PackagesSink,
-    TargetOracleOic,
+    FlextTargetOracleOicConnectionsSink,
+    FlextTargetOracleOicIntegrationsSink,
+    FlextTargetOracleOicLookupsSink,
+    FlextTargetOracleOicPackagesSink,
+    FlextTargetOracleOic,
 )
-from flext_target_oracle_oic.target_config import TargetOracleOicConfig
+from flext_target_oracle_oic.target_config import FlextTargetOracleOicConfig
 
 
 class DummySingerTarget(SingerTarget):
@@ -79,9 +79,9 @@ def test_config() -> t.StrMapping:
 
 
 @pytest.fixture
-def target() -> TargetOracleOic:
+def target() -> FlextTargetOracleOic:
     """Create target instance."""
-    return TargetOracleOic()
+    return FlextTargetOracleOic()
 
 
 @pytest.fixture
@@ -94,7 +94,7 @@ class TestTargetOracleOicE2E:
     """End-to-end tests for target-oracle-oic using REAL configuration and NO MOCKS."""
 
     def test_target_initialization(
-        self, target: TargetOracleOic, test_config: t.StrMapping
+        self, target: FlextTargetOracleOic, test_config: t.StrMapping
     ) -> None:
         """Test target initialization with valid configuration."""
         _ = test_config
@@ -103,16 +103,16 @@ class TestTargetOracleOicE2E:
             raise AssertionError(msg)
         assert isinstance(target.get_sink_class("connections"), type)
 
-    def test_sink_class_mapping(self, target: TargetOracleOic) -> None:
+    def test_sink_class_mapping(self, target: FlextTargetOracleOic) -> None:
         """Test sink class mapping for known streams."""
-        if target.get_sink_class("connections") is not ConnectionsSink:
-            msg = f"Expected {ConnectionsSink}, got {target.get_sink_class('connections')}"
+        if target.get_sink_class("connections") is not FlextTargetOracleOicConnectionsSink:
+            msg = f"Expected {FlextTargetOracleOicConnectionsSink}, got {target.get_sink_class('connections')}"
             raise AssertionError(msg)
-        assert target.get_sink_class("integrations") is IntegrationsSink
-        if target.get_sink_class("packages") is not PackagesSink:
-            msg = f"Expected {PackagesSink}, got {target.get_sink_class('packages')}"
+        assert target.get_sink_class("integrations") is FlextTargetOracleOicIntegrationsSink
+        if target.get_sink_class("packages") is not FlextTargetOracleOicPackagesSink:
+            msg = f"Expected {FlextTargetOracleOicPackagesSink}, got {target.get_sink_class('packages')}"
             raise AssertionError(msg)
-        assert target.get_sink_class("lookups") is LookupsSink
+        assert target.get_sink_class("lookups") is FlextTargetOracleOicLookupsSink
         default_sink = target.get_sink_class("unknown_stream")
         if default_sink is not target.default_sink_class:
             msg = f"Expected {target.default_sink_class}, got {default_sink}"
@@ -121,10 +121,10 @@ class TestTargetOracleOicE2E:
     def test_sink_initialization(self, singer_target: SingerTarget) -> None:
         """Test sink initialization for each stream type."""
         sinks_to_test = [
-            ("connections", ConnectionsSink),
-            ("integrations", IntegrationsSink),
-            ("packages", PackagesSink),
-            ("lookups", LookupsSink),
+            ("connections", FlextTargetOracleOicConnectionsSink),
+            ("integrations", FlextTargetOracleOicIntegrationsSink),
+            ("packages", FlextTargetOracleOicPackagesSink),
+            ("lookups", FlextTargetOracleOicLookupsSink),
         ]
         for stream_name, sink_class in sinks_to_test:
             sink = sink_class(
@@ -140,7 +140,7 @@ class TestTargetOracleOicE2E:
 
     def test_process_singer_messages(self, singer_target: SingerTarget) -> None:
         """Test processing Singer-like records end-to-end through sink."""
-        sink = ConnectionsSink(
+        sink = FlextTargetOracleOicConnectionsSink(
             target=singer_target,
             stream_name="connections",
             schema={"properties": {"id": {"type": "string"}}},
@@ -156,7 +156,7 @@ class TestTargetOracleOicE2E:
 
     def test_sink_authenticator_setup(self, singer_target: SingerTarget) -> None:
         """Test sink can be constructed with singer target."""
-        sink = ConnectionsSink(
+        sink = FlextTargetOracleOicConnectionsSink(
             target=singer_target,
             stream_name="connections",
             schema={"properties": {"id": {"type": "string"}}},
@@ -168,7 +168,7 @@ class TestTargetOracleOicE2E:
         self, singer_target: SingerTarget
     ) -> None:
         """Test connections sink record processing."""
-        sink = ConnectionsSink(
+        sink = FlextTargetOracleOicConnectionsSink(
             target=singer_target,
             stream_name="connections",
             schema={
@@ -191,7 +191,7 @@ class TestTargetOracleOicE2E:
         self, singer_target: SingerTarget
     ) -> None:
         """Test integrations sink record processing."""
-        sink = IntegrationsSink(
+        sink = FlextTargetOracleOicIntegrationsSink(
             target=singer_target,
             stream_name="integrations",
             schema={
@@ -214,7 +214,7 @@ class TestTargetOracleOicE2E:
 
     def test_connections_sink_validation(self, singer_target: SingerTarget) -> None:
         """Test connections sink record validation."""
-        sink = ConnectionsSink(
+        sink = FlextTargetOracleOicConnectionsSink(
             target=singer_target,
             stream_name="connections",
             schema={"properties": {"id": {"type": "string"}}},
@@ -222,7 +222,7 @@ class TestTargetOracleOicE2E:
         )
         sink.process_record({}, {})
 
-    def test_config_validation(self, target: TargetOracleOic) -> None:
+    def test_config_validation(self, target: FlextTargetOracleOic) -> None:
         """Test setup/teardown result contract."""
         setup_result = target.setup()
         assert setup_result.is_success
@@ -235,7 +235,7 @@ class TestTargetOracleOicE2E:
 
     def test_packages_sink_record_processing(self, singer_target: SingerTarget) -> None:
         """Test packages sink record processing."""
-        sink = PackagesSink(
+        sink = FlextTargetOracleOicPackagesSink(
             target=singer_target,
             stream_name="packages",
             schema={
@@ -257,7 +257,7 @@ class TestTargetOracleOicE2E:
 
     def test_lookups_sink_record_processing(self, singer_target: SingerTarget) -> None:
         """Test lookups sink record processing."""
-        sink = LookupsSink(
+        sink = FlextTargetOracleOicLookupsSink(
             target=singer_target,
             stream_name="lookups",
             schema={
@@ -277,7 +277,7 @@ class TestTargetOracleOicE2E:
     def test_cli_integration(self, singer_target: SingerTarget, tmp_path: Path) -> None:
         """Test sink processing path with singer-like input payload."""
         _ = tmp_path
-        sink = ConnectionsSink(
+        sink = FlextTargetOracleOicConnectionsSink(
             target=singer_target,
             stream_name="connections",
             schema={
@@ -290,7 +290,7 @@ class TestTargetOracleOicE2E:
 
     def test_conditional_config_generation(self) -> None:
         """Test schema generation from pydantic configuration model."""
-        schema_raw = TargetOracleOicConfig.model_json_schema()
+        schema_raw = FlextTargetOracleOicConfig.model_json_schema()
         properties_raw = schema_raw.get("properties")
         if not isinstance(properties_raw, dict):
             msg = f"Expected {'properties'} in {schema_raw}"
@@ -302,4 +302,4 @@ class TestTargetOracleOicE2E:
 
 
 def test_target_smoke_class() -> None:
-    assert TargetOracleOic.name == "target-oracle-oic"
+    assert FlextTargetOracleOic.name == "target-oracle-oic"

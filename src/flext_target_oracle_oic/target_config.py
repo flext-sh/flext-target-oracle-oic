@@ -12,15 +12,15 @@ from collections.abc import MutableMapping
 import requests
 from requests import Response
 
-from flext_target_oracle_oic import TargetOracleOicConfig, c, t
+from flext_target_oracle_oic import FlextTargetOracleOicConfig, c, t
 
 
-class OICOAuth2Authenticator:
+class FlextTargetOracleOicAuthenticator:
     """OAuth2 Authenticator for Oracle Integration Cloud."""
 
-    def __init__(self, config: TargetOracleOicConfig) -> None:
+    def __init__(self, config: FlextTargetOracleOicConfig) -> None:
         """Initialize the authenticator with target configuration."""
-        self._config: TargetOracleOicConfig = config
+        self._config: FlextTargetOracleOicConfig = config
         self._access_token: str | None = None
         self._auth_scheme: str = c.TargetOracleOic.AUTH_SCHEME_BEARER
 
@@ -69,27 +69,45 @@ class OICOAuth2Authenticator:
         self._access_token = access_token
         return access_token
 
+    @staticmethod
+    def create_config_from_dict(
+        config_dict: t.ConfigurationMapping,
+    ) -> FlextTargetOracleOicConfig:
+        """Create FlextTargetOracleOicConfig from dictionary."""
+        return FlextTargetOracleOicConfig.model_validate(config_dict)
 
+    @staticmethod
+    def create_config_with_env_overrides(**overrides: t.Scalar) -> FlextTargetOracleOicConfig:
+        """Create FlextTargetOracleOicConfig with environment variable overrides."""
+        return FlextTargetOracleOicConfig.model_validate(overrides)
+
+    @staticmethod
+    def create_singer_config_schema() -> t.FlatContainerMapping:
+        """Create Singer configuration schema from FlextTargetOracleOicConfig."""
+        return FlextTargetOracleOicConfig.model_json_schema()
+
+
+# Module-level aliases for backward compatibility
 def create_config_from_dict(
     config_dict: t.ConfigurationMapping,
-) -> TargetOracleOicConfig:
-    """Create TargetOracleOicConfig from dictionary."""
-    return TargetOracleOicConfig.model_validate(config_dict)
+) -> FlextTargetOracleOicConfig:
+    """Create FlextTargetOracleOicConfig from dictionary."""
+    return FlextTargetOracleOicAuthenticator.create_config_from_dict(config_dict)
 
 
-def create_config_with_env_overrides(**overrides: t.Scalar) -> TargetOracleOicConfig:
-    """Create TargetOracleOicConfig with environment variable overrides."""
-    return TargetOracleOicConfig.model_validate(overrides)
+def create_config_with_env_overrides(**overrides: t.Scalar) -> FlextTargetOracleOicConfig:
+    """Create FlextTargetOracleOicConfig with environment variable overrides."""
+    return FlextTargetOracleOicAuthenticator.create_config_with_env_overrides(**overrides)
 
 
 def create_singer_config_schema() -> t.FlatContainerMapping:
-    """Create Singer configuration schema from TargetOracleOicConfig."""
-    return TargetOracleOicConfig.model_json_schema()
+    """Create Singer configuration schema from FlextTargetOracleOicConfig."""
+    return FlextTargetOracleOicAuthenticator.create_singer_config_schema()
 
 
 __all__: t.StrSequence = [
-    "OICOAuth2Authenticator",
-    "TargetOracleOicConfig",
+    "FlextTargetOracleOicAuthenticator",
+    "FlextTargetOracleOicConfig",
     "create_config_from_dict",
     "create_config_with_env_overrides",
     "create_singer_config_schema",

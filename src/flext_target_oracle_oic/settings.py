@@ -16,7 +16,7 @@ from pydantic import Field, SecretStr
 from flext_target_oracle_oic import c
 
 
-class TargetOracleOicConfig(FlextSettings):
+class FlextTargetOracleOicConfig(FlextSettings):
     """Runtime settings for Oracle OIC target authentication and IO."""
 
     oauth_client_id: Annotated[str, Field(..., description="OAuth client identifier")]
@@ -54,4 +54,4 @@ class TargetOracleOicConfig(FlextSettings):
         }
 
 
-__all__ = ["TargetOracleOicConfig"]
+__all__ = ["FlextTargetOracleOicConfig"]

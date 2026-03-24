@@ -26,11 +26,15 @@ if TYPE_CHECKING:
         __version__,
         __version_info__,
     )
-    from flext_target_oracle_oic.application.orchestrator import OICTargetOrchestrator
+    from flext_target_oracle_oic.application.orchestrator import (
+        FlextTargetOracleOicOrchestrator,
+    )
     from flext_target_oracle_oic.cli import main
-    from flext_target_oracle_oic.connection.connection import OICConnection
+    from flext_target_oracle_oic.connection.connection import (
+        FlextTargetOracleOicConnection,
+    )
     from flext_target_oracle_oic.connection.settings import (
-        OICConnectionSettings,
+        FlextTargetOracleOicConnectionSettings,
         logger,
     )
     from flext_target_oracle_oic.constants import (
@@ -42,29 +46,32 @@ if TYPE_CHECKING:
         FlextTargetOracleOicModels as m,
     )
     from flext_target_oracle_oic.patterns.oic_patterns import (
-        OICDataTransformer,
-        OICEntryManager,
-        OICSchemaMapper,
-        OICTypeConverter,
+        FlextTargetOracleOicDataTransformer,
+        FlextTargetOracleOicEntryManager,
+        FlextTargetOracleOicSchemaMapper,
+        FlextTargetOracleOicTypeConverter,
     )
     from flext_target_oracle_oic.protocols import (
         FlextTargetOracleOicProtocols,
         FlextTargetOracleOicProtocols as p,
     )
-    from flext_target_oracle_oic.settings import TargetOracleOicConfig
+    from flext_target_oracle_oic.settings import FlextTargetOracleOicConfig
     from flext_target_oracle_oic.singer.processors import (
-        OICProcessedRecord,
-        OICRecordProcessor,
+        FlextTargetOracleOicProcessedRecord,
+        FlextTargetOracleOicRecordProcessor,
     )
-    from flext_target_oracle_oic.target import OICBaseSink, TargetOracleOic
+    from flext_target_oracle_oic.target import (
+        FlextTargetOracleOic,
+        FlextTargetOracleOicBaseSink,
+    )
     from flext_target_oracle_oic.target_client import (
-        ConnectionsSink,
-        IntegrationsSink,
-        LookupsSink,
-        PackagesSink,
+        FlextTargetOracleOicConnectionsSink,
+        FlextTargetOracleOicIntegrationsSink,
+        FlextTargetOracleOicLookupsSink,
+        FlextTargetOracleOicPackagesSink,
     )
     from flext_target_oracle_oic.target_config import (
-        OICOAuth2Authenticator,
+        FlextTargetOracleOicAuthenticator,
         create_config_from_dict,
         create_config_with_env_overrides,
         create_singer_config_schema,
@@ -79,73 +86,28 @@ if TYPE_CHECKING:
     )
 
 _LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
-    "ConnectionsSink": ("flext_target_oracle_oic.target_client", "ConnectionsSink"),
-    "FlextTargetOracleOicConstants": (
-        "flext_target_oracle_oic.constants",
-        "FlextTargetOracleOicConstants",
-    ),
-    "FlextTargetOracleOicModels": (
-        "flext_target_oracle_oic.models",
-        "FlextTargetOracleOicModels",
-    ),
-    "FlextTargetOracleOicProtocols": (
-        "flext_target_oracle_oic.protocols",
-        "FlextTargetOracleOicProtocols",
-    ),
-    "FlextTargetOracleOicTypes": (
-        "flext_target_oracle_oic.typings",
-        "FlextTargetOracleOicTypes",
-    ),
-    "FlextTargetOracleOicUtilities": (
-        "flext_target_oracle_oic.utilities",
-        "FlextTargetOracleOicUtilities",
-    ),
-    "IntegrationsSink": ("flext_target_oracle_oic.target_client", "IntegrationsSink"),
-    "LookupsSink": ("flext_target_oracle_oic.target_client", "LookupsSink"),
-    "OICBaseSink": ("flext_target_oracle_oic.target", "OICBaseSink"),
-    "OICConnection": ("flext_target_oracle_oic.connection.connection", "OICConnection"),
-    "OICConnectionSettings": (
-        "flext_target_oracle_oic.connection.settings",
-        "OICConnectionSettings",
-    ),
-    "OICDataTransformer": (
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "OICDataTransformer",
-    ),
-    "OICEntryManager": (
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "OICEntryManager",
-    ),
-    "OICOAuth2Authenticator": (
-        "flext_target_oracle_oic.target_config",
-        "OICOAuth2Authenticator",
-    ),
-    "OICProcessedRecord": (
-        "flext_target_oracle_oic.singer.processors",
-        "OICProcessedRecord",
-    ),
-    "OICRecordProcessor": (
-        "flext_target_oracle_oic.singer.processors",
-        "OICRecordProcessor",
-    ),
-    "OICSchemaMapper": (
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "OICSchemaMapper",
-    ),
-    "OICTargetOrchestrator": (
-        "flext_target_oracle_oic.application.orchestrator",
-        "OICTargetOrchestrator",
-    ),
-    "OICTypeConverter": (
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "OICTypeConverter",
-    ),
-    "PackagesSink": ("flext_target_oracle_oic.target_client", "PackagesSink"),
-    "TargetOracleOic": ("flext_target_oracle_oic.target", "TargetOracleOic"),
-    "TargetOracleOicConfig": (
-        "flext_target_oracle_oic.settings",
-        "TargetOracleOicConfig",
-    ),
+    "FlextTargetOracleOic": ("flext_target_oracle_oic.target", "FlextTargetOracleOic"),
+    "FlextTargetOracleOicAuthenticator": ("flext_target_oracle_oic.target_config", "FlextTargetOracleOicAuthenticator"),
+    "FlextTargetOracleOicBaseSink": ("flext_target_oracle_oic.target", "FlextTargetOracleOicBaseSink"),
+    "FlextTargetOracleOicConfig": ("flext_target_oracle_oic.settings", "FlextTargetOracleOicConfig"),
+    "FlextTargetOracleOicConnection": ("flext_target_oracle_oic.connection.connection", "FlextTargetOracleOicConnection"),
+    "FlextTargetOracleOicConnectionSettings": ("flext_target_oracle_oic.connection.settings", "FlextTargetOracleOicConnectionSettings"),
+    "FlextTargetOracleOicConnectionsSink": ("flext_target_oracle_oic.target_client", "FlextTargetOracleOicConnectionsSink"),
+    "FlextTargetOracleOicConstants": ("flext_target_oracle_oic.constants", "FlextTargetOracleOicConstants"),
+    "FlextTargetOracleOicDataTransformer": ("flext_target_oracle_oic.patterns.oic_patterns", "FlextTargetOracleOicDataTransformer"),
+    "FlextTargetOracleOicEntryManager": ("flext_target_oracle_oic.patterns.oic_patterns", "FlextTargetOracleOicEntryManager"),
+    "FlextTargetOracleOicIntegrationsSink": ("flext_target_oracle_oic.target_client", "FlextTargetOracleOicIntegrationsSink"),
+    "FlextTargetOracleOicLookupsSink": ("flext_target_oracle_oic.target_client", "FlextTargetOracleOicLookupsSink"),
+    "FlextTargetOracleOicModels": ("flext_target_oracle_oic.models", "FlextTargetOracleOicModels"),
+    "FlextTargetOracleOicOrchestrator": ("flext_target_oracle_oic.application.orchestrator", "FlextTargetOracleOicOrchestrator"),
+    "FlextTargetOracleOicPackagesSink": ("flext_target_oracle_oic.target_client", "FlextTargetOracleOicPackagesSink"),
+    "FlextTargetOracleOicProcessedRecord": ("flext_target_oracle_oic.singer.processors", "FlextTargetOracleOicProcessedRecord"),
+    "FlextTargetOracleOicProtocols": ("flext_target_oracle_oic.protocols", "FlextTargetOracleOicProtocols"),
+    "FlextTargetOracleOicRecordProcessor": ("flext_target_oracle_oic.singer.processors", "FlextTargetOracleOicRecordProcessor"),
+    "FlextTargetOracleOicSchemaMapper": ("flext_target_oracle_oic.patterns.oic_patterns", "FlextTargetOracleOicSchemaMapper"),
+    "FlextTargetOracleOicTypeConverter": ("flext_target_oracle_oic.patterns.oic_patterns", "FlextTargetOracleOicTypeConverter"),
+    "FlextTargetOracleOicTypes": ("flext_target_oracle_oic.typings", "FlextTargetOracleOicTypes"),
+    "FlextTargetOracleOicUtilities": ("flext_target_oracle_oic.utilities", "FlextTargetOracleOicUtilities"),
     "__all__": ("flext_target_oracle_oic.__version__", "__all__"),
     "__author__": ("flext_target_oracle_oic.__version__", "__author__"),
     "__author_email__": ("flext_target_oracle_oic.__version__", "__author_email__"),
@@ -158,18 +120,9 @@ _LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
     "application": ("flext_target_oracle_oic.application", ""),
     "c": ("flext_target_oracle_oic.constants", "FlextTargetOracleOicConstants"),
     "connection": ("flext_target_oracle_oic.connection", ""),
-    "create_config_from_dict": (
-        "flext_target_oracle_oic.target_config",
-        "create_config_from_dict",
-    ),
-    "create_config_with_env_overrides": (
-        "flext_target_oracle_oic.target_config",
-        "create_config_with_env_overrides",
-    ),
-    "create_singer_config_schema": (
-        "flext_target_oracle_oic.target_config",
-        "create_singer_config_schema",
-    ),
+    "create_config_from_dict": ("flext_target_oracle_oic.target_config", "create_config_from_dict"),
+    "create_config_with_env_overrides": ("flext_target_oracle_oic.target_config", "create_config_with_env_overrides"),
+    "create_singer_config_schema": ("flext_target_oracle_oic.target_config", "create_singer_config_schema"),
     "d": ("flext_meltano", "d"),
     "e": ("flext_meltano", "e"),
     "h": ("flext_meltano", "h"),
@@ -187,28 +140,28 @@ _LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
 }
 
 __all__ = [
-    "ConnectionsSink",
+    "FlextTargetOracleOic",
+    "FlextTargetOracleOicAuthenticator",
+    "FlextTargetOracleOicBaseSink",
+    "FlextTargetOracleOicConfig",
+    "FlextTargetOracleOicConnection",
+    "FlextTargetOracleOicConnectionSettings",
+    "FlextTargetOracleOicConnectionsSink",
     "FlextTargetOracleOicConstants",
+    "FlextTargetOracleOicDataTransformer",
+    "FlextTargetOracleOicEntryManager",
+    "FlextTargetOracleOicIntegrationsSink",
+    "FlextTargetOracleOicLookupsSink",
     "FlextTargetOracleOicModels",
+    "FlextTargetOracleOicOrchestrator",
+    "FlextTargetOracleOicPackagesSink",
+    "FlextTargetOracleOicProcessedRecord",
     "FlextTargetOracleOicProtocols",
+    "FlextTargetOracleOicRecordProcessor",
+    "FlextTargetOracleOicSchemaMapper",
+    "FlextTargetOracleOicTypeConverter",
     "FlextTargetOracleOicTypes",
     "FlextTargetOracleOicUtilities",
-    "IntegrationsSink",
-    "LookupsSink",
-    "OICBaseSink",
-    "OICConnection",
-    "OICConnectionSettings",
-    "OICDataTransformer",
-    "OICEntryManager",
-    "OICOAuth2Authenticator",
-    "OICProcessedRecord",
-    "OICRecordProcessor",
-    "OICSchemaMapper",
-    "OICTargetOrchestrator",
-    "OICTypeConverter",
-    "PackagesSink",
-    "TargetOracleOic",
-    "TargetOracleOicConfig",
     "__all__",
     "__author__",
     "__author_email__",

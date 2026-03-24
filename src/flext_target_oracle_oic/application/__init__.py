@@ -18,17 +18,16 @@ from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 if TYPE_CHECKING:
     from flext_core import FlextTypes
 
-    from flext_target_oracle_oic.application.orchestrator import OICTargetOrchestrator
+    from flext_target_oracle_oic.application.orchestrator import (
+        FlextTargetOracleOicOrchestrator,
+    )
 
 _LAZY_IMPORTS: Mapping[str, tuple[str, str]] = {
-    "OICTargetOrchestrator": (
-        "flext_target_oracle_oic.application.orchestrator",
-        "OICTargetOrchestrator",
-    ),
+    "FlextTargetOracleOicOrchestrator": ("flext_target_oracle_oic.application.orchestrator", "FlextTargetOracleOicOrchestrator"),
 }
 
 __all__ = [
-    "OICTargetOrchestrator",
+    "FlextTargetOracleOicOrchestrator",
 ]
 
 

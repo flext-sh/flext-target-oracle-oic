@@ -7,7 +7,7 @@ from flext_core import r
 from flext_target_oracle_oic import t
 
 
-class OICConnection:
+class FlextTargetOracleOicConnection:
     """Holds runtime connection configuration and health checks."""
 
     def __init__(self, config: t.ConfigurationMapping | None = None) -> None:
@@ -20,4 +20,4 @@ class OICConnection:
         return r[bool].ok(value=True)
 
 
-__all__ = ["OICConnection"]
+__all__ = ["FlextTargetOracleOicConnection"]

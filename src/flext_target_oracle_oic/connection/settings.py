@@ -18,7 +18,7 @@ from flext_target_oracle_oic import c, m, t
 logger = FlextLogger(__name__)
 
 
-class OICConnectionSettings(m):
+class FlextTargetOracleOicConnectionSettings(m):
     """Oracle OIC connection settings using flext-core patterns."""
 
     base_url: Annotated[t.NonEmptyStr, Field(..., description="Oracle OIC base URL")]
@@ -61,7 +61,7 @@ class OICConnectionSettings(m):
     ]
 
     @classmethod
-    def from_dict(cls, data: t.ConfigurationMapping) -> OICConnectionSettings:
+    def from_dict(cls, data: t.ConfigurationMapping) -> FlextTargetOracleOicConnectionSettings:
         """Create configuration from dictionary using modern Pydantic patterns."""
         try:
             return cls(**data)
@@ -74,7 +74,7 @@ class OICConnectionSettings(m):
             RuntimeError,
             ImportError,
         ):
-            logger.exception("Failed to create OICConnectionSettings from dict")
+            logger.exception("Failed to create FlextTargetOracleOicConnectionSettings from dict")
             raise
 
     def build_api_base_url(self) -> str:

@@ -15,20 +15,20 @@ from pydantic import SecretStr
 from singer_sdk.target_base import Target as SingerTarget
 
 from flext_target_oracle_oic.target_client import (
-    ConnectionsSink,
-    IntegrationsSink,
-    TargetOracleOic,
+    FlextTargetOracleOicConnectionsSink,
+    FlextTargetOracleOicIntegrationsSink,
+    FlextTargetOracleOic,
 )
 from flext_target_oracle_oic.target_config import (
-    OICOAuth2Authenticator,
-    TargetOracleOicConfig,
+    FlextTargetOracleOicAuthenticator,
+    FlextTargetOracleOicConfig,
 )
 from tests import t
 
 _DEFAULT_PROPERTIES: Mapping[str, t.StrMapping] = {"id": {"type": "string"}}
 
 
-class AuthTestConfig(TargetOracleOicConfig):
+class AuthTestConfig(FlextTargetOracleOicConfig):
     pass
 
 
@@ -43,7 +43,7 @@ class DummySingerTarget(SingerTarget):
 
 
 class TestTargetOracleOic:
-    """Test cases for TargetOracleOic with proper enterprise validation."""
+    """Test cases for FlextTargetOracleOic with proper enterprise validation."""
 
     @pytest.fixture
     def valid_config(self) -> t.StrMapping:
@@ -61,7 +61,7 @@ class TestTargetOracleOic:
     ) -> None:
         """Test target initialization with valid configuration."""
         _ = valid_config
-        target = TargetOracleOic()
+        target = FlextTargetOracleOic()
         if target.name != "target-oracle-oic":
             msg: str = f"Expected {'target-oracle-oic'}, got {target.name}"
             raise AssertionError(msg)
@@ -69,25 +69,25 @@ class TestTargetOracleOic:
 
     def test_target_initialization_with_minimal_config(self) -> None:
         """Test method."""
-        target = TargetOracleOic()
+        target = FlextTargetOracleOic()
         if target.name != "target-oracle-oic":
             msg: str = f"Expected {'target-oracle-oic'}, got {target.name}"
             raise AssertionError(msg)
 
     def test_get_sink_mapping(self) -> None:
         """Test method."""
-        target = TargetOracleOic()
-        if target.get_sink_class("connections") is not ConnectionsSink:
-            msg: str = f"Expected {ConnectionsSink}, got {target.get_sink_class('connections')}"
+        target = FlextTargetOracleOic()
+        if target.get_sink_class("connections") is not FlextTargetOracleOicConnectionsSink:
+            msg: str = f"Expected {FlextTargetOracleOicConnectionsSink}, got {target.get_sink_class('connections')}"
             raise AssertionError(msg)
-        assert target.get_sink_class("integrations") is IntegrationsSink
+        assert target.get_sink_class("integrations") is FlextTargetOracleOicIntegrationsSink
         if target.get_sink_class("unknown_stream") is not target.default_sink_class:
             msg = f"Expected {target.default_sink_class}, got {target.get_sink_class('unknown_stream')}"
             raise AssertionError(msg)
 
     def test_config_schema(self) -> None:
         """Test method."""
-        schema = TargetOracleOicConfig.model_json_schema()
+        schema = FlextTargetOracleOicConfig.model_json_schema()
         assert isinstance(schema, dict)
         if "properties" not in schema:
             msg = f"Expected {'properties'} in {schema}"
@@ -107,7 +107,7 @@ def _build_auth_config(
     *,
     oauth_scope: str | None = "urn:opc:resource:consumer:all",
     oauth_client_aud: str | None = "https://idcs.example.com",
-) -> TargetOracleOicConfig:
+) -> FlextTargetOracleOicConfig:
     config = AuthTestConfig.__new__(AuthTestConfig)
     object.__setattr__(config, "oauth_client_id", "client-id")
     object.__setattr__(config, "oauth_client_secret", SecretStr("client-secret"))
@@ -121,7 +121,7 @@ def _build_auth_config(
 
 
 def test_oic_authenticator_builds_payload() -> None:
-    authenticator = OICOAuth2Authenticator(_build_auth_config())
+    authenticator = FlextTargetOracleOicAuthenticator(_build_auth_config())
     payload = authenticator.build_token_request_data()
     assert payload["grant_type"] == "client_credentials"
     assert payload["client_id"] == "client-id"
@@ -131,7 +131,7 @@ def test_oic_authenticator_builds_payload() -> None:
 
 
 def test_oic_authenticator_omits_optional_scope_and_audience() -> None:
-    authenticator = OICOAuth2Authenticator(
+    authenticator = FlextTargetOracleOicAuthenticator(
         _build_auth_config(oauth_scope="", oauth_client_aud=None)
     )
     payload = authenticator.build_token_request_data()
@@ -142,7 +142,7 @@ def test_oic_authenticator_omits_optional_scope_and_audience() -> None:
 def test_oic_authenticator_rejects_invalid_token_response(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    authenticator = OICOAuth2Authenticator(_build_auth_config())
+    authenticator = FlextTargetOracleOicAuthenticator(_build_auth_config())
 
     class InvalidTokenResponse:
         def raise_for_status(self) -> None:
@@ -154,6 +154,6 @@ def test_oic_authenticator_rejects_invalid_token_response(
     def fake_post(*_args: t.Scalar, **_kwargs: t.Scalar) -> InvalidTokenResponse:
         return InvalidTokenResponse()
 
-    monkeypatch.setattr(f"{OICOAuth2Authenticator.__module__}.requests.post", fake_post)
+    monkeypatch.setattr(f"{FlextTargetOracleOicAuthenticator.__module__}.requests.post", fake_post)
     with pytest.raises(RuntimeError, match="access_token"):
         authenticator.get_access_token()

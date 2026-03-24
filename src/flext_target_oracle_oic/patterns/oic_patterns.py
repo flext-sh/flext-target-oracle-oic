@@ -9,7 +9,7 @@ from flext_core import r
 from flext_target_oracle_oic import t
 
 
-class OICTypeConverter:
+class FlextTargetOracleOicTypeConverter:
     """Converts incoming values for OIC payloads."""
 
     def convert(self, value: t.Scalar) -> t.Scalar:
@@ -17,7 +17,7 @@ class OICTypeConverter:
         return value
 
 
-class OICSchemaMapper:
+class FlextTargetOracleOicSchemaMapper:
     """Maps stream schemas to OIC-compatible schema payloads."""
 
     def map_schema(
@@ -30,7 +30,7 @@ class OICSchemaMapper:
         })
 
 
-class OICDataTransformer:
+class FlextTargetOracleOicDataTransformer:
     """Transforms record payloads before sink submission."""
 
     def transform(self, record: t.ConfigurationMapping) -> r[t.ConfigurationMapping]:
@@ -38,7 +38,7 @@ class OICDataTransformer:
         return r[t.ScalarMapping].ok(record)
 
 
-class OICEntryManager:
+class FlextTargetOracleOicEntryManager:
     """Builds entry collections from transformed records."""
 
     def build_entries(
@@ -49,8 +49,8 @@ class OICEntryManager:
 
 
 __all__ = [
-    "OICDataTransformer",
-    "OICEntryManager",
-    "OICSchemaMapper",
-    "OICTypeConverter",
+    "FlextTargetOracleOicDataTransformer",
+    "FlextTargetOracleOicEntryManager",
+    "FlextTargetOracleOicSchemaMapper",
+    "FlextTargetOracleOicTypeConverter",
 ]

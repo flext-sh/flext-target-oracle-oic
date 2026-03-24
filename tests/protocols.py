@@ -22,17 +22,17 @@ class FlextTargetOracleOicTestProtocols(
     Provides access to:
     - p.Tests.Docker.* (from FlextTestsProtocols)
     - p.Tests.Factory.* (from FlextTestsProtocols)
-    - p.TargetOracleOic.* (from FlextTargetOracleOicProtocols)
+    - p.FlextTargetOracleOic.* (from FlextTargetOracleOicProtocols)
     """
 
     class Tests(FlextTestsProtocols.Tests):
         """Project-specific test protocols.
 
-        Extends FlextTestsProtocols.Tests with TargetOracleOic-specific protocols.
+        Extends FlextTestsProtocols.Tests with FlextTargetOracleOic-specific protocols.
         """
 
-        class TargetOracleOic:
-            """TargetOracleOic-specific test protocols."""
+        class FlextTargetOracleOic:
+            """FlextTargetOracleOic-specific test protocols."""
 
 
 p = FlextTargetOracleOicTestProtocols

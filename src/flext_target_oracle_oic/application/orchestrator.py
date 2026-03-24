@@ -7,7 +7,7 @@ from flext_core import r
 from flext_target_oracle_oic import t
 
 
-class OICTargetOrchestrator:
+class FlextTargetOracleOicOrchestrator:
     """Coordinates setup and teardown for target orchestration."""
 
     def __init__(self, config: t.ConfigurationMapping | None = None) -> None:
@@ -24,4 +24,4 @@ class OICTargetOrchestrator:
         return r[bool].ok(value=True)
 
 
-__all__ = ["OICTargetOrchestrator"]
+__all__ = ["FlextTargetOracleOicOrchestrator"]
