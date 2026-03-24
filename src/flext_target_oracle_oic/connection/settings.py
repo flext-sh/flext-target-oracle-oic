@@ -61,7 +61,9 @@ class FlextTargetOracleOicConnectionSettings(m):
     ]
 
     @classmethod
-    def from_dict(cls, data: t.ConfigurationMapping) -> FlextTargetOracleOicConnectionSettings:
+    def from_dict(
+        cls, data: t.ConfigurationMapping
+    ) -> FlextTargetOracleOicConnectionSettings:
         """Create configuration from dictionary using modern Pydantic patterns."""
         try:
             return cls(**data)
@@ -74,7 +76,9 @@ class FlextTargetOracleOicConnectionSettings(m):
             RuntimeError,
             ImportError,
         ):
-            logger.exception("Failed to create FlextTargetOracleOicConnectionSettings from dict")
+            logger.exception(
+                "Failed to create FlextTargetOracleOicConnectionSettings from dict"
+            )
             raise
 
     def build_api_base_url(self) -> str:

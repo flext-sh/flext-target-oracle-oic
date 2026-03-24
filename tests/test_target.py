@@ -15,9 +15,9 @@ from pydantic import SecretStr
 from singer_sdk.target_base import Target as SingerTarget
 
 from flext_target_oracle_oic.target_client import (
+    FlextTargetOracleOic,
     FlextTargetOracleOicConnectionsSink,
     FlextTargetOracleOicIntegrationsSink,
-    FlextTargetOracleOic,
 )
 from flext_target_oracle_oic.target_config import (
     FlextTargetOracleOicAuthenticator,
@@ -77,10 +77,16 @@ class TestTargetOracleOic:
     def test_get_sink_mapping(self) -> None:
         """Test method."""
         target = FlextTargetOracleOic()
-        if target.get_sink_class("connections") is not FlextTargetOracleOicConnectionsSink:
+        if (
+            target.get_sink_class("connections")
+            is not FlextTargetOracleOicConnectionsSink
+        ):
             msg: str = f"Expected {FlextTargetOracleOicConnectionsSink}, got {target.get_sink_class('connections')}"
             raise AssertionError(msg)
-        assert target.get_sink_class("integrations") is FlextTargetOracleOicIntegrationsSink
+        assert (
+            target.get_sink_class("integrations")
+            is FlextTargetOracleOicIntegrationsSink
+        )
         if target.get_sink_class("unknown_stream") is not target.default_sink_class:
             msg = f"Expected {target.default_sink_class}, got {target.get_sink_class('unknown_stream')}"
             raise AssertionError(msg)
@@ -154,6 +160,8 @@ def test_oic_authenticator_rejects_invalid_token_response(
     def fake_post(*_args: t.Scalar, **_kwargs: t.Scalar) -> InvalidTokenResponse:
         return InvalidTokenResponse()
 
-    monkeypatch.setattr(f"{FlextTargetOracleOicAuthenticator.__module__}.requests.post", fake_post)
+    monkeypatch.setattr(
+        f"{FlextTargetOracleOicAuthenticator.__module__}.requests.post", fake_post
+    )
     with pytest.raises(RuntimeError, match="access_token"):
         authenticator.get_access_token()

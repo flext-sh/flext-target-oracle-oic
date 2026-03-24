@@ -77,7 +77,9 @@ class FlextTargetOracleOicAuthenticator:
         return FlextTargetOracleOicConfig.model_validate(config_dict)
 
     @staticmethod
-    def create_config_with_env_overrides(**overrides: t.Scalar) -> FlextTargetOracleOicConfig:
+    def create_config_with_env_overrides(
+        **overrides: t.Scalar,
+    ) -> FlextTargetOracleOicConfig:
         """Create FlextTargetOracleOicConfig with environment variable overrides."""
         return FlextTargetOracleOicConfig.model_validate(overrides)
 
@@ -95,9 +97,13 @@ def create_config_from_dict(
     return FlextTargetOracleOicAuthenticator.create_config_from_dict(config_dict)
 
 
-def create_config_with_env_overrides(**overrides: t.Scalar) -> FlextTargetOracleOicConfig:
+def create_config_with_env_overrides(
+    **overrides: t.Scalar,
+) -> FlextTargetOracleOicConfig:
     """Create FlextTargetOracleOicConfig with environment variable overrides."""
-    return FlextTargetOracleOicAuthenticator.create_config_with_env_overrides(**overrides)
+    return FlextTargetOracleOicAuthenticator.create_config_with_env_overrides(
+        **overrides
+    )
 
 
 def create_singer_config_schema() -> t.FlatContainerMapping:

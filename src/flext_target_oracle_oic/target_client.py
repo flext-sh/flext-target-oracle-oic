@@ -61,7 +61,9 @@ class FlextTargetOracleOic(FlextMeltanoTargetAbstractions):
     """Singer target entry point for Oracle OIC."""
 
     name: ClassVar[str] = c.TargetOracleOic.TARGET_NAME
-    default_sink_class: ClassVar[type[FlextTargetOracleOicBaseSink]] = FlextTargetOracleOicBaseSink
+    default_sink_class: ClassVar[type[FlextTargetOracleOicBaseSink]] = (
+        FlextTargetOracleOicBaseSink
+    )
 
     def get_sink_class(self, stream_name: str) -> type[FlextTargetOracleOicBaseSink]:
         """Resolve sink class by stream name."""
@@ -88,11 +90,11 @@ def main() -> None:
 
 
 __all__ = [
+    "FlextTargetOracleOic",
+    "FlextTargetOracleOicBaseSink",
     "FlextTargetOracleOicConnectionsSink",
     "FlextTargetOracleOicIntegrationsSink",
     "FlextTargetOracleOicLookupsSink",
-    "FlextTargetOracleOicBaseSink",
     "FlextTargetOracleOicPackagesSink",
-    "FlextTargetOracleOic",
     "main",
 ]

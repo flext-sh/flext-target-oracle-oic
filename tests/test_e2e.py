@@ -27,11 +27,11 @@ from singer_sdk.target_base import Target as SingerTarget
 
 from flext_target_oracle_oic import t
 from flext_target_oracle_oic.target_client import (
+    FlextTargetOracleOic,
     FlextTargetOracleOicConnectionsSink,
     FlextTargetOracleOicIntegrationsSink,
     FlextTargetOracleOicLookupsSink,
     FlextTargetOracleOicPackagesSink,
-    FlextTargetOracleOic,
 )
 from flext_target_oracle_oic.target_config import FlextTargetOracleOicConfig
 
@@ -105,10 +105,16 @@ class TestTargetOracleOicE2E:
 
     def test_sink_class_mapping(self, target: FlextTargetOracleOic) -> None:
         """Test sink class mapping for known streams."""
-        if target.get_sink_class("connections") is not FlextTargetOracleOicConnectionsSink:
+        if (
+            target.get_sink_class("connections")
+            is not FlextTargetOracleOicConnectionsSink
+        ):
             msg = f"Expected {FlextTargetOracleOicConnectionsSink}, got {target.get_sink_class('connections')}"
             raise AssertionError(msg)
-        assert target.get_sink_class("integrations") is FlextTargetOracleOicIntegrationsSink
+        assert (
+            target.get_sink_class("integrations")
+            is FlextTargetOracleOicIntegrationsSink
+        )
         if target.get_sink_class("packages") is not FlextTargetOracleOicPackagesSink:
             msg = f"Expected {FlextTargetOracleOicPackagesSink}, got {target.get_sink_class('packages')}"
             raise AssertionError(msg)
