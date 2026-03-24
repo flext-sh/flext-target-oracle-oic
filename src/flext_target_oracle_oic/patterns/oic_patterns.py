@@ -35,7 +35,7 @@ class OICDataTransformer:
 
     def transform(self, record: Mapping[str, t.Scalar]) -> r[Mapping[str, t.Scalar]]:
         """Return transformed record payload."""
-        return r[Mapping[str, t.Scalar]].ok(record)
+        return r[t.ScalarMapping].ok(record)
 
 
 class OICEntryManager:
@@ -45,7 +45,7 @@ class OICEntryManager:
         self, records: Sequence[Mapping[str, t.Scalar]]
     ) -> r[Sequence[Mapping[str, t.Scalar]]]:
         """Return entry list unchanged for baseline behavior."""
-        return r[Sequence[Mapping[str, t.Scalar]]].ok(records)
+        return r[Sequence[t.ScalarMapping]].ok(records)
 
 
 __all__ = [

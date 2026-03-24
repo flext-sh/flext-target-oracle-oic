@@ -80,7 +80,7 @@ class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtoco
 
                 def invoke_integration(
                     self, payload: Mapping[str, t.Scalar]
-                ) -> FlextProtocols.Result[Mapping[str, t.Scalar]]:
+                ) -> FlextProtocols.Result[t.ScalarMapping]:
                     """Invoke OIC integration with payload.
 
                     Args:
@@ -94,7 +94,7 @@ class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtoco
 
                 def optimize_throughput(
                     self, config: Mapping[str, t.Scalar]
-                ) -> FlextProtocols.Result[Mapping[str, t.Scalar]]:
+                ) -> FlextProtocols.Result[t.ScalarMapping]:
                     """Optimize OIC throughput settings.
 
                     Args:
@@ -122,7 +122,7 @@ class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtoco
 
                 def track_integration_status(
                     self, integration_id: str
-                ) -> FlextProtocols.Result[Mapping[str, t.Scalar]]:
+                ) -> FlextProtocols.Result[t.ScalarMapping]:
                     """Track integration execution status.
 
                     Args:
@@ -136,7 +136,7 @@ class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtoco
 
                 def transform_to_oic(
                     self, record: Mapping[str, t.Scalar]
-                ) -> FlextProtocols.Result[Mapping[str, t.Scalar]]:
+                ) -> FlextProtocols.Result[t.ScalarMapping]:
                     """Transform Singer record to OIC format.
 
                     Args:
