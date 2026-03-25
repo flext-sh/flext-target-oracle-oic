@@ -1,5 +1,5 @@
 # AUTO-GENERATED FILE — DO NOT EDIT MANUALLY.
-# Regenerate with: make codegen
+# Regenerate with: make gen
 #
 """Oracle OIC Singer integration module using flext-core patterns.
 
@@ -24,14 +24,8 @@ if TYPE_CHECKING:
     )
 
 _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
-    "FlextTargetOracleOicProcessedRecord": [
-        "flext_target_oracle_oic.singer.processors",
-        "FlextTargetOracleOicProcessedRecord",
-    ],
-    "FlextTargetOracleOicRecordProcessor": [
-        "flext_target_oracle_oic.singer.processors",
-        "FlextTargetOracleOicRecordProcessor",
-    ],
+    "FlextTargetOracleOicProcessedRecord": ["flext_target_oracle_oic.singer.processors", "FlextTargetOracleOicProcessedRecord"],
+    "FlextTargetOracleOicRecordProcessor": ["flext_target_oracle_oic.singer.processors", "FlextTargetOracleOicRecordProcessor"],
 }
 
 __all__ = [

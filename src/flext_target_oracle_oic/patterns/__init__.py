@@ -1,5 +1,5 @@
 # AUTO-GENERATED FILE — DO NOT EDIT MANUALLY.
-# Regenerate with: make codegen
+# Regenerate with: make gen
 #
 """Patterns package."""
 
@@ -21,22 +21,10 @@ if TYPE_CHECKING:
     )
 
 _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
-    "FlextTargetOracleOicDataTransformer": [
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "FlextTargetOracleOicDataTransformer",
-    ],
-    "FlextTargetOracleOicEntryManager": [
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "FlextTargetOracleOicEntryManager",
-    ],
-    "FlextTargetOracleOicSchemaMapper": [
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "FlextTargetOracleOicSchemaMapper",
-    ],
-    "FlextTargetOracleOicTypeConverter": [
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "FlextTargetOracleOicTypeConverter",
-    ],
+    "FlextTargetOracleOicDataTransformer": ["flext_target_oracle_oic.patterns.oic_patterns", "FlextTargetOracleOicDataTransformer"],
+    "FlextTargetOracleOicEntryManager": ["flext_target_oracle_oic.patterns.oic_patterns", "FlextTargetOracleOicEntryManager"],
+    "FlextTargetOracleOicSchemaMapper": ["flext_target_oracle_oic.patterns.oic_patterns", "FlextTargetOracleOicSchemaMapper"],
+    "FlextTargetOracleOicTypeConverter": ["flext_target_oracle_oic.patterns.oic_patterns", "FlextTargetOracleOicTypeConverter"],
 }
 
 __all__ = [
