@@ -40,7 +40,7 @@ class FlextTargetOracleOicModels(FlextMeltanoModels, FlextOracleOicModels):
             id: t.NonEmptyStr
             name: t.NonEmptyStr
             adapter_type: t.NonEmptyStr
-            properties: Annotated[t.FlatContainerMapping, Field(default_factory=dict)]
+            properties: t.FlatContainerMapping = Field(default_factory=dict)
 
         class OICIntegration(FlextMeltanoModels.ArbitraryTypesModel):
             """Integration payload model."""
@@ -81,16 +81,13 @@ class FlextTargetOracleOicModels(FlextMeltanoModels, FlextOracleOicModels):
 
             source_stream: t.NonEmptyStr
             target_entity: t.NonEmptyStr
-            mapping: Annotated[Mapping[str, str], Field(default_factory=dict)]
+            mapping: Annotated[Mapping[str, str]] = Field(default_factory=dict)
 
         class OICSchemaMapping(FlextMeltanoModels.ArbitraryTypesModel):
             """Schema mapping payload model."""
 
             stream_name: t.NonEmptyStr
-            schema_mapping: Annotated[
-                t.FlatContainerMapping,
-                Field(default_factory=dict),
-            ]
+            schema_mapping: t.FlatContainerMapping = Field(default_factory=dict)
 
     @staticmethod
     def validate_connection(
