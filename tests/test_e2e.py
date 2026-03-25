@@ -40,7 +40,7 @@ class DummySingerTarget(SingerTarget):
     name = "dummy-target-oracle-oic"
     config_jsonschema: ClassVar[Mapping[str, str | Mapping[str, t.StrMapping]]] = {
         "type": "t.NormalizedValue",
-        "properties": {},
+        "properties": dict[str, t.StrMapping](),
     }
 
 
