@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from enum import StrEnum, unique
-from typing import Annotated
 
 from flext_core import r
 from flext_meltano import FlextMeltanoModels
@@ -81,7 +80,7 @@ class FlextTargetOracleOicModels(FlextMeltanoModels, FlextOracleOicModels):
 
             source_stream: t.NonEmptyStr
             target_entity: t.NonEmptyStr
-            mapping: Annotated[Mapping[str, str]] = Field(default_factory=dict)
+            mapping: Mapping[str, str] = Field(default_factory=dict)
 
         class OICSchemaMapping(FlextMeltanoModels.ArbitraryTypesModel):
             """Schema mapping payload model."""
