@@ -38,7 +38,7 @@ from flext_target_oracle_oic.target_config import FlextTargetOracleOicConfig
 
 class DummySingerTarget(SingerTarget):
     name = "dummy-target-oracle-oic"
-    config_jsonschema: ClassVar[Mapping[str, str | Mapping[str, t.StrMapping]]] = {
+    config_jsonschema: ClassVar[dict[str, str | Mapping[str, t.StrMapping]]] = {
         "type": "t.NormalizedValue",
         "properties": dict[str, t.StrMapping](),
     }

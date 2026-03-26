@@ -36,7 +36,7 @@ class DummySingerTarget(SingerTarget):
     """Minimal Singer target implementation for sink tests."""
 
     name = "dummy-target-oracle-oic"
-    config_jsonschema: ClassVar[Mapping[str, str | Mapping[str, t.StrMapping]]] = {
+    config_jsonschema: ClassVar[dict[str, str | Mapping[str, t.StrMapping]]] = {
         "type": "t.NormalizedValue",
         "properties": _DEFAULT_PROPERTIES,
     }
