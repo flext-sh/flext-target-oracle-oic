@@ -7,10 +7,9 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import MutableMapping
+from collections.abc import Mapping, MutableMapping
 
-import requests
-from requests import Response
+from flext_api import FlextApi, FlextApiSettings
 
 from flext_target_oracle_oic import FlextTargetOracleOicConfig, c, t
 
@@ -48,17 +47,32 @@ class FlextTargetOracleOicAuthenticator:
         if self._access_token is not None and (not force_refresh):
             return self._access_token
         try:
-            response: Response = requests.post(
-                str(self._config.oauth_token_url),
+            api_config = FlextApiSettings.model_validate({
+                "base_url": str(self._config.oauth_token_url),
+                "timeout": self._config.timeout,
+            })
+            response_result = FlextApi(api_config).post(
+                "",
                 data=self.build_token_request_data(),
                 headers=dict(self._config.get_oauth_headers()),
-                timeout=self._config.timeout,
             )
-            response.raise_for_status()
-        except requests.RequestException as exc:
+            if response_result.is_failure:
+                msg = f"Failed to request OAuth2 token: {response_result.error}"
+                raise RuntimeError(msg)
+            response = response_result.value
+            if response.status_code >= c.API.HTTP_ERROR_STATUS_THRESHOLD:
+                msg = f"Failed to request OAuth2 token: HTTP {response.status_code}"
+                raise RuntimeError(msg)
+        except (RuntimeError, TypeError, ValueError) as exc:
             msg = f"Failed to request OAuth2 token: {exc}"
             raise RuntimeError(msg) from exc
-        payload_raw: t.Dict = response.json()
+        payload = response.body
+        if not isinstance(payload, Mapping):
+            msg = "OAuth2 token response did not include a JSON object body"
+            raise TypeError(msg)
+        payload_raw: Mapping[str, t.ContainerValue] = {
+            str(key): value for key, value in payload.items()
+        }
         access_token = payload_raw.get("access_token")
         if not isinstance(access_token, str) or not access_token:
             msg = "OAuth2 token response did not include a valid access_token"
@@ -89,32 +103,7 @@ class FlextTargetOracleOicAuthenticator:
         return FlextTargetOracleOicConfig.model_json_schema()
 
 
-# Module-level aliases for backward compatibility
-def create_config_from_dict(
-    config_dict: t.ConfigurationMapping,
-) -> FlextTargetOracleOicConfig:
-    """Create FlextTargetOracleOicConfig from dictionary."""
-    return FlextTargetOracleOicAuthenticator.create_config_from_dict(config_dict)
-
-
-def create_config_with_env_overrides(
-    **overrides: t.Scalar,
-) -> FlextTargetOracleOicConfig:
-    """Create FlextTargetOracleOicConfig with environment variable overrides."""
-    return FlextTargetOracleOicAuthenticator.create_config_with_env_overrides(
-        **overrides,
-    )
-
-
-def create_singer_config_schema() -> t.FlatContainerMapping:
-    """Create Singer configuration schema from FlextTargetOracleOicConfig."""
-    return FlextTargetOracleOicAuthenticator.create_singer_config_schema()
-
-
 __all__: t.StrSequence = [
     "FlextTargetOracleOicAuthenticator",
     "FlextTargetOracleOicConfig",
-    "create_config_from_dict",
-    "create_config_with_env_overrides",
-    "create_singer_config_schema",
 ]

@@ -70,12 +70,7 @@ if TYPE_CHECKING:
         FlextTargetOracleOicLookupsSink,
         FlextTargetOracleOicPackagesSink,
     )
-    from flext_target_oracle_oic.target_config import (
-        FlextTargetOracleOicAuthenticator,
-        create_config_from_dict,
-        create_config_with_env_overrides,
-        create_singer_config_schema,
-    )
+    from flext_target_oracle_oic.target_config import FlextTargetOracleOicAuthenticator
     from flext_target_oracle_oic.typings import (
         FlextTargetOracleOicTypes,
         FlextTargetOracleOicTypes as t,
@@ -183,18 +178,6 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
     "application": ["flext_target_oracle_oic.application", ""],
     "c": ["flext_target_oracle_oic.constants", "FlextTargetOracleOicConstants"],
     "connection": ["flext_target_oracle_oic.connection", ""],
-    "create_config_from_dict": [
-        "flext_target_oracle_oic.target_config",
-        "create_config_from_dict",
-    ],
-    "create_config_with_env_overrides": [
-        "flext_target_oracle_oic.target_config",
-        "create_config_with_env_overrides",
-    ],
-    "create_singer_config_schema": [
-        "flext_target_oracle_oic.target_config",
-        "create_singer_config_schema",
-    ],
     "d": ["flext_meltano", "d"],
     "e": ["flext_meltano", "e"],
     "h": ["flext_meltano", "h"],
@@ -246,9 +229,6 @@ __all__ = [
     "application",
     "c",
     "connection",
-    "create_config_from_dict",
-    "create_config_with_env_overrides",
-    "create_singer_config_schema",
     "d",
     "e",
     "h",

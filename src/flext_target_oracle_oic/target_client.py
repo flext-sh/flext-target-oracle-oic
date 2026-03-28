@@ -7,14 +7,14 @@ from typing import ClassVar, override
 
 from flext_core import FlextLogger, r
 from flext_meltano import FlextMeltanoTargetAbstractions
-from singer_sdk import Sink
+from flext_meltano.singer.sdk import FlextMeltanoSingerSinkBase
 
 from flext_target_oracle_oic import c, t
 
 logger = FlextLogger(__name__)
 
 
-class FlextTargetOracleOicBaseSink(Sink):
+class FlextTargetOracleOicBaseSink(FlextMeltanoSingerSinkBase):
     """Base sink implementation used by OIC stream sinks."""
 
     @override
