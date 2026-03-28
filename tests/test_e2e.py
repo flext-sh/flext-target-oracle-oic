@@ -26,14 +26,14 @@ import pytest
 from singer_sdk.target_base import Target as SingerTarget
 
 from flext_target_oracle_oic import t
-from flext_target_oracle_oic.target_client import (
+from flext_target_oracle_oic.settings import FlextTargetOracleOicConfig
+from flext_target_oracle_oic.target import (
     FlextTargetOracleOic,
     FlextTargetOracleOicConnectionsSink,
     FlextTargetOracleOicIntegrationsSink,
     FlextTargetOracleOicLookupsSink,
     FlextTargetOracleOicPackagesSink,
 )
-from flext_target_oracle_oic.target_config import FlextTargetOracleOicConfig
 
 
 class DummySingerTarget(SingerTarget):

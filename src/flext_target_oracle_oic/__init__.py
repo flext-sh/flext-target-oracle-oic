@@ -63,19 +63,17 @@ if TYPE_CHECKING:
     from flext_target_oracle_oic.target import (
         FlextTargetOracleOic,
         FlextTargetOracleOicBaseSink,
-    )
-    from flext_target_oracle_oic.target_client import (
         FlextTargetOracleOicConnectionsSink,
         FlextTargetOracleOicIntegrationsSink,
         FlextTargetOracleOicLookupsSink,
         FlextTargetOracleOicPackagesSink,
     )
-    from flext_target_oracle_oic.target_config import FlextTargetOracleOicAuthenticator
     from flext_target_oracle_oic.typings import (
         FlextTargetOracleOicTypes,
         FlextTargetOracleOicTypes as t,
     )
     from flext_target_oracle_oic.utilities import (
+        FlextTargetOracleOicAuthenticator,
         FlextTargetOracleOicUtilities,
         FlextTargetOracleOicUtilities as u,
     )
@@ -83,7 +81,7 @@ if TYPE_CHECKING:
 _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
     "FlextTargetOracleOic": ["flext_target_oracle_oic.target", "FlextTargetOracleOic"],
     "FlextTargetOracleOicAuthenticator": [
-        "flext_target_oracle_oic.target_config",
+        "flext_target_oracle_oic.utilities",
         "FlextTargetOracleOicAuthenticator",
     ],
     "FlextTargetOracleOicBaseSink": [
@@ -103,7 +101,7 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
         "FlextTargetOracleOicConnectionSettings",
     ],
     "FlextTargetOracleOicConnectionsSink": [
-        "flext_target_oracle_oic.target_client",
+        "flext_target_oracle_oic.target",
         "FlextTargetOracleOicConnectionsSink",
     ],
     "FlextTargetOracleOicConstants": [
@@ -119,11 +117,11 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
         "FlextTargetOracleOicEntryManager",
     ],
     "FlextTargetOracleOicIntegrationsSink": [
-        "flext_target_oracle_oic.target_client",
+        "flext_target_oracle_oic.target",
         "FlextTargetOracleOicIntegrationsSink",
     ],
     "FlextTargetOracleOicLookupsSink": [
-        "flext_target_oracle_oic.target_client",
+        "flext_target_oracle_oic.target",
         "FlextTargetOracleOicLookupsSink",
     ],
     "FlextTargetOracleOicModels": [
@@ -135,7 +133,7 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
         "FlextTargetOracleOicOrchestrator",
     ],
     "FlextTargetOracleOicPackagesSink": [
-        "flext_target_oracle_oic.target_client",
+        "flext_target_oracle_oic.target",
         "FlextTargetOracleOicPackagesSink",
     ],
     "FlextTargetOracleOicProcessedRecord": [

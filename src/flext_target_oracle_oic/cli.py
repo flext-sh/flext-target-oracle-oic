@@ -2,6 +2,6 @@
 
 from __future__ import annotations
 
-from .target_client import main
+from .target import main
 
 __all__ = ["main"]
