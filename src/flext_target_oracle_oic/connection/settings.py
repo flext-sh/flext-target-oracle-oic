@@ -73,15 +73,7 @@ class FlextTargetOracleOicConnectionSettings(m):
         """Create configuration from dictionary using modern Pydantic patterns."""
         try:
             return cls(**data)
-        except (
-            ValueError,
-            TypeError,
-            KeyError,
-            AttributeError,
-            OSError,
-            RuntimeError,
-            ImportError,
-        ):
+        except c.Meltano.Singer.SAFE_EXCEPTIONS:
             logger.exception(
                 "Failed to create FlextTargetOracleOicConnectionSettings from dict",
             )
