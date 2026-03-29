@@ -80,90 +80,27 @@ if TYPE_CHECKING:
 
 _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
     "FlextTargetOracleOic": ["flext_target_oracle_oic.target", "FlextTargetOracleOic"],
-    "FlextTargetOracleOicAuthenticator": [
-        "flext_target_oracle_oic.utilities",
-        "FlextTargetOracleOicAuthenticator",
-    ],
-    "FlextTargetOracleOicBaseSink": [
-        "flext_target_oracle_oic.target",
-        "FlextTargetOracleOicBaseSink",
-    ],
-    "FlextTargetOracleOicConfig": [
-        "flext_target_oracle_oic.settings",
-        "FlextTargetOracleOicConfig",
-    ],
-    "FlextTargetOracleOicConnection": [
-        "flext_target_oracle_oic.connection.connection",
-        "FlextTargetOracleOicConnection",
-    ],
-    "FlextTargetOracleOicConnectionSettings": [
-        "flext_target_oracle_oic.connection.settings",
-        "FlextTargetOracleOicConnectionSettings",
-    ],
-    "FlextTargetOracleOicConnectionsSink": [
-        "flext_target_oracle_oic.target",
-        "FlextTargetOracleOicConnectionsSink",
-    ],
-    "FlextTargetOracleOicConstants": [
-        "flext_target_oracle_oic.constants",
-        "FlextTargetOracleOicConstants",
-    ],
-    "FlextTargetOracleOicDataTransformer": [
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "FlextTargetOracleOicDataTransformer",
-    ],
-    "FlextTargetOracleOicEntryManager": [
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "FlextTargetOracleOicEntryManager",
-    ],
-    "FlextTargetOracleOicIntegrationsSink": [
-        "flext_target_oracle_oic.target",
-        "FlextTargetOracleOicIntegrationsSink",
-    ],
-    "FlextTargetOracleOicLookupsSink": [
-        "flext_target_oracle_oic.target",
-        "FlextTargetOracleOicLookupsSink",
-    ],
-    "FlextTargetOracleOicModels": [
-        "flext_target_oracle_oic.models",
-        "FlextTargetOracleOicModels",
-    ],
-    "FlextTargetOracleOicOrchestrator": [
-        "flext_target_oracle_oic.application.orchestrator",
-        "FlextTargetOracleOicOrchestrator",
-    ],
-    "FlextTargetOracleOicPackagesSink": [
-        "flext_target_oracle_oic.target",
-        "FlextTargetOracleOicPackagesSink",
-    ],
-    "FlextTargetOracleOicProcessedRecord": [
-        "flext_target_oracle_oic.singer.processors",
-        "FlextTargetOracleOicProcessedRecord",
-    ],
-    "FlextTargetOracleOicProtocols": [
-        "flext_target_oracle_oic.protocols",
-        "FlextTargetOracleOicProtocols",
-    ],
-    "FlextTargetOracleOicRecordProcessor": [
-        "flext_target_oracle_oic.singer.processors",
-        "FlextTargetOracleOicRecordProcessor",
-    ],
-    "FlextTargetOracleOicSchemaMapper": [
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "FlextTargetOracleOicSchemaMapper",
-    ],
-    "FlextTargetOracleOicTypeConverter": [
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "FlextTargetOracleOicTypeConverter",
-    ],
-    "FlextTargetOracleOicTypes": [
-        "flext_target_oracle_oic.typings",
-        "FlextTargetOracleOicTypes",
-    ],
-    "FlextTargetOracleOicUtilities": [
-        "flext_target_oracle_oic.utilities",
-        "FlextTargetOracleOicUtilities",
-    ],
+    "FlextTargetOracleOicAuthenticator": ["flext_target_oracle_oic.utilities", "FlextTargetOracleOicAuthenticator"],
+    "FlextTargetOracleOicBaseSink": ["flext_target_oracle_oic.target", "FlextTargetOracleOicBaseSink"],
+    "FlextTargetOracleOicConfig": ["flext_target_oracle_oic.settings", "FlextTargetOracleOicConfig"],
+    "FlextTargetOracleOicConnection": ["flext_target_oracle_oic.connection.connection", "FlextTargetOracleOicConnection"],
+    "FlextTargetOracleOicConnectionSettings": ["flext_target_oracle_oic.connection.settings", "FlextTargetOracleOicConnectionSettings"],
+    "FlextTargetOracleOicConnectionsSink": ["flext_target_oracle_oic.target", "FlextTargetOracleOicConnectionsSink"],
+    "FlextTargetOracleOicConstants": ["flext_target_oracle_oic.constants", "FlextTargetOracleOicConstants"],
+    "FlextTargetOracleOicDataTransformer": ["flext_target_oracle_oic.patterns.oic_patterns", "FlextTargetOracleOicDataTransformer"],
+    "FlextTargetOracleOicEntryManager": ["flext_target_oracle_oic.patterns.oic_patterns", "FlextTargetOracleOicEntryManager"],
+    "FlextTargetOracleOicIntegrationsSink": ["flext_target_oracle_oic.target", "FlextTargetOracleOicIntegrationsSink"],
+    "FlextTargetOracleOicLookupsSink": ["flext_target_oracle_oic.target", "FlextTargetOracleOicLookupsSink"],
+    "FlextTargetOracleOicModels": ["flext_target_oracle_oic.models", "FlextTargetOracleOicModels"],
+    "FlextTargetOracleOicOrchestrator": ["flext_target_oracle_oic.application.orchestrator", "FlextTargetOracleOicOrchestrator"],
+    "FlextTargetOracleOicPackagesSink": ["flext_target_oracle_oic.target", "FlextTargetOracleOicPackagesSink"],
+    "FlextTargetOracleOicProcessedRecord": ["flext_target_oracle_oic.singer.processors", "FlextTargetOracleOicProcessedRecord"],
+    "FlextTargetOracleOicProtocols": ["flext_target_oracle_oic.protocols", "FlextTargetOracleOicProtocols"],
+    "FlextTargetOracleOicRecordProcessor": ["flext_target_oracle_oic.singer.processors", "FlextTargetOracleOicRecordProcessor"],
+    "FlextTargetOracleOicSchemaMapper": ["flext_target_oracle_oic.patterns.oic_patterns", "FlextTargetOracleOicSchemaMapper"],
+    "FlextTargetOracleOicTypeConverter": ["flext_target_oracle_oic.patterns.oic_patterns", "FlextTargetOracleOicTypeConverter"],
+    "FlextTargetOracleOicTypes": ["flext_target_oracle_oic.typings", "FlextTargetOracleOicTypes"],
+    "FlextTargetOracleOicUtilities": ["flext_target_oracle_oic.utilities", "FlextTargetOracleOicUtilities"],
     "__all__": ["flext_target_oracle_oic.__version__", "__all__"],
     "__author__": ["flext_target_oracle_oic.__version__", "__author__"],
     "__author_email__": ["flext_target_oracle_oic.__version__", "__author_email__"],
