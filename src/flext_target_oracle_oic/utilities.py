@@ -136,7 +136,7 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
                     if response.status_code >= c.API.HTTP_ERROR_STATUS_THRESHOLD:
                         msg = f"Failed to request OAuth2 token: HTTP {response.status_code}"
                         raise RuntimeError(msg)
-                except (RuntimeError, TypeError, ValueError) as exc:
+                except (*c.Meltano.Singer.SAFE_EXCEPTIONS, RuntimeError) as exc:
                     msg = f"Failed to request OAuth2 token: {exc}"
                     raise RuntimeError(msg) from exc
                 payload = response.body
