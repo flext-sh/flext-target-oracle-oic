@@ -13,84 +13,73 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Mapping, MutableMapping, Sequence
+from collections.abc import Mapping, Sequence
 from typing import TYPE_CHECKING
 
-from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
+from flext_core.lazy import install_lazy_exports
 
 if TYPE_CHECKING:
-    from flext_core import FlextTypes
     from flext_tests import d, e, h, r, s, x
 
     from tests import (
-        constants,
-        models,
-        protocols,
-        test_cli_entrypoint,
-        test_e2e,
-        test_target,
-        typings,
-        utilities,
+        constants as constants,
+        models as models,
+        protocols as protocols,
+        test_cli_entrypoint as test_cli_entrypoint,
+        test_e2e as test_e2e,
+        test_target as test_target,
+        typings as typings,
+        utilities as utilities,
     )
     from tests.constants import (
-        FlextTargetOracleOicTestConstants,
+        FlextTargetOracleOicTestConstants as FlextTargetOracleOicTestConstants,
         FlextTargetOracleOicTestConstants as c,
     )
     from tests.models import (
-        FlextTargetOracleOicTestModels,
+        FlextTargetOracleOicTestModels as FlextTargetOracleOicTestModels,
         FlextTargetOracleOicTestModels as m,
-        tm,
+        tm as tm,
     )
     from tests.protocols import (
-        FlextTargetOracleOicTestProtocols,
+        FlextTargetOracleOicTestProtocols as FlextTargetOracleOicTestProtocols,
         FlextTargetOracleOicTestProtocols as p,
     )
-    from tests.test_cli_entrypoint import test_main_entrypoint_returns_none
+    from tests.test_cli_entrypoint import (
+        test_main_entrypoint_returns_none as test_main_entrypoint_returns_none,
+    )
     from tests.test_e2e import (
-        TestTargetOracleOicE2E,
-        load_test_config,
-        target,
-        test_config,
-        test_target_smoke_class,
+        TestTargetOracleOicE2E as TestTargetOracleOicE2E,
+        load_test_config as load_test_config,
+        target as target,
+        test_config as test_config,
+        test_target_smoke_class as test_target_smoke_class,
     )
     from tests.test_target import (
-        AuthTestConfig,
-        DummySingerTarget,
-        TestTargetOracleOic,
-        singer_target,
-        test_oic_authenticator_builds_payload,
-        test_oic_authenticator_omits_optional_scope_and_audience,
-        test_oic_authenticator_rejects_invalid_token_response,
+        AuthTestConfig as AuthTestConfig,
+        DummySingerTarget as DummySingerTarget,
+        TestTargetOracleOic as TestTargetOracleOic,
+        singer_target as singer_target,
+        test_oic_authenticator_builds_payload as test_oic_authenticator_builds_payload,
+        test_oic_authenticator_omits_optional_scope_and_audience as test_oic_authenticator_omits_optional_scope_and_audience,
+        test_oic_authenticator_rejects_invalid_token_response as test_oic_authenticator_rejects_invalid_token_response,
     )
     from tests.typings import (
-        FlextTargetOracleOicTestTypes,
+        FlextTargetOracleOicTestTypes as FlextTargetOracleOicTestTypes,
         FlextTargetOracleOicTestTypes as t,
     )
     from tests.utilities import (
-        FlextTargetOracleOicTestUtilities,
+        FlextTargetOracleOicTestUtilities as FlextTargetOracleOicTestUtilities,
         FlextTargetOracleOicTestUtilities as u,
     )
 
 _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
     "AuthTestConfig": ["tests.test_target", "AuthTestConfig"],
     "DummySingerTarget": ["tests.test_target", "DummySingerTarget"],
-    "FlextTargetOracleOicTestConstants": [
-        "tests.constants",
-        "FlextTargetOracleOicTestConstants",
-    ],
-    "FlextTargetOracleOicTestModels": [
-        "tests.models",
-        "FlextTargetOracleOicTestModels",
-    ],
-    "FlextTargetOracleOicTestProtocols": [
-        "tests.protocols",
-        "FlextTargetOracleOicTestProtocols",
-    ],
+    "FlextTargetOracleOicTestConstants": ["tests.constants", "FlextTargetOracleOicTestConstants"],
+    "FlextTargetOracleOicTestModels": ["tests.models", "FlextTargetOracleOicTestModels"],
+    "FlextTargetOracleOicTestProtocols": ["tests.protocols", "FlextTargetOracleOicTestProtocols"],
     "FlextTargetOracleOicTestTypes": ["tests.typings", "FlextTargetOracleOicTestTypes"],
-    "FlextTargetOracleOicTestUtilities": [
-        "tests.utilities",
-        "FlextTargetOracleOicTestUtilities",
-    ],
+    "FlextTargetOracleOicTestUtilities": ["tests.utilities", "FlextTargetOracleOicTestUtilities"],
     "TestTargetOracleOic": ["tests.test_target", "TestTargetOracleOic"],
     "TestTargetOracleOicE2E": ["tests.test_e2e", "TestTargetOracleOicE2E"],
     "c": ["tests.constants", "FlextTargetOracleOicTestConstants"],
@@ -111,22 +100,10 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
     "test_cli_entrypoint": ["tests.test_cli_entrypoint", ""],
     "test_config": ["tests.test_e2e", "test_config"],
     "test_e2e": ["tests.test_e2e", ""],
-    "test_main_entrypoint_returns_none": [
-        "tests.test_cli_entrypoint",
-        "test_main_entrypoint_returns_none",
-    ],
-    "test_oic_authenticator_builds_payload": [
-        "tests.test_target",
-        "test_oic_authenticator_builds_payload",
-    ],
-    "test_oic_authenticator_omits_optional_scope_and_audience": [
-        "tests.test_target",
-        "test_oic_authenticator_omits_optional_scope_and_audience",
-    ],
-    "test_oic_authenticator_rejects_invalid_token_response": [
-        "tests.test_target",
-        "test_oic_authenticator_rejects_invalid_token_response",
-    ],
+    "test_main_entrypoint_returns_none": ["tests.test_cli_entrypoint", "test_main_entrypoint_returns_none"],
+    "test_oic_authenticator_builds_payload": ["tests.test_target", "test_oic_authenticator_builds_payload"],
+    "test_oic_authenticator_omits_optional_scope_and_audience": ["tests.test_target", "test_oic_authenticator_omits_optional_scope_and_audience"],
+    "test_oic_authenticator_rejects_invalid_token_response": ["tests.test_target", "test_oic_authenticator_rejects_invalid_token_response"],
     "test_target": ["tests.test_target", ""],
     "test_target_smoke_class": ["tests.test_e2e", "test_target_smoke_class"],
     "tm": ["tests.models", "tm"],
@@ -136,7 +113,7 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
     "x": ["flext_tests", "x"],
 }
 
-__all__ = [
+_EXPORTS: Sequence[str] = [
     "AuthTestConfig",
     "DummySingerTarget",
     "FlextTargetOracleOicTestConstants",
@@ -178,41 +155,4 @@ __all__ = [
 ]
 
 
-_LAZY_CACHE: MutableMapping[str, FlextTypes.ModuleExport] = {}
-
-
-def __getattr__(name: str) -> FlextTypes.ModuleExport:
-    """Lazy-load module attributes on first access (PEP 562).
-
-    A local cache ``_LAZY_CACHE`` persists resolved objects across repeated
-    accesses during process lifetime.
-
-    Args:
-        name: Attribute name requested by dir()/import.
-
-    Returns:
-        Lazy-loaded module export type.
-
-    Raises:
-        AttributeError: If attribute not registered.
-
-    """
-    if name in _LAZY_CACHE:
-        return _LAZY_CACHE[name]
-
-    value = lazy_getattr(name, _LAZY_IMPORTS, globals(), __name__)
-    _LAZY_CACHE[name] = value
-    return value
-
-
-def __dir__() -> Sequence[str]:
-    """Return list of available attributes for dir() and autocomplete.
-
-    Returns:
-        List of public names from module exports.
-
-    """
-    return sorted(__all__)
-
-
-cleanup_submodule_namespace(__name__, _LAZY_IMPORTS)
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, _EXPORTS)
