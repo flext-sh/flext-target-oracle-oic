@@ -25,57 +25,49 @@ if TYPE_CHECKING:
     from flext_meltano import *
 
     from flext_target_oracle_oic import (
-        application,
         cli,
-        connection,
         constants,
         models,
-        patterns,
         protocols,
         settings,
-        singer,
         target,
         typings,
         utilities,
     )
-    from flext_target_oracle_oic.application import orchestrator
-    from flext_target_oracle_oic.application.orchestrator import *
+    from flext_target_oracle_oic.application import *
     from flext_target_oracle_oic.cli import *
-    from flext_target_oracle_oic.connection.connection import *
-    from flext_target_oracle_oic.connection.settings import *
+    from flext_target_oracle_oic.connection import *
     from flext_target_oracle_oic.constants import *
     from flext_target_oracle_oic.models import *
-    from flext_target_oracle_oic.patterns import oic_patterns
-    from flext_target_oracle_oic.patterns.oic_patterns import *
+    from flext_target_oracle_oic.patterns import *
     from flext_target_oracle_oic.protocols import *
     from flext_target_oracle_oic.settings import *
-    from flext_target_oracle_oic.singer import processors
-    from flext_target_oracle_oic.singer.processors import *
+    from flext_target_oracle_oic.singer import *
     from flext_target_oracle_oic.target import *
     from flext_target_oracle_oic.typings import *
     from flext_target_oracle_oic.utilities import *
 
-from flext_target_oracle_oic.application import _LAZY_IMPORTS as _APPLICATION_LAZY
-from flext_target_oracle_oic.connection import _LAZY_IMPORTS as _CONNECTION_LAZY
-from flext_target_oracle_oic.patterns import _LAZY_IMPORTS as _PATTERNS_LAZY
-from flext_target_oracle_oic.singer import _LAZY_IMPORTS as _SINGER_LAZY
-
 _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
-    **_APPLICATION_LAZY,
-    **_CONNECTION_LAZY,
-    **_PATTERNS_LAZY,
-    **_SINGER_LAZY,
     "FlextTargetOracleOic": "flext_target_oracle_oic.target",
     "FlextTargetOracleOicAuthenticator": "flext_target_oracle_oic.utilities",
     "FlextTargetOracleOicBaseSink": "flext_target_oracle_oic.target",
     "FlextTargetOracleOicConfig": "flext_target_oracle_oic.settings",
+    "FlextTargetOracleOicConnection": "flext_target_oracle_oic.connection.connection",
+    "FlextTargetOracleOicConnectionSettings": "flext_target_oracle_oic.connection.settings",
     "FlextTargetOracleOicConnectionsSink": "flext_target_oracle_oic.target",
     "FlextTargetOracleOicConstants": "flext_target_oracle_oic.constants",
+    "FlextTargetOracleOicDataTransformer": "flext_target_oracle_oic.patterns.oic_patterns",
+    "FlextTargetOracleOicEntryManager": "flext_target_oracle_oic.patterns.oic_patterns",
     "FlextTargetOracleOicIntegrationsSink": "flext_target_oracle_oic.target",
     "FlextTargetOracleOicLookupsSink": "flext_target_oracle_oic.target",
     "FlextTargetOracleOicModels": "flext_target_oracle_oic.models",
+    "FlextTargetOracleOicOrchestrator": "flext_target_oracle_oic.application.orchestrator",
     "FlextTargetOracleOicPackagesSink": "flext_target_oracle_oic.target",
+    "FlextTargetOracleOicProcessedRecord": "flext_target_oracle_oic.singer.processors",
     "FlextTargetOracleOicProtocols": "flext_target_oracle_oic.protocols",
+    "FlextTargetOracleOicRecordProcessor": "flext_target_oracle_oic.singer.processors",
+    "FlextTargetOracleOicSchemaMapper": "flext_target_oracle_oic.patterns.oic_patterns",
+    "FlextTargetOracleOicTypeConverter": "flext_target_oracle_oic.patterns.oic_patterns",
     "FlextTargetOracleOicTypes": "flext_target_oracle_oic.typings",
     "FlextTargetOracleOicUtilities": "flext_target_oracle_oic.utilities",
     "application": "flext_target_oracle_oic.application",
@@ -86,11 +78,15 @@ _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
     "d": "flext_meltano",
     "e": "flext_meltano",
     "h": "flext_meltano",
+    "logger": "flext_target_oracle_oic.connection.settings",
     "m": ["flext_target_oracle_oic.models", "FlextTargetOracleOicModels"],
     "main": "flext_target_oracle_oic.cli",
     "models": "flext_target_oracle_oic.models",
+    "oic_patterns": "flext_target_oracle_oic.patterns.oic_patterns",
+    "orchestrator": "flext_target_oracle_oic.application.orchestrator",
     "p": ["flext_target_oracle_oic.protocols", "FlextTargetOracleOicProtocols"],
     "patterns": "flext_target_oracle_oic.patterns",
+    "processors": "flext_target_oracle_oic.singer.processors",
     "protocols": "flext_target_oracle_oic.protocols",
     "r": "flext_meltano",
     "s": "flext_meltano",
