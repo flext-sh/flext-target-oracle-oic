@@ -16,7 +16,6 @@ from typing import TYPE_CHECKING
 from flext_core.lazy import install_lazy_exports
 
 if TYPE_CHECKING:
-    from flext_target_oracle_oic.application import orchestrator
     from flext_target_oracle_oic.application.orchestrator import *
 
 _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
@@ -25,4 +24,4 @@ _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
 }
 
 
-install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, sorted(_LAZY_IMPORTS))
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS)
