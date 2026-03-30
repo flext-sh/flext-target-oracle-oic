@@ -9,8 +9,7 @@ from flext_core import r
 from flext_meltano import FlextMeltanoUtilities
 from flext_oracle_oic import FlextOracleOicUtilities
 
-from flext_target_oracle_oic import c, m, t
-from flext_target_oracle_oic.settings import FlextTargetOracleOicConfig
+from flext_target_oracle_oic import FlextTargetOracleOicConfig, c, m, t
 
 
 class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtilities):

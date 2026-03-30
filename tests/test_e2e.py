@@ -25,14 +25,14 @@ from typing import ClassVar
 import pytest
 from singer_sdk.target_base import Target as SingerTarget
 
-from flext_target_oracle_oic import t
-from flext_target_oracle_oic.settings import FlextTargetOracleOicConfig
-from flext_target_oracle_oic.target import (
+from flext_target_oracle_oic import (
     FlextTargetOracleOic,
+    FlextTargetOracleOicConfig,
     FlextTargetOracleOicConnectionsSink,
     FlextTargetOracleOicIntegrationsSink,
     FlextTargetOracleOicLookupsSink,
     FlextTargetOracleOicPackagesSink,
+    t,
 )
 
 

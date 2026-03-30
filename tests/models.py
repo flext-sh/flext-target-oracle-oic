@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from flext_tests import FlextTestsModels
 
-from flext_target_oracle_oic.models import FlextTargetOracleOicModels
+from flext_target_oracle_oic import FlextTargetOracleOicModels
 
 
 class FlextTargetOracleOicTestModels(FlextTestsModels, FlextTargetOracleOicModels):

@@ -16,7 +16,6 @@ if TYPE_CHECKING:
 
     from flext_target_oracle_oic import application, connection, patterns, singer
     from flext_target_oracle_oic.__version__ import (
-        __all__,
         __author__,
         __author_email__,
         __description__,
@@ -164,7 +163,6 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
         "flext_target_oracle_oic.utilities",
         "FlextTargetOracleOicUtilities",
     ],
-    "__all__": ["flext_target_oracle_oic.__version__", "__all__"],
     "__author__": ["flext_target_oracle_oic.__version__", "__author__"],
     "__author_email__": ["flext_target_oracle_oic.__version__", "__author_email__"],
     "__description__": ["flext_target_oracle_oic.__version__", "__description__"],
@@ -215,7 +213,6 @@ __all__ = [
     "FlextTargetOracleOicTypeConverter",
     "FlextTargetOracleOicTypes",
     "FlextTargetOracleOicUtilities",
-    "__all__",
     "__author__",
     "__author_email__",
     "__description__",

@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from flext_tests import FlextTestsUtilities
 
-from flext_target_oracle_oic.utilities import FlextTargetOracleOicUtilities
+from flext_target_oracle_oic import FlextTargetOracleOicUtilities
 
 
 class FlextTargetOracleOicTestUtilities(

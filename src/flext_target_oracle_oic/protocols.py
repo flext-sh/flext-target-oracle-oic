@@ -29,7 +29,7 @@ class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtoco
     - PROVIDES: Root-level alias `p` for convenient access
 
     Usage:
-    from flext_target_oracle_oic.protocols import p
+    from flext_target_oracle_oic import p
 
     # Foundation protocols (inherited)
     result: p.Result[str]

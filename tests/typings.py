@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from flext_tests import FlextTestsTypes
 
-from flext_target_oracle_oic.typings import FlextTargetOracleOicTypes
+from flext_target_oracle_oic import FlextTargetOracleOicTypes
 
 
 class FlextTargetOracleOicTestTypes(FlextTestsTypes, FlextTargetOracleOicTypes):
