@@ -18,6 +18,7 @@ from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 if TYPE_CHECKING:
     from flext_core import FlextTypes
 
+    from flext_target_oracle_oic.connection import connection, settings
     from flext_target_oracle_oic.connection.connection import (
         FlextTargetOracleOicConnection,
     )
@@ -35,13 +36,17 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
         "flext_target_oracle_oic.connection.settings",
         "FlextTargetOracleOicConnectionSettings",
     ],
+    "connection": ["flext_target_oracle_oic.connection.connection", ""],
     "logger": ["flext_target_oracle_oic.connection.settings", "logger"],
+    "settings": ["flext_target_oracle_oic.connection.settings", ""],
 }
 
 __all__ = [
     "FlextTargetOracleOicConnection",
     "FlextTargetOracleOicConnectionSettings",
+    "connection",
     "logger",
+    "settings",
 ]
 
 

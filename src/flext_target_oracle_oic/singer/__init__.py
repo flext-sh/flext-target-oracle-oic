@@ -18,6 +18,7 @@ from flext_core.lazy import cleanup_submodule_namespace, lazy_getattr
 if TYPE_CHECKING:
     from flext_core import FlextTypes
 
+    from flext_target_oracle_oic.singer import processors
     from flext_target_oracle_oic.singer.processors import (
         FlextTargetOracleOicProcessedRecord,
         FlextTargetOracleOicRecordProcessor,
@@ -32,11 +33,13 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
         "flext_target_oracle_oic.singer.processors",
         "FlextTargetOracleOicRecordProcessor",
     ],
+    "processors": ["flext_target_oracle_oic.singer.processors", ""],
 }
 
 __all__ = [
     "FlextTargetOracleOicProcessedRecord",
     "FlextTargetOracleOicRecordProcessor",
+    "processors",
 ]
 
 

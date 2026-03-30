@@ -25,7 +25,21 @@ if TYPE_CHECKING:
     from flext_core import FlextTypes
     from flext_meltano import d, e, h, r, s, x
 
-    from flext_target_oracle_oic import application, connection, patterns, singer
+    from flext_target_oracle_oic import (
+        application,
+        cli,
+        connection,
+        constants,
+        models,
+        patterns,
+        protocols,
+        settings,
+        singer,
+        target,
+        typings,
+        utilities,
+    )
+    from flext_target_oracle_oic.application import orchestrator
     from flext_target_oracle_oic.application.orchestrator import (
         FlextTargetOracleOicOrchestrator,
     )
@@ -45,6 +59,7 @@ if TYPE_CHECKING:
         FlextTargetOracleOicModels,
         FlextTargetOracleOicModels as m,
     )
+    from flext_target_oracle_oic.patterns import oic_patterns
     from flext_target_oracle_oic.patterns.oic_patterns import (
         FlextTargetOracleOicDataTransformer,
         FlextTargetOracleOicEntryManager,
@@ -56,6 +71,7 @@ if TYPE_CHECKING:
         FlextTargetOracleOicProtocols as p,
     )
     from flext_target_oracle_oic.settings import FlextTargetOracleOicConfig
+    from flext_target_oracle_oic.singer import processors
     from flext_target_oracle_oic.singer.processors import (
         FlextTargetOracleOicProcessedRecord,
         FlextTargetOracleOicRecordProcessor,
@@ -166,20 +182,31 @@ _LAZY_IMPORTS: Mapping[str, Sequence[str]] = {
     ],
     "application": ["flext_target_oracle_oic.application", ""],
     "c": ["flext_target_oracle_oic.constants", "FlextTargetOracleOicConstants"],
+    "cli": ["flext_target_oracle_oic.cli", ""],
     "connection": ["flext_target_oracle_oic.connection", ""],
+    "constants": ["flext_target_oracle_oic.constants", ""],
     "d": ["flext_meltano", "d"],
     "e": ["flext_meltano", "e"],
     "h": ["flext_meltano", "h"],
     "logger": ["flext_target_oracle_oic.connection.settings", "logger"],
     "m": ["flext_target_oracle_oic.models", "FlextTargetOracleOicModels"],
     "main": ["flext_target_oracle_oic.cli", "main"],
+    "models": ["flext_target_oracle_oic.models", ""],
+    "oic_patterns": ["flext_target_oracle_oic.patterns.oic_patterns", ""],
+    "orchestrator": ["flext_target_oracle_oic.application.orchestrator", ""],
     "p": ["flext_target_oracle_oic.protocols", "FlextTargetOracleOicProtocols"],
     "patterns": ["flext_target_oracle_oic.patterns", ""],
+    "processors": ["flext_target_oracle_oic.singer.processors", ""],
+    "protocols": ["flext_target_oracle_oic.protocols", ""],
     "r": ["flext_meltano", "r"],
     "s": ["flext_meltano", "s"],
+    "settings": ["flext_target_oracle_oic.settings", ""],
     "singer": ["flext_target_oracle_oic.singer", ""],
     "t": ["flext_target_oracle_oic.typings", "FlextTargetOracleOicTypes"],
+    "target": ["flext_target_oracle_oic.target", ""],
+    "typings": ["flext_target_oracle_oic.typings", ""],
     "u": ["flext_target_oracle_oic.utilities", "FlextTargetOracleOicUtilities"],
+    "utilities": ["flext_target_oracle_oic.utilities", ""],
     "x": ["flext_meltano", "x"],
 }
 
@@ -216,20 +243,31 @@ __all__ = [
     "__version_info__",
     "application",
     "c",
+    "cli",
     "connection",
+    "constants",
     "d",
     "e",
     "h",
     "logger",
     "m",
     "main",
+    "models",
+    "oic_patterns",
+    "orchestrator",
     "p",
     "patterns",
+    "processors",
+    "protocols",
     "r",
     "s",
+    "settings",
     "singer",
     "t",
+    "target",
+    "typings",
     "u",
+    "utilities",
     "x",
 ]
 
