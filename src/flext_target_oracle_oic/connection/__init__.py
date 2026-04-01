@@ -18,8 +18,14 @@ from flext_core.lazy import install_lazy_exports
 if _TYPE_CHECKING:
     from flext_core import FlextTypes
 
-    from flext_target_oracle_oic.connection.connection import *
-    from flext_target_oracle_oic.connection.settings import *
+    from flext_target_oracle_oic.connection import connection, settings
+    from flext_target_oracle_oic.connection.connection import (
+        FlextTargetOracleOicConnection,
+    )
+    from flext_target_oracle_oic.connection.settings import (
+        FlextTargetOracleOicConnectionSettings,
+        logger,
+    )
 
 _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
     "FlextTargetOracleOicConnection": "flext_target_oracle_oic.connection.connection",

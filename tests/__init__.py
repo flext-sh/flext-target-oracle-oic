@@ -22,9 +22,29 @@ if _TYPE_CHECKING:
     from flext_core import FlextTypes
     from flext_tests import d, e, h, r, s, x
 
-    from tests.constants import *
-    from tests.models import *
-    from tests.protocols import *
+    from tests import (
+        constants,
+        models,
+        protocols,
+        test_cli_entrypoint,
+        test_e2e,
+        test_target,
+        typings,
+        utilities,
+    )
+    from tests.constants import (
+        FlextTargetOracleOicTestConstants,
+        FlextTargetOracleOicTestConstants as c,
+    )
+    from tests.models import (
+        FlextTargetOracleOicTestModels,
+        FlextTargetOracleOicTestModels as m,
+        tm,
+    )
+    from tests.protocols import (
+        FlextTargetOracleOicTestProtocols,
+        FlextTargetOracleOicTestProtocols as p,
+    )
     from tests.test_cli_entrypoint import test_main_entrypoint_returns_none
     from tests.test_e2e import (
         TestTargetOracleOicE2E,
@@ -42,8 +62,14 @@ if _TYPE_CHECKING:
         test_oic_authenticator_omits_optional_scope_and_audience,
         test_oic_authenticator_rejects_invalid_token_response,
     )
-    from tests.typings import *
-    from tests.utilities import *
+    from tests.typings import (
+        FlextTargetOracleOicTestTypes,
+        FlextTargetOracleOicTestTypes as t,
+    )
+    from tests.utilities import (
+        FlextTargetOracleOicTestUtilities,
+        FlextTargetOracleOicTestUtilities as u,
+    )
 
 _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
     "AuthTestConfig": "tests.test_target",

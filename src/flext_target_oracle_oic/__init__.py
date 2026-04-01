@@ -25,18 +25,72 @@ if _TYPE_CHECKING:
     from flext_core import FlextTypes
     from flext_meltano import d, e, h, r, s, x
 
-    from flext_target_oracle_oic.application import *
-    from flext_target_oracle_oic.cli import *
-    from flext_target_oracle_oic.connection import *
-    from flext_target_oracle_oic.constants import *
-    from flext_target_oracle_oic.models import *
-    from flext_target_oracle_oic.patterns import *
-    from flext_target_oracle_oic.protocols import *
-    from flext_target_oracle_oic.settings import *
-    from flext_target_oracle_oic.singer import *
-    from flext_target_oracle_oic.target import *
-    from flext_target_oracle_oic.typings import *
-    from flext_target_oracle_oic.utilities import *
+    from flext_target_oracle_oic import (
+        application,
+        cli,
+        connection,
+        constants,
+        models,
+        patterns,
+        protocols,
+        settings,
+        singer,
+        target,
+        typings,
+        utilities,
+    )
+    from flext_target_oracle_oic.application import (
+        FlextTargetOracleOicOrchestrator,
+        orchestrator,
+    )
+    from flext_target_oracle_oic.cli import main
+    from flext_target_oracle_oic.connection import (
+        FlextTargetOracleOicConnection,
+        FlextTargetOracleOicConnectionSettings,
+        logger,
+    )
+    from flext_target_oracle_oic.constants import (
+        FlextTargetOracleOicConstants,
+        FlextTargetOracleOicConstants as c,
+    )
+    from flext_target_oracle_oic.models import (
+        FlextTargetOracleOicModels,
+        FlextTargetOracleOicModels as m,
+    )
+    from flext_target_oracle_oic.patterns import (
+        FlextTargetOracleOicDataTransformer,
+        FlextTargetOracleOicEntryManager,
+        FlextTargetOracleOicSchemaMapper,
+        FlextTargetOracleOicTypeConverter,
+        oic_patterns,
+    )
+    from flext_target_oracle_oic.protocols import (
+        FlextTargetOracleOicProtocols,
+        FlextTargetOracleOicProtocols as p,
+    )
+    from flext_target_oracle_oic.settings import FlextTargetOracleOicConfig
+    from flext_target_oracle_oic.singer import (
+        FlextTargetOracleOicProcessedRecord,
+        FlextTargetOracleOicRecordProcessor,
+        processors,
+    )
+    from flext_target_oracle_oic.target import (
+        FlextTargetOracleOic,
+        FlextTargetOracleOicBaseSink,
+        FlextTargetOracleOicConnectionsSink,
+        FlextTargetOracleOicIntegrationsSink,
+        FlextTargetOracleOicLookupsSink,
+        FlextTargetOracleOicPackagesSink,
+    )
+    from flext_target_oracle_oic.typings import (
+        FlextTargetOracleOicTypes,
+        FlextTargetOracleOicTypes as t,
+    )
+    from flext_target_oracle_oic.utilities import (
+        FlextTargetOracleOicAuthenticator,
+        FlextTargetOracleOicUtilities,
+        FlextTargetOracleOicUtilities as u,
+    )
 
 _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = merge_lazy_imports(
     (
