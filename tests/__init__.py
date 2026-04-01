@@ -25,9 +25,23 @@ if _TYPE_CHECKING:
     from tests.constants import *
     from tests.models import *
     from tests.protocols import *
-    from tests.test_cli_entrypoint import *
-    from tests.test_e2e import *
-    from tests.test_target import *
+    from tests.test_cli_entrypoint import test_main_entrypoint_returns_none
+    from tests.test_e2e import (
+        TestTargetOracleOicE2E,
+        load_test_config,
+        target,
+        test_config,
+        test_target_smoke_class,
+    )
+    from tests.test_target import (
+        AuthTestConfig,
+        DummySingerTarget,
+        TestTargetOracleOic,
+        singer_target,
+        test_oic_authenticator_builds_payload,
+        test_oic_authenticator_omits_optional_scope_and_audience,
+        test_oic_authenticator_rejects_invalid_token_response,
+    )
     from tests.typings import *
     from tests.utilities import *
 
