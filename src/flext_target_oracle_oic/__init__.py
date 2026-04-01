@@ -10,10 +10,21 @@ from typing import TYPE_CHECKING as _TYPE_CHECKING
 
 from flext_core.lazy import install_lazy_exports, merge_lazy_imports
 
+from flext_target_oracle_oic.__version__ import (
+    __author__,
+    __author_email__,
+    __description__,
+    __license__,
+    __title__,
+    __url__,
+    __version__,
+    __version_info__,
+)
+
 if _TYPE_CHECKING:
+    from flext_core import FlextTypes
     from flext_meltano import d, e, h, r, s, x
 
-    from flext_target_oracle_oic.__version__ import *
     from flext_target_oracle_oic.application import *
     from flext_target_oracle_oic.cli import *
     from flext_target_oracle_oic.connection import *
@@ -48,14 +59,6 @@ _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = merge_lazy_imports(
         "FlextTargetOracleOicProtocols": "flext_target_oracle_oic.protocols",
         "FlextTargetOracleOicTypes": "flext_target_oracle_oic.typings",
         "FlextTargetOracleOicUtilities": "flext_target_oracle_oic.utilities",
-        "__author__": "flext_target_oracle_oic.__version__",
-        "__author_email__": "flext_target_oracle_oic.__version__",
-        "__description__": "flext_target_oracle_oic.__version__",
-        "__license__": "flext_target_oracle_oic.__version__",
-        "__title__": "flext_target_oracle_oic.__version__",
-        "__url__": "flext_target_oracle_oic.__version__",
-        "__version__": "flext_target_oracle_oic.__version__",
-        "__version_info__": "flext_target_oracle_oic.__version__",
         "application": "flext_target_oracle_oic.application",
         "c": ("flext_target_oracle_oic.constants", "FlextTargetOracleOicConstants"),
         "cli": "flext_target_oracle_oic.cli",
@@ -84,4 +87,18 @@ _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = merge_lazy_imports(
 )
 
 
-install_lazy_exports(__name__, globals(), _LAZY_IMPORTS)
+install_lazy_exports(
+    __name__,
+    globals(),
+    _LAZY_IMPORTS,
+    [
+        "__author__",
+        "__author_email__",
+        "__description__",
+        "__license__",
+        "__title__",
+        "__url__",
+        "__version__",
+        "__version_info__",
+    ],
+)
