@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping, MutableMapping
+from collections.abc import Mapping
 
 from flext_api import FlextApi, FlextApiSettings
 from flext_core import r
@@ -80,7 +80,7 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
 
             def build_token_request_data(self) -> t.StrMapping:
                 """Build the payload for requesting an OAuth2 token."""
-                payload: MutableMapping[str, str] = {
+                payload: t.MutableStrMapping = {
                     "grant_type": "client_credentials",
                     "client_id": self._config.oauth_client_id,
                     "client_secret": self._config.get_oauth_client_secret_value(),
@@ -119,7 +119,7 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
                 if not isinstance(payload, Mapping):
                     msg = "OAuth2 token response did not include a JSON object body"
                     raise TypeError(msg)
-                payload_raw: Mapping[str, t.ContainerValue] = {
+                payload_raw: t.ContainerValueMapping = {
                     str(key): value for key, value in payload.items()
                 }
                 access_token = payload_raw.get("access_token")

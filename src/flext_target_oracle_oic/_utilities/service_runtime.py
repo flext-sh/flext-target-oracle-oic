@@ -48,7 +48,7 @@ class FlextTargetOracleOicServiceRuntime:
     @classmethod
     def normalize_singer_mapping(
         cls,
-        source: Mapping[str, t.NormalizedValue],
+        source: t.ContainerMapping,
     ) -> dict[str, t.ContainerValue]:
         """Normalize a Singer payload mapping to the OIC runtime contract."""
         normalized: dict[str, t.ContainerValue] = {}

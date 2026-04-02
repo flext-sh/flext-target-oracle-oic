@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping
 from enum import StrEnum, unique
 
 from pydantic import Field
@@ -80,7 +79,7 @@ class FlextTargetOracleOicModels(FlextMeltanoModels, FlextOracleOicModels):
 
             source_stream: t.NonEmptyStr
             target_entity: t.NonEmptyStr
-            mapping: Mapping[str, str] = Field(default_factory=dict)
+            mapping: t.StrMapping = Field(default_factory=dict)
 
         class OICSchemaMapping(FlextMeltanoModels.ArbitraryTypesModel):
             """Schema mapping payload model."""
