@@ -17,14 +17,13 @@ from flext_core.lazy import install_lazy_exports
 
 if _TYPE_CHECKING:
     from flext_core import FlextTypes
-
     from flext_target_oracle_oic.singer import processors
     from flext_target_oracle_oic.singer.processors import (
         FlextTargetOracleOicProcessedRecord,
         FlextTargetOracleOicRecordProcessor,
     )
 
-_LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
+_LAZY_IMPORTS: FlextTypes.LazyImportIndex = {
     "FlextTargetOracleOicProcessedRecord": "flext_target_oracle_oic.singer.processors",
     "FlextTargetOracleOicRecordProcessor": "flext_target_oracle_oic.singer.processors",
     "processors": "flext_target_oracle_oic.singer.processors",

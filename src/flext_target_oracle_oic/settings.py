@@ -10,9 +10,9 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Annotated
 
-from flext_core import FlextSettings
 from pydantic import Field, SecretStr
 
+from flext_core import FlextSettings
 from flext_target_oracle_oic import c
 
 

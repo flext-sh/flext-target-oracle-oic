@@ -139,6 +139,13 @@ omit = [
 # [MANAGED] deptry
 [tool.deptry]
 known_first_party = [
+  "flext_api",
+  "flext_cli",
+  "flext_core",
+  "flext_db_oracle",
+  "flext_meltano",
+  "flext_observability",
+  "flext_oracle_oic",
   "flext_target_oracle_oic",
 ]
 pep621_dev_dependency_groups = [
@@ -559,6 +566,13 @@ select = [
 combine-as-imports = true
 force-single-line = false
 known-first-party = [
+  "flext_api",
+  "flext_cli",
+  "flext_core",
+  "flext_db_oracle",
+  "flext_meltano",
+  "flext_observability",
+  "flext_oracle_oic",
   "flext_target_oracle_oic",
 ]
 split-on-trailing-comma = true

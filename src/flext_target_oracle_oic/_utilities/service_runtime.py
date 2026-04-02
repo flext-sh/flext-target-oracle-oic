@@ -9,12 +9,11 @@ from flext_meltano import (
     FlextMeltanoSingerSinkBase,
     FlextMeltanoSingerTargetBase,
 )
-
-from flext_target_oracle_oic.target import (
+from flext_target_oracle_oic import (
     FlextTargetOracleOic,
     FlextTargetOracleOicBaseSink,
+    t,
 )
-from flext_target_oracle_oic.typings import t
 
 
 class FlextTargetOracleOicServiceRuntime:

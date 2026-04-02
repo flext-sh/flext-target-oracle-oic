@@ -8,7 +8,6 @@ from flext_api import FlextApi, FlextApiSettings
 from flext_core import r
 from flext_meltano import FlextMeltanoUtilities
 from flext_oracle_oic import FlextOracleOicUtilities
-
 from flext_target_oracle_oic import FlextTargetOracleOicConfig, c, m, t
 
 
@@ -153,7 +152,8 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
                 return FlextTargetOracleOicConfig.model_json_schema()
 
 
-# Backward-compat alias for imports that reference the old top-level class name
+# Public name for the nested Authenticator class — canonical export for test/consumer access.
+# This is not a legacy alias; it is the advertised public symbol for the inner class.
 FlextTargetOracleOicAuthenticator = (
     FlextTargetOracleOicUtilities.TargetOracleOic.Authenticator
 )

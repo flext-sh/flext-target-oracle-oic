@@ -12,7 +12,6 @@ from flext_core.lazy import install_lazy_exports
 
 if _TYPE_CHECKING:
     from flext_core import FlextTypes
-
     from flext_target_oracle_oic.patterns import oic_patterns
     from flext_target_oracle_oic.patterns.oic_patterns import (
         FlextTargetOracleOicDataTransformer,
@@ -21,7 +20,7 @@ if _TYPE_CHECKING:
         FlextTargetOracleOicTypeConverter,
     )
 
-_LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
+_LAZY_IMPORTS: FlextTypes.LazyImportIndex = {
     "FlextTargetOracleOicDataTransformer": "flext_target_oracle_oic.patterns.oic_patterns",
     "FlextTargetOracleOicEntryManager": "flext_target_oracle_oic.patterns.oic_patterns",
     "FlextTargetOracleOicSchemaMapper": "flext_target_oracle_oic.patterns.oic_patterns",

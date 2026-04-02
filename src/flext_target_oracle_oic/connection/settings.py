@@ -10,9 +10,9 @@ from __future__ import annotations
 from collections.abc import MutableSequence
 from typing import Annotated
 
-from flext_core import FlextLogger, r
 from pydantic import Field
 
+from flext_core import FlextLogger, r
 from flext_target_oracle_oic import c, m, t
 
 logger = FlextLogger(__name__)

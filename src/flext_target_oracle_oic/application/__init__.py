@@ -17,13 +17,12 @@ from flext_core.lazy import install_lazy_exports
 
 if _TYPE_CHECKING:
     from flext_core import FlextTypes
-
     from flext_target_oracle_oic.application import orchestrator
     from flext_target_oracle_oic.application.orchestrator import (
         FlextTargetOracleOicOrchestrator,
     )
 
-_LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = {
+_LAZY_IMPORTS: FlextTypes.LazyImportIndex = {
     "FlextTargetOracleOicOrchestrator": "flext_target_oracle_oic.application.orchestrator",
     "orchestrator": "flext_target_oracle_oic.application.orchestrator",
 }

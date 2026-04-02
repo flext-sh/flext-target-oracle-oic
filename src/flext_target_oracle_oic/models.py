@@ -5,11 +5,11 @@ from __future__ import annotations
 from collections.abc import Mapping
 from enum import StrEnum, unique
 
+from pydantic import Field
+
 from flext_core import r
 from flext_meltano import FlextMeltanoModels
 from flext_oracle_oic import FlextOracleOicModels
-from pydantic import Field
-
 from flext_target_oracle_oic import c, t
 
 

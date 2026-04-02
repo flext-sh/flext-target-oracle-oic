@@ -7,7 +7,6 @@ from typing import ClassVar, override
 
 from flext_core import FlextLogger, r
 from flext_meltano import FlextMeltanoTargetAbstractions, m
-
 from flext_target_oracle_oic import c, t
 
 logger = FlextLogger(__name__)
