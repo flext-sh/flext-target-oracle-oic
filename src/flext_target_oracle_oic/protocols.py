@@ -7,13 +7,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Sequence
-from typing import Protocol, runtime_checkable
-
 from flext_meltano import FlextMeltanoProtocols
 from flext_oracle_oic import FlextOracleOicProtocols
-
-from flext_target_oracle_oic import t
 
 
 class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtocols):
@@ -44,129 +39,6 @@ class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtoco
     # Target Oracle OIC-specific protocols
     oic_integration: p.TargetOracleOic.OracleOic.OicIntegration
     """
-
-    class TargetOracleOic:
-        """Singer Target domain protocols."""
-
-        class OracleOic:
-            """Singer Target Oracle OIC domain protocols for Oracle OIC loading.
-
-            Provides protocol definitions for Oracle OIC integration operations, including
-            data integration, transformation, batch processing, payload validation,
-            throughput optimization, and integration status tracking.
-            """
-
-            @runtime_checkable
-            class OicIntegration(FlextMeltanoProtocols.Service[t.Scalar], Protocol):
-                """Protocol for Oracle OIC integration.
-
-                Defines the interface for integrating data with Oracle OIC.
-                """
-
-                def integrate(
-                    self,
-                    data: t.ConfigurationMapping,
-                ) -> FlextMeltanoProtocols.Result[bool]:
-                    """Integrate data with Oracle OIC.
-
-                    Args:
-                        data: Data to integrate.
-
-                    Returns:
-                        Result indicating success or failure of the integration.
-
-                    """
-                    ...
-
-                def invoke_integration(
-                    self,
-                    payload: t.ConfigurationMapping,
-                ) -> FlextMeltanoProtocols.Result[t.ScalarMapping]:
-                    """Invoke OIC integration with payload.
-
-                    Args:
-                        payload: Integration payload.
-
-                    Returns:
-                        Result containing the integration response.
-
-                    """
-                    ...
-
-                def optimize_throughput(
-                    self,
-                    config: t.ConfigurationMapping,
-                ) -> FlextMeltanoProtocols.Result[t.ScalarMapping]:
-                    """Optimize OIC throughput settings.
-
-                    Args:
-                        config: Configuration to optimize.
-
-                    Returns:
-                        Result containing optimized configuration.
-
-                    """
-                    ...
-
-                def process_batch(
-                    self,
-                    records: Sequence[t.ConfigurationMapping],
-                ) -> FlextMeltanoProtocols.Result[bool]:
-                    """Process batch of records for OIC.
-
-                    Args:
-                        records: List of records to process.
-
-                    Returns:
-                        Result indicating success or failure of the batch processing.
-
-                    """
-                    ...
-
-                def track_integration_status(
-                    self,
-                    integration_id: str,
-                ) -> FlextMeltanoProtocols.Result[t.ScalarMapping]:
-                    """Track integration execution status.
-
-                    Args:
-                        integration_id: ID of the integration to track.
-
-                    Returns:
-                        Result containing the integration status information.
-
-                    """
-                    ...
-
-                def transform_to_oic(
-                    self,
-                    record: t.ConfigurationMapping,
-                ) -> FlextMeltanoProtocols.Result[t.ScalarMapping]:
-                    """Transform Singer record to OIC format.
-
-                    Args:
-                        record: Singer record to transform.
-
-                    Returns:
-                        Result containing the transformed record in OIC format.
-
-                    """
-                    ...
-
-                def validate_payload(
-                    self,
-                    payload: t.ConfigurationMapping,
-                ) -> FlextMeltanoProtocols.Result[bool]:
-                    """Validate payload for OIC compatibility.
-
-                    Args:
-                        payload: Payload to validate.
-
-                    Returns:
-                        Result indicating whether the payload is valid.
-
-                    """
-                    ...
 
 
 p = FlextTargetOracleOicProtocols

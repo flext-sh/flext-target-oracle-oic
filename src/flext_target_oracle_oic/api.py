@@ -13,7 +13,10 @@ from typing import override
 
 from flext_meltano import FlextMeltanoSingerSinkBase, FlextMeltanoTargetServiceBase
 
-from flext_target_oracle_oic import FlextTargetOracleOicBaseSink, t
+from flext_target_oracle_oic import t
+from flext_target_oracle_oic._utilities.service_runtime import (
+    FlextTargetOracleOicServiceRuntime,
+)
 
 
 class FlextTargetOracleOicService(FlextMeltanoTargetServiceBase):
@@ -28,11 +31,13 @@ class FlextTargetOracleOicService(FlextMeltanoTargetServiceBase):
         schema: t.FlatContainerMapping,
     ) -> FlextMeltanoSingerSinkBase:
         """Create an Oracle OIC sink for a stream."""
-        return FlextTargetOracleOicBaseSink(
-            target=None,
+        target_config: t.ContainerMapping = (
+            self.config_overrides if self.config_overrides is not None else {}
+        )
+        return FlextTargetOracleOicServiceRuntime.create_sink(
             stream_name=stream_name,
-            schema=dict(schema),
-            key_properties=[],
+            schema=schema,
+            target_config=target_config,
         )
 
 
