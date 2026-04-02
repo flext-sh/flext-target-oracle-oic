@@ -26,6 +26,7 @@ if _TYPE_CHECKING:
     from flext_meltano import d, e, h, r, s, x
 
     from flext_target_oracle_oic import (
+        api,
         application,
         cli,
         connection,
@@ -39,6 +40,7 @@ if _TYPE_CHECKING:
         typings,
         utilities,
     )
+    from flext_target_oracle_oic.api import FlextTargetOracleOicService
     from flext_target_oracle_oic.application import (
         FlextTargetOracleOicOrchestrator,
         orchestrator,
@@ -111,8 +113,10 @@ _LAZY_IMPORTS: Mapping[str, str | Sequence[str]] = merge_lazy_imports(
         "FlextTargetOracleOicModels": "flext_target_oracle_oic.models",
         "FlextTargetOracleOicPackagesSink": "flext_target_oracle_oic.target",
         "FlextTargetOracleOicProtocols": "flext_target_oracle_oic.protocols",
+        "FlextTargetOracleOicService": "flext_target_oracle_oic.api",
         "FlextTargetOracleOicTypes": "flext_target_oracle_oic.typings",
         "FlextTargetOracleOicUtilities": "flext_target_oracle_oic.utilities",
+        "api": "flext_target_oracle_oic.api",
         "application": "flext_target_oracle_oic.application",
         "c": ("flext_target_oracle_oic.constants", "FlextTargetOracleOicConstants"),
         "cli": "flext_target_oracle_oic.cli",

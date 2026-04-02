@@ -18,28 +18,6 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
     class TargetOracleOic:
         """Singer message helper functions."""
 
-        @staticmethod
-        def create_record_message(
-            stream_name: str,
-            record: t.ConfigurationMapping,
-        ) -> Mapping[str, str | t.ScalarMapping]:
-            """Build a Singer RECORD message payload."""
-            return {"type": "RECORD", "stream": stream_name, "record": record}
-
-        @staticmethod
-        def create_schema_message(
-            stream_name: str,
-            schema: t.FlatContainerMapping,
-            key_properties: t.StrSequence | None = None,
-        ) -> Mapping[str, str | t.FlatContainerMapping | t.StrSequence]:
-            """Build a Singer SCHEMA message payload."""
-            return {
-                "type": "SCHEMA",
-                "stream": stream_name,
-                "schema": schema,
-                "key_properties": key_properties or [],
-            }
-
         class Validation:
             """Runtime configuration validation helper functions."""
 

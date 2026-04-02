@@ -32,8 +32,8 @@ from flext_target_oracle_oic import (
     FlextTargetOracleOicIntegrationsSink,
     FlextTargetOracleOicLookupsSink,
     FlextTargetOracleOicPackagesSink,
-    t,
 )
+from tests import t
 
 
 class DummySingerTarget(SingerTarget):
