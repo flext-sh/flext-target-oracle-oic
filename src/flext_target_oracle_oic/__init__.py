@@ -22,7 +22,12 @@ from flext_target_oracle_oic.__version__ import (
 
 if _TYPE_CHECKING:
     from flext_core import FlextTypes
-    from flext_meltano import d, e, h, r, s, x
+    from flext_core.decorators import FlextDecorators as d
+    from flext_core.exceptions import FlextExceptions as e
+    from flext_core.handlers import FlextHandlers as h
+    from flext_core.mixins import FlextMixins as x
+    from flext_core.result import FlextResult as r
+    from flext_core.service import FlextService as s
     from flext_target_oracle_oic import (
         _utilities,
         api,
@@ -127,17 +132,17 @@ _LAZY_IMPORTS: FlextTypes.LazyImportIndex = merge_lazy_imports(
         "cli": "flext_target_oracle_oic.cli",
         "connection": "flext_target_oracle_oic.connection",
         "constants": "flext_target_oracle_oic.constants",
-        "d": "flext_meltano",
-        "e": "flext_meltano",
-        "h": "flext_meltano",
+        "d": ("flext_core.decorators", "FlextDecorators"),
+        "e": ("flext_core.exceptions", "FlextExceptions"),
+        "h": ("flext_core.handlers", "FlextHandlers"),
         "m": ("flext_target_oracle_oic.models", "FlextTargetOracleOicModels"),
         "main": "flext_target_oracle_oic.cli",
         "models": "flext_target_oracle_oic.models",
         "p": ("flext_target_oracle_oic.protocols", "FlextTargetOracleOicProtocols"),
         "patterns": "flext_target_oracle_oic.patterns",
         "protocols": "flext_target_oracle_oic.protocols",
-        "r": "flext_meltano",
-        "s": "flext_meltano",
+        "r": ("flext_core.result", "FlextResult"),
+        "s": ("flext_core.service", "FlextService"),
         "settings": "flext_target_oracle_oic.settings",
         "singer": "flext_target_oracle_oic.singer",
         "t": ("flext_target_oracle_oic.typings", "FlextTargetOracleOicTypes"),
@@ -145,7 +150,7 @@ _LAZY_IMPORTS: FlextTypes.LazyImportIndex = merge_lazy_imports(
         "typings": "flext_target_oracle_oic.typings",
         "u": ("flext_target_oracle_oic.utilities", "FlextTargetOracleOicUtilities"),
         "utilities": "flext_target_oracle_oic.utilities",
-        "x": "flext_meltano",
+        "x": ("flext_core.mixins", "FlextMixins"),
     },
 )
 
