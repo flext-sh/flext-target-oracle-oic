@@ -5,33 +5,45 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
-from typing import TYPE_CHECKING as _TYPE_CHECKING
+import typing as _t
 
+from flext_core.constants import FlextConstants as c
+from flext_core.decorators import FlextDecorators as d
+from flext_core.exceptions import FlextExceptions as e
+from flext_core.handlers import FlextHandlers as h
 from flext_core.lazy import install_lazy_exports
+from flext_core.mixins import FlextMixins as x
+from flext_core.models import FlextModels as m
+from flext_core.protocols import FlextProtocols as p
+from flext_core.result import FlextResult as r
+from flext_core.service import FlextService as s
+from flext_core.typings import FlextTypes as t
+from flext_core.utilities import FlextUtilities as u
 
-if _TYPE_CHECKING:
-    from flext_core import FlextTypes
-    from flext_core.constants import FlextConstants as c
-    from flext_core.decorators import FlextDecorators as d
-    from flext_core.exceptions import FlextExceptions as e
-    from flext_core.handlers import FlextHandlers as h
-    from flext_core.mixins import FlextMixins as x
-    from flext_core.models import FlextModels as m
-    from flext_core.protocols import FlextProtocols as p
-    from flext_core.result import FlextResult as r
-    from flext_core.service import FlextService as s
-    from flext_core.typings import FlextTypes as t
-    from flext_core.utilities import FlextUtilities as u
-    from flext_target_oracle_oic.patterns import oic_patterns
-    from flext_target_oracle_oic.patterns.oic_patterns import (
+if _t.TYPE_CHECKING:
+    import flext_target_oracle_oic.patterns.oic_patterns as _flext_target_oracle_oic_patterns_oic_patterns
+
+    oic_patterns = _flext_target_oracle_oic_patterns_oic_patterns
+
+    _ = (
         FlextTargetOracleOicDataTransformer,
         FlextTargetOracleOicEntryManager,
         FlextTargetOracleOicSchemaMapper,
         FlextTargetOracleOicTypeConverter,
+        c,
+        d,
+        e,
+        h,
+        m,
+        oic_patterns,
+        p,
+        r,
+        s,
+        t,
+        u,
+        x,
     )
-
-_LAZY_IMPORTS: FlextTypes.LazyImportIndex = {
+_LAZY_IMPORTS = {
     "FlextTargetOracleOicDataTransformer": "flext_target_oracle_oic.patterns.oic_patterns",
     "FlextTargetOracleOicEntryManager": "flext_target_oracle_oic.patterns.oic_patterns",
     "FlextTargetOracleOicSchemaMapper": "flext_target_oracle_oic.patterns.oic_patterns",
@@ -49,6 +61,25 @@ _LAZY_IMPORTS: FlextTypes.LazyImportIndex = {
     "u": ("flext_core.utilities", "FlextUtilities"),
     "x": ("flext_core.mixins", "FlextMixins"),
 }
+
+__all__ = [
+    "FlextTargetOracleOicDataTransformer",
+    "FlextTargetOracleOicEntryManager",
+    "FlextTargetOracleOicSchemaMapper",
+    "FlextTargetOracleOicTypeConverter",
+    "c",
+    "d",
+    "e",
+    "h",
+    "m",
+    "oic_patterns",
+    "p",
+    "r",
+    "s",
+    "t",
+    "u",
+    "x",
+]
 
 
 install_lazy_exports(__name__, globals(), _LAZY_IMPORTS)
