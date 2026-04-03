@@ -23,27 +23,29 @@ if _TYPE_CHECKING:
     from flext_core.service import FlextService as s
     from flext_core.typings import FlextTypes as t
     from flext_core.utilities import FlextUtilities as u
-    from flext_target_oracle_oic import connection, settings
-    from flext_target_oracle_oic.connection import FlextTargetOracleOicConnection
-    from flext_target_oracle_oic.settings import (
+    from flext_target_oracle_oic.connection import connection, settings
+    from flext_target_oracle_oic.connection.connection import (
+        FlextTargetOracleOicConnection,
+    )
+    from flext_target_oracle_oic.connection.settings import (
         FlextTargetOracleOicConnectionSettings,
         logger,
     )
 
 _LAZY_IMPORTS: FlextTypes.LazyImportIndex = {
-    "FlextTargetOracleOicConnection": "flext_target_oracle_oic.connection",
-    "FlextTargetOracleOicConnectionSettings": "flext_target_oracle_oic.settings",
+    "FlextTargetOracleOicConnection": "flext_target_oracle_oic.connection.connection",
+    "FlextTargetOracleOicConnectionSettings": "flext_target_oracle_oic.connection.settings",
     "c": ("flext_core.constants", "FlextConstants"),
-    "connection": "flext_target_oracle_oic.connection",
+    "connection": "flext_target_oracle_oic.connection.connection",
     "d": ("flext_core.decorators", "FlextDecorators"),
     "e": ("flext_core.exceptions", "FlextExceptions"),
     "h": ("flext_core.handlers", "FlextHandlers"),
-    "logger": "flext_target_oracle_oic.settings",
+    "logger": "flext_target_oracle_oic.connection.settings",
     "m": ("flext_core.models", "FlextModels"),
     "p": ("flext_core.protocols", "FlextProtocols"),
     "r": ("flext_core.result", "FlextResult"),
     "s": ("flext_core.service", "FlextService"),
-    "settings": "flext_target_oracle_oic.settings",
+    "settings": "flext_target_oracle_oic.connection.settings",
     "t": ("flext_core.typings", "FlextTypes"),
     "u": ("flext_core.utilities", "FlextUtilities"),
     "x": ("flext_core.mixins", "FlextMixins"),

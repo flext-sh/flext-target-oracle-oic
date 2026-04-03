@@ -23,22 +23,22 @@ if _TYPE_CHECKING:
     from flext_core.service import FlextService as s
     from flext_core.typings import FlextTypes as t
     from flext_core.utilities import FlextUtilities as u
-    from flext_target_oracle_oic import processors
-    from flext_target_oracle_oic.processors import (
+    from flext_target_oracle_oic.singer import processors
+    from flext_target_oracle_oic.singer.processors import (
         FlextTargetOracleOicProcessedRecord,
         FlextTargetOracleOicRecordProcessor,
     )
 
 _LAZY_IMPORTS: FlextTypes.LazyImportIndex = {
-    "FlextTargetOracleOicProcessedRecord": "flext_target_oracle_oic.processors",
-    "FlextTargetOracleOicRecordProcessor": "flext_target_oracle_oic.processors",
+    "FlextTargetOracleOicProcessedRecord": "flext_target_oracle_oic.singer.processors",
+    "FlextTargetOracleOicRecordProcessor": "flext_target_oracle_oic.singer.processors",
     "c": ("flext_core.constants", "FlextConstants"),
     "d": ("flext_core.decorators", "FlextDecorators"),
     "e": ("flext_core.exceptions", "FlextExceptions"),
     "h": ("flext_core.handlers", "FlextHandlers"),
     "m": ("flext_core.models", "FlextModels"),
     "p": ("flext_core.protocols", "FlextProtocols"),
-    "processors": "flext_target_oracle_oic.processors",
+    "processors": "flext_target_oracle_oic.singer.processors",
     "r": ("flext_core.result", "FlextResult"),
     "s": ("flext_core.service", "FlextService"),
     "t": ("flext_core.typings", "FlextTypes"),

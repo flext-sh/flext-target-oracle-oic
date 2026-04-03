@@ -23,17 +23,25 @@ if _TYPE_CHECKING:
     from flext_core.service import FlextService as s
     from flext_core.typings import FlextTypes as t
     from flext_core.utilities import FlextUtilities as u
-    from flext_target_oracle_oic import oic_patterns
-    from flext_target_oracle_oic.oic_patterns import FlextTargetOracleOicTypeConverter
+    from flext_target_oracle_oic.patterns import oic_patterns
+    from flext_target_oracle_oic.patterns.oic_patterns import (
+        FlextTargetOracleOicDataTransformer,
+        FlextTargetOracleOicEntryManager,
+        FlextTargetOracleOicSchemaMapper,
+        FlextTargetOracleOicTypeConverter,
+    )
 
 _LAZY_IMPORTS: FlextTypes.LazyImportIndex = {
-    "FlextTargetOracleOicTypeConverter": "flext_target_oracle_oic.oic_patterns",
+    "FlextTargetOracleOicDataTransformer": "flext_target_oracle_oic.patterns.oic_patterns",
+    "FlextTargetOracleOicEntryManager": "flext_target_oracle_oic.patterns.oic_patterns",
+    "FlextTargetOracleOicSchemaMapper": "flext_target_oracle_oic.patterns.oic_patterns",
+    "FlextTargetOracleOicTypeConverter": "flext_target_oracle_oic.patterns.oic_patterns",
     "c": ("flext_core.constants", "FlextConstants"),
     "d": ("flext_core.decorators", "FlextDecorators"),
     "e": ("flext_core.exceptions", "FlextExceptions"),
     "h": ("flext_core.handlers", "FlextHandlers"),
     "m": ("flext_core.models", "FlextModels"),
-    "oic_patterns": "flext_target_oracle_oic.oic_patterns",
+    "oic_patterns": "flext_target_oracle_oic.patterns.oic_patterns",
     "p": ("flext_core.protocols", "FlextProtocols"),
     "r": ("flext_core.result", "FlextResult"),
     "s": ("flext_core.service", "FlextService"),

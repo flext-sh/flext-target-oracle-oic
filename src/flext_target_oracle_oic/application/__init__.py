@@ -23,17 +23,19 @@ if _TYPE_CHECKING:
     from flext_core.service import FlextService as s
     from flext_core.typings import FlextTypes as t
     from flext_core.utilities import FlextUtilities as u
-    from flext_target_oracle_oic import orchestrator
-    from flext_target_oracle_oic.orchestrator import FlextTargetOracleOicOrchestrator
+    from flext_target_oracle_oic.application import orchestrator
+    from flext_target_oracle_oic.application.orchestrator import (
+        FlextTargetOracleOicOrchestrator,
+    )
 
 _LAZY_IMPORTS: FlextTypes.LazyImportIndex = {
-    "FlextTargetOracleOicOrchestrator": "flext_target_oracle_oic.orchestrator",
+    "FlextTargetOracleOicOrchestrator": "flext_target_oracle_oic.application.orchestrator",
     "c": ("flext_core.constants", "FlextConstants"),
     "d": ("flext_core.decorators", "FlextDecorators"),
     "e": ("flext_core.exceptions", "FlextExceptions"),
     "h": ("flext_core.handlers", "FlextHandlers"),
     "m": ("flext_core.models", "FlextModels"),
-    "orchestrator": "flext_target_oracle_oic.orchestrator",
+    "orchestrator": "flext_target_oracle_oic.application.orchestrator",
     "p": ("flext_core.protocols", "FlextProtocols"),
     "r": ("flext_core.result", "FlextResult"),
     "s": ("flext_core.service", "FlextService"),

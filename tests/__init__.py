@@ -18,7 +18,7 @@ if _TYPE_CHECKING:
     from flext_core.mixins import FlextMixins as x
     from flext_core.result import FlextResult as r
     from flext_core.service import FlextService as s
-    from flext_target_oracle_oic import (
+    from tests import (
         constants,
         models,
         protocols,
@@ -28,75 +28,83 @@ if _TYPE_CHECKING:
         typings,
         utilities,
     )
-    from flext_target_oracle_oic.constants import (
+    from tests.constants import (
         FlextTargetOracleOicTestConstants,
         FlextTargetOracleOicTestConstants as c,
     )
-    from flext_target_oracle_oic.models import (
+    from tests.models import (
         FlextTargetOracleOicTestModels,
         FlextTargetOracleOicTestModels as m,
         tm,
     )
-    from flext_target_oracle_oic.protocols import (
+    from tests.protocols import (
         FlextTargetOracleOicTestProtocols,
         FlextTargetOracleOicTestProtocols as p,
     )
-    from flext_target_oracle_oic.test_cli_entrypoint import (
-        test_main_entrypoint_returns_none,
+    from tests.test_cli_entrypoint import test_main_entrypoint_returns_none
+    from tests.test_e2e import (
+        TestTargetOracleOicE2E,
+        load_test_config,
+        target,
+        test_config,
+        test_target_smoke_class,
     )
-    from flext_target_oracle_oic.test_e2e import DummySingerTarget, target, test_config
-    from flext_target_oracle_oic.test_target import (
+    from tests.test_target import (
         AuthTestConfig,
-        InvalidTokenResponse,
-        authenticator,
-        config,
+        DummySingerTarget,
+        TestTargetOracleOic,
         singer_target,
         test_oic_authenticator_builds_payload,
+        test_oic_authenticator_omits_optional_scope_and_audience,
+        test_oic_authenticator_rejects_invalid_token_response,
     )
-    from flext_target_oracle_oic.typings import (
+    from tests.typings import (
         FlextTargetOracleOicTestTypes,
         FlextTargetOracleOicTestTypes as t,
     )
-    from flext_target_oracle_oic.utilities import (
+    from tests.utilities import (
         FlextTargetOracleOicTestUtilities,
         FlextTargetOracleOicTestUtilities as u,
     )
 
 _LAZY_IMPORTS: FlextTypes.LazyImportIndex = {
-    "AuthTestConfig": "flext_target_oracle_oic.test_target",
-    "DummySingerTarget": "flext_target_oracle_oic.test_e2e",
-    "FlextTargetOracleOicTestConstants": "flext_target_oracle_oic.constants",
-    "FlextTargetOracleOicTestModels": "flext_target_oracle_oic.models",
-    "FlextTargetOracleOicTestProtocols": "flext_target_oracle_oic.protocols",
-    "FlextTargetOracleOicTestTypes": "flext_target_oracle_oic.typings",
-    "FlextTargetOracleOicTestUtilities": "flext_target_oracle_oic.utilities",
-    "InvalidTokenResponse": "flext_target_oracle_oic.test_target",
-    "authenticator": "flext_target_oracle_oic.test_target",
-    "c": ("flext_target_oracle_oic.constants", "FlextTargetOracleOicTestConstants"),
-    "config": "flext_target_oracle_oic.test_target",
-    "constants": "flext_target_oracle_oic.constants",
+    "AuthTestConfig": "tests.test_target",
+    "DummySingerTarget": "tests.test_target",
+    "FlextTargetOracleOicTestConstants": "tests.constants",
+    "FlextTargetOracleOicTestModels": "tests.models",
+    "FlextTargetOracleOicTestProtocols": "tests.protocols",
+    "FlextTargetOracleOicTestTypes": "tests.typings",
+    "FlextTargetOracleOicTestUtilities": "tests.utilities",
+    "TestTargetOracleOic": "tests.test_target",
+    "TestTargetOracleOicE2E": "tests.test_e2e",
+    "c": ("tests.constants", "FlextTargetOracleOicTestConstants"),
+    "constants": "tests.constants",
     "d": ("flext_core.decorators", "FlextDecorators"),
     "e": ("flext_core.exceptions", "FlextExceptions"),
     "h": ("flext_core.handlers", "FlextHandlers"),
-    "m": ("flext_target_oracle_oic.models", "FlextTargetOracleOicTestModels"),
-    "models": "flext_target_oracle_oic.models",
-    "p": ("flext_target_oracle_oic.protocols", "FlextTargetOracleOicTestProtocols"),
-    "protocols": "flext_target_oracle_oic.protocols",
+    "load_test_config": "tests.test_e2e",
+    "m": ("tests.models", "FlextTargetOracleOicTestModels"),
+    "models": "tests.models",
+    "p": ("tests.protocols", "FlextTargetOracleOicTestProtocols"),
+    "protocols": "tests.protocols",
     "r": ("flext_core.result", "FlextResult"),
     "s": ("flext_core.service", "FlextService"),
-    "singer_target": "flext_target_oracle_oic.test_target",
-    "t": ("flext_target_oracle_oic.typings", "FlextTargetOracleOicTestTypes"),
-    "target": "flext_target_oracle_oic.test_e2e",
-    "test_cli_entrypoint": "flext_target_oracle_oic.test_cli_entrypoint",
-    "test_config": "flext_target_oracle_oic.test_e2e",
-    "test_e2e": "flext_target_oracle_oic.test_e2e",
-    "test_main_entrypoint_returns_none": "flext_target_oracle_oic.test_cli_entrypoint",
-    "test_oic_authenticator_builds_payload": "flext_target_oracle_oic.test_target",
-    "test_target": "flext_target_oracle_oic.test_target",
-    "tm": "flext_target_oracle_oic.models",
-    "typings": "flext_target_oracle_oic.typings",
-    "u": ("flext_target_oracle_oic.utilities", "FlextTargetOracleOicTestUtilities"),
-    "utilities": "flext_target_oracle_oic.utilities",
+    "singer_target": "tests.test_target",
+    "t": ("tests.typings", "FlextTargetOracleOicTestTypes"),
+    "target": "tests.test_e2e",
+    "test_cli_entrypoint": "tests.test_cli_entrypoint",
+    "test_config": "tests.test_e2e",
+    "test_e2e": "tests.test_e2e",
+    "test_main_entrypoint_returns_none": "tests.test_cli_entrypoint",
+    "test_oic_authenticator_builds_payload": "tests.test_target",
+    "test_oic_authenticator_omits_optional_scope_and_audience": "tests.test_target",
+    "test_oic_authenticator_rejects_invalid_token_response": "tests.test_target",
+    "test_target": "tests.test_target",
+    "test_target_smoke_class": "tests.test_e2e",
+    "tm": "tests.models",
+    "typings": "tests.typings",
+    "u": ("tests.utilities", "FlextTargetOracleOicTestUtilities"),
+    "utilities": "tests.utilities",
     "x": ("flext_core.mixins", "FlextMixins"),
 }
 
