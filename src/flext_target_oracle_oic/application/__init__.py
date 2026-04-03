@@ -7,38 +7,25 @@ from __future__ import annotations
 
 import typing as _t
 
-from flext_core.constants import FlextConstants as c
-from flext_core.decorators import FlextDecorators as d
-from flext_core.exceptions import FlextExceptions as e
-from flext_core.handlers import FlextHandlers as h
 from flext_core.lazy import install_lazy_exports
-from flext_core.mixins import FlextMixins as x
-from flext_core.models import FlextModels as m
-from flext_core.protocols import FlextProtocols as p
-from flext_core.result import FlextResult as r
-from flext_core.service import FlextService as s
-from flext_core.typings import FlextTypes as t
-from flext_core.utilities import FlextUtilities as u
 
 if _t.TYPE_CHECKING:
     import flext_target_oracle_oic.application.orchestrator as _flext_target_oracle_oic_application_orchestrator
 
     orchestrator = _flext_target_oracle_oic_application_orchestrator
-
-    _ = (
+    from flext_core.constants import FlextConstants as c
+    from flext_core.decorators import FlextDecorators as d
+    from flext_core.exceptions import FlextExceptions as e
+    from flext_core.handlers import FlextHandlers as h
+    from flext_core.mixins import FlextMixins as x
+    from flext_core.models import FlextModels as m
+    from flext_core.protocols import FlextProtocols as p
+    from flext_core.result import FlextResult as r
+    from flext_core.service import FlextService as s
+    from flext_core.typings import FlextTypes as t
+    from flext_core.utilities import FlextUtilities as u
+    from flext_target_oracle_oic.application.orchestrator import (
         FlextTargetOracleOicOrchestrator,
-        c,
-        d,
-        e,
-        h,
-        m,
-        orchestrator,
-        p,
-        r,
-        s,
-        t,
-        u,
-        x,
     )
 _LAZY_IMPORTS = {
     "FlextTargetOracleOicOrchestrator": "flext_target_oracle_oic.application.orchestrator",

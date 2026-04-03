@@ -13,10 +13,8 @@ if _t.TYPE_CHECKING:
     import flext_target_oracle_oic._utilities.service_runtime as _flext_target_oracle_oic__utilities_service_runtime
 
     service_runtime = _flext_target_oracle_oic__utilities_service_runtime
-
-    _ = (
+    from flext_target_oracle_oic._utilities.service_runtime import (
         FlextTargetOracleOicServiceRuntime,
-        service_runtime,
     )
 _LAZY_IMPORTS = {
     "FlextTargetOracleOicServiceRuntime": "flext_target_oracle_oic._utilities.service_runtime",
