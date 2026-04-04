@@ -24,12 +24,10 @@ if _t.TYPE_CHECKING:
     )
 
     _utilities = _flext_target_oracle_oic__utilities
-    import flext_target_oracle_oic._utilities.service_runtime as _flext_target_oracle_oic__utilities_service_runtime
-
-    service_runtime = _flext_target_oracle_oic__utilities_service_runtime
     import flext_target_oracle_oic.api as _flext_target_oracle_oic_api
-    from flext_target_oracle_oic._utilities.service_runtime import (
+    from flext_target_oracle_oic._utilities import (
         FlextTargetOracleOicServiceRuntime,
+        service_runtime,
     )
 
     api = _flext_target_oracle_oic_api
@@ -37,12 +35,10 @@ if _t.TYPE_CHECKING:
     from flext_target_oracle_oic.api import FlextTargetOracleOicService
 
     application = _flext_target_oracle_oic_application
-    import flext_target_oracle_oic.application.orchestrator as _flext_target_oracle_oic_application_orchestrator
-
-    orchestrator = _flext_target_oracle_oic_application_orchestrator
     import flext_target_oracle_oic.cli as _flext_target_oracle_oic_cli
-    from flext_target_oracle_oic.application.orchestrator import (
+    from flext_target_oracle_oic.application import (
         FlextTargetOracleOicOrchestrator,
+        orchestrator,
     )
 
     cli = _flext_target_oracle_oic_cli
@@ -51,10 +47,8 @@ if _t.TYPE_CHECKING:
 
     connection = _flext_target_oracle_oic_connection
     import flext_target_oracle_oic.constants as _flext_target_oracle_oic_constants
-    from flext_target_oracle_oic.connection.connection import (
+    from flext_target_oracle_oic.connection import (
         FlextTargetOracleOicConnection,
-    )
-    from flext_target_oracle_oic.connection.settings import (
         FlextTargetOracleOicConnectionSettings,
         logger,
     )
@@ -74,15 +68,13 @@ if _t.TYPE_CHECKING:
     )
 
     patterns = _flext_target_oracle_oic_patterns
-    import flext_target_oracle_oic.patterns.oic_patterns as _flext_target_oracle_oic_patterns_oic_patterns
-
-    oic_patterns = _flext_target_oracle_oic_patterns_oic_patterns
     import flext_target_oracle_oic.protocols as _flext_target_oracle_oic_protocols
-    from flext_target_oracle_oic.patterns.oic_patterns import (
+    from flext_target_oracle_oic.patterns import (
         FlextTargetOracleOicDataTransformer,
         FlextTargetOracleOicEntryManager,
         FlextTargetOracleOicSchemaMapper,
         FlextTargetOracleOicTypeConverter,
+        oic_patterns,
     )
 
     protocols = _flext_target_oracle_oic_protocols
@@ -97,13 +89,11 @@ if _t.TYPE_CHECKING:
     from flext_target_oracle_oic.settings import FlextTargetOracleOicConfig
 
     singer = _flext_target_oracle_oic_singer
-    import flext_target_oracle_oic.singer.processors as _flext_target_oracle_oic_singer_processors
-
-    processors = _flext_target_oracle_oic_singer_processors
     import flext_target_oracle_oic.target as _flext_target_oracle_oic_target
-    from flext_target_oracle_oic.singer.processors import (
+    from flext_target_oracle_oic.singer import (
         FlextTargetOracleOicProcessedRecord,
         FlextTargetOracleOicRecordProcessor,
+        processors,
     )
 
     target = _flext_target_oracle_oic_target
