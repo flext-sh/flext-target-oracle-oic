@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from enum import StrEnum, unique
-
 from pydantic import Field
 
 from flext_core import r
@@ -18,19 +16,8 @@ class FlextTargetOracleOicModels(FlextMeltanoModels, FlextOracleOicModels):
     class TargetOracleOic:
         """TargetOracleOic domain namespace."""
 
-        @unique
-        class OICConnectionAction(StrEnum):
-            """Supported connection actions."""
-
-            CREATE = "create"
-            UPDATE = "update"
-
-        @unique
-        class OICIntegrationAction(StrEnum):
-            """Supported integration actions."""
-
-            IMPORT = "import"
-            ACTIVATE = "activate"
+        OICConnectionAction = c.TargetOracleOic.OICConnectionAction
+        OICIntegrationAction = c.TargetOracleOic.OICIntegrationAction
 
         class OICConnection(FlextMeltanoModels.ArbitraryTypesModel):
             """Connection payload model."""
