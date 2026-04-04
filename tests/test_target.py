@@ -146,24 +146,20 @@ def test_oic_authenticator_omits_optional_scope_and_audience() -> None:
     assert "audience" not in payload
 
 
-def test_oic_authenticator_rejects_invalid_token_response(
-    monkeypatch: pytest.MonkeyPatch,
-) -> None:
+def test_oic_authenticator_rejects_invalid_token_response() -> None:
+    from unittest.mock import Mock, patch
+
     authenticator = FlextTargetOracleOicAuthenticator(_build_auth_config())
 
-    class InvalidTokenResponse:
-        def raise_for_status(self) -> None:
-            return None
+    mock_response = Mock()
+    mock_response.status_code = 200
+    mock_response.body = {"token_type": "Bearer"}
 
-        def json(self) -> t.StrMapping:
-            return {"token_type": "Bearer"}
+    from flext_core import r as result_type
 
-    def fake_post(*_args: t.Scalar, **_kwargs: t.Scalar) -> InvalidTokenResponse:
-        return InvalidTokenResponse()
-
-    monkeypatch.setattr(
-        f"{FlextTargetOracleOicAuthenticator.__module__}.requests.post",
-        fake_post,
-    )
-    with pytest.raises(RuntimeError, match="access_token"):
-        authenticator.get_access_token()
+    with patch(
+        "flext_api.FlextApi.post",
+        return_value=result_type[Mock].ok(mock_response),
+    ):
+        with pytest.raises(RuntimeError, match="access_token"):
+            authenticator.get_access_token()

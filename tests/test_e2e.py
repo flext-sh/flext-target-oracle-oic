@@ -39,7 +39,7 @@ from tests import t
 class DummySingerTarget(SingerTarget):
     name = "dummy-target-oracle-oic"
     config_jsonschema: ClassVar[dict[str, str | Mapping[str, t.StrMapping]]] = {
-        "type": "t.NormalizedValue",
+        "type": "object",
         "properties": dict[str, t.StrMapping](),
     }
 
@@ -292,7 +292,7 @@ class TestTargetOracleOicE2E:
             target=singer_target,
             stream_name="connections",
             schema={
-                "type": "t.NormalizedValue",
+                "type": "object",
                 "properties": {"id": {"type": "string"}},
             },
             key_properties=["id"],
