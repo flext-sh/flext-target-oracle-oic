@@ -9,11 +9,13 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 from typing import ClassVar
+from unittest.mock import Mock, patch
 
 import pytest
 from pydantic import SecretStr
 from singer_sdk.target_base import Target as SingerTarget
 
+from flext_core import r as result_type
 from flext_target_oracle_oic import (
     FlextTargetOracleOic,
     FlextTargetOracleOicAuthenticator,
@@ -147,15 +149,12 @@ def test_oic_authenticator_omits_optional_scope_and_audience() -> None:
 
 
 def test_oic_authenticator_rejects_invalid_token_response() -> None:
-    from unittest.mock import Mock, patch
 
     authenticator = FlextTargetOracleOicAuthenticator(_build_auth_config())
 
     mock_response = Mock()
     mock_response.status_code = 200
     mock_response.body = {"token_type": "Bearer"}
-
-    from flext_core import r as result_type
 
     with patch(
         "flext_api.FlextApi.post",
