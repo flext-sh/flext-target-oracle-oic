@@ -31,6 +31,8 @@ class FlextTargetOracleOicConstants(FlextMeltanoConstants, FlextOracleOicConstan
         DEFAULT_VERSION: str = "01.00.0000"
         DEFAULT_PATTERN: str = "ORCHESTRATION"
         DEFAULT_SCHEDULE_TYPE: str = "ONCE"
+        DEFAULT_USE_OAUTH2: bool = True
+        DEFAULT_VERIFY_SSL: bool = True
 
         @unique
         class OICConnectionAction(StrEnum):

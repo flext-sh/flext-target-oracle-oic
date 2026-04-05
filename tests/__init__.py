@@ -10,7 +10,11 @@ import typing as _t
 from flext_core.lazy import install_lazy_exports
 
 if _t.TYPE_CHECKING:
+    import tests.conftest as _tests_conftest
+
+    conftest = _tests_conftest
     import tests.constants as _tests_constants
+    from tests.conftest import pytest_plugins
 
     constants = _tests_constants
     import tests.models as _tests_models
@@ -89,6 +93,7 @@ _LAZY_IMPORTS = {
     "TestTargetOracleOic": "tests.test_target",
     "TestTargetOracleOicE2E": "tests.test_e2e",
     "c": ("tests.constants", "FlextTargetOracleOicTestConstants"),
+    "conftest": "tests.conftest",
     "constants": "tests.constants",
     "d": ("flext_core.decorators", "FlextDecorators"),
     "e": ("flext_core.exceptions", "FlextExceptions"),
@@ -98,6 +103,7 @@ _LAZY_IMPORTS = {
     "models": "tests.models",
     "p": ("tests.protocols", "FlextTargetOracleOicTestProtocols"),
     "protocols": "tests.protocols",
+    "pytest_plugins": "tests.conftest",
     "r": ("flext_core.result", "FlextResult"),
     "s": ("flext_core.service", "FlextService"),
     "singer_target": "tests.test_target",
@@ -130,6 +136,7 @@ __all__ = [
     "TestTargetOracleOic",
     "TestTargetOracleOicE2E",
     "c",
+    "conftest",
     "constants",
     "d",
     "e",
@@ -139,6 +146,7 @@ __all__ = [
     "models",
     "p",
     "protocols",
+    "pytest_plugins",
     "r",
     "s",
     "singer_target",

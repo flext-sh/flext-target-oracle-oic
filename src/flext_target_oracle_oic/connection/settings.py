@@ -11,15 +11,22 @@ from collections.abc import MutableSequence
 from typing import Annotated
 
 from pydantic import Field
+from pydantic_settings import SettingsConfigDict
 
-from flext_core import FlextLogger, r
-from flext_target_oracle_oic import c, m, t
+from flext_core import FlextLogger, FlextSettings, r
+from flext_target_oracle_oic import c, t
 
 logger = FlextLogger(__name__)
 
 
-class FlextTargetOracleOicConnectionSettings(m):
+@FlextSettings.auto_register("target-oracle-oic-connection")
+class FlextTargetOracleOicConnectionSettings(FlextSettings):
     """Oracle OIC connection settings using flext-core patterns."""
+
+    model_config = SettingsConfigDict(
+        env_prefix="FLEXT_TARGET_ORACLE_OIC_",
+        extra="ignore",
+    )
 
     base_url: Annotated[t.NonEmptyStr, Field(..., description="Oracle OIC base URL")]
     client_id: Annotated[t.NonEmptyStr, Field(..., description="OAuth2 client ID")]
@@ -44,7 +51,10 @@ class FlextTargetOracleOicConnectionSettings(m):
     ]
     use_oauth2: Annotated[
         bool,
-        Field(default=True, description="Use OAuth2 authentication"),
+        Field(
+            default=c.TargetOracleOic.DEFAULT_USE_OAUTH2,
+            description="Use OAuth2 authentication",
+        ),
     ]
     timeout: Annotated[
         t.PositiveInt,
@@ -62,7 +72,10 @@ class FlextTargetOracleOicConnectionSettings(m):
     ]
     verify_ssl: Annotated[
         bool,
-        Field(default=True, description="Verify SSL certificates"),
+        Field(
+            default=c.TargetOracleOic.DEFAULT_VERIFY_SSL,
+            description="Verify SSL certificates",
+        ),
     ]
 
     @classmethod
@@ -72,7 +85,7 @@ class FlextTargetOracleOicConnectionSettings(m):
     ) -> FlextTargetOracleOicConnectionSettings:
         """Create configuration from dictionary using modern Pydantic patterns."""
         try:
-            return cls(**data)
+            return cls.model_validate(data)
         except c.Meltano.Singer.SAFE_EXCEPTIONS:
             logger.exception(
                 "Failed to create FlextTargetOracleOicConnectionSettings from dict",

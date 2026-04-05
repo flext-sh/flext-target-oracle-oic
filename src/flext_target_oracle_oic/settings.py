@@ -7,16 +7,23 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Annotated
+from typing import Annotated, ClassVar
 
 from pydantic import Field, SecretStr
+from pydantic_settings import SettingsConfigDict
 
 from flext_core import FlextSettings
 from flext_target_oracle_oic import c, t
 
 
+@FlextSettings.auto_register("target-oracle-oic")
 class FlextTargetOracleOicConfig(FlextSettings):
     """Runtime settings for Oracle OIC target authentication and IO."""
+
+    model_config: ClassVar[SettingsConfigDict] = SettingsConfigDict(
+        env_prefix="FLEXT_TARGET_ORACLE_OIC_",
+        extra="ignore",
+    )
 
     oauth_client_id: Annotated[str, Field(..., description="OAuth client identifier")]
     oauth_client_secret: Annotated[
@@ -40,7 +47,11 @@ class FlextTargetOracleOicConfig(FlextSettings):
     ]
     timeout: Annotated[
         int,
-        Field(default=30, ge=1, description="HTTP timeout in seconds"),
+        Field(
+            default=c.DEFAULT_TIMEOUT_SECONDS,
+            ge=1,
+            description="HTTP timeout in seconds",
+        ),
     ]
 
     def get_oauth_client_secret_value(self) -> str:
