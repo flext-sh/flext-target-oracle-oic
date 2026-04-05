@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
+from datetime import datetime
 from pathlib import Path
 
 from flext_meltano import (
@@ -68,7 +69,9 @@ class FlextTargetOracleOicServiceRuntime:
             return None
         if isinstance(value, Path):
             return str(value)
-        if isinstance(value, t.CONTAINER_VALUE_SCALAR_TYPES):
+        if isinstance(value, (str, int, float, bool)):
+            return value
+        if isinstance(value, datetime):
             return value
         if isinstance(value, Mapping):
             return cls.normalize_singer_mapping(value)
