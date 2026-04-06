@@ -124,6 +124,11 @@ dev = [
   "vulture>=2.13",
 ]
 
+# [MANAGED] codespell
+[tool.codespell]
+check-filenames = true
+ignore-words-list = "crate,nd"
+
 # [MANAGED] coverage
 [tool.coverage.report]
 fail_under = 20
@@ -232,26 +237,9 @@ project-includes = [
 ]
 python-version = "3.13"
 search-path = [
-  ".",
-  "../flext-api/examples",
-  "../flext-api/src",
-  "../flext-cli/examples",
-  "../flext-cli/src",
-  "../flext-core/examples",
-  "../flext-core/src",
-  "../flext-db-oracle/examples",
-  "../flext-db-oracle/src",
-  "../flext-infra/src",
-  "../flext-meltano/docs",
-  "../flext-meltano/examples",
-  "../flext-meltano/src",
-  "../flext-observability/examples",
-  "../flext-observability/src",
-  "../flext-oracle-oic/src",
-  "../flext-tests/src",
-  "../flext-web/examples",
-  "../flext-web/src",
+  "examples",
   "src",
+  "tests",
 ]
 use-ignore-files = false
 
