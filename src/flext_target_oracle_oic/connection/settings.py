@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from collections.abc import MutableSequence
-from typing import Annotated
+from typing import Annotated, Self
 
 from pydantic import Field
 from pydantic_settings import SettingsConfigDict
@@ -82,7 +82,7 @@ class FlextTargetOracleOicConnectionSettings(FlextSettings):
     def from_dict(
         cls,
         data: t.ConfigurationMapping,
-    ) -> FlextTargetOracleOicConnectionSettings:
+    ) -> Self:
         """Create configuration from dictionary using modern Pydantic patterns."""
         try:
             return cls.model_validate(data)
