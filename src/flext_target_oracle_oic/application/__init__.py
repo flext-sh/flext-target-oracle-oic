@@ -28,7 +28,10 @@ if _t.TYPE_CHECKING:
         FlextTargetOracleOicOrchestrator,
     )
 _LAZY_IMPORTS = {
-    "FlextTargetOracleOicOrchestrator": "flext_target_oracle_oic.application.orchestrator",
+    "FlextTargetOracleOicOrchestrator": (
+        "flext_target_oracle_oic.application.orchestrator",
+        "FlextTargetOracleOicOrchestrator",
+    ),
     "c": ("flext_core.constants", "FlextConstants"),
     "d": ("flext_core.decorators", "FlextDecorators"),
     "e": ("flext_core.exceptions", "FlextExceptions"),

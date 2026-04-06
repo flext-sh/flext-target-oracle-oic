@@ -17,7 +17,10 @@ if _t.TYPE_CHECKING:
         FlextTargetOracleOicServiceRuntime,
     )
 _LAZY_IMPORTS = {
-    "FlextTargetOracleOicServiceRuntime": "flext_target_oracle_oic._utilities.service_runtime",
+    "FlextTargetOracleOicServiceRuntime": (
+        "flext_target_oracle_oic._utilities.service_runtime",
+        "FlextTargetOracleOicServiceRuntime",
+    ),
     "service_runtime": "flext_target_oracle_oic._utilities.service_runtime",
 }
 

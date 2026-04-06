@@ -29,8 +29,14 @@ if _t.TYPE_CHECKING:
         FlextTargetOracleOicRecordProcessor,
     )
 _LAZY_IMPORTS = {
-    "FlextTargetOracleOicProcessedRecord": "flext_target_oracle_oic.singer.processors",
-    "FlextTargetOracleOicRecordProcessor": "flext_target_oracle_oic.singer.processors",
+    "FlextTargetOracleOicProcessedRecord": (
+        "flext_target_oracle_oic.singer.processors",
+        "FlextTargetOracleOicProcessedRecord",
+    ),
+    "FlextTargetOracleOicRecordProcessor": (
+        "flext_target_oracle_oic.singer.processors",
+        "FlextTargetOracleOicRecordProcessor",
+    ),
     "c": ("flext_core.constants", "FlextConstants"),
     "d": ("flext_core.decorators", "FlextDecorators"),
     "e": ("flext_core.exceptions", "FlextExceptions"),

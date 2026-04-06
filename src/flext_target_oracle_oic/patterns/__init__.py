@@ -31,10 +31,22 @@ if _t.TYPE_CHECKING:
         FlextTargetOracleOicTypeConverter,
     )
 _LAZY_IMPORTS = {
-    "FlextTargetOracleOicDataTransformer": "flext_target_oracle_oic.patterns.oic_patterns",
-    "FlextTargetOracleOicEntryManager": "flext_target_oracle_oic.patterns.oic_patterns",
-    "FlextTargetOracleOicSchemaMapper": "flext_target_oracle_oic.patterns.oic_patterns",
-    "FlextTargetOracleOicTypeConverter": "flext_target_oracle_oic.patterns.oic_patterns",
+    "FlextTargetOracleOicDataTransformer": (
+        "flext_target_oracle_oic.patterns.oic_patterns",
+        "FlextTargetOracleOicDataTransformer",
+    ),
+    "FlextTargetOracleOicEntryManager": (
+        "flext_target_oracle_oic.patterns.oic_patterns",
+        "FlextTargetOracleOicEntryManager",
+    ),
+    "FlextTargetOracleOicSchemaMapper": (
+        "flext_target_oracle_oic.patterns.oic_patterns",
+        "FlextTargetOracleOicSchemaMapper",
+    ),
+    "FlextTargetOracleOicTypeConverter": (
+        "flext_target_oracle_oic.patterns.oic_patterns",
+        "FlextTargetOracleOicTypeConverter",
+    ),
     "c": ("flext_core.constants", "FlextConstants"),
     "d": ("flext_core.decorators", "FlextDecorators"),
     "e": ("flext_core.exceptions", "FlextExceptions"),
