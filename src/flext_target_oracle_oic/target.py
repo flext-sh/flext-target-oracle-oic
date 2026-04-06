@@ -6,25 +6,25 @@ from collections.abc import Mapping
 from typing import ClassVar, override
 
 from flext_core import FlextLogger, r
-from flext_meltano import FlextMeltanoTargetAbstractions, m
+from flext_meltano import FlextMeltanoSingerSinkBase, FlextMeltanoTargetAbstractions
 from flext_target_oracle_oic import c, t
 
 logger = FlextLogger(__name__)
 
 
-class FlextTargetOracleOicBaseSink(m.Meltano.SingerSinkBase):
+class FlextTargetOracleOicBaseSink(FlextMeltanoSingerSinkBase):
     """Base sink implementation used by OIC stream sinks."""
 
     @override
-    def process_batch(self, context: t.ConfigurationMapping) -> None:
+    def process_batch(self, context: t.MutableContainerValueMapping) -> None:
         """Singer batch hook implementation."""
         _ = context
 
     @override
     def process_record(
         self,
-        record: t.ConfigurationMapping,
-        context: t.ConfigurationMapping,
+        record: t.MutableContainerValueMapping,
+        context: t.MutableContainerValueMapping,
     ) -> None:
         """Default sink behavior: log incoming record metadata."""
         _ = context
