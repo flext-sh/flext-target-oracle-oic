@@ -152,15 +152,8 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
                 return FlextTargetOracleOicConfig.model_json_schema()
 
 
-# Public name for the nested Authenticator class — canonical export for test/consumer access.
-# This is not a legacy alias; it is the advertised public symbol for the inner class.
-FlextTargetOracleOicAuthenticator = (
-    FlextTargetOracleOicUtilities.TargetOracleOic.Authenticator
-)
-
 u = FlextTargetOracleOicUtilities
 __all__ = [
-    "FlextTargetOracleOicAuthenticator",
     "FlextTargetOracleOicUtilities",
     "u",
 ]

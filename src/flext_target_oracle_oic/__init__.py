@@ -112,7 +112,6 @@ if _t.TYPE_CHECKING:
     from flext_core.result import FlextResult as r
     from flext_core.service import FlextService as s
     from flext_target_oracle_oic.utilities import (
-        FlextTargetOracleOicAuthenticator,
         FlextTargetOracleOicUtilities,
         FlextTargetOracleOicUtilities as u,
     )
@@ -128,10 +127,6 @@ _LAZY_IMPORTS = merge_lazy_imports(
         "FlextTargetOracleOic": (
             "flext_target_oracle_oic.target",
             "FlextTargetOracleOic",
-        ),
-        "FlextTargetOracleOicAuthenticator": (
-            "flext_target_oracle_oic.utilities",
-            "FlextTargetOracleOicAuthenticator",
         ),
         "FlextTargetOracleOicBaseSink": (
             "flext_target_oracle_oic.target",
@@ -226,7 +221,6 @@ _ = _LAZY_IMPORTS.pop("output_reporting", None)
 
 __all__ = [
     "FlextTargetOracleOic",
-    "FlextTargetOracleOicAuthenticator",
     "FlextTargetOracleOicBaseSink",
     "FlextTargetOracleOicConfig",
     "FlextTargetOracleOicConnection",

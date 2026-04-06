@@ -18,10 +18,10 @@ from singer_sdk.target_base import Target as SingerTarget
 from flext_core import r as result_type
 from flext_target_oracle_oic import (
     FlextTargetOracleOic,
-    FlextTargetOracleOicAuthenticator,
     FlextTargetOracleOicConfig,
     FlextTargetOracleOicConnectionsSink,
     FlextTargetOracleOicIntegrationsSink,
+    u,
 )
 from tests import t
 
@@ -130,7 +130,7 @@ def _build_auth_config(
 
 
 def test_oic_authenticator_builds_payload() -> None:
-    authenticator = FlextTargetOracleOicAuthenticator(_build_auth_config())
+    authenticator = u.TargetOracleOic.Authenticator(_build_auth_config())
     payload = authenticator.build_token_request_data()
     assert payload["grant_type"] == "client_credentials"
     assert payload["client_id"] == "client-id"
@@ -140,7 +140,7 @@ def test_oic_authenticator_builds_payload() -> None:
 
 
 def test_oic_authenticator_omits_optional_scope_and_audience() -> None:
-    authenticator = FlextTargetOracleOicAuthenticator(
+    authenticator = u.TargetOracleOic.Authenticator(
         _build_auth_config(oauth_scope="", oauth_client_aud=None),
     )
     payload = authenticator.build_token_request_data()
@@ -150,7 +150,7 @@ def test_oic_authenticator_omits_optional_scope_and_audience() -> None:
 
 def test_oic_authenticator_rejects_invalid_token_response() -> None:
 
-    authenticator = FlextTargetOracleOicAuthenticator(_build_auth_config())
+    authenticator = u.TargetOracleOic.Authenticator(_build_auth_config())
 
     mock_response = Mock()
     mock_response.status_code = 200
