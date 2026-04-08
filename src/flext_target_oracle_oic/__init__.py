@@ -13,11 +13,11 @@ from flext_core.lazy import (
 from flext_target_oracle_oic.__version__ import *
 
 if _t.TYPE_CHECKING:
-    from flext_core.decorators import FlextDecorators as d
-    from flext_core.exceptions import FlextExceptions as e
-    from flext_core.handlers import FlextHandlers as h
-    from flext_core.mixins import FlextMixins as x
-    from flext_core.result import FlextResult as r
+    from flext_core.decorators import d
+    from flext_core.exceptions import e
+    from flext_core.handlers import h
+    from flext_core.mixins import x
+    from flext_core.result import r
     from flext_target_oracle_oic._utilities.service_runtime import (
         FlextTargetOracleOicServiceRuntime,
     )
@@ -53,7 +53,7 @@ if _t.TYPE_CHECKING:
         FlextTargetOracleOicProtocols,
         FlextTargetOracleOicProtocols as p,
     )
-    from flext_target_oracle_oic.settings import FlextTargetOracleOicConfig
+    from flext_target_oracle_oic.settings import FlextTargetOracleOicSettings
     from flext_target_oracle_oic.singer.processors import (
         FlextTargetOracleOicProcessedRecord,
         FlextTargetOracleOicRecordProcessor,
@@ -102,7 +102,7 @@ _LAZY_IMPORTS = merge_lazy_imports(
             ".constants": ("FlextTargetOracleOicConstants",),
             ".models": ("FlextTargetOracleOicModels",),
             ".protocols": ("FlextTargetOracleOicProtocols",),
-            ".settings": ("FlextTargetOracleOicConfig",),
+            ".settings": ("FlextTargetOracleOicSettings",),
             ".target": (
                 "FlextTargetOracleOic",
                 "FlextTargetOracleOicBaseSink",
@@ -113,6 +113,11 @@ _LAZY_IMPORTS = merge_lazy_imports(
             ),
             ".typings": ("FlextTargetOracleOicTypes",),
             ".utilities": ("FlextTargetOracleOicUtilities",),
+            "flext_core.decorators": ("d",),
+            "flext_core.exceptions": ("e",),
+            "flext_core.handlers": ("h",),
+            "flext_core.mixins": ("x",),
+            "flext_core.result": ("r",),
         },
         alias_groups={
             ".api": (("s", "FlextTargetOracleOicService"),),
@@ -121,11 +126,6 @@ _LAZY_IMPORTS = merge_lazy_imports(
             ".protocols": (("p", "FlextTargetOracleOicProtocols"),),
             ".typings": (("t", "FlextTargetOracleOicTypes"),),
             ".utilities": (("u", "FlextTargetOracleOicUtilities"),),
-            "flext_core.decorators": (("d", "FlextDecorators"),),
-            "flext_core.exceptions": (("e", "FlextExceptions"),),
-            "flext_core.handlers": (("h", "FlextHandlers"),),
-            "flext_core.mixins": (("x", "FlextMixins"),),
-            "flext_core.result": (("r", "FlextResult"),),
         },
     ),
     exclude_names=(
@@ -144,7 +144,6 @@ __all__ = [
     "FlextTargetOracleOic",
     "FlextTargetOracleOicBaseSink",
     "FlextTargetOracleOicCli",
-    "FlextTargetOracleOicConfig",
     "FlextTargetOracleOicConnection",
     "FlextTargetOracleOicConnectionSettings",
     "FlextTargetOracleOicConnectionsSink",
@@ -162,6 +161,7 @@ __all__ = [
     "FlextTargetOracleOicSchemaMapper",
     "FlextTargetOracleOicService",
     "FlextTargetOracleOicServiceRuntime",
+    "FlextTargetOracleOicSettings",
     "FlextTargetOracleOicTypeConverter",
     "FlextTargetOracleOicTypes",
     "FlextTargetOracleOicUtilities",

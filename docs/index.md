@@ -18,7 +18,7 @@ This project portal is generated from `pyproject.toml`, package exports, and rea
 
 ## Public Surface Summary
 
-- Primary facades: `FlextTargetOracleOic`, `FlextTargetOracleOicAuthenticator`, `FlextTargetOracleOicBaseSink`, `FlextTargetOracleOicConfig`, `FlextTargetOracleOicConnectionsSink`, `FlextTargetOracleOicConstants` (+8 more)
+- Primary facades: `FlextTargetOracleOic`, `FlextTargetOracleOicAuthenticator`, `FlextTargetOracleOicBaseSink`, `FlextTargetOracleOicSettings`, `FlextTargetOracleOicConnectionsSink`, `FlextTargetOracleOicConstants` (+8 more)
 - Alias namespaces: `c`, `d`, `e`, `h`, `m`, `p`, `r`, `s`, `t`, `u`, `x`
 - Public symbol exports: `15`
 - Exported module shortcuts: `api`, `application`, `cli`, `connection`, `constants`, `models` (+7 more)

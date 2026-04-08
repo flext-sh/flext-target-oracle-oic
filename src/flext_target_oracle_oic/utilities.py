@@ -8,7 +8,7 @@ from flext_api import FlextApi, FlextApiSettings
 from flext_core import r
 from flext_meltano import FlextMeltanoUtilities
 from flext_oracle_oic import FlextOracleOicUtilities
-from flext_target_oracle_oic import FlextTargetOracleOicConfig, c, m, t
+from flext_target_oracle_oic import FlextTargetOracleOicSettings, c, m, t
 
 
 class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtilities):
@@ -66,9 +66,9 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
         class Authenticator:
             """OAuth2 Authenticator for Oracle Integration Cloud."""
 
-            def __init__(self, config: FlextTargetOracleOicConfig) -> None:
+            def __init__(self, config: FlextTargetOracleOicSettings) -> None:
                 """Initialize the authenticator with target configuration."""
-                self._config: FlextTargetOracleOicConfig = config
+                self._config: FlextTargetOracleOicSettings = config
                 self._access_token: str | None = None
                 self._auth_scheme: str = c.TargetOracleOic.AUTH_SCHEME_BEARER
 
@@ -135,21 +135,21 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
             @staticmethod
             def create_config_from_dict(
                 config_dict: t.ConfigurationMapping,
-            ) -> FlextTargetOracleOicConfig:
-                """Create FlextTargetOracleOicConfig from dictionary."""
-                return FlextTargetOracleOicConfig.model_validate(config_dict)
+            ) -> FlextTargetOracleOicSettings:
+                """Create FlextTargetOracleOicSettings from dictionary."""
+                return FlextTargetOracleOicSettings.model_validate(config_dict)
 
             @staticmethod
             def create_config_with_env_overrides(
                 **overrides: t.Scalar,
-            ) -> FlextTargetOracleOicConfig:
-                """Create FlextTargetOracleOicConfig with environment variable overrides."""
-                return FlextTargetOracleOicConfig.model_validate(overrides)
+            ) -> FlextTargetOracleOicSettings:
+                """Create FlextTargetOracleOicSettings with environment variable overrides."""
+                return FlextTargetOracleOicSettings.model_validate(overrides)
 
             @staticmethod
             def create_singer_config_schema() -> t.FlatContainerMapping:
-                """Create Singer configuration schema from FlextTargetOracleOicConfig."""
-                return FlextTargetOracleOicConfig.model_json_schema()
+                """Create Singer configuration schema from FlextTargetOracleOicSettings."""
+                return FlextTargetOracleOicSettings.model_json_schema()
 
 
 u = FlextTargetOracleOicUtilities

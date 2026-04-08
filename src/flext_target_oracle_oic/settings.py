@@ -17,7 +17,7 @@ from flext_target_oracle_oic import c, t
 
 
 @FlextSettings.auto_register("target-oracle-oic")
-class FlextTargetOracleOicConfig(FlextSettings):
+class FlextTargetOracleOicSettings(FlextSettings):
     """Runtime settings for Oracle OIC target authentication and IO."""
 
     model_config: ClassVar[SettingsConfigDict] = SettingsConfigDict(
@@ -66,4 +66,4 @@ class FlextTargetOracleOicConfig(FlextSettings):
         }
 
 
-__all__ = ["FlextTargetOracleOicConfig"]
+__all__ = ["FlextTargetOracleOicSettings"]

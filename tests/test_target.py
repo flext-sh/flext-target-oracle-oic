@@ -18,7 +18,7 @@ from singer_sdk.target_base import Target as SingerTarget
 from flext_core import r as result_type
 from flext_target_oracle_oic import (
     FlextTargetOracleOic,
-    FlextTargetOracleOicConfig,
+    FlextTargetOracleOicSettings,
     FlextTargetOracleOicConnectionsSink,
     FlextTargetOracleOicIntegrationsSink,
     u,
@@ -28,7 +28,7 @@ from tests import t
 _DEFAULT_PROPERTIES: Mapping[str, t.StrMapping] = {"id": {"type": "string"}}
 
 
-class AuthTestConfig(FlextTargetOracleOicConfig):
+class AuthTestConfig(FlextTargetOracleOicSettings):
     pass
 
 
@@ -94,7 +94,7 @@ class TestTargetOracleOic:
 
     def test_config_schema(self) -> None:
         """Test method."""
-        schema = FlextTargetOracleOicConfig.model_json_schema()
+        schema = FlextTargetOracleOicSettings.model_json_schema()
         assert isinstance(schema, dict)
         if "properties" not in schema:
             msg = f"Expected {'properties'} in {schema}"
@@ -114,7 +114,7 @@ def _build_auth_config(
     *,
     oauth_scope: str | None = "urn:opc:resource:consumer:all",
     oauth_client_aud: str | None = "https://idcs.example.com",
-) -> FlextTargetOracleOicConfig:
+) -> FlextTargetOracleOicSettings:
     config = AuthTestConfig.__new__(AuthTestConfig)
     object.__setattr__(config, "oauth_client_id", "client-id")
     object.__setattr__(config, "oauth_client_secret", SecretStr("client-secret"))

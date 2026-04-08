@@ -27,7 +27,7 @@ from singer_sdk.target_base import Target as SingerTarget
 
 from flext_target_oracle_oic import (
     FlextTargetOracleOic,
-    FlextTargetOracleOicConfig,
+    FlextTargetOracleOicSettings,
     FlextTargetOracleOicConnectionsSink,
     FlextTargetOracleOicIntegrationsSink,
     FlextTargetOracleOicLookupsSink,
@@ -301,7 +301,7 @@ class TestTargetOracleOicE2E:
 
     def test_conditional_config_generation(self) -> None:
         """Test schema generation from pydantic configuration model."""
-        schema_raw = FlextTargetOracleOicConfig.model_json_schema()
+        schema_raw = FlextTargetOracleOicSettings.model_json_schema()
         properties_raw = schema_raw.get("properties")
         if not isinstance(properties_raw, dict):
             msg = f"Expected {'properties'} in {schema_raw}"
