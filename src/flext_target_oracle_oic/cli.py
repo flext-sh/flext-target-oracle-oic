@@ -2,8 +2,10 @@
 
 from __future__ import annotations
 
-from flext_target_oracle_oic.api import FlextTargetOracleOicService
-from flext_target_oracle_oic.typings import FlextTargetOracleOicTypes as t
+from flext_target_oracle_oic import (
+    FlextTargetOracleOicService,
+    FlextTargetOracleOicTypes as t,
+)
 
 
 class FlextTargetOracleOicCli:
