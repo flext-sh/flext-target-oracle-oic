@@ -1,4 +1,4 @@
-"""Module skeleton for FlextTargetOracleOicTestTypes.
+"""Module skeleton for TestsFlextTargetOracleOicTypes.
 
 Test type aliases for flext-target-oracle-oic.
 
@@ -13,9 +13,9 @@ from flext_tests import FlextTestsTypes
 from flext_target_oracle_oic import FlextTargetOracleOicTypes
 
 
-class FlextTargetOracleOicTestTypes(FlextTestsTypes, FlextTargetOracleOicTypes):
+class TestsFlextTargetOracleOicTypes(FlextTestsTypes, FlextTargetOracleOicTypes):
     """Test type aliases for flext-target-oracle-oic."""
 
 
-t = FlextTargetOracleOicTestTypes
-__all__ = ["FlextTargetOracleOicTestTypes", "t"]
+t = TestsFlextTargetOracleOicTypes
+__all__ = ["TestsFlextTargetOracleOicTypes", "t"]

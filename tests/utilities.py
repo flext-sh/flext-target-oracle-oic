@@ -1,4 +1,4 @@
-"""Module skeleton for FlextTargetOracleOicTestUtilities.
+"""Module skeleton for TestsFlextTargetOracleOicUtilities.
 
 Test utilities for flext-target-oracle-oic.
 
@@ -13,12 +13,12 @@ from flext_tests import FlextTestsUtilities
 from flext_target_oracle_oic import FlextTargetOracleOicUtilities
 
 
-class FlextTargetOracleOicTestUtilities(
+class TestsFlextTargetOracleOicUtilities(
     FlextTestsUtilities,
     FlextTargetOracleOicUtilities,
 ):
     """Test utilities for flext-target-oracle-oic."""
 
 
-u = FlextTargetOracleOicTestUtilities
-__all__ = ["FlextTargetOracleOicTestUtilities", "u"]
+u = TestsFlextTargetOracleOicUtilities
+__all__ = ["TestsFlextTargetOracleOicUtilities", "u"]

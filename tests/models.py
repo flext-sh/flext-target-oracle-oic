@@ -1,6 +1,6 @@
 """Test models for flext-target-oracle-oic tests.
 
-Provides FlextTargetOracleOicTestModels, extending FlextTestsModels with
+Provides TestsFlextTargetOracleOicModels, extending TestsFlextModels with
 flext-target-oracle-oic-specific models using COMPOSITION INHERITANCE.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
@@ -14,17 +14,16 @@ from flext_tests import FlextTestsModels
 from flext_target_oracle_oic import FlextTargetOracleOicModels
 
 
-class FlextTargetOracleOicTestModels(FlextTestsModels, FlextTargetOracleOicModels):
+class TestsFlextTargetOracleOicModels(FlextTestsModels, FlextTargetOracleOicModels):
     """Models for flext-target-oracle-oic tests using COMPOSITION INHERITANCE.
 
     MANDATORY: Inherits from BOTH:
-    1. FlextTestsModels - for test infrastructure (.Tests.*)
+    1. TestsFlextModels - for test infrastructure (.Tests.*)
     2. FlextTargetOracleOicModels - for domain models
 
     Access patterns:
-    - tm.Tests.* (generic test models from FlextTestsModels)
-    - tm.* (Target Oracle OIC domain models)
-    - m.* (production models via alternative alias)
+    - m.Tests.* (generic test models from TestsFlextModels)
+    - m.* (Target Oracle OIC domain models via shared MRO)
     """
 
     class Tests(FlextTestsModels.Tests):
@@ -34,12 +33,9 @@ class FlextTargetOracleOicTestModels(FlextTestsModels, FlextTargetOracleOicModel
             """Target Oracle OIC-specific test fixtures."""
 
 
-# Short aliases per FLEXT convention
-tm = FlextTargetOracleOicTestModels
-m = FlextTargetOracleOicTestModels
+m = TestsFlextTargetOracleOicModels
 
 __all__ = [
-    "FlextTargetOracleOicTestModels",
+    "TestsFlextTargetOracleOicModels",
     "m",
-    "tm",
 ]

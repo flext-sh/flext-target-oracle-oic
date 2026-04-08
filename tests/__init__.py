@@ -14,70 +14,45 @@ if _t.TYPE_CHECKING:
 
     conftest = _tests_conftest
     import tests.constants as _tests_constants
-    from tests.conftest import pytest_plugins
 
     constants = _tests_constants
     import tests.models as _tests_models
     from tests.constants import (
-        FlextTargetOracleOicTestConstants,
-        FlextTargetOracleOicTestConstants as c,
+        TestsFlextTargetOracleOicConstants,
+        TestsFlextTargetOracleOicConstants as c,
     )
 
     models = _tests_models
     import tests.protocols as _tests_protocols
     from tests.models import (
-        FlextTargetOracleOicTestModels,
-        FlextTargetOracleOicTestModels as m,
-        tm,
+        TestsFlextTargetOracleOicModels,
+        TestsFlextTargetOracleOicModels as m,
     )
 
     protocols = _tests_protocols
     import tests.test_cli_entrypoint as _tests_test_cli_entrypoint
     from tests.protocols import (
-        FlextTargetOracleOicTestProtocols,
-        FlextTargetOracleOicTestProtocols as p,
+        TestsFlextTargetOracleOicProtocols,
+        TestsFlextTargetOracleOicProtocols as p,
     )
 
     test_cli_entrypoint = _tests_test_cli_entrypoint
     import tests.test_e2e as _tests_test_e2e
-    from tests.test_cli_entrypoint import test_main_entrypoint_returns_zero
 
     test_e2e = _tests_test_e2e
     import tests.test_module_governance as _tests_test_module_governance
-    from tests.test_e2e import (
-        TestTargetOracleOicE2E,
-        load_test_config,
-        target,
-        test_config,
-        test_target_smoke_class,
-    )
 
     test_module_governance = _tests_test_module_governance
     import tests.test_target as _tests_test_target
-    from tests.test_module_governance import (
-        ALLOWED_MODULE_FUNCTIONS,
-        PACKAGE_ROOT,
-        test_package_modules_do_not_define_module_level_loggers,
-        test_package_modules_do_not_define_unapproved_top_level_functions,
-    )
 
     test_target = _tests_test_target
     import tests.typings as _tests_typings
-    from tests.test_target import (
-        AuthTestConfig,
-        DummySingerTarget,
-        TestTargetOracleOic,
-        singer_target,
-        test_oic_authenticator_builds_payload,
-        test_oic_authenticator_omits_optional_scope_and_audience,
-        test_oic_authenticator_rejects_invalid_token_response,
-    )
 
     typings = _tests_typings
     import tests.utilities as _tests_utilities
     from tests.typings import (
-        FlextTargetOracleOicTestTypes,
-        FlextTargetOracleOicTestTypes as t,
+        TestsFlextTargetOracleOicTypes,
+        TestsFlextTargetOracleOicTypes as t,
     )
 
     utilities = _tests_utilities
@@ -88,132 +63,76 @@ if _t.TYPE_CHECKING:
     from flext_core.result import FlextResult as r
     from flext_core.service import FlextService as s
     from tests.utilities import (
-        FlextTargetOracleOicTestUtilities,
-        FlextTargetOracleOicTestUtilities as u,
+        TestsFlextTargetOracleOicUtilities,
+        TestsFlextTargetOracleOicUtilities as u,
     )
 _LAZY_IMPORTS = {
-    "ALLOWED_MODULE_FUNCTIONS": (
-        "tests.test_module_governance",
-        "ALLOWED_MODULE_FUNCTIONS",
-    ),
-    "AuthTestConfig": ("tests.test_target", "AuthTestConfig"),
-    "DummySingerTarget": ("tests.test_target", "DummySingerTarget"),
-    "FlextTargetOracleOicTestConstants": (
+    "TestsFlextTargetOracleOicConstants": (
         "tests.constants",
-        "FlextTargetOracleOicTestConstants",
+        "TestsFlextTargetOracleOicConstants",
     ),
-    "FlextTargetOracleOicTestModels": (
+    "TestsFlextTargetOracleOicModels": (
         "tests.models",
-        "FlextTargetOracleOicTestModels",
+        "TestsFlextTargetOracleOicModels",
     ),
-    "FlextTargetOracleOicTestProtocols": (
+    "TestsFlextTargetOracleOicProtocols": (
         "tests.protocols",
-        "FlextTargetOracleOicTestProtocols",
+        "TestsFlextTargetOracleOicProtocols",
     ),
-    "FlextTargetOracleOicTestTypes": ("tests.typings", "FlextTargetOracleOicTestTypes"),
-    "FlextTargetOracleOicTestUtilities": (
+    "TestsFlextTargetOracleOicTypes": (
+        "tests.typings",
+        "TestsFlextTargetOracleOicTypes",
+    ),
+    "TestsFlextTargetOracleOicUtilities": (
         "tests.utilities",
-        "FlextTargetOracleOicTestUtilities",
+        "TestsFlextTargetOracleOicUtilities",
     ),
-    "PACKAGE_ROOT": ("tests.test_module_governance", "PACKAGE_ROOT"),
-    "TestTargetOracleOic": ("tests.test_target", "TestTargetOracleOic"),
-    "TestTargetOracleOicE2E": ("tests.test_e2e", "TestTargetOracleOicE2E"),
-    "c": ("tests.constants", "FlextTargetOracleOicTestConstants"),
+    "c": ("tests.constants", "TestsFlextTargetOracleOicConstants"),
     "conftest": "tests.conftest",
     "constants": "tests.constants",
     "d": ("flext_core.decorators", "FlextDecorators"),
     "e": ("flext_core.exceptions", "FlextExceptions"),
     "h": ("flext_core.handlers", "FlextHandlers"),
-    "load_test_config": ("tests.test_e2e", "load_test_config"),
-    "m": ("tests.models", "FlextTargetOracleOicTestModels"),
+    "m": ("tests.models", "TestsFlextTargetOracleOicModels"),
     "models": "tests.models",
-    "p": ("tests.protocols", "FlextTargetOracleOicTestProtocols"),
+    "p": ("tests.protocols", "TestsFlextTargetOracleOicProtocols"),
     "protocols": "tests.protocols",
-    "pytest_plugins": ("tests.conftest", "pytest_plugins"),
     "r": ("flext_core.result", "FlextResult"),
     "s": ("flext_core.service", "FlextService"),
-    "singer_target": ("tests.test_target", "singer_target"),
-    "t": ("tests.typings", "FlextTargetOracleOicTestTypes"),
-    "target": ("tests.test_e2e", "target"),
+    "t": ("tests.typings", "TestsFlextTargetOracleOicTypes"),
     "test_cli_entrypoint": "tests.test_cli_entrypoint",
-    "test_config": ("tests.test_e2e", "test_config"),
     "test_e2e": "tests.test_e2e",
-    "test_main_entrypoint_returns_zero": (
-        "tests.test_cli_entrypoint",
-        "test_main_entrypoint_returns_zero",
-    ),
     "test_module_governance": "tests.test_module_governance",
-    "test_oic_authenticator_builds_payload": (
-        "tests.test_target",
-        "test_oic_authenticator_builds_payload",
-    ),
-    "test_oic_authenticator_omits_optional_scope_and_audience": (
-        "tests.test_target",
-        "test_oic_authenticator_omits_optional_scope_and_audience",
-    ),
-    "test_oic_authenticator_rejects_invalid_token_response": (
-        "tests.test_target",
-        "test_oic_authenticator_rejects_invalid_token_response",
-    ),
-    "test_package_modules_do_not_define_module_level_loggers": (
-        "tests.test_module_governance",
-        "test_package_modules_do_not_define_module_level_loggers",
-    ),
-    "test_package_modules_do_not_define_unapproved_top_level_functions": (
-        "tests.test_module_governance",
-        "test_package_modules_do_not_define_unapproved_top_level_functions",
-    ),
     "test_target": "tests.test_target",
-    "test_target_smoke_class": ("tests.test_e2e", "test_target_smoke_class"),
-    "tm": ("tests.models", "tm"),
     "typings": "tests.typings",
-    "u": ("tests.utilities", "FlextTargetOracleOicTestUtilities"),
+    "u": ("tests.utilities", "TestsFlextTargetOracleOicUtilities"),
     "utilities": "tests.utilities",
     "x": ("flext_core.mixins", "FlextMixins"),
 }
 
 __all__ = [
-    "ALLOWED_MODULE_FUNCTIONS",
-    "PACKAGE_ROOT",
-    "AuthTestConfig",
-    "DummySingerTarget",
-    "FlextTargetOracleOicTestConstants",
-    "FlextTargetOracleOicTestModels",
-    "FlextTargetOracleOicTestProtocols",
-    "FlextTargetOracleOicTestTypes",
-    "FlextTargetOracleOicTestUtilities",
-    "TestTargetOracleOic",
-    "TestTargetOracleOicE2E",
+    "TestsFlextTargetOracleOicConstants",
+    "TestsFlextTargetOracleOicModels",
+    "TestsFlextTargetOracleOicProtocols",
+    "TestsFlextTargetOracleOicTypes",
+    "TestsFlextTargetOracleOicUtilities",
     "c",
     "conftest",
     "constants",
     "d",
     "e",
     "h",
-    "load_test_config",
     "m",
     "models",
     "p",
     "protocols",
-    "pytest_plugins",
     "r",
     "s",
-    "singer_target",
     "t",
-    "target",
     "test_cli_entrypoint",
-    "test_config",
     "test_e2e",
-    "test_main_entrypoint_returns_zero",
     "test_module_governance",
-    "test_oic_authenticator_builds_payload",
-    "test_oic_authenticator_omits_optional_scope_and_audience",
-    "test_oic_authenticator_rejects_invalid_token_response",
-    "test_package_modules_do_not_define_module_level_loggers",
-    "test_package_modules_do_not_define_unapproved_top_level_functions",
     "test_target",
-    "test_target_smoke_class",
-    "tm",
     "typings",
     "u",
     "utilities",

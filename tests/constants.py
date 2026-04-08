@@ -1,4 +1,4 @@
-"""Module skeleton for FlextTargetOracleOicTestConstants.
+"""Module skeleton for TestsFlextTargetOracleOicConstants.
 
 Test constants for flext-target-oracle-oic.
 
@@ -13,11 +13,11 @@ from flext_tests import FlextTestsConstants
 from flext_target_oracle_oic import FlextTargetOracleOicConstants
 
 
-class FlextTargetOracleOicTestConstants(
+class TestsFlextTargetOracleOicConstants(
     FlextTestsConstants, FlextTargetOracleOicConstants
 ):
     """Test constants for flext-target-oracle-oic."""
 
 
-c = FlextTargetOracleOicTestConstants
-__all__ = ["FlextTargetOracleOicTestConstants", "c"]
+c = TestsFlextTargetOracleOicConstants
+__all__ = ["TestsFlextTargetOracleOicConstants", "c"]
