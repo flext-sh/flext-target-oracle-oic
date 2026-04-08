@@ -11,77 +11,67 @@ from flext_core.lazy import install_lazy_exports, merge_lazy_imports
 from flext_target_oracle_oic.__version__ import *
 
 if _t.TYPE_CHECKING:
-    import flext_target_oracle_oic._utilities as _flext_target_oracle_oic__utilities
-
-    _utilities = _flext_target_oracle_oic__utilities
-    import flext_target_oracle_oic.api as _flext_target_oracle_oic_api
-    from flext_target_oracle_oic._utilities import FlextTargetOracleOicServiceRuntime
-
-    api = _flext_target_oracle_oic_api
-    import flext_target_oracle_oic.application as _flext_target_oracle_oic_application
+    from flext_core.decorators import FlextDecorators as d
+    from flext_core.exceptions import FlextExceptions as e
+    from flext_core.handlers import FlextHandlers as h
+    from flext_core.mixins import FlextMixins as x
+    from flext_core.result import FlextResult as r
+    from flext_target_oracle_oic import (
+        _utilities,
+        api,
+        application,
+        cli,
+        connection,
+        constants,
+        models,
+        patterns,
+        protocols,
+        settings,
+        singer,
+        target,
+        typings,
+        utilities,
+    )
+    from flext_target_oracle_oic._utilities.service_runtime import (
+        FlextTargetOracleOicServiceRuntime,
+    )
     from flext_target_oracle_oic.api import (
         FlextTargetOracleOicService,
         FlextTargetOracleOicService as s,
     )
-
-    application = _flext_target_oracle_oic_application
-    import flext_target_oracle_oic.cli as _flext_target_oracle_oic_cli
-    from flext_target_oracle_oic.application import FlextTargetOracleOicOrchestrator
-
-    cli = _flext_target_oracle_oic_cli
-    import flext_target_oracle_oic.connection as _flext_target_oracle_oic_connection
+    from flext_target_oracle_oic.application.orchestrator import (
+        FlextTargetOracleOicOrchestrator,
+    )
     from flext_target_oracle_oic.cli import FlextTargetOracleOicCli
-
-    connection = _flext_target_oracle_oic_connection
-    import flext_target_oracle_oic.constants as _flext_target_oracle_oic_constants
-    from flext_target_oracle_oic.connection import (
+    from flext_target_oracle_oic.connection.connection import (
         FlextTargetOracleOicConnection,
+    )
+    from flext_target_oracle_oic.connection.settings import (
         FlextTargetOracleOicConnectionSettings,
     )
-
-    constants = _flext_target_oracle_oic_constants
-    import flext_target_oracle_oic.models as _flext_target_oracle_oic_models
     from flext_target_oracle_oic.constants import (
         FlextTargetOracleOicConstants,
         FlextTargetOracleOicConstants as c,
     )
-
-    models = _flext_target_oracle_oic_models
-    import flext_target_oracle_oic.patterns as _flext_target_oracle_oic_patterns
     from flext_target_oracle_oic.models import (
         FlextTargetOracleOicModels,
         FlextTargetOracleOicModels as m,
     )
-
-    patterns = _flext_target_oracle_oic_patterns
-    import flext_target_oracle_oic.protocols as _flext_target_oracle_oic_protocols
-    from flext_target_oracle_oic.patterns import (
+    from flext_target_oracle_oic.patterns.oic_patterns import (
         FlextTargetOracleOicDataTransformer,
         FlextTargetOracleOicEntryManager,
         FlextTargetOracleOicSchemaMapper,
         FlextTargetOracleOicTypeConverter,
     )
-
-    protocols = _flext_target_oracle_oic_protocols
-    import flext_target_oracle_oic.settings as _flext_target_oracle_oic_settings
     from flext_target_oracle_oic.protocols import (
         FlextTargetOracleOicProtocols,
         FlextTargetOracleOicProtocols as p,
     )
-
-    settings = _flext_target_oracle_oic_settings
-    import flext_target_oracle_oic.singer as _flext_target_oracle_oic_singer
     from flext_target_oracle_oic.settings import FlextTargetOracleOicConfig
-
-    singer = _flext_target_oracle_oic_singer
-    import flext_target_oracle_oic.target as _flext_target_oracle_oic_target
-    from flext_target_oracle_oic.singer import (
+    from flext_target_oracle_oic.singer.processors import (
         FlextTargetOracleOicProcessedRecord,
         FlextTargetOracleOicRecordProcessor,
     )
-
-    target = _flext_target_oracle_oic_target
-    import flext_target_oracle_oic.typings as _flext_target_oracle_oic_typings
     from flext_target_oracle_oic.target import (
         FlextTargetOracleOic,
         FlextTargetOracleOicBaseSink,
@@ -90,20 +80,10 @@ if _t.TYPE_CHECKING:
         FlextTargetOracleOicLookupsSink,
         FlextTargetOracleOicPackagesSink,
     )
-
-    typings = _flext_target_oracle_oic_typings
-    import flext_target_oracle_oic.utilities as _flext_target_oracle_oic_utilities
     from flext_target_oracle_oic.typings import (
         FlextTargetOracleOicTypes,
         FlextTargetOracleOicTypes as t,
     )
-
-    utilities = _flext_target_oracle_oic_utilities
-    from flext_core.decorators import FlextDecorators as d
-    from flext_core.exceptions import FlextExceptions as e
-    from flext_core.handlers import FlextHandlers as h
-    from flext_core.mixins import FlextMixins as x
-    from flext_core.result import FlextResult as r
     from flext_target_oracle_oic.utilities import (
         FlextTargetOracleOicUtilities,
         FlextTargetOracleOicUtilities as u,
