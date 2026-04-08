@@ -8,10 +8,7 @@ from __future__ import annotations
 from flext_core.lazy import install_lazy_exports
 
 _LAZY_IMPORTS = {
-    "FlextTargetOracleOicOrchestrator": (
-        "flext_target_oracle_oic.application.orchestrator",
-        "FlextTargetOracleOicOrchestrator",
-    ),
+    "FlextTargetOracleOicOrchestrator": ".orchestrator",
 }
 
 

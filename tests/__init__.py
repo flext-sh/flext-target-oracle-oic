@@ -37,36 +37,21 @@ if _t.TYPE_CHECKING:
         TestsFlextTargetOracleOicUtilities as u,
     )
 _LAZY_IMPORTS = {
-    "TestsFlextTargetOracleOicConstants": (
-        "tests.constants",
-        "TestsFlextTargetOracleOicConstants",
-    ),
-    "TestsFlextTargetOracleOicModels": (
-        "tests.models",
-        "TestsFlextTargetOracleOicModels",
-    ),
-    "TestsFlextTargetOracleOicProtocols": (
-        "tests.protocols",
-        "TestsFlextTargetOracleOicProtocols",
-    ),
-    "TestsFlextTargetOracleOicTypes": (
-        "tests.typings",
-        "TestsFlextTargetOracleOicTypes",
-    ),
-    "TestsFlextTargetOracleOicUtilities": (
-        "tests.utilities",
-        "TestsFlextTargetOracleOicUtilities",
-    ),
-    "c": ("tests.constants", "TestsFlextTargetOracleOicConstants"),
+    "TestsFlextTargetOracleOicConstants": ".constants",
+    "TestsFlextTargetOracleOicModels": ".models",
+    "TestsFlextTargetOracleOicProtocols": ".protocols",
+    "TestsFlextTargetOracleOicTypes": ".typings",
+    "TestsFlextTargetOracleOicUtilities": ".utilities",
+    "c": (".constants", "TestsFlextTargetOracleOicConstants"),
     "d": ("flext_core.decorators", "FlextDecorators"),
     "e": ("flext_core.exceptions", "FlextExceptions"),
     "h": ("flext_core.handlers", "FlextHandlers"),
-    "m": ("tests.models", "TestsFlextTargetOracleOicModels"),
-    "p": ("tests.protocols", "TestsFlextTargetOracleOicProtocols"),
+    "m": (".models", "TestsFlextTargetOracleOicModels"),
+    "p": (".protocols", "TestsFlextTargetOracleOicProtocols"),
     "r": ("flext_core.result", "FlextResult"),
     "s": ("flext_core.service", "FlextService"),
-    "t": ("tests.typings", "TestsFlextTargetOracleOicTypes"),
-    "u": ("tests.utilities", "TestsFlextTargetOracleOicUtilities"),
+    "t": (".typings", "TestsFlextTargetOracleOicTypes"),
+    "u": (".utilities", "TestsFlextTargetOracleOicUtilities"),
     "x": ("flext_core.mixins", "FlextMixins"),
 }
 

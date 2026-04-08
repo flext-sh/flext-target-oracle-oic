@@ -8,22 +8,10 @@ from __future__ import annotations
 from flext_core.lazy import install_lazy_exports
 
 _LAZY_IMPORTS = {
-    "FlextTargetOracleOicDataTransformer": (
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "FlextTargetOracleOicDataTransformer",
-    ),
-    "FlextTargetOracleOicEntryManager": (
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "FlextTargetOracleOicEntryManager",
-    ),
-    "FlextTargetOracleOicSchemaMapper": (
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "FlextTargetOracleOicSchemaMapper",
-    ),
-    "FlextTargetOracleOicTypeConverter": (
-        "flext_target_oracle_oic.patterns.oic_patterns",
-        "FlextTargetOracleOicTypeConverter",
-    ),
+    "FlextTargetOracleOicDataTransformer": ".oic_patterns",
+    "FlextTargetOracleOicEntryManager": ".oic_patterns",
+    "FlextTargetOracleOicSchemaMapper": ".oic_patterns",
+    "FlextTargetOracleOicTypeConverter": ".oic_patterns",
 }
 
 
