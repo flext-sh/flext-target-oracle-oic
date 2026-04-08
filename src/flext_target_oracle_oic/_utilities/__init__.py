@@ -12,7 +12,6 @@ _LAZY_IMPORTS = {
         "flext_target_oracle_oic._utilities.service_runtime",
         "FlextTargetOracleOicServiceRuntime",
     ),
-    "service_runtime": "flext_target_oracle_oic._utilities.service_runtime",
 }
 
 

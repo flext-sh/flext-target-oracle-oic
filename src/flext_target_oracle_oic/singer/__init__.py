@@ -16,18 +16,6 @@ _LAZY_IMPORTS = {
         "flext_target_oracle_oic.singer.processors",
         "FlextTargetOracleOicRecordProcessor",
     ),
-    "c": ("flext_core.constants", "FlextConstants"),
-    "d": ("flext_core.decorators", "FlextDecorators"),
-    "e": ("flext_core.exceptions", "FlextExceptions"),
-    "h": ("flext_core.handlers", "FlextHandlers"),
-    "m": ("flext_core.models", "FlextModels"),
-    "p": ("flext_core.protocols", "FlextProtocols"),
-    "processors": "flext_target_oracle_oic.singer.processors",
-    "r": ("flext_core.result", "FlextResult"),
-    "s": ("flext_core.service", "FlextService"),
-    "t": ("flext_core.typings", "FlextTypes"),
-    "u": ("flext_core.utilities", "FlextUtilities"),
-    "x": ("flext_core.mixins", "FlextMixins"),
 }
 
 
