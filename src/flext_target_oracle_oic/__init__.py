@@ -33,14 +33,13 @@ if _t.TYPE_CHECKING:
 
     cli = _flext_target_oracle_oic_cli
     import flext_target_oracle_oic.connection as _flext_target_oracle_oic_connection
-    from flext_target_oracle_oic.cli import main
+    from flext_target_oracle_oic.cli import FlextTargetOracleOicCli, main
 
     connection = _flext_target_oracle_oic_connection
     import flext_target_oracle_oic.constants as _flext_target_oracle_oic_constants
     from flext_target_oracle_oic.connection import (
         FlextTargetOracleOicConnection,
         FlextTargetOracleOicConnectionSettings,
-        logger,
     )
 
     constants = _flext_target_oracle_oic_constants
@@ -132,6 +131,10 @@ _LAZY_IMPORTS = merge_lazy_imports(
             "flext_target_oracle_oic.target",
             "FlextTargetOracleOicBaseSink",
         ),
+        "FlextTargetOracleOicCli": (
+            "flext_target_oracle_oic.cli",
+            "FlextTargetOracleOicCli",
+        ),
         "FlextTargetOracleOicConfig": (
             "flext_target_oracle_oic.settings",
             "FlextTargetOracleOicConfig",
@@ -222,6 +225,7 @@ _ = _LAZY_IMPORTS.pop("output_reporting", None)
 __all__ = [
     "FlextTargetOracleOic",
     "FlextTargetOracleOicBaseSink",
+    "FlextTargetOracleOicCli",
     "FlextTargetOracleOicConfig",
     "FlextTargetOracleOicConnection",
     "FlextTargetOracleOicConnectionSettings",
@@ -261,7 +265,6 @@ __all__ = [
     "d",
     "e",
     "h",
-    "logger",
     "m",
     "main",
     "models",

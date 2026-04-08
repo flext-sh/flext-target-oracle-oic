@@ -40,16 +40,25 @@ if _t.TYPE_CHECKING:
 
     test_cli_entrypoint = _tests_test_cli_entrypoint
     import tests.test_e2e as _tests_test_e2e
-    from tests.test_cli_entrypoint import test_main_entrypoint_returns_none
+    from tests.test_cli_entrypoint import test_main_entrypoint_returns_zero
 
     test_e2e = _tests_test_e2e
-    import tests.test_target as _tests_test_target
+    import tests.test_module_governance as _tests_test_module_governance
     from tests.test_e2e import (
         TestTargetOracleOicE2E,
         load_test_config,
         target,
         test_config,
         test_target_smoke_class,
+    )
+
+    test_module_governance = _tests_test_module_governance
+    import tests.test_target as _tests_test_target
+    from tests.test_module_governance import (
+        ALLOWED_MODULE_FUNCTIONS,
+        PACKAGE_ROOT,
+        test_package_modules_do_not_define_module_level_loggers,
+        test_package_modules_do_not_define_unapproved_top_level_functions,
     )
 
     test_target = _tests_test_target
@@ -83,6 +92,10 @@ if _t.TYPE_CHECKING:
         FlextTargetOracleOicTestUtilities as u,
     )
 _LAZY_IMPORTS = {
+    "ALLOWED_MODULE_FUNCTIONS": (
+        "tests.test_module_governance",
+        "ALLOWED_MODULE_FUNCTIONS",
+    ),
     "AuthTestConfig": ("tests.test_target", "AuthTestConfig"),
     "DummySingerTarget": ("tests.test_target", "DummySingerTarget"),
     "FlextTargetOracleOicTestConstants": (
@@ -102,6 +115,7 @@ _LAZY_IMPORTS = {
         "tests.utilities",
         "FlextTargetOracleOicTestUtilities",
     ),
+    "PACKAGE_ROOT": ("tests.test_module_governance", "PACKAGE_ROOT"),
     "TestTargetOracleOic": ("tests.test_target", "TestTargetOracleOic"),
     "TestTargetOracleOicE2E": ("tests.test_e2e", "TestTargetOracleOicE2E"),
     "c": ("tests.constants", "FlextTargetOracleOicTestConstants"),
@@ -124,10 +138,11 @@ _LAZY_IMPORTS = {
     "test_cli_entrypoint": "tests.test_cli_entrypoint",
     "test_config": ("tests.test_e2e", "test_config"),
     "test_e2e": "tests.test_e2e",
-    "test_main_entrypoint_returns_none": (
+    "test_main_entrypoint_returns_zero": (
         "tests.test_cli_entrypoint",
-        "test_main_entrypoint_returns_none",
+        "test_main_entrypoint_returns_zero",
     ),
+    "test_module_governance": "tests.test_module_governance",
     "test_oic_authenticator_builds_payload": (
         "tests.test_target",
         "test_oic_authenticator_builds_payload",
@@ -140,6 +155,14 @@ _LAZY_IMPORTS = {
         "tests.test_target",
         "test_oic_authenticator_rejects_invalid_token_response",
     ),
+    "test_package_modules_do_not_define_module_level_loggers": (
+        "tests.test_module_governance",
+        "test_package_modules_do_not_define_module_level_loggers",
+    ),
+    "test_package_modules_do_not_define_unapproved_top_level_functions": (
+        "tests.test_module_governance",
+        "test_package_modules_do_not_define_unapproved_top_level_functions",
+    ),
     "test_target": "tests.test_target",
     "test_target_smoke_class": ("tests.test_e2e", "test_target_smoke_class"),
     "tm": ("tests.models", "tm"),
@@ -150,6 +173,8 @@ _LAZY_IMPORTS = {
 }
 
 __all__ = [
+    "ALLOWED_MODULE_FUNCTIONS",
+    "PACKAGE_ROOT",
     "AuthTestConfig",
     "DummySingerTarget",
     "FlextTargetOracleOicTestConstants",
@@ -179,10 +204,13 @@ __all__ = [
     "test_cli_entrypoint",
     "test_config",
     "test_e2e",
-    "test_main_entrypoint_returns_none",
+    "test_main_entrypoint_returns_zero",
+    "test_module_governance",
     "test_oic_authenticator_builds_payload",
     "test_oic_authenticator_omits_optional_scope_and_audience",
     "test_oic_authenticator_rejects_invalid_token_response",
+    "test_package_modules_do_not_define_module_level_loggers",
+    "test_package_modules_do_not_define_unapproved_top_level_functions",
     "test_target",
     "test_target_smoke_class",
     "tm",

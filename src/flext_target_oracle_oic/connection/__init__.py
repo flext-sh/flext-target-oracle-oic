@@ -32,7 +32,6 @@ if _t.TYPE_CHECKING:
     from flext_core.utilities import FlextUtilities as u
     from flext_target_oracle_oic.connection.settings import (
         FlextTargetOracleOicConnectionSettings,
-        logger,
     )
 _LAZY_IMPORTS = {
     "FlextTargetOracleOicConnection": (
@@ -48,7 +47,6 @@ _LAZY_IMPORTS = {
     "d": ("flext_core.decorators", "FlextDecorators"),
     "e": ("flext_core.exceptions", "FlextExceptions"),
     "h": ("flext_core.handlers", "FlextHandlers"),
-    "logger": ("flext_target_oracle_oic.connection.settings", "logger"),
     "m": ("flext_core.models", "FlextModels"),
     "p": ("flext_core.protocols", "FlextProtocols"),
     "r": ("flext_core.result", "FlextResult"),
@@ -67,7 +65,6 @@ __all__ = [
     "d",
     "e",
     "h",
-    "logger",
     "m",
     "p",
     "r",
