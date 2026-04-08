@@ -24,7 +24,7 @@ if _t.TYPE_CHECKING:
     from flext_target_oracle_oic.application.orchestrator import (
         FlextTargetOracleOicOrchestrator,
     )
-    from flext_target_oracle_oic.cli import FlextTargetOracleOicCli
+    from flext_target_oracle_oic.cli import FlextTargetOracleOicCli, main
     from flext_target_oracle_oic.connection.connection import (
         FlextTargetOracleOicConnection,
     )
@@ -106,6 +106,7 @@ _LAZY_IMPORTS = merge_lazy_imports(
         "e": ("flext_core.exceptions", "FlextExceptions"),
         "h": ("flext_core.handlers", "FlextHandlers"),
         "m": (".models", "FlextTargetOracleOicModels"),
+        "main": ".cli",
         "p": (".protocols", "FlextTargetOracleOicProtocols"),
         "r": ("flext_core.result", "FlextResult"),
         "s": (".api", "FlextTargetOracleOicService"),
@@ -163,6 +164,7 @@ __all__ = [
     "e",
     "h",
     "m",
+    "main",
     "p",
     "r",
     "s",
