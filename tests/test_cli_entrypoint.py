@@ -9,5 +9,5 @@ from __future__ import annotations
 from flext_target_oracle_oic import main
 
 
-def test_main_entrypoint_returns_none() -> None:
-    main()
+def test_main_entrypoint_returns_zero() -> None:
+    assert main() == 0

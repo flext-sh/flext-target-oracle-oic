@@ -6,7 +6,7 @@ from collections.abc import Mapping
 from datetime import datetime
 from pathlib import Path
 
-from flext_meltano import FlextMeltanoSingerTargetBase
+from flext_meltano.services.singer_sdk import Target as FlextMeltanoSingerTargetBase
 from flext_target_oracle_oic import (
     FlextTargetOracleOic,
     FlextTargetOracleOicBaseSink,
