@@ -18,9 +18,9 @@ from singer_sdk.target_base import Target as SingerTarget
 from flext_core import r as result_type
 from flext_target_oracle_oic import (
     FlextTargetOracleOic,
-    FlextTargetOracleOicSettings,
     FlextTargetOracleOicConnectionsSink,
     FlextTargetOracleOicIntegrationsSink,
+    FlextTargetOracleOicSettings,
     u,
 )
 from tests import t

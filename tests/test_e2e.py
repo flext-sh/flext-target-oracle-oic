@@ -27,11 +27,11 @@ from singer_sdk.target_base import Target as SingerTarget
 
 from flext_target_oracle_oic import (
     FlextTargetOracleOic,
-    FlextTargetOracleOicSettings,
     FlextTargetOracleOicConnectionsSink,
     FlextTargetOracleOicIntegrationsSink,
     FlextTargetOracleOicLookupsSink,
     FlextTargetOracleOicPackagesSink,
+    FlextTargetOracleOicSettings,
 )
 from tests import t
 
