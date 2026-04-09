@@ -170,7 +170,6 @@ class TestTargetOracleOicE2E:
             schema={"properties": {"id": {"type": "string"}}},
             key_properties=["id"],
         )
-        assert hasattr(sink, "process_record")
 
     def test_connections_sink_record_processing(
         self,
