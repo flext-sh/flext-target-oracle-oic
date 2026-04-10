@@ -164,7 +164,7 @@ class TestTargetOracleOicE2E:
 
     def test_sink_authenticator_setup(self, singer_target: SingerTarget) -> None:
         """Test sink can be constructed with singer target."""
-        sink = FlextTargetOracleOicConnectionsSink(
+        FlextTargetOracleOicConnectionsSink(
             target=singer_target,
             stream_name="connections",
             schema={"properties": {"id": {"type": "string"}}},
