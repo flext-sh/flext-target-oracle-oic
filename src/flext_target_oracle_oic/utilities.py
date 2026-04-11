@@ -105,7 +105,7 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
                         data=self.build_token_request_data(),
                         headers=dict(self._config.get_oauth_headers()),
                     )
-                    if response_result.is_failure:
+                    if response_result.failure:
                         msg = f"Failed to request OAuth2 token: {response_result.error}"
                         raise RuntimeError(msg)
                     response = response_result.value

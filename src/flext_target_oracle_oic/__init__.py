@@ -13,12 +13,7 @@ from flext_core.lazy import (
 from flext_target_oracle_oic.__version__ import *
 
 if _t.TYPE_CHECKING:
-    from flext_cli.base import s
-    from flext_core.decorators import d
-    from flext_core.exceptions import e
-    from flext_core.handlers import h
-    from flext_core.mixins import x
-    from flext_core.result import r
+    from flext_meltano import d, e, h, r, s, x
     from flext_target_oracle_oic._utilities.service_runtime import (
         FlextTargetOracleOicServiceRuntime,
     )
@@ -111,12 +106,14 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "FlextTargetOracleOicUtilities",
                 "u",
             ),
-            "flext_cli.base": ("s",),
-            "flext_core.decorators": ("d",),
-            "flext_core.exceptions": ("e",),
-            "flext_core.handlers": ("h",),
-            "flext_core.mixins": ("x",),
-            "flext_core.result": ("r",),
+            "flext_meltano": (
+                "d",
+                "e",
+                "h",
+                "r",
+                "s",
+                "x",
+            ),
         },
     ),
     exclude_names=(

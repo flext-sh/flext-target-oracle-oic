@@ -234,11 +234,11 @@ class TestTargetOracleOicE2E:
     def test_config_validation(self, target: FlextTargetOracleOic) -> None:
         """Test setup/teardown result contract."""
         setup_result = target.setup()
-        assert setup_result.is_success
+        assert setup_result.success
         assert setup_result.value is not None
         assert setup_result.value is True
         teardown_result = target.teardown()
-        assert teardown_result.is_success
+        assert teardown_result.success
         assert teardown_result.value is not None
         assert teardown_result.value is True
 
