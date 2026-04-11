@@ -100,7 +100,7 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
                         "base_url": str(self._config.oauth_token_url),
                         "timeout": self._config.timeout,
                     })
-                    response_result = FlextApi(api_config).post(
+                    response_result = FlextApi(config=api_config).post(
                         "",
                         data=self.build_token_request_data(),
                         headers=dict(self._config.get_oauth_headers()),
