@@ -12,8 +12,9 @@ from flext_core.lazy import (
 )
 
 if _t.TYPE_CHECKING:
-    from flext_tests import d, e, h, r, s, td, tf, tk, tm, tv, x
+    from flext_tests import td, tf, tk, tm, tv
 
+    from flext_target_oracle_oic import d, e, h, r, s, x
     from tests.constants import TestsFlextTargetOracleOicConstants, c
     from tests.models import TestsFlextTargetOracleOicModels, m
     from tests.protocols import TestsFlextTargetOracleOicProtocols, p
@@ -43,18 +44,20 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "TestsFlextTargetOracleOicUtilities",
                 "u",
             ),
-            "flext_tests": (
+            "flext_target_oracle_oic": (
                 "d",
                 "e",
                 "h",
                 "r",
                 "s",
+                "x",
+            ),
+            "flext_tests": (
                 "td",
                 "tf",
                 "tk",
                 "tm",
                 "tv",
-                "x",
             ),
         },
     ),

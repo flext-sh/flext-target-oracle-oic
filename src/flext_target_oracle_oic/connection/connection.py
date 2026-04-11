@@ -9,10 +9,10 @@ from flext_target_oracle_oic import t
 class FlextTargetOracleOicConnection:
     """Holds runtime connection configuration and health checks."""
 
-    def __init__(self, config: t.ConfigurationMapping | None = None) -> None:
+    def __init__(self, settings: t.ConfigurationMapping | None = None) -> None:
         """Initialize connection with optional configuration mapping."""
         super().__init__()
-        self.config = config or {}
+        self.settings = settings or {}
 
     def test_connection(self) -> r[bool]:
         """Return a successful health check result."""

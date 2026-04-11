@@ -9,10 +9,10 @@ from flext_target_oracle_oic import t
 class FlextTargetOracleOicOrchestrator:
     """Coordinates setup and teardown for target orchestration."""
 
-    def __init__(self, config: t.ConfigurationMapping | None = None) -> None:
+    def __init__(self, settings: t.ConfigurationMapping | None = None) -> None:
         """Store runtime configuration used by orchestration steps."""
         super().__init__()
-        self.config = config or {}
+        self.settings = settings or {}
 
     def setup(self) -> r[bool]:
         """Initialize orchestration dependencies."""

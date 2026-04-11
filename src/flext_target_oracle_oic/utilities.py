@@ -21,12 +21,12 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
             """Runtime configuration validation helper functions."""
 
             @staticmethod
-            def validate_config(config: t.ConfigurationMapping) -> r[bool]:
+            def validate_config(settings: t.ConfigurationMapping) -> r[bool]:
                 """Validate required OIC target configuration keys."""
                 required = {"base_url", "oauth_client_id", "oauth_client_secret"}
-                missing = sorted(key for key in required if key not in config)
+                missing = sorted(key for key in required if key not in settings)
                 if missing:
-                    return r[bool].fail(f"Missing required config fields: {missing}")
+                    return r[bool].fail(f"Missing required settings fields: {missing}")
                 return r[bool].ok(value=True)
 
         class Factories:
@@ -66,9 +66,9 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
         class Authenticator:
             """OAuth2 Authenticator for Oracle Integration Cloud."""
 
-            def __init__(self, config: FlextTargetOracleOicSettings) -> None:
+            def __init__(self, settings: FlextTargetOracleOicSettings) -> None:
                 """Initialize the authenticator with target configuration."""
-                self._config: FlextTargetOracleOicSettings = config
+                self._config: FlextTargetOracleOicSettings = settings
                 self._access_token: str | None = None
                 self._auth_scheme: str = c.TargetOracleOic.AUTH_SCHEME_BEARER
 
@@ -100,7 +100,7 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
                         "base_url": str(self._config.oauth_token_url),
                         "timeout": self._config.timeout,
                     })
-                    response_result = FlextApi(config=api_config).post(
+                    response_result = FlextApi(settings=api_config).post(
                         "",
                         data=self.build_token_request_data(),
                         headers=dict(self._config.get_oauth_headers()),

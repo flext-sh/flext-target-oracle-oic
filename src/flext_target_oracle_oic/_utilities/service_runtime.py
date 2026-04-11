@@ -37,7 +37,7 @@ class FlextTargetOracleOicServiceRuntime:
             stream_name,
         )
         return sink_class(
-            target=cls.Target(config=normalized_target_config, validate_config=False),
+            target=cls.Target(settings=normalized_target_config, validate_config=False),
             stream_name=stream_name,
             schema=dict(schema),
             key_properties=[],

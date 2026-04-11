@@ -28,7 +28,7 @@ from tests import t
 _DEFAULT_PROPERTIES: Mapping[str, t.StrMapping] = {"id": {"type": "string"}}
 
 
-class AuthTestConfig(FlextTargetOracleOicSettings):
+class AuthTestSettings(FlextTargetOracleOicSettings):
     pass
 
 
@@ -107,7 +107,7 @@ class TestTargetOracleOic:
 @pytest.fixture
 def singer_target() -> SingerTarget:
     """Provide a Singer target accepted by singer-sdk Sink constructors."""
-    return DummySingerTarget(config={})
+    return DummySingerTarget(settings={})
 
 
 def _build_auth_config(
@@ -115,18 +115,18 @@ def _build_auth_config(
     oauth_scope: str | None = "urn:opc:resource:consumer:all",
     oauth_client_aud: str | None = "https://idcs.example.com",
 ) -> FlextTargetOracleOicSettings:
-    config = AuthTestConfig.__new__(AuthTestConfig)
-    object.__setattr__(config, "oauth_client_id", "client-id")
-    object.__setattr__(config, "oauth_client_secret", SecretStr("client-secret"))
+    settings = AuthTestSettings.__new__(AuthTestSettings)
+    object.__setattr__(settings, "oauth_client_id", "client-id")
+    object.__setattr__(settings, "oauth_client_secret", SecretStr("client-secret"))
     object.__setattr__(
-        config,
+        settings,
         "oauth_token_url",
         "https://idcs.example.com/oauth2/v1/token",
     )
-    object.__setattr__(config, "oauth_scope", oauth_scope)
-    object.__setattr__(config, "oauth_client_aud", oauth_client_aud)
-    object.__setattr__(config, "timeout", 30)
-    return config
+    object.__setattr__(settings, "oauth_scope", oauth_scope)
+    object.__setattr__(settings, "oauth_client_aud", oauth_client_aud)
+    object.__setattr__(settings, "timeout", 30)
+    return settings
 
 
 def test_oic_authenticator_builds_payload() -> None:

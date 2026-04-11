@@ -53,7 +53,7 @@ def load_test_config() -> t.StrMapping:
                 if "=" in line and (not line.strip().startswith("#")):
                     key, value = line.strip().split("=", 1)
                     os.environ[key] = value.strip("\"'")
-    config = {
+    settings = {
         "base_url": os.getenv("TARGET_ORACLE_OIC_BASE_URL", ""),
         "oauth_client_id": os.getenv("TARGET_ORACLE_OIC_OAUTH_CLIENT_ID", ""),
         "oauth_client_secret": os.getenv("TARGET_ORACLE_OIC_OAUTH_CLIENT_SECRET", ""),
@@ -66,10 +66,10 @@ def load_test_config() -> t.StrMapping:
         "oauth_client_secret",
         "oauth_token_url",
     ]
-    missing_keys = [k for k in required_keys if not config[k]]
+    missing_keys = [k for k in required_keys if not settings[k]]
     if missing_keys:
         pytest.skip(f"Missing required environment variables: {missing_keys}")
-    return config
+    return settings
 
 
 @pytest.fixture
@@ -87,7 +87,7 @@ def target() -> FlextTargetOracleOic:
 @pytest.fixture
 def singer_target() -> SingerTarget:
     """Create singer target instance for sink constructors."""
-    return DummySingerTarget(config={})
+    return DummySingerTarget(settings={})
 
 
 class TestTargetOracleOicE2E:
