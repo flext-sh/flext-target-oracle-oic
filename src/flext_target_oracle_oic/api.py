@@ -41,4 +41,6 @@ class FlextTargetOracleOicService(FlextMeltanoTargetServiceBase):
         )
 
 
-__all__ = ["FlextTargetOracleOicService"]
+target_oracle_oic = FlextTargetOracleOicService
+
+__all__ = ["FlextTargetOracleOicService", "target_oracle_oic"]
