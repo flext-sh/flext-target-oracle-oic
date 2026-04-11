@@ -16,7 +16,7 @@ from flext_target_oracle_oic import c, r, t
 class FlextTargetOracleOicBaseSink(FlextMeltanoSingerSinkBase):
     """Base sink implementation used by OIC stream sinks."""
 
-    _logger: ClassVar[FlextLogger] = FlextLogger(__name__)
+    _logger: ClassVar[FlextLogger] = u.fetch_logger(__name__)
 
     @override
     def process_batch(self, context: t.MutableContainerValueMapping) -> None:

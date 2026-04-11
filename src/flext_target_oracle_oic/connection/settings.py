@@ -21,7 +21,7 @@ from flext_target_oracle_oic import c, t
 class FlextTargetOracleOicConnectionSettings(FlextSettings):
     """Oracle OIC connection settings using flext-core patterns."""
 
-    _logger: ClassVar[FlextLogger] = FlextLogger(__name__)
+    _logger: ClassVar[FlextLogger] = u.fetch_logger(__name__)
 
     model_config = SettingsConfigDict(
         env_prefix="FLEXT_TARGET_ORACLE_OIC_",

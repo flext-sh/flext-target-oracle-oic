@@ -17,7 +17,10 @@ if _t.TYPE_CHECKING:
     from flext_target_oracle_oic._utilities.service_runtime import (
         FlextTargetOracleOicServiceRuntime,
     )
-    from flext_target_oracle_oic.api import FlextTargetOracleOicService
+    from flext_target_oracle_oic.api import (
+        FlextTargetOracleOicService,
+        target_oracle_oic,
+    )
     from flext_target_oracle_oic.application.orchestrator import (
         FlextTargetOracleOicOrchestrator,
     )
@@ -72,7 +75,10 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "__version__",
                 "__version_info__",
             ),
-            ".api": ("FlextTargetOracleOicService",),
+            ".api": (
+                "FlextTargetOracleOicService",
+                "target_oracle_oic",
+            ),
             ".cli": (
                 "FlextTargetOracleOicCli",
                 "main",
@@ -174,6 +180,7 @@ __all__ = [
     "r",
     "s",
     "t",
+    "target_oracle_oic",
     "u",
     "x",
 ]
