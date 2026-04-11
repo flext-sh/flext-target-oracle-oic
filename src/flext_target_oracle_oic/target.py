@@ -5,18 +5,17 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import ClassVar, override
 
-from flext_core import FlextLogger
 from flext_meltano import (
     FlextMeltanoTargetAbstractions,
     Sink as FlextMeltanoSingerSinkBase,
 )
-from flext_target_oracle_oic import c, r, t
+from flext_target_oracle_oic import c, p, r, t, u
 
 
 class FlextTargetOracleOicBaseSink(FlextMeltanoSingerSinkBase):
     """Base sink implementation used by OIC stream sinks."""
 
-    _logger: ClassVar[FlextLogger] = u.fetch_logger(__name__)
+    _logger: ClassVar[p.Logger] = u.fetch_logger(__name__)
 
     @override
     def process_batch(self, context: t.MutableContainerValueMapping) -> None:

@@ -13,15 +13,15 @@ from typing import Annotated, ClassVar, Self
 from pydantic import Field
 from pydantic_settings import SettingsConfigDict
 
-from flext_core import FlextLogger, FlextSettings, r
-from flext_target_oracle_oic import c, t
+from flext_core import FlextSettings, r
+from flext_target_oracle_oic import c, p, t, u
 
 
 @FlextSettings.auto_register("target-oracle-oic-connection")
 class FlextTargetOracleOicConnectionSettings(FlextSettings):
     """Oracle OIC connection settings using flext-core patterns."""
 
-    _logger: ClassVar[FlextLogger] = u.fetch_logger(__name__)
+    _logger: ClassVar[p.Logger] = u.fetch_logger(__name__)
 
     model_config = SettingsConfigDict(
         env_prefix="FLEXT_TARGET_ORACLE_OIC_",
