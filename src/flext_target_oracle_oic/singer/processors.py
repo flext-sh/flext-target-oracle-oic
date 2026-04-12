@@ -30,4 +30,7 @@ class FlextTargetOracleOicRecordProcessor:
         )
 
 
-__all__ = ["FlextTargetOracleOicProcessedRecord", "FlextTargetOracleOicRecordProcessor"]
+__all__: list[str] = [
+    "FlextTargetOracleOicProcessedRecord",
+    "FlextTargetOracleOicRecordProcessor",
+]

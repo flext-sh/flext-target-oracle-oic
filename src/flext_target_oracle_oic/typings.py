@@ -11,4 +11,4 @@ class FlextTargetOracleOicTypes(FlextMeltanoTypes, FlextOracleOicTypes):
 
 
 t = FlextTargetOracleOicTypes
-__all__ = ["FlextTargetOracleOicTypes", "t"]
+__all__: list[str] = ["FlextTargetOracleOicTypes", "t"]

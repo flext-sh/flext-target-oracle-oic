@@ -153,7 +153,7 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
 
 
 u = FlextTargetOracleOicUtilities
-__all__ = [
+__all__: list[str] = [
     "FlextTargetOracleOicUtilities",
     "u",
 ]

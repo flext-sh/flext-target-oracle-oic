@@ -42,4 +42,4 @@ class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtoco
 
 
 p = FlextTargetOracleOicProtocols
-__all__ = ["FlextTargetOracleOicProtocols", "p"]
+__all__: list[str] = ["FlextTargetOracleOicProtocols", "p"]

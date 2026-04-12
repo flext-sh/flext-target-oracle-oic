@@ -19,4 +19,4 @@ class FlextTargetOracleOicConnection:
         return r[bool].ok(value=True)
 
 
-__all__ = ["FlextTargetOracleOicConnection"]
+__all__: list[str] = ["FlextTargetOracleOicConnection"]

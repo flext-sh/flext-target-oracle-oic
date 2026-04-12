@@ -23,4 +23,4 @@ def main() -> int:
     return FlextTargetOracleOicCli.run()
 
 
-__all__ = ["FlextTargetOracleOicCli", "main"]
+__all__: list[str] = ["FlextTargetOracleOicCli", "main"]

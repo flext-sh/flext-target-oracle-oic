@@ -83,4 +83,4 @@ class FlextTargetOracleOicServiceRuntime:
         return normalized_sequence
 
 
-__all__ = ["FlextTargetOracleOicServiceRuntime"]
+__all__: list[str] = ["FlextTargetOracleOicServiceRuntime"]

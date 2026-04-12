@@ -84,7 +84,7 @@ class FlextTargetOracleOic(FlextMeltanoTargetAbstractions):
         return r[bool].ok(value=True)
 
 
-__all__ = [
+__all__: list[str] = [
     "FlextTargetOracleOic",
     "FlextTargetOracleOicBaseSink",
     "FlextTargetOracleOicConnectionsSink",

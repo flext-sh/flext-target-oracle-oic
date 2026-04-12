@@ -86,4 +86,4 @@ class FlextTargetOracleOicModels(FlextMeltanoModels, FlextOracleOicModels):
 
 m = FlextTargetOracleOicModels
 
-__all__ = ["FlextTargetOracleOicModels", "m"]
+__all__: list[str] = ["FlextTargetOracleOicModels", "m"]

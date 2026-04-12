@@ -50,4 +50,4 @@ class FlextTargetOracleOicConstants(FlextMeltanoConstants, FlextOracleOicConstan
 
 
 c = FlextTargetOracleOicConstants
-__all__ = ["FlextTargetOracleOicConstants", "c"]
+__all__: list[str] = ["FlextTargetOracleOicConstants", "c"]

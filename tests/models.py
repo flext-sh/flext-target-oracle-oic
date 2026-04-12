@@ -35,7 +35,7 @@ class TestsFlextTargetOracleOicModels(FlextTestsModels, FlextTargetOracleOicMode
 
 m = TestsFlextTargetOracleOicModels
 
-__all__ = [
+__all__: list[str] = [
     "TestsFlextTargetOracleOicModels",
     "m",
 ]

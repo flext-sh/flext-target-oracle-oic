@@ -23,4 +23,4 @@ class FlextTargetOracleOicOrchestrator:
         return r[bool].ok(value=True)
 
 
-__all__ = ["FlextTargetOracleOicOrchestrator"]
+__all__: list[str] = ["FlextTargetOracleOicOrchestrator"]

@@ -50,7 +50,7 @@ class FlextTargetOracleOicEntryManager:
         return r[Sequence[t.ScalarMapping]].ok(records)
 
 
-__all__ = [
+__all__: list[str] = [
     "FlextTargetOracleOicDataTransformer",
     "FlextTargetOracleOicEntryManager",
     "FlextTargetOracleOicSchemaMapper",

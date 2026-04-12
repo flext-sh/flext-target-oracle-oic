@@ -20,4 +20,4 @@ class TestsFlextTargetOracleOicConstants(
 
 
 c = TestsFlextTargetOracleOicConstants
-__all__ = ["TestsFlextTargetOracleOicConstants", "c"]
+__all__: list[str] = ["TestsFlextTargetOracleOicConstants", "c"]
