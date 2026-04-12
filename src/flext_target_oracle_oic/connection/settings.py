@@ -23,7 +23,7 @@ class FlextTargetOracleOicConnectionSettings(FlextSettings):
 
     _logger: ClassVar[p.Logger] = u.fetch_logger(__name__)
 
-    model_config = SettingsConfigDict(
+    model_config: ClassVar[SettingsConfigDict] = SettingsConfigDict(
         env_prefix="FLEXT_TARGET_ORACLE_OIC_",
         extra="ignore",
     )

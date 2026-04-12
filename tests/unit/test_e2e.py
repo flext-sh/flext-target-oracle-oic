@@ -87,7 +87,7 @@ def target() -> FlextTargetOracleOic:
 @pytest.fixture
 def singer_target() -> SingerTarget:
     """Create singer target instance for sink constructors."""
-    return DummySingerTarget(settings={})
+    return DummySingerTarget(config={})
 
 
 class TestTargetOracleOicE2E:

@@ -9,20 +9,25 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import override
+from typing import Annotated, override
+
+from pydantic import Field
 
 from flext_meltano import FlextMeltanoTargetServiceBase
-from flext_target_oracle_oic import (
+from flext_target_oracle_oic._utilities.service_runtime import (
     FlextTargetOracleOicServiceRuntime,
-    p,
-    t,
 )
+from flext_target_oracle_oic.protocols import p
+from flext_target_oracle_oic.typings import t
 
 
 class FlextTargetOracleOicService(FlextMeltanoTargetServiceBase):
     """Orchestrator for target-oracle-oic. All behavior from base via MRO."""
 
-    target_name: t.NonEmptyStr = "target-oracle-oic"
+    target_name: Annotated[
+        t.NonEmptyStr,
+        Field(default="target-oracle-oic", description="Singer target name"),
+    ]
 
     @override
     def create_sink(
@@ -31,9 +36,7 @@ class FlextTargetOracleOicService(FlextMeltanoTargetServiceBase):
         schema: t.FlatContainerMapping,
     ) -> p.Meltano.SingerDrainSink:
         """Create an Oracle OIC sink for a stream."""
-        target_config: t.ContainerMapping = (
-            self.config_overrides if self.config_overrides is not None else {}
-        )
+        target_config: t.ContainerMapping = self.settings_overrides or {}
         return FlextTargetOracleOicServiceRuntime.create_sink(
             stream_name=stream_name,
             schema=schema,

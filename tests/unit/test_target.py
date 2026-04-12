@@ -107,7 +107,7 @@ class TestTargetOracleOic:
 @pytest.fixture
 def singer_target() -> SingerTarget:
     """Provide a Singer target accepted by singer-sdk Sink constructors."""
-    return DummySingerTarget(settings={})
+    return DummySingerTarget(config={})
 
 
 def _build_auth_config(
