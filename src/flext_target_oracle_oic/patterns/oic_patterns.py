@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 
-from flext_core import r
+from flext_core import p, r
 from flext_target_oracle_oic import t
 
 
@@ -23,7 +23,7 @@ class FlextTargetOracleOicSchemaMapper:
         self,
         stream_name: str,
         schema: t.FlatContainerMapping,
-    ) -> r[Mapping[str, str | t.FlatContainerMapping]]:
+    ) -> p.Result[Mapping[str, str | t.FlatContainerMapping]]:
         """Build schema metadata payload for the given stream."""
         return r[Mapping[str, str | t.FlatContainerMapping]].ok({
             "stream": stream_name,
@@ -34,7 +34,9 @@ class FlextTargetOracleOicSchemaMapper:
 class FlextTargetOracleOicDataTransformer:
     """Transforms record payloads before sink submission."""
 
-    def transform(self, record: t.ConfigurationMapping) -> r[t.ConfigurationMapping]:
+    def transform(
+        self, record: t.ConfigurationMapping
+    ) -> p.Result[t.ConfigurationMapping]:
         """Return transformed record payload."""
         return r[t.ScalarMapping].ok(record)
 
@@ -45,7 +47,7 @@ class FlextTargetOracleOicEntryManager:
     def build_entries(
         self,
         records: Sequence[t.ConfigurationMapping],
-    ) -> r[Sequence[t.ConfigurationMapping]]:
+    ) -> p.Result[Sequence[t.ConfigurationMapping]]:
         """Return entry list unchanged for baseline behavior."""
         return r[Sequence[t.ScalarMapping]].ok(records)
 

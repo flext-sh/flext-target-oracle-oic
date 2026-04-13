@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from pydantic import Field
 
-from flext_core import r
+from flext_core import p, r
 from flext_meltano import FlextMeltanoModels
 from flext_oracle_oic import FlextOracleOicModels
 from flext_target_oracle_oic import c, t
@@ -77,7 +77,7 @@ class FlextTargetOracleOicModels(FlextMeltanoModels, FlextOracleOicModels):
     @staticmethod
     def validate_connection(
         connection: TargetOracleOic.OICConnection,
-    ) -> r[bool]:
+    ) -> p.Result[bool]:
         """Validate minimal connection invariants."""
         if not connection.id.strip() or not connection.name.strip():
             return r[bool].fail("Connection id/name cannot be empty")

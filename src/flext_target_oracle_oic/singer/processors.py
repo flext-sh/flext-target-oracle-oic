@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from flext_core import r
+from flext_core import p, r
 from flext_target_oracle_oic import m, t
 
 
@@ -20,7 +20,7 @@ class FlextTargetOracleOicRecordProcessor:
         self,
         stream_name: str,
         record: t.ConfigurationMapping,
-    ) -> r[FlextTargetOracleOicProcessedRecord]:
+    ) -> p.Result[FlextTargetOracleOicProcessedRecord]:
         """Return typed stream payload for downstream handling."""
         return r[FlextTargetOracleOicProcessedRecord].ok(
             FlextTargetOracleOicProcessedRecord.model_validate({

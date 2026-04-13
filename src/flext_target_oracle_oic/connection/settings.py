@@ -117,7 +117,7 @@ class FlextTargetOracleOicConnectionSettings(FlextSettings):
             c.TargetOracleOic.HEADER_ACCEPT: c.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
         }
 
-    def validate_business_rules(self) -> r[bool]:
+    def validate_business_rules(self) -> p.Result[bool]:
         """Validate OIC connection configuration business rules."""
         errors: MutableSequence[str] = []
         if not self.base_url:

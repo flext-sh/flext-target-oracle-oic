@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 
 from flext_api import FlextApi, FlextApiSettings
-from flext_core import r
+from flext_core import p, r
 from flext_meltano import FlextMeltanoUtilities
 from flext_oracle_oic import FlextOracleOicUtilities
 from flext_target_oracle_oic import FlextTargetOracleOicSettings, c, m, t
@@ -21,7 +21,7 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
             """Runtime configuration validation helper functions."""
 
             @staticmethod
-            def validate_config(settings: t.ConfigurationMapping) -> r[bool]:
+            def validate_config(settings: t.ConfigurationMapping) -> p.Result[bool]:
                 """Validate required OIC target configuration keys."""
                 required = {"base_url", "oauth_client_id", "oauth_client_secret"}
                 missing = sorted(key for key in required if key not in settings)

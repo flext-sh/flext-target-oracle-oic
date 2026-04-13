@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from flext_core import r
+from flext_core import p, r
 from flext_target_oracle_oic import t
 
 
@@ -14,11 +14,11 @@ class FlextTargetOracleOicOrchestrator:
         super().__init__()
         self.settings = settings or {}
 
-    def setup(self) -> r[bool]:
+    def setup(self) -> p.Result[bool]:
         """Initialize orchestration dependencies."""
         return r[bool].ok(value=True)
 
-    def teardown(self) -> r[bool]:
+    def teardown(self) -> p.Result[bool]:
         """Release orchestration dependencies."""
         return r[bool].ok(value=True)
 

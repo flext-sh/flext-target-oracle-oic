@@ -75,11 +75,11 @@ class FlextTargetOracleOic(FlextMeltanoTargetAbstractions):
         """Resolve sink class by stream name."""
         return self._sink_classes.get(stream_name, self.default_sink_class)
 
-    def setup(self) -> r[bool]:
+    def setup(self) -> p.Result[bool]:
         """Setup target resources."""
         return r[bool].ok(value=True)
 
-    def teardown(self) -> r[bool]:
+    def teardown(self) -> p.Result[bool]:
         """Teardown target resources."""
         return r[bool].ok(value=True)
 

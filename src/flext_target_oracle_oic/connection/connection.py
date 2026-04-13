@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from flext_core import r
+from flext_core import p, r
 from flext_target_oracle_oic import t
 
 
@@ -14,7 +14,7 @@ class FlextTargetOracleOicConnection:
         super().__init__()
         self.settings = settings or {}
 
-    def test_connection(self) -> r[bool]:
+    def test_connection(self) -> p.Result[bool]:
         """Return a successful health check result."""
         return r[bool].ok(value=True)
 
