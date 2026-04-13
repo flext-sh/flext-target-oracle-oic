@@ -5,13 +5,12 @@ from __future__ import annotations
 from collections.abc import Mapping
 
 from flext_api import FlextApi, FlextApiSettings
-from flext_core import p, r
-from flext_meltano import FlextMeltanoUtilities
+from flext_meltano import u
 from flext_oracle_oic import FlextOracleOicUtilities
-from flext_target_oracle_oic import FlextTargetOracleOicSettings, c, m, t
+from flext_target_oracle_oic import FlextTargetOracleOicSettings, c, m, p, r, t
 
 
-class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtilities):
+class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
     """Namespace for message-building and validation helpers."""
 
     class TargetOracleOic:

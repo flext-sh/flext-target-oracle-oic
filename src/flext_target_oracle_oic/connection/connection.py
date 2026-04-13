@@ -2,8 +2,7 @@
 
 from __future__ import annotations
 
-from flext_core import p, r
-from flext_target_oracle_oic import t
+from flext_target_oracle_oic import p, r, t
 
 
 class FlextTargetOracleOicConnection:

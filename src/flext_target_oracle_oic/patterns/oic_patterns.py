@@ -4,8 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 
-from flext_core import p, r
-from flext_target_oracle_oic import t
+from flext_target_oracle_oic import p, r, t
 
 
 class FlextTargetOracleOicTypeConverter:
