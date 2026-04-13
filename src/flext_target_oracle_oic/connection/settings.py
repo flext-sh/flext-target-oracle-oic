@@ -13,8 +13,8 @@ from typing import Annotated, ClassVar, Self
 from pydantic import Field
 from pydantic_settings import SettingsConfigDict
 
-from flext_core import FlextSettings, r
-from flext_target_oracle_oic import c, p, t, u
+from flext_core import FlextSettings
+from flext_target_oracle_oic import c, p, r, t, u
 
 
 @FlextSettings.auto_register("target-oracle-oic-connection")
