@@ -14,11 +14,11 @@ from typing import Annotated, override
 from pydantic import Field
 
 from flext_meltano import FlextMeltanoTargetServiceBase
-from flext_target_oracle_oic._utilities.service_runtime import (
+from flext_target_oracle_oic import (
     FlextTargetOracleOicServiceRuntime,
+    p,
+    t,
 )
-from flext_target_oracle_oic.protocols import p
-from flext_target_oracle_oic.typings import t
 
 
 class FlextTargetOracleOicService(FlextMeltanoTargetServiceBase):

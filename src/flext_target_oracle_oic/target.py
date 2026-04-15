@@ -7,8 +7,8 @@ from typing import ClassVar, override
 
 from flext_meltano import (
     FlextMeltanoTargetAbstractions,
+    Sink as FlextMeltanoSingerSinkBase,
 )
-from flext_meltano.services.singer_sdk import Sink as FlextMeltanoSingerSinkBase
 from flext_target_oracle_oic import c, p, r, t, u
 
 

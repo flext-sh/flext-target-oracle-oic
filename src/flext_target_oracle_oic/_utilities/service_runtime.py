@@ -6,12 +6,12 @@ from collections.abc import Mapping
 from datetime import datetime
 from pathlib import Path
 
-from flext_meltano.services.singer_sdk import Target as FlextMeltanoSingerTargetBase
-from flext_target_oracle_oic.target import (
+from flext_meltano import Target as FlextMeltanoSingerTargetBase
+from flext_target_oracle_oic import (
     FlextTargetOracleOic,
     FlextTargetOracleOicBaseSink,
+    t,
 )
-from flext_target_oracle_oic.typings import t
 
 
 class FlextTargetOracleOicServiceRuntime:
