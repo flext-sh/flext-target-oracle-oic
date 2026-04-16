@@ -37,7 +37,7 @@ class DummySingerTarget(SingerTarget):
 
     name = "dummy-target-oracle-oic"
     config_jsonschema: ClassVar[dict[str, str | Mapping[str, t.StrMapping]]] = {
-        "type": "t.RecursiveContainer",
+        "type": "object",
         "properties": _DEFAULT_PROPERTIES,
     }
 

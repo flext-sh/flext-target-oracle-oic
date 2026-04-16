@@ -75,14 +75,18 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "__version__",
                 "__version_info__",
             ),
+            "._utilities.service_runtime": ("FlextTargetOracleOicServiceRuntime",),
             ".api": (
                 "FlextTargetOracleOicService",
                 "target_oracle_oic",
             ),
+            ".application.orchestrator": ("FlextTargetOracleOicOrchestrator",),
             ".cli": (
                 "FlextTargetOracleOicCli",
                 "main",
             ),
+            ".connection.connection": ("FlextTargetOracleOicConnection",),
+            ".connection.settings": ("FlextTargetOracleOicConnectionSettings",),
             ".constants": (
                 "FlextTargetOracleOicConstants",
                 "c",
@@ -91,11 +95,21 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "FlextTargetOracleOicModels",
                 "m",
             ),
+            ".patterns.oic_patterns": (
+                "FlextTargetOracleOicDataTransformer",
+                "FlextTargetOracleOicEntryManager",
+                "FlextTargetOracleOicSchemaMapper",
+                "FlextTargetOracleOicTypeConverter",
+            ),
             ".protocols": (
                 "FlextTargetOracleOicProtocols",
                 "p",
             ),
             ".settings": ("FlextTargetOracleOicSettings",),
+            ".singer.processors": (
+                "FlextTargetOracleOicProcessedRecord",
+                "FlextTargetOracleOicRecordProcessor",
+            ),
             ".target": (
                 "FlextTargetOracleOic",
                 "FlextTargetOracleOicBaseSink",
