@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from pydantic import Field
-
 from flext_meltano import m
 from flext_oracle_oic import FlextOracleOicModels
 from flext_target_oracle_oic import c, p, r, t
@@ -24,7 +22,7 @@ class FlextTargetOracleOicModels(m, FlextOracleOicModels):
             id: t.NonEmptyStr
             name: t.NonEmptyStr
             adapter_type: t.NonEmptyStr
-            properties: t.FlatContainerMapping = Field(default_factory=dict)
+            properties: t.FlatContainerMapping = m.Field(default_factory=dict)
 
         class OICIntegration(m.ArbitraryTypesModel):
             """Integration payload model."""
@@ -65,13 +63,13 @@ class FlextTargetOracleOicModels(m, FlextOracleOicModels):
 
             source_stream: t.NonEmptyStr
             target_entity: t.NonEmptyStr
-            mapping: t.StrMapping = Field(default_factory=dict)
+            mapping: t.StrMapping = m.Field(default_factory=dict)
 
         class OICSchemaMapping(m.ArbitraryTypesModel):
             """Schema mapping payload model."""
 
             stream_name: t.NonEmptyStr
-            schema_mapping: t.FlatContainerMapping = Field(default_factory=dict)
+            schema_mapping: t.FlatContainerMapping = m.Field(default_factory=dict)
 
     @staticmethod
     def validate_connection(

@@ -9,49 +9,48 @@ from __future__ import annotations
 
 from typing import Annotated, ClassVar
 
-from pydantic import Field, SecretStr
+from pydantic import SecretStr
 from pydantic_settings import SettingsConfigDict
 
 from flext_core import FlextSettings
-from flext_target_oracle_oic import c, t
+from flext_target_oracle_oic import c, m, t
 
 
 @FlextSettings.auto_register("target-oracle-oic")
 class FlextTargetOracleOicSettings(FlextSettings):
     """Runtime settings for Oracle OIC target authentication and IO."""
 
-    model_config: ClassVar[SettingsConfigDict] = SettingsConfigDict(
+    model_config: ClassVar[SettingsConfigDict] = m.SettingsConfigDict(
         env_prefix="FLEXT_TARGET_ORACLE_OIC_", extra="ignore"
     )
 
-    oauth_client_id: Annotated[str, Field(..., description="OAuth client identifier")]
+    oauth_client_id: Annotated[str, m.Field(..., description="OAuth client identifier")]
     oauth_client_secret: Annotated[
         SecretStr,
-        Field(..., description="OAuth client secret"),
+        m.Field(..., description="OAuth client secret"),
     ]
-    oauth_token_url: Annotated[str, Field(..., description="OAuth token endpoint URL")]
+    oauth_token_url: Annotated[
+        str, m.Field(..., description="OAuth token endpoint URL")
+    ]
     oauth_scope: Annotated[
         str | None,
-        Field(
-            default=c.TargetOracleOic.DEFAULT_OAUTH_SCOPE,
+        m.Field(
             description="OAuth scope used in token requests",
         ),
-    ]
+    ] = c.TargetOracleOic.DEFAULT_OAUTH_SCOPE
     oauth_client_aud: Annotated[
         str | None,
-        Field(
-            default=None,
+        m.Field(
             description="Optional audience used by OAuth provider",
         ),
-    ]
+    ] = None
     timeout: Annotated[
         int,
-        Field(
-            default=c.DEFAULT_TIMEOUT_SECONDS,
+        m.Field(
             ge=1,
             description="HTTP timeout in seconds",
         ),
-    ]
+    ] = c.DEFAULT_TIMEOUT_SECONDS
 
     def get_oauth_client_secret_value(self) -> str:
         """Return the plaintext secret value for outgoing requests."""

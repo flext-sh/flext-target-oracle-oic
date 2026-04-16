@@ -10,11 +10,10 @@ from __future__ import annotations
 from collections.abc import MutableSequence
 from typing import Annotated, ClassVar, Self
 
-from pydantic import Field
 from pydantic_settings import SettingsConfigDict
 
 from flext_core import FlextSettings
-from flext_target_oracle_oic import c, p, r, t, u
+from flext_target_oracle_oic import c, m, p, r, t, u
 
 
 @FlextSettings.auto_register("target-oracle-oic-connection")
@@ -23,60 +22,53 @@ class FlextTargetOracleOicConnectionSettings(FlextSettings):
 
     _logger: ClassVar[p.Logger] = u.fetch_logger(__name__)
 
-    model_config: ClassVar[SettingsConfigDict] = SettingsConfigDict(
+    model_config: ClassVar[SettingsConfigDict] = m.SettingsConfigDict(
         env_prefix="FLEXT_TARGET_ORACLE_OIC_",
         extra="ignore",
     )
 
-    base_url: Annotated[t.NonEmptyStr, Field(..., description="Oracle OIC base URL")]
-    client_id: Annotated[t.NonEmptyStr, Field(..., description="OAuth2 client ID")]
+    base_url: Annotated[t.NonEmptyStr, m.Field(..., description="Oracle OIC base URL")]
+    client_id: Annotated[t.NonEmptyStr, m.Field(..., description="OAuth2 client ID")]
     client_secret: Annotated[
         t.NonEmptyStr,
-        Field(..., description="OAuth2 client secret", repr=False),
+        m.Field(..., description="OAuth2 client secret", repr=False),
     ]
     scope: Annotated[
         str,
-        Field(
-            default=c.TargetOracleOic.DEFAULT_OAUTH_SCOPE,
+        m.Field(
             description="OAuth2 scope",
         ),
-    ]
+    ] = c.TargetOracleOic.DEFAULT_OAUTH_SCOPE
     username: Annotated[
-        str | None,
-        Field(default=None, description="Optional username for basic auth"),
-    ]
+        str | None, m.Field(description="Optional username for basic auth")
+    ] = None
     password: Annotated[
-        str | None,
-        Field(default=None, description="Optional password for basic auth", repr=False),
-    ]
+        str | None, m.Field(description="Optional password for basic auth", repr=False)
+    ] = None
     use_oauth2: Annotated[
         bool,
-        Field(
-            default=c.TargetOracleOic.DEFAULT_USE_OAUTH2,
+        m.Field(
             description="Use OAuth2 authentication",
         ),
-    ]
+    ] = c.TargetOracleOic.DEFAULT_USE_OAUTH2
     timeout: Annotated[
         t.PositiveInt,
-        Field(
-            default=c.DEFAULT_TIMEOUT_SECONDS,
+        m.Field(
             description="Request timeout in seconds",
         ),
-    ]
+    ] = c.DEFAULT_TIMEOUT_SECONDS
     max_retries: Annotated[
         t.RetryCount,
-        Field(
-            default=c.MAX_RETRY_ATTEMPTS,
+        m.Field(
             description="Maximum number of retries",
         ),
-    ]
+    ] = c.MAX_RETRY_ATTEMPTS
     verify_ssl: Annotated[
         bool,
-        Field(
-            default=c.TargetOracleOic.DEFAULT_VERIFY_SSL,
+        m.Field(
             description="Verify SSL certificates",
         ),
-    ]
+    ] = c.TargetOracleOic.DEFAULT_VERIFY_SSL
 
     @classmethod
     def from_dict(

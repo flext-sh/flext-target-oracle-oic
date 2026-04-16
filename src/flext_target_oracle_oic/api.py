@@ -11,11 +11,10 @@ from __future__ import annotations
 
 from typing import Annotated, override
 
-from pydantic import Field
-
 from flext_meltano import FlextMeltanoTargetServiceBase
 from flext_target_oracle_oic import (
     FlextTargetOracleOicServiceRuntime,
+    m,
     p,
     t,
 )
@@ -24,10 +23,9 @@ from flext_target_oracle_oic import (
 class FlextTargetOracleOicService(FlextMeltanoTargetServiceBase):
     """Orchestrator for target-oracle-oic. All behavior from base via MRO."""
 
-    target_name: Annotated[
-        t.NonEmptyStr,
-        Field(default="target-oracle-oic", description="Singer target name"),
-    ]
+    target_name: Annotated[t.NonEmptyStr, m.Field(description="Singer target name")] = (
+        "target-oracle-oic"
+    )
 
     @override
     def create_sink(
