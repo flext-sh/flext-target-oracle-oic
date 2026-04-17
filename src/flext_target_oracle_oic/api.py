@@ -14,16 +14,16 @@ from typing import Annotated, override
 from flext_meltano import FlextMeltanoTargetServiceBase
 from flext_target_oracle_oic import (
     FlextTargetOracleOicServiceRuntime,
-    m,
     p,
     t,
+    u,
 )
 
 
 class FlextTargetOracleOicService(FlextMeltanoTargetServiceBase):
     """Orchestrator for target-oracle-oic. All behavior from base via MRO."""
 
-    target_name: Annotated[t.NonEmptyStr, m.Field(description="Singer target name")] = (
+    target_name: Annotated[t.NonEmptyStr, u.Field(description="Singer target name")] = (
         "target-oracle-oic"
     )
 

@@ -27,45 +27,45 @@ class FlextTargetOracleOicConnectionSettings(FlextSettings):
         extra="ignore",
     )
 
-    base_url: Annotated[t.NonEmptyStr, m.Field(..., description="Oracle OIC base URL")]
-    client_id: Annotated[t.NonEmptyStr, m.Field(..., description="OAuth2 client ID")]
+    base_url: Annotated[t.NonEmptyStr, u.Field(..., description="Oracle OIC base URL")]
+    client_id: Annotated[t.NonEmptyStr, u.Field(..., description="OAuth2 client ID")]
     client_secret: Annotated[
         t.NonEmptyStr,
-        m.Field(..., description="OAuth2 client secret", repr=False),
+        u.Field(..., description="OAuth2 client secret", repr=False),
     ]
     scope: Annotated[
         str,
-        m.Field(
+        u.Field(
             description="OAuth2 scope",
         ),
     ] = c.TargetOracleOic.DEFAULT_OAUTH_SCOPE
     username: Annotated[
-        str | None, m.Field(description="Optional username for basic auth")
+        str | None, u.Field(description="Optional username for basic auth")
     ] = None
     password: Annotated[
-        str | None, m.Field(description="Optional password for basic auth", repr=False)
+        str | None, u.Field(description="Optional password for basic auth", repr=False)
     ] = None
     use_oauth2: Annotated[
         bool,
-        m.Field(
+        u.Field(
             description="Use OAuth2 authentication",
         ),
     ] = c.TargetOracleOic.DEFAULT_USE_OAUTH2
     timeout: Annotated[
         t.PositiveInt,
-        m.Field(
+        u.Field(
             description="Request timeout in seconds",
         ),
     ] = c.DEFAULT_TIMEOUT_SECONDS
     max_retries: Annotated[
         t.RetryCount,
-        m.Field(
+        u.Field(
             description="Maximum number of retries",
         ),
     ] = c.MAX_RETRY_ATTEMPTS
     verify_ssl: Annotated[
         bool,
-        m.Field(
+        u.Field(
             description="Verify SSL certificates",
         ),
     ] = c.TargetOracleOic.DEFAULT_VERIFY_SSL

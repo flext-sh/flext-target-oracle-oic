@@ -13,7 +13,7 @@ from pydantic import SecretStr
 from pydantic_settings import SettingsConfigDict
 
 from flext_core import FlextSettings
-from flext_target_oracle_oic import c, m, t
+from flext_target_oracle_oic import c, m, t, u
 
 
 @FlextSettings.auto_register("target-oracle-oic")
@@ -24,29 +24,29 @@ class FlextTargetOracleOicSettings(FlextSettings):
         env_prefix="FLEXT_TARGET_ORACLE_OIC_", extra="ignore"
     )
 
-    oauth_client_id: Annotated[str, m.Field(..., description="OAuth client identifier")]
+    oauth_client_id: Annotated[str, u.Field(..., description="OAuth client identifier")]
     oauth_client_secret: Annotated[
         SecretStr,
-        m.Field(..., description="OAuth client secret"),
+        u.Field(..., description="OAuth client secret"),
     ]
     oauth_token_url: Annotated[
-        str, m.Field(..., description="OAuth token endpoint URL")
+        str, u.Field(..., description="OAuth token endpoint URL")
     ]
     oauth_scope: Annotated[
         str | None,
-        m.Field(
+        u.Field(
             description="OAuth scope used in token requests",
         ),
     ] = c.TargetOracleOic.DEFAULT_OAUTH_SCOPE
     oauth_client_aud: Annotated[
         str | None,
-        m.Field(
+        u.Field(
             description="Optional audience used by OAuth provider",
         ),
     ] = None
     timeout: Annotated[
         int,
-        m.Field(
+        u.Field(
             ge=1,
             description="HTTP timeout in seconds",
         ),
