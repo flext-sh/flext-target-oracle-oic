@@ -19,8 +19,12 @@ if _t.TYPE_CHECKING:
     from tests.models import TestsFlextTargetOracleOicModels, m
     from tests.protocols import TestsFlextTargetOracleOicProtocols, p
     from tests.typings import TestsFlextTargetOracleOicTypes, t
-    from tests.unit.test_e2e import DummySingerTarget, TestTargetOracleOicE2E
-    from tests.unit.test_target import AuthTestSettings, TestTargetOracleOic
+    from tests.unit.test_e2e import DummySingerTargetE2E, TestTargetOracleOicE2E
+    from tests.unit.test_target import (
+        AuthTestSettings,
+        DummySingerTarget,
+        TestTargetOracleOic,
+    )
     from tests.utilities import TestsFlextTargetOracleOicUtilities, u
 _LAZY_IMPORTS = merge_lazy_imports(
     (".unit",),
@@ -43,11 +47,12 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "t",
             ),
             ".unit.test_e2e": (
-                "DummySingerTarget",
+                "DummySingerTargetE2E",
                 "TestTargetOracleOicE2E",
             ),
             ".unit.test_target": (
                 "AuthTestSettings",
+                "DummySingerTarget",
                 "TestTargetOracleOic",
             ),
             ".utilities": (
@@ -89,6 +94,7 @@ install_lazy_exports(__name__, globals(), _LAZY_IMPORTS)
 __all__: list[str] = [
     "AuthTestSettings",
     "DummySingerTarget",
+    "DummySingerTargetE2E",
     "TestTargetOracleOic",
     "TestTargetOracleOicE2E",
     "TestsFlextTargetOracleOicConstants",

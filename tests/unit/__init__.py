@@ -9,12 +9,13 @@ _LAZY_IMPORTS = build_lazy_import_map(
     {
         ".test_cli_entrypoint": ("test_cli_entrypoint",),
         ".test_e2e": (
-            "DummySingerTarget",
+            "DummySingerTargetE2E",
             "TestTargetOracleOicE2E",
         ),
         ".test_module_governance": ("test_module_governance",),
         ".test_target": (
             "AuthTestSettings",
+            "DummySingerTarget",
             "TestTargetOracleOic",
         ),
     },

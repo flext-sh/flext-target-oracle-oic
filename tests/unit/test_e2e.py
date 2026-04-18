@@ -36,7 +36,7 @@ from flext_target_oracle_oic import (
 from tests import t
 
 
-class DummySingerTarget(SingerTarget):
+class DummySingerTargetE2E(SingerTarget):
     name = "dummy-target-oracle-oic"
     config_jsonschema: ClassVar[dict[str, str | Mapping[str, t.StrMapping]]] = {
         "type": "object",
@@ -87,7 +87,7 @@ def target() -> FlextTargetOracleOic:
 @pytest.fixture
 def singer_target() -> SingerTarget:
     """Create singer target instance for sink constructors."""
-    return DummySingerTarget(config={})
+    return DummySingerTargetE2E(config={})
 
 
 class TestTargetOracleOicE2E:
