@@ -8,21 +8,14 @@ from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 _LAZY_IMPORTS = build_lazy_import_map(
     {
         ".test_cli_entrypoint": ("test_cli_entrypoint",),
-        ".test_e2e": ("test_e2e",),
+        ".test_e2e": (
+            "DummySingerTarget",
+            "TestTargetOracleOicE2E",
+        ),
         ".test_module_governance": ("test_module_governance",),
-        ".test_target": ("test_target",),
-        "flext_target_oracle_oic": (
-            "c",
-            "d",
-            "e",
-            "h",
-            "m",
-            "p",
-            "r",
-            "s",
-            "t",
-            "u",
-            "x",
+        ".test_target": (
+            "AuthTestSettings",
+            "TestTargetOracleOic",
         ),
     },
 )
