@@ -15,7 +15,7 @@ class FlextTargetOracleOicCli:
     def run(cls, args: t.StrSequence | None = None) -> int:
         """Execute the canonical target CLI entry point."""
         _ = cls
-        return FlextTargetOracleOicService.get_instance().cli_main(args)
+        return FlextTargetOracleOicService().cli_main(args)
 
 
 def main() -> int:
