@@ -1,0 +1,22 @@
+docs/guides/troubleshooting.md
+  h_9db9d35f50cf33 141,155
+docs/guides/development.md
+  h_9db9d35f50cf33 154,193,196,202,353,356,405
+docs/guides/testing.md
+  h_9db9d35f50cf33 528
+src/flext_target_oracle_oic/api.py
+  h_9db9d35f50cf33 37
+src/flext_target_oracle_oic/_utilities/service_runtime.py
+  h_9db9d35f50cf33 31,54,67
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.0",
+  "base_commit_sha": "94251bdd4be71fc3e0817758b2a668b847dd82a1",
+  "prompts": {},
+  "humans": {
+    "h_9db9d35f50cf33": {
+      "author": "FLEXT Bot"
+    }
+  }
+}
