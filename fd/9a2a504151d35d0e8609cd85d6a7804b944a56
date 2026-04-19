@@ -1,0 +1,14 @@
+pyproject.toml
+  h_9db9d35f50cf33 376
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.0",
+  "base_commit_sha": "fd9a2a504151d35d0e8609cd85d6a7804b944a56",
+  "prompts": {},
+  "humans": {
+    "h_9db9d35f50cf33": {
+      "author": "FLEXT Bot"
+    }
+  }
+}
