@@ -28,7 +28,7 @@ class FlextTargetOracleOicServiceRuntime:
         *,
         stream_name: str,
         schema: t.FlatContainerMapping,
-        target_config: t.RecursiveContainerMapping,
+        target_config: Mapping[str, t.Container],
     ) -> FlextTargetOracleOicBaseSink:
         """Create the service-level Singer sink adapter."""
         normalized_target_config = cls.normalize_singer_mapping(target_config)
@@ -51,7 +51,7 @@ class FlextTargetOracleOicServiceRuntime:
     @classmethod
     def normalize_singer_mapping(
         cls,
-        source: t.RecursiveContainerMapping,
+        source: Mapping[str, t.Container],
     ) -> dict[str, t.ContainerValue]:
         """Normalize a Singer payload mapping to the OIC runtime contract."""
         normalized: dict[str, t.ContainerValue] = {}
@@ -64,7 +64,7 @@ class FlextTargetOracleOicServiceRuntime:
     @classmethod
     def normalize_singer_value(
         cls,
-        value: t.RecursiveContainer,
+        value: t.Container,
     ) -> t.ContainerValue | None:
         """Normalize a Singer payload value to the OIC runtime contract."""
         if value is None:
