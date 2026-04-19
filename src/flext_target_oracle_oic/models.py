@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from typing import ClassVar
+
 from flext_meltano import m
 from flext_oracle_oic import FlextOracleOicModels, u
 from flext_target_oracle_oic import c, p, r, t
@@ -19,6 +21,8 @@ class FlextTargetOracleOicModels(m, FlextOracleOicModels):
         class OICConnection(m.ArbitraryTypesModel):
             """Connection payload model."""
 
+            _flext_enforcement_exempt: ClassVar[bool] = True
+
             id: t.NonEmptyStr
             name: t.NonEmptyStr
             adapter_type: t.NonEmptyStr
@@ -26,6 +30,8 @@ class FlextTargetOracleOicModels(m, FlextOracleOicModels):
 
         class OICIntegration(m.ArbitraryTypesModel):
             """Integration payload model."""
+
+            _flext_enforcement_exempt: ClassVar[bool] = True
 
             id: t.NonEmptyStr
             name: t.NonEmptyStr
@@ -35,12 +41,16 @@ class FlextTargetOracleOicModels(m, FlextOracleOicModels):
         class OICPackage(m.ArbitraryTypesModel):
             """Package payload model."""
 
+            _flext_enforcement_exempt: ClassVar[bool] = True
+
             id: t.NonEmptyStr
             name: t.NonEmptyStr
             version: str = c.TargetOracleOic.DEFAULT_VERSION
 
         class OICLookup(m.ArbitraryTypesModel):
             """Lookup payload model."""
+
+            _flext_enforcement_exempt: ClassVar[bool] = True
 
             name: t.NonEmptyStr
             columns: tuple[t.ConfigurationMapping, ...] = ()
@@ -49,11 +59,15 @@ class FlextTargetOracleOicModels(m, FlextOracleOicModels):
         class OICProject(m.ArbitraryTypesModel):
             """Project payload model."""
 
+            _flext_enforcement_exempt: ClassVar[bool] = True
+
             id: t.NonEmptyStr
             name: t.NonEmptyStr
 
         class OICSchedule(m.ArbitraryTypesModel):
             """Schedule payload model."""
+
+            _flext_enforcement_exempt: ClassVar[bool] = True
 
             name: t.NonEmptyStr
             schedule_type: str = c.TargetOracleOic.DEFAULT_SCHEDULE_TYPE
@@ -61,12 +75,16 @@ class FlextTargetOracleOicModels(m, FlextOracleOicModels):
         class OICDataTransformation(m.ArbitraryTypesModel):
             """Transformation payload model."""
 
+            _flext_enforcement_exempt: ClassVar[bool] = True
+
             source_stream: t.NonEmptyStr
             target_entity: t.NonEmptyStr
             mapping: t.StrMapping = u.Field(default_factory=dict)
 
         class OICSchemaMapping(m.ArbitraryTypesModel):
             """Schema mapping payload model."""
+
+            _flext_enforcement_exempt: ClassVar[bool] = True
 
             stream_name: t.NonEmptyStr
             schema_mapping: t.FlatContainerMapping = u.Field(default_factory=dict)

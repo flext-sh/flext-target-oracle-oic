@@ -9,9 +9,6 @@ from __future__ import annotations
 
 from typing import Annotated, ClassVar
 
-from pydantic import SecretStr
-from pydantic_settings import SettingsConfigDict
-
 from flext_core import FlextSettings
 from flext_target_oracle_oic import c, m, t, u
 
@@ -20,13 +17,13 @@ from flext_target_oracle_oic import c, m, t, u
 class FlextTargetOracleOicSettings(FlextSettings):
     """Runtime settings for Oracle OIC target authentication and IO."""
 
-    model_config: ClassVar[SettingsConfigDict] = m.SettingsConfigDict(
+    model_config: ClassVar[m.SettingsConfigDict] = m.SettingsConfigDict(
         env_prefix="FLEXT_TARGET_ORACLE_OIC_", extra="ignore"
     )
 
     oauth_client_id: Annotated[str, u.Field(..., description="OAuth client identifier")]
     oauth_client_secret: Annotated[
-        SecretStr,
+        t.SecretStr,
         u.Field(..., description="OAuth client secret"),
     ]
     oauth_token_url: Annotated[

@@ -7,12 +7,11 @@ from typing import ClassVar, override
 
 from flext_meltano import (
     FlextMeltanoTargetAbstractions,
-    Sink as FlextMeltanoSingerSinkBase,
 )
-from flext_target_oracle_oic import c, p, r, t, u
+from flext_target_oracle_oic import c, m, p, r, t, u
 
 
-class FlextTargetOracleOicBaseSink(FlextMeltanoSingerSinkBase):
+class FlextTargetOracleOicBaseSink(m.Meltano.SingerSinkBase):
     """Base sink implementation used by OIC stream sinks."""
 
     _logger: ClassVar[p.Logger] = u.fetch_logger(__name__)
@@ -71,7 +70,7 @@ class FlextTargetOracleOic(FlextMeltanoTargetAbstractions):
         c.TargetOracleOic.STREAM_LOOKUPS: FlextTargetOracleOicLookupsSink,
     }
 
-    def get_sink_class(self, stream_name: str) -> type[FlextTargetOracleOicBaseSink]:
+    def fetch_sink_class(self, stream_name: str) -> type[FlextTargetOracleOicBaseSink]:
         """Resolve sink class by stream name."""
         return self._sink_classes.get(stream_name, self.default_sink_class)
 

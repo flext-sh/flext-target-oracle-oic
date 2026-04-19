@@ -10,8 +10,6 @@ from __future__ import annotations
 from collections.abc import MutableSequence
 from typing import Annotated, ClassVar, Self
 
-from pydantic_settings import SettingsConfigDict
-
 from flext_core import FlextSettings
 from flext_target_oracle_oic import c, m, p, r, t, u
 
@@ -22,7 +20,7 @@ class FlextTargetOracleOicConnectionSettings(FlextSettings):
 
     _logger: ClassVar[p.Logger] = u.fetch_logger(__name__)
 
-    model_config: ClassVar[SettingsConfigDict] = m.SettingsConfigDict(
+    model_config: ClassVar[m.SettingsConfigDict] = m.SettingsConfigDict(
         env_prefix="FLEXT_TARGET_ORACLE_OIC_",
         extra="ignore",
     )

@@ -12,10 +12,8 @@ from typing import ClassVar
 from unittest.mock import Mock, patch
 
 import pytest
-from pydantic import SecretStr
 from singer_sdk.target_base import Target as SingerTarget
 
-from flext_core import r as result_type
 from flext_target_oracle_oic import (
     FlextTargetOracleOic,
     FlextTargetOracleOicConnectionsSink,
@@ -23,7 +21,7 @@ from flext_target_oracle_oic import (
     FlextTargetOracleOicSettings,
     u,
 )
-from tests import t
+from tests import r as result_type, t
 
 _DEFAULT_PROPERTIES: Mapping[str, t.StrMapping] = {"id": {"type": "string"}}
 
@@ -66,7 +64,7 @@ class TestTargetOracleOic:
         if target.name != "target-oracle-oic":
             msg: str = f"Expected {'target-oracle-oic'}, got {target.name}"
             raise AssertionError(msg)
-        assert isinstance(target.get_sink_class("connections"), type)
+        assert isinstance(target.fetch_sink_class("connections"), type)
 
     def test_target_initialization_with_minimal_config(self) -> None:
         """Test method."""
@@ -79,17 +77,17 @@ class TestTargetOracleOic:
         """Test method."""
         target = FlextTargetOracleOic()
         if (
-            target.get_sink_class("connections")
+            target.fetch_sink_class("connections")
             is not FlextTargetOracleOicConnectionsSink
         ):
-            msg: str = f"Expected {FlextTargetOracleOicConnectionsSink}, got {target.get_sink_class('connections')}"
+            msg: str = f"Expected {FlextTargetOracleOicConnectionsSink}, got {target.fetch_sink_class('connections')}"
             raise AssertionError(msg)
         assert (
-            target.get_sink_class("integrations")
+            target.fetch_sink_class("integrations")
             is FlextTargetOracleOicIntegrationsSink
         )
-        if target.get_sink_class("unknown_stream") is not target.default_sink_class:
-            msg = f"Expected {target.default_sink_class}, got {target.get_sink_class('unknown_stream')}"
+        if target.fetch_sink_class("unknown_stream") is not target.default_sink_class:
+            msg = f"Expected {target.default_sink_class}, got {target.fetch_sink_class('unknown_stream')}"
             raise AssertionError(msg)
 
     def test_config_schema(self) -> None:
@@ -117,7 +115,7 @@ def _build_auth_config(
 ) -> FlextTargetOracleOicSettings:
     settings = AuthTestSettings.__new__(AuthTestSettings)
     object.__setattr__(settings, "oauth_client_id", "client-id")
-    object.__setattr__(settings, "oauth_client_secret", SecretStr("client-secret"))
+    object.__setattr__(settings, "oauth_client_secret", t.SecretStr("client-secret"))
     object.__setattr__(
         settings,
         "oauth_token_url",

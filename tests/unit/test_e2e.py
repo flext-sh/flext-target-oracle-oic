@@ -103,25 +103,25 @@ class TestTargetOracleOicE2E:
         if target.name != "target-oracle-oic":
             msg: str = f"Expected {'target-oracle-oic'}, got {target.name}"
             raise AssertionError(msg)
-        assert isinstance(target.get_sink_class("connections"), type)
+        assert isinstance(target.fetch_sink_class("connections"), type)
 
     def test_sink_class_mapping(self, target: FlextTargetOracleOic) -> None:
         """Test sink class mapping for known streams."""
         if (
-            target.get_sink_class("connections")
+            target.fetch_sink_class("connections")
             is not FlextTargetOracleOicConnectionsSink
         ):
-            msg = f"Expected {FlextTargetOracleOicConnectionsSink}, got {target.get_sink_class('connections')}"
+            msg = f"Expected {FlextTargetOracleOicConnectionsSink}, got {target.fetch_sink_class('connections')}"
             raise AssertionError(msg)
         assert (
-            target.get_sink_class("integrations")
+            target.fetch_sink_class("integrations")
             is FlextTargetOracleOicIntegrationsSink
         )
-        if target.get_sink_class("packages") is not FlextTargetOracleOicPackagesSink:
-            msg = f"Expected {FlextTargetOracleOicPackagesSink}, got {target.get_sink_class('packages')}"
+        if target.fetch_sink_class("packages") is not FlextTargetOracleOicPackagesSink:
+            msg = f"Expected {FlextTargetOracleOicPackagesSink}, got {target.fetch_sink_class('packages')}"
             raise AssertionError(msg)
-        assert target.get_sink_class("lookups") is FlextTargetOracleOicLookupsSink
-        default_sink = target.get_sink_class("unknown_stream")
+        assert target.fetch_sink_class("lookups") is FlextTargetOracleOicLookupsSink
+        default_sink = target.fetch_sink_class("unknown_stream")
         if default_sink is not target.default_sink_class:
             msg = f"Expected {target.default_sink_class}, got {default_sink}"
             raise AssertionError(msg)

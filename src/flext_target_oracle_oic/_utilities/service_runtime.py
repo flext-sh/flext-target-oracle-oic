@@ -6,10 +6,10 @@ from collections.abc import Mapping
 from datetime import datetime
 from pathlib import Path
 
-from flext_meltano import Target as FlextMeltanoSingerTargetBase
 from flext_target_oracle_oic import (
     FlextTargetOracleOic,
     FlextTargetOracleOicBaseSink,
+    m,
     t,
 )
 
@@ -17,7 +17,7 @@ from flext_target_oracle_oic import (
 class FlextTargetOracleOicServiceRuntime:
     """Service-runtime adapters used by the target-oracle-oic facade."""
 
-    class Target(FlextMeltanoSingerTargetBase):
+    class Target(m.Meltano.SingerTargetBase):
         """Minimal Singer target used by the service facade."""
 
         name = "target-oracle-oic"
@@ -33,8 +33,10 @@ class FlextTargetOracleOicServiceRuntime:
         """Create the service-level Singer sink adapter."""
         normalized_target_config = cls.normalize_singer_mapping(target_config)
         runtime_target = FlextTargetOracleOic()
-        sink_class: type[FlextTargetOracleOicBaseSink] = runtime_target.get_sink_class(
-            stream_name,
+        sink_class: type[FlextTargetOracleOicBaseSink] = (
+            runtime_target.fetch_sink_class(
+                stream_name,
+            )
         )
         return sink_class(
             target=cls.Target(
