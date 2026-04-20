@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import (
+    Mapping,
+)
 
 from flext_api import FlextApi, FlextApiSettings
 from flext_meltano import u
