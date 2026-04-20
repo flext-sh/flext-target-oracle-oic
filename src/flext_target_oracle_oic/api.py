@@ -15,6 +15,7 @@ from collections.abc import (
 from typing import Annotated, override
 
 from flext_meltano import FlextMeltanoTargetServiceBase
+
 from flext_target_oracle_oic import (
     FlextTargetOracleOicServiceRuntime,
     p,

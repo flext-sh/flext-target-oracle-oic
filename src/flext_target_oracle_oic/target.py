@@ -10,6 +10,7 @@ from typing import ClassVar, override
 from flext_meltano import (
     FlextMeltanoTargetAbstractions,
 )
+
 from flext_target_oracle_oic import c, m, p, r, t, u
 
 
