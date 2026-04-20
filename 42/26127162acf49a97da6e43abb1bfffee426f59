@@ -1,0 +1,14 @@
+src/flext_target_oracle_oic/_utilities/service_runtime.py
+  h_9db9d35f50cf33 57,59,70,79,82
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.0",
+  "base_commit_sha": "4226127162acf49a97da6e43abb1bfffee426f59",
+  "prompts": {},
+  "humans": {
+    "h_9db9d35f50cf33": {
+      "author": "FLEXT Bot"
+    }
+  }
+}
