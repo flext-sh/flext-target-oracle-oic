@@ -1,0 +1,20 @@
+src/flext_target_oracle_oic/constants.py
+  h_9db9d35f50cf33 7,11
+src/flext_target_oracle_oic/protocols.py
+  h_9db9d35f50cf33 10,14
+src/flext_target_oracle_oic/typings.py
+  h_9db9d35f50cf33 5,9
+src/flext_target_oracle_oic/_utilities/service_runtime.py
+  h_9db9d35f50cf33 14,35-36
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.0",
+  "base_commit_sha": "3fe341e4c907d72311b40a1e01d9001a80c5f10a",
+  "prompts": {},
+  "humans": {
+    "h_9db9d35f50cf33": {
+      "author": "FLEXT Bot"
+    }
+  }
+}
