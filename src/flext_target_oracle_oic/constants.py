@@ -4,11 +4,11 @@ from __future__ import annotations
 
 from enum import StrEnum, unique
 
-from flext_meltano import FlextMeltanoConstants
+from flext_meltano import c
 from flext_oracle_oic import FlextOracleOicConstants
 
 
-class FlextTargetOracleOicConstants(FlextMeltanoConstants, FlextOracleOicConstants):
+class FlextTargetOracleOicConstants(c, FlextOracleOicConstants):
     """Namespace class for OIC target constants."""
 
     class TargetOracleOic:

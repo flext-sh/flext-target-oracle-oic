@@ -14,7 +14,7 @@ from flext_core.lazy import (
 from flext_target_oracle_oic.__version__ import *
 
 if _t.TYPE_CHECKING:
-    from flext_oracle_oic import d, e, h, r, s, x
+    from flext_meltano import d, e, h, r, s, x
 
     from flext_target_oracle_oic._utilities.service_runtime import (
         FlextTargetOracleOicServiceRuntime,
@@ -128,7 +128,7 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "FlextTargetOracleOicUtilities",
                 "u",
             ),
-            "flext_oracle_oic": (
+            "flext_meltano": (
                 "d",
                 "e",
                 "h",
