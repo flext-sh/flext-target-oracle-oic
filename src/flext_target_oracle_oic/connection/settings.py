@@ -21,7 +21,7 @@ from flext_target_oracle_oic import c, m, p, r, t, u
 class FlextTargetOracleOicConnectionSettings(FlextSettings):
     """Oracle OIC connection settings using flext-core patterns."""
 
-    _logger: ClassVar[p.Logger] = u.fetch_logger(__name__)
+    logger: ClassVar[p.Logger] = u.fetch_logger(__name__)
 
     model_config: ClassVar[m.SettingsConfigDict] = m.SettingsConfigDict(
         env_prefix="FLEXT_TARGET_ORACLE_OIC_",
@@ -80,7 +80,7 @@ class FlextTargetOracleOicConnectionSettings(FlextSettings):
         try:
             return cls.model_validate(data)
         except c.Meltano.SINGER_SAFE_EXCEPTIONS:
-            cls._logger.exception(
+            cls.logger.exception(
                 "Failed to create FlextTargetOracleOicConnectionSettings from dict",
             )
             raise

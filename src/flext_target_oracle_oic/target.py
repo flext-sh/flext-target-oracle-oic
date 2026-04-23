@@ -17,7 +17,7 @@ from flext_target_oracle_oic import c, m, p, r, t, u
 class FlextTargetOracleOicBaseSink(m.Meltano.SingerSinkBase):
     """Base sink implementation used by OIC stream sinks."""
 
-    _logger: ClassVar[p.Logger] = u.fetch_logger(__name__)
+    logger: ClassVar[p.Logger] = u.fetch_logger(__name__)
 
     @override
     def process_batch(self, context: t.MutableJsonMapping) -> None:
@@ -32,7 +32,7 @@ class FlextTargetOracleOicBaseSink(m.Meltano.SingerSinkBase):
     ) -> None:
         """Default sink behavior: log incoming record metadata."""
         _ = context
-        self._logger.debug("Processing OIC record", keys=str(list(record.keys())))
+        self.logger.debug("Processing OIC record", keys=str(list(record.keys())))
 
 
 class FlextTargetOracleOicConnectionsSink(FlextTargetOracleOicBaseSink):

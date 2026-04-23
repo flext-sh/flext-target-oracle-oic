@@ -70,7 +70,7 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
 
             def __init__(self, settings: FlextTargetOracleOicSettings) -> None:
                 """Initialize the authenticator with target configuration."""
-                self._config: FlextTargetOracleOicSettings = settings
+                self.config: FlextTargetOracleOicSettings = settings
                 self._access_token: str | None = None
                 self._auth_scheme: str = c.TargetOracleOic.AUTH_SCHEME_BEARER
 
@@ -84,13 +84,13 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                 """Build the payload for requesting an OAuth2 token."""
                 payload: t.MutableStrMapping = {
                     "grant_type": "client_credentials",
-                    "client_id": self._config.oauth_client_id,
-                    "client_secret": self._config.get_oauth_client_secret_value(),
+                    "client_id": self.config.oauth_client_id,
+                    "client_secret": self.config.get_oauth_client_secret_value(),
                 }
-                if self._config.oauth_scope:
-                    payload["scope"] = self._config.oauth_scope
-                if self._config.oauth_client_aud:
-                    payload["audience"] = self._config.oauth_client_aud
+                if self.config.oauth_scope:
+                    payload["scope"] = self.config.oauth_scope
+                if self.config.oauth_client_aud:
+                    payload["audience"] = self.config.oauth_client_aud
                 return payload
 
             def get_access_token(self, *, force_refresh: bool = False) -> str:
@@ -99,13 +99,13 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                     return self._access_token
                 try:
                     api_config = FlextApiSettings.model_validate({
-                        "base_url": str(self._config.oauth_token_url),
-                        "timeout": self._config.timeout,
+                        "base_url": str(self.config.oauth_token_url),
+                        "timeout": self.config.timeout,
                     })
                     response_result = FlextApi(settings=api_config).post(
                         "",
                         data=self.build_token_request_data(),
-                        headers=dict(self._config.get_oauth_headers()),
+                        headers=dict(self.config.get_oauth_headers()),
                     )
                     if response_result.failure:
                         msg = f"Failed to request OAuth2 token: {response_result.error}"
