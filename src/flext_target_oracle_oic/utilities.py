@@ -36,7 +36,7 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
 
             @staticmethod
             def create_oic_connection(
-                data: t.FlatContainerMapping,
+                data: t.JsonMapping,
             ) -> m.TargetOracleOic.OICConnection:
                 """Create an OICConnection model from generic payload via Pydantic validation."""
                 return m.TargetOracleOic.OICConnection.model_validate({
@@ -46,21 +46,21 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
 
             @staticmethod
             def create_oic_integration(
-                data: t.FlatContainerMapping,
+                data: t.JsonMapping,
             ) -> m.TargetOracleOic.OICIntegration:
                 """Create an OICIntegration model from generic payload via Pydantic validation."""
                 return m.TargetOracleOic.OICIntegration.model_validate(data)
 
             @staticmethod
             def create_oic_package(
-                data: t.FlatContainerMapping,
+                data: t.JsonMapping,
             ) -> m.TargetOracleOic.OICPackage:
                 """Create an OICPackage model from generic payload via Pydantic validation."""
                 return m.TargetOracleOic.OICPackage.model_validate(data)
 
             @staticmethod
             def create_oic_lookup(
-                data: t.FlatContainerMapping,
+                data: t.JsonMapping,
             ) -> m.TargetOracleOic.OICLookup:
                 """Create an OICLookup model from generic payload via Pydantic validation."""
                 return m.TargetOracleOic.OICLookup.model_validate(data)
@@ -121,7 +121,7 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                 if not isinstance(payload, Mapping):
                     msg = "OAuth2 token response did not include a JSON object body"
                     raise TypeError(msg)
-                payload_raw: t.ContainerValueMapping = {
+                payload_raw: t.JsonMapping = {
                     str(key): value for key, value in payload.items()
                 }
                 access_token = payload_raw.get("access_token")
@@ -149,7 +149,7 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                 return FlextTargetOracleOicSettings.model_validate(overrides)
 
             @staticmethod
-            def create_singer_config_schema() -> t.FlatContainerMapping:
+            def create_singer_config_schema() -> t.JsonMapping:
                 """Create Singer configuration schema from FlextTargetOracleOicSettings."""
                 return FlextTargetOracleOicSettings.model_json_schema()
 

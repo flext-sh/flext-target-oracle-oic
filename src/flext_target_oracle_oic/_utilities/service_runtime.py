@@ -2,10 +2,6 @@
 
 from __future__ import annotations
 
-from collections.abc import (
-    Mapping,
-)
-
 from flext_target_oracle_oic import (
     FlextTargetOracleOic,
     FlextTargetOracleOicBaseSink,
@@ -28,8 +24,8 @@ class FlextTargetOracleOicServiceRuntime:
         cls,
         *,
         stream_name: str,
-        schema: t.FlatContainerMapping,
-        target_config: Mapping[str, t.Container],
+        schema: t.JsonMapping,
+        target_config: t.JsonMapping,
     ) -> FlextTargetOracleOicBaseSink:
         """Create the service-level Singer sink adapter."""
         normalized_target_config = u.Meltano.normalize_runtime_json_mapping(

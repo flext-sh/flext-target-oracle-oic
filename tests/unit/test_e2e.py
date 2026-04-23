@@ -156,7 +156,7 @@ class TestTargetOracleOicE2E:
             schema={"properties": {"id": {"type": "string"}}},
             key_properties=["id"],
         )
-        records: list[t.MutableContainerValueMapping] = [
+        records: list[t.MutableJsonMapping] = [
             {"id": "test-connection-1", "name": "Test Connection"},
             {"id": "test-connection-2", "name": "Test Connection 2"},
         ]
@@ -190,7 +190,7 @@ class TestTargetOracleOicE2E:
             },
             key_properties=["id"],
         )
-        test_record: t.MutableContainerValueMapping = {
+        test_record: t.MutableJsonMapping = {
             "id": "TEST_CONNECTION_E2E",
             "name": "E2E Test Connection",
             "adapter_type": "REST",
@@ -254,7 +254,7 @@ class TestTargetOracleOicE2E:
             },
             key_properties=["id"],
         )
-        records: list[t.MutableContainerValueMapping] = [
+        records: list[t.MutableJsonMapping] = [
             {
                 "id": f"pkg-{i}",
                 "name": f"Package {i}",

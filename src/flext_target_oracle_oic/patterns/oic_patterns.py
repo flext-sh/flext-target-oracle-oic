@@ -24,10 +24,10 @@ class FlextTargetOracleOicSchemaMapper:
     def map_schema(
         self,
         stream_name: str,
-        schema: t.FlatContainerMapping,
-    ) -> p.Result[Mapping[str, str | t.FlatContainerMapping]]:
+        schema: t.JsonMapping,
+    ) -> p.Result[Mapping[str, str | t.JsonMapping]]:
         """Build schema metadata payload for the given stream."""
-        return r[Mapping[str, str | t.FlatContainerMapping]].ok({
+        return r[Mapping[str, str | t.JsonMapping]].ok({
             "stream": stream_name,
             "schema": schema,
         })

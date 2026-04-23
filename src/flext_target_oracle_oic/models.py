@@ -23,7 +23,7 @@ class FlextTargetOracleOicModels(m, FlextOracleOicModels):
             id: t.NonEmptyStr
             name: t.NonEmptyStr
             adapter_type: t.NonEmptyStr
-            properties: t.FlatContainerMapping = u.Field(default_factory=dict)
+            properties: t.JsonMapping = u.Field(default_factory=dict)
 
         class OICIntegration(m.ArbitraryTypesModel):
             """Integration payload model."""
@@ -70,7 +70,7 @@ class FlextTargetOracleOicModels(m, FlextOracleOicModels):
             """Schema mapping payload model."""
 
             stream_name: t.NonEmptyStr
-            schema_mapping: t.FlatContainerMapping = u.Field(default_factory=dict)
+            schema_mapping: t.JsonMapping = u.Field(default_factory=dict)
 
     @staticmethod
     def validate_connection(

@@ -20,15 +20,15 @@ class FlextTargetOracleOicBaseSink(m.Meltano.SingerSinkBase):
     _logger: ClassVar[p.Logger] = u.fetch_logger(__name__)
 
     @override
-    def process_batch(self, context: t.MutableContainerValueMapping) -> None:
+    def process_batch(self, context: t.MutableJsonMapping) -> None:
         """Singer batch hook implementation."""
         _ = context
 
     @override
     def process_record(
         self,
-        record: t.MutableContainerValueMapping,
-        context: t.MutableContainerValueMapping,
+        record: t.MutableJsonMapping,
+        context: t.MutableJsonMapping,
     ) -> None:
         """Default sink behavior: log incoming record metadata."""
         _ = context
