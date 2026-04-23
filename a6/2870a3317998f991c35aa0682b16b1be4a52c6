@@ -1,0 +1,18 @@
+src/flext_target_oracle_oic/connection/settings.py
+  h_9db9d35f50cf33 24,83
+src/flext_target_oracle_oic/target.py
+  h_9db9d35f50cf33 20,35
+src/flext_target_oracle_oic/utilities.py
+  h_9db9d35f50cf33 73,87-88,90-93,102-103,108
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.2",
+  "base_commit_sha": "a62870a3317998f991c35aa0682b16b1be4a52c6",
+  "prompts": {},
+  "humans": {
+    "h_9db9d35f50cf33": {
+      "author": "FLEXT Bot"
+    }
+  }
+}
