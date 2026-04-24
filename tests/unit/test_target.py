@@ -23,9 +23,7 @@ from flext_target_oracle_oic import (
     FlextTargetOracleOicSettings,
     u,
 )
-from tests import r as result_type, t
-
-_DEFAULT_PROPERTIES: Mapping[str, t.StrMapping] = {"id": {"type": "string"}}
+from tests import c, r as result_type, t
 
 
 class AuthTestSettings(FlextTargetOracleOicSettings):
@@ -38,7 +36,7 @@ class DummySingerTarget(SingerTarget):
     name = "dummy-target-oracle-oic"
     config_jsonschema: ClassVar[dict[str, str | Mapping[str, t.StrMapping]]] = {
         "type": "object",
-        "properties": _DEFAULT_PROPERTIES,
+        "properties": c.TargetOracleOic.Tests.Factory.DEFAULT_PROPERTIES,
     }
 
 
