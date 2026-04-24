@@ -9,10 +9,9 @@ from tests import c
 
 
 def _package_root() -> Path:
+    parent_depth = int(c.TargetOracleOic.Tests.PROJECT_ROOT_PARENT_DEPTH)
     return (
-        Path(__file__)
-        .resolve()
-        .parents[c.TargetOracleOic.Tests.PROJECT_ROOT_PARENT_DEPTH]
+        Path(__file__).resolve().parents[parent_depth]
         / c.TargetOracleOic.Tests.SRC_DIR
         / c.TargetOracleOic.Tests.PACKAGE_DIR
     )
