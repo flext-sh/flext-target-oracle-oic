@@ -36,7 +36,7 @@ class DummySingerTarget(SingerTarget):
     name = "dummy-target-oracle-oic"
     config_jsonschema: ClassVar[dict[str, str | Mapping[str, t.StrMapping]]] = {
         "type": "object",
-        "properties": c.TargetOracleOic.Tests.Factory.DEFAULT_PROPERTIES,
+        "properties": c.TargetOracleOic.Tests.DEFAULT_PROPERTIES,
     }
 
 

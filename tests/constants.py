@@ -26,22 +26,15 @@ class TestsFlextTargetOracleOicConstants(
         class Tests(FlextTestsConstants.Tests):
             """Target Oracle OIC-specific test constants."""
 
-            class ModuleGovernance:
-                """Module-governance constants for target-oracle-oic tests."""
-
-                PROJECT_ROOT_PARENT_DEPTH: Final[int] = 1
-                SRC_DIR: Final[str] = "src"
-                PACKAGE_DIR: Final[str] = "flext_target_oracle_oic"
-                ALLOWED_MODULE_FUNCTIONS: Final[dict[str, frozenset[str]]] = {
-                    "cli.py": frozenset({"main"}),
-                }
-
-            class Factory:
-                """Factory-test constants for target-oracle-oic tests."""
-
-                DEFAULT_PROPERTIES: Final[dict[str, dict[str, str]]] = {
-                    "id": {"type": "string"},
-                }
+            PROJECT_ROOT_PARENT_DEPTH: Final[int] = 1
+            SRC_DIR: Final[str] = "src"
+            PACKAGE_DIR: Final[str] = "flext_target_oracle_oic"
+            ALLOWED_MODULE_FUNCTIONS: Final[dict[str, frozenset[str]]] = {
+                "cli.py": frozenset({"main"}),
+            }
+            DEFAULT_PROPERTIES: Final[dict[str, dict[str, str]]] = {
+                "id": {"type": "string"},
+            }
 
 
 c = TestsFlextTargetOracleOicConstants

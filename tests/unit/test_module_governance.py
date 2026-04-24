@@ -12,9 +12,9 @@ def _package_root() -> Path:
     return (
         Path(__file__)
         .resolve()
-        .parents[c.TargetOracleOic.Tests.ModuleGovernance.PROJECT_ROOT_PARENT_DEPTH]
-        / c.TargetOracleOic.Tests.ModuleGovernance.SRC_DIR
-        / c.TargetOracleOic.Tests.ModuleGovernance.PACKAGE_DIR
+        .parents[c.TargetOracleOic.Tests.PROJECT_ROOT_PARENT_DEPTH]
+        / c.TargetOracleOic.Tests.SRC_DIR
+        / c.TargetOracleOic.Tests.PACKAGE_DIR
     )
 
 
@@ -46,11 +46,9 @@ def test_package_modules_do_not_define_module_level_loggers() -> None:
 def test_package_modules_do_not_define_unapproved_top_level_functions() -> None:
     violations: list[str] = []
     for module_path in _iter_package_modules():
-        allowed_functions = (
-            c.TargetOracleOic.Tests.ModuleGovernance.ALLOWED_MODULE_FUNCTIONS.get(
-                module_path.name,
-                frozenset(),
-            )
+        allowed_functions = c.TargetOracleOic.Tests.ALLOWED_MODULE_FUNCTIONS.get(
+            module_path.name,
+            frozenset(),
         )
         module_tree = _read_module_tree(module_path)
         unexpected_functions = sorted(
