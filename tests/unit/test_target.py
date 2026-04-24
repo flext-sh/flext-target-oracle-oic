@@ -40,9 +40,7 @@ class DummySingerTarget(SingerTarget):
     }
 
 
-class TestTargetOracleOic:
-    """Test cases for FlextTargetOracleOic with proper enterprise validation."""
-
+class TestsFlextTargetOracleOicTarget:
     @pytest.fixture
     def valid_config(self) -> t.StrMapping:
         """Create valid configuration for testing."""
@@ -104,7 +102,6 @@ class TestTargetOracleOic:
 
 @pytest.fixture
 def singer_target() -> SingerTarget:
-    """Provide a Singer target accepted by singer-sdk Sink constructors."""
     return DummySingerTarget(config={})
 
 

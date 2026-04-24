@@ -76,25 +76,20 @@ def load_test_config() -> t.StrMapping:
 
 @pytest.fixture
 def test_config() -> t.StrMapping:
-    """Provide real test configuration."""
     return load_test_config()
 
 
 @pytest.fixture
 def target() -> FlextTargetOracleOic:
-    """Create target instance."""
     return FlextTargetOracleOic()
 
 
 @pytest.fixture
 def singer_target() -> SingerTarget:
-    """Create singer target instance for sink constructors."""
     return DummySingerTargetE2E(config={})
 
 
-class TestTargetOracleOicE2E:
-    """End-to-end tests for target-oracle-oic using REAL configuration and NO MOCKS."""
-
+class TestsFlextTargetOracleOicE2e:
     def test_target_initialization(
         self,
         target: FlextTargetOracleOic,
