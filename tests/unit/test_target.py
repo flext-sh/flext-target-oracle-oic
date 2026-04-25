@@ -99,6 +99,38 @@ class TestsFlextTargetOracleOicTarget:
         assert isinstance(properties, dict)
         assert "oauth_client_id" in properties
 
+    def test_oic_authenticator_builds_payload(self) -> None:
+        authenticator = u.TargetOracleOic.Authenticator(_build_auth_config())
+        payload = authenticator.build_token_request_data()
+        assert payload["grant_type"] == "client_credentials"
+        assert payload["client_id"] == "client-id"
+        assert payload["client_secret"] == "client-secret"
+        assert payload["scope"] == "urn:opc:resource:consumer:all"
+        assert payload["audience"] == "https://idcs.example.com"
+
+    def test_oic_authenticator_omits_optional_scope_and_audience(self) -> None:
+        authenticator = u.TargetOracleOic.Authenticator(
+            _build_auth_config(oauth_scope="", oauth_client_aud=None),
+        )
+        payload = authenticator.build_token_request_data()
+        assert "scope" not in payload
+        assert "audience" not in payload
+
+    def test_oic_authenticator_rejects_invalid_token_response(self) -> None:
+
+        authenticator = u.TargetOracleOic.Authenticator(_build_auth_config())
+
+        mock_response = Mock()
+        mock_response.status_code = 200
+        mock_response.body = {"token_type": "Bearer"}
+
+        with patch(
+            "flext_api.FlextApi.post",
+            return_value=result_type[Mock].ok(mock_response),
+        ):
+            with pytest.raises(RuntimeError, match="access_token"):
+                authenticator.get_access_token()
+
 
 @pytest.fixture
 def singer_target() -> SingerTarget:
@@ -122,38 +154,3 @@ def _build_auth_config(
     object.__setattr__(settings, "oauth_client_aud", oauth_client_aud)
     object.__setattr__(settings, "timeout", 30)
     return settings
-
-
-def test_oic_authenticator_builds_payload() -> None:
-    authenticator = u.TargetOracleOic.Authenticator(_build_auth_config())
-    payload = authenticator.build_token_request_data()
-    assert payload["grant_type"] == "client_credentials"
-    assert payload["client_id"] == "client-id"
-    assert payload["client_secret"] == "client-secret"
-    assert payload["scope"] == "urn:opc:resource:consumer:all"
-    assert payload["audience"] == "https://idcs.example.com"
-
-
-def test_oic_authenticator_omits_optional_scope_and_audience() -> None:
-    authenticator = u.TargetOracleOic.Authenticator(
-        _build_auth_config(oauth_scope="", oauth_client_aud=None),
-    )
-    payload = authenticator.build_token_request_data()
-    assert "scope" not in payload
-    assert "audience" not in payload
-
-
-def test_oic_authenticator_rejects_invalid_token_response() -> None:
-
-    authenticator = u.TargetOracleOic.Authenticator(_build_auth_config())
-
-    mock_response = Mock()
-    mock_response.status_code = 200
-    mock_response.body = {"token_type": "Bearer"}
-
-    with patch(
-        "flext_api.FlextApi.post",
-        return_value=result_type[Mock].ok(mock_response),
-    ):
-        with pytest.raises(RuntimeError, match="access_token"):
-            authenticator.get_access_token()

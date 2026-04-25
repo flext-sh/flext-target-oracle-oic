@@ -75,11 +75,6 @@ def load_test_config() -> t.StrMapping:
 
 
 @pytest.fixture
-def test_config() -> t.StrMapping:
-    return load_test_config()
-
-
-@pytest.fixture
 def target() -> FlextTargetOracleOic:
     return FlextTargetOracleOic()
 
@@ -307,6 +302,9 @@ class TestsFlextTargetOracleOicE2e:
             raise AssertionError(msg)
         assert isinstance(properties_raw["oauth_token_url"], dict)
 
+    @pytest.fixture
+    def test_config(self) -> t.StrMapping:
+        return load_test_config()
 
-def test_target_smoke_class() -> None:
-    assert FlextTargetOracleOic.name == "target-oracle-oic"
+    def test_target_smoke_class(self) -> None:
+        assert FlextTargetOracleOic.name == "target-oracle-oic"
