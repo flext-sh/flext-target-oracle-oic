@@ -7,9 +7,9 @@
 - Description: FLEXT Target Oracle OIC - Singer Target for Oracle Integration Cloud
 - Project class: `integration`
 - Keywords: `data-loading`, `enterprise`, `etl`, `flext`, `singer`, `target`, `typed`
-- Main facades: `FlextTargetOracleOicIntegrationsSink`, `FlextTargetOracleOicLookupsSink`, `FlextTargetOracleOicOrchestrator`, `FlextTargetOracleOicServiceRuntime`, `FlextTargetOracleOicService`, `FlextTargetOracleOicBaseSink`, `FlextTargetOracleOicDataTransformer`, `FlextTargetOracleOicSchemaMapper` (+16 more)
+- Main facades: `FlextTargetOracleOicTypeConverter`, `FlextTargetOracleOicConnection`, `FlextTargetOracleOicRecordProcessor`, `FlextTargetOracleOic`, `FlextTargetOracleOicTypes`, `FlextTargetOracleOicConnectionSettings`, `FlextTargetOracleOicProcessedRecord`, `FlextTargetOracleOicLookupsSink` (+16 more)
 - Alias exports: `c`, `d`, `e`, `h`, `m`, `p`, `r`, `s`, `t`, `u`, `x`
-- Public symbol exports: `FlextTargetOracleOicIntegrationsSink`, `FlextTargetOracleOicLookupsSink`, `FlextTargetOracleOicOrchestrator`, `FlextTargetOracleOicServiceRuntime`, `FlextTargetOracleOicService`, `FlextTargetOracleOicBaseSink`, `FlextTargetOracleOicDataTransformer`, `FlextTargetOracleOicSchemaMapper`, `target_oracle_oic`, `main` (+16 more)
+- Public symbol exports: `FlextTargetOracleOicTypeConverter`, `main`, `FlextTargetOracleOicConnection`, `FlextTargetOracleOicRecordProcessor`, `FlextTargetOracleOic`, `FlextTargetOracleOicTypes`, `FlextTargetOracleOicConnectionSettings`, `FlextTargetOracleOicProcessedRecord`, `FlextTargetOracleOicLookupsSink`, `FlextTargetOracleOicConstants` (+16 more)
 - Exported module shortcuts: _none_
 - Generated module pages: `15`
 

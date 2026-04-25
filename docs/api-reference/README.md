@@ -19,7 +19,7 @@ This section is generated from public exports and real docstrings.
 
 ## Surface Summary
 
-- Primary facades: `FlextTargetOracleOicIntegrationsSink`, `FlextTargetOracleOicLookupsSink`, `FlextTargetOracleOicOrchestrator`, `FlextTargetOracleOicServiceRuntime`, `FlextTargetOracleOicService`, `FlextTargetOracleOicBaseSink` (+18 more)
+- Primary facades: `FlextTargetOracleOicTypeConverter`, `FlextTargetOracleOicConnection`, `FlextTargetOracleOicRecordProcessor`, `FlextTargetOracleOic`, `FlextTargetOracleOicTypes`, `FlextTargetOracleOicConnectionSettings` (+18 more)
 - Generated module pages: `15`
 
 - [Back to project docs](../index.md)
