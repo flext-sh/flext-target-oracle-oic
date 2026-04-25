@@ -1,8 +1,8 @@
 <!-- AUTO-GENERATED — DO NOT EDIT MANUALLY -->
 
-# flext_target_oracle_oic.application
+# flext_target_oracle_oic.singer.processors
 
-::: flext_target_oracle_oic.application
+::: flext_target_oracle_oic.singer.processors
     options:
       show_root_heading: true
       show_root_full_path: false
