@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from flext_target_oracle_oic import (
     FlextTargetOracleOicService,
-    FlextTargetOracleOicTypes as t,
+    t,
 )
 
 
