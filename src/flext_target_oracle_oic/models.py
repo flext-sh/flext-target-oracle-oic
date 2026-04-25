@@ -14,9 +14,6 @@ class FlextTargetOracleOicModels(m, FlextOracleOicModels):
     class TargetOracleOic:
         """TargetOracleOic domain namespace."""
 
-        OICConnectionAction = c.TargetOracleOic.OICConnectionAction
-        OICIntegrationAction = c.TargetOracleOic.OICIntegrationAction
-
         class OICConnection(m.ArbitraryTypesModel):
             """Connection payload model."""
 
