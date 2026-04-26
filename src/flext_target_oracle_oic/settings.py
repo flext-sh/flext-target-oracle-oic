@@ -10,7 +10,6 @@ from __future__ import annotations
 from typing import Annotated, ClassVar
 
 from flext_core import FlextSettings
-
 from flext_target_oracle_oic import c, m, t, u
 
 

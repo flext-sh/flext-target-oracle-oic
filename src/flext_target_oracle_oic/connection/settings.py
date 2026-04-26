@@ -13,7 +13,6 @@ from collections.abc import (
 from typing import Annotated, ClassVar, Self
 
 from flext_core import FlextSettings
-
 from flext_target_oracle_oic import c, m, p, r, t, u
 
 

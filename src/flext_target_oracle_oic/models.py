@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from flext_meltano import m
 from flext_oracle_oic import FlextOracleOicModels, u
-
 from flext_target_oracle_oic import c, p, r, t
 
 
