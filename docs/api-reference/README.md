@@ -19,7 +19,7 @@ This section is generated from public exports and real docstrings.
 
 ## Surface Summary
 
-- Primary facades: `FlextTargetOracleOicTypeConverter`, `FlextTargetOracleOicConnection`, `FlextTargetOracleOicRecordProcessor`, `FlextTargetOracleOic`, `FlextTargetOracleOicTypes`, `FlextTargetOracleOicConnectionSettings` (+18 more)
+- Primary facades: `FlextTargetOracleOicSettings`, `FlextTargetOracleOicIntegrationsSink`, `FlextTargetOracleOicConstants`, `FlextTargetOracleOicSchemaMapper`, `FlextTargetOracleOicService`, `FlextTargetOracleOic` (+18 more)
 - Generated module pages: `15`
 
 - [Back to project docs](../index.md)
