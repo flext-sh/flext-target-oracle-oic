@@ -50,4 +50,4 @@ class FlextTargetOracleOicConstants(c, FlextOracleOicConstants):
 
 
 c = FlextTargetOracleOicConstants
-__all__: list[str] = ["FlextTargetOracleOicConstants", "c"]
+__all__: tuple[str, ...] = ("FlextTargetOracleOicConstants", "c")
