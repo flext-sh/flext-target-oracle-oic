@@ -28,7 +28,7 @@ class FlextTargetOracleOicServiceRuntime:
         target_config: t.JsonMapping,
     ) -> FlextTargetOracleOicBaseSink:
         """Create the service-level Singer sink adapter."""
-        normalized_target_config = u.Meltano.normalize_runtime_json_mapping(
+        normalized_target_config = u.normalize_to_json_mapping(
             target_config,
         )
         runtime_target = FlextTargetOracleOic()
