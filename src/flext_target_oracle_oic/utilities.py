@@ -79,7 +79,7 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                 token = self.get_access_token()
                 return {"Authorization": f"{self._auth_scheme} {token}"}
 
-            def build_token_request_data(self) -> t.StrMapping:
+            def build_token_request_data(self) -> dict[str, t.JsonValue]:
                 """Build the payload for requesting an OAuth2 token."""
                 payload: t.MutableStrMapping = {
                     "grant_type": "client_credentials",
@@ -90,7 +90,7 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                     payload["scope"] = self.config.oauth_scope
                 if self.config.oauth_client_aud:
                     payload["audience"] = self.config.oauth_client_aud
-                return payload
+                return dict(payload)
 
             def get_access_token(self, *, force_refresh: bool = False) -> str:
                 """Get the current access token, optionally forcing a refresh."""
