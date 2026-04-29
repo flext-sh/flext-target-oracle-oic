@@ -98,7 +98,7 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                     return self._access_token
                 try:
                     api_config = FlextApiSettings.model_validate({
-                        "base_url": str(self.config.oauth_token_url),
+                        "base_url": self.config.oauth_token_url,
                         "timeout": self.config.timeout,
                     })
                     response_result = FlextApi(settings=api_config).post(
@@ -120,9 +120,7 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                 if not isinstance(payload, Mapping):
                     msg = "OAuth2 token response did not include a JSON object body"
                     raise TypeError(msg)
-                payload_raw: t.JsonMapping = {
-                    str(key): value for key, value in payload.items()
-                }
+                payload_raw: t.JsonMapping = dict(payload.items())
                 access_token = payload_raw.get("access_token")
                 if not isinstance(access_token, str) or not access_token:
                     msg = "OAuth2 token response did not include a valid access_token"
