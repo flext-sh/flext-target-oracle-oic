@@ -18,9 +18,6 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import os
-from collections.abc import (
-    Mapping,
-)
 from pathlib import Path
 from typing import ClassVar
 
@@ -40,7 +37,7 @@ from tests import t
 
 class DummySingerTargetE2E(SingerTarget):
     name = "dummy-target-oracle-oic"
-    config_jsonschema: ClassVar[dict[str, str | Mapping[str, t.StrMapping]]] = {
+    config_jsonschema: ClassVar[dict[str, str | t.MappingKV[str, t.StrMapping]]] = {
         "type": "object",
         "properties": dict[str, t.StrMapping](),
     }

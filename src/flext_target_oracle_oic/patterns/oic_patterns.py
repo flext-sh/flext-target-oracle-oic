@@ -48,7 +48,7 @@ class FlextTargetOracleOicEntryManager:
 
     def build_entries(
         self,
-        records: Sequence[t.ConfigurationMapping],
+        records: t.SequenceOf[t.ConfigurationMapping],
     ) -> p.Result[Sequence[t.ConfigurationMapping]]:
         """Return entry list unchanged for baseline behavior."""
         return r[Sequence[t.ScalarMapping]].ok(records)

@@ -7,9 +7,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import (
-    Mapping,
-)
 from typing import ClassVar
 from unittest.mock import Mock, patch
 
@@ -34,7 +31,7 @@ class DummySingerTarget(SingerTarget):
     """Minimal Singer target implementation for sink tests."""
 
     name = "dummy-target-oracle-oic"
-    config_jsonschema: ClassVar[dict[str, str | Mapping[str, t.StrMapping]]] = {
+    config_jsonschema: ClassVar[dict[str, str | t.MappingKV[str, t.StrMapping]]] = {
         "type": "object",
         "properties": c.TargetOracleOic.Tests.DEFAULT_PROPERTIES,
     }
