@@ -1,0 +1,16 @@
+docs/guides/troubleshooting.md
+  h_9db9d35f50cf33 797
+src/flext_target_oracle_oic/patterns/oic_patterns.py
+  h_9db9d35f50cf33 51
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.3.4",
+  "base_commit_sha": "bfa48430e87a24fad6b288964df2be6478f647d9",
+  "prompts": {},
+  "humans": {
+    "h_9db9d35f50cf33": {
+      "author": "FLEXT Bot"
+    }
+  }
+}
