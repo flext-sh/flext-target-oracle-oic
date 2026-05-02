@@ -122,6 +122,7 @@ class FlextTargetOracleOicConnectionSettings(FlextSettings):
             errors.append("client_secret is required")
         if errors:
             return r[bool].fail_op(
-                "OIC connection settings validation", "; ".join(errors),
+                "OIC connection settings validation",
+                "; ".join(errors),
             )
         return r[bool].ok(value=True)
