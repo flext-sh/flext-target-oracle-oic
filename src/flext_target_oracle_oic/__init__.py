@@ -35,9 +35,6 @@ if _t.TYPE_CHECKING:
     from flext_target_oracle_oic.models import FlextTargetOracleOicModels, m
     from flext_target_oracle_oic.protocols import FlextTargetOracleOicProtocols, p
     from flext_target_oracle_oic.settings import FlextTargetOracleOicSettings
-    from flext_target_oracle_oic.singer.processors import (
-        FlextTargetOracleOicProcessedRecord,
-    )
     from flext_target_oracle_oic.target import (
         FlextTargetOracleOic,
         FlextTargetOracleOicBaseSink,
@@ -93,7 +90,6 @@ _LAZY_IMPORTS = merge_lazy_imports(
             ),
             ".settings": ("FlextTargetOracleOicSettings",),
             ".singer.processors": (
-                "FlextTargetOracleOicProcessedRecord",
             ),
             ".target": (
                 "FlextTargetOracleOic",
@@ -156,7 +152,6 @@ __all__: list[str] = [
     "FlextTargetOracleOicLookupsSink",
     "FlextTargetOracleOicModels",
     "FlextTargetOracleOicPackagesSink",
-    "FlextTargetOracleOicProcessedRecord",
     "FlextTargetOracleOicProtocols",
     "FlextTargetOracleOicService",
     "FlextTargetOracleOicServiceRuntime",
