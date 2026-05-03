@@ -82,15 +82,11 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "FlextTargetOracleOicModels",
                 "m",
             ),
-            ".patterns.oic_patterns": (
-            ),
             ".protocols": (
                 "FlextTargetOracleOicProtocols",
                 "p",
             ),
             ".settings": ("FlextTargetOracleOicSettings",),
-            ".singer.processors": (
-            ),
             ".target": (
                 "FlextTargetOracleOic",
                 "FlextTargetOracleOicBaseSink",
