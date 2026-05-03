@@ -77,43 +77,6 @@ class FlextTargetOracleOicModels(m, FlextOracleOicModels):
             ]
             name: Annotated[t.NonEmptyStr, u.Field(description="Project name")]
 
-        class OICSchedule(m.ArbitraryTypesModel):
-            """Schedule payload model."""
-
-            name: Annotated[t.NonEmptyStr, u.Field(description="Schedule name")]
-            schedule_type: Annotated[
-                str,
-                u.Field(description="Type of schedule (e.g., cron, interval)"),
-            ] = c.TargetOracleOic.DEFAULT_SCHEDULE_TYPE
-
-        class OICDataTransformation(m.ArbitraryTypesModel):
-            """Transformation payload model."""
-
-            source_stream: Annotated[
-                t.NonEmptyStr,
-                u.Field(description="Name of the source stream"),
-            ]
-            target_entity: Annotated[
-                t.NonEmptyStr,
-                u.Field(description="Name of the target entity"),
-            ]
-            mapping: Annotated[
-                t.StrMapping,
-                u.Field(description="Field mapping from source to target"),
-            ] = u.Field(default_factory=MappingProxyType)
-
-        class OICSchemaMapping(m.ArbitraryTypesModel):
-            """Schema mapping payload model."""
-
-            stream_name: Annotated[
-                t.NonEmptyStr,
-                u.Field(description="Name of the stream being mapped"),
-            ]
-            schema_mapping: Annotated[
-                t.JsonMapping,
-                u.Field(description="Schema field mapping configuration"),
-            ] = u.Field(default_factory=MappingProxyType)
-
     @staticmethod
     def validate_connection(
         connection: TargetOracleOic.OICConnection,

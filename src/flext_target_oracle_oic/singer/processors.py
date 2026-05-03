@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Annotated
 
 from flext_core import u
-from flext_target_oracle_oic import m, p, r, t
+from flext_target_oracle_oic import m, t
 
 
 class FlextTargetOracleOicProcessedRecord(m.ArbitraryTypesModel):
@@ -18,24 +18,6 @@ class FlextTargetOracleOicProcessedRecord(m.ArbitraryTypesModel):
     ]
 
 
-class FlextTargetOracleOicRecordProcessor:
-    """Transforms Singer records into OIC processing payloads."""
-
-    def process(
-        self,
-        stream_name: str,
-        record: t.ConfigurationMapping,
-    ) -> p.Result[FlextTargetOracleOicProcessedRecord]:
-        """Return typed stream payload for downstream handling."""
-        return r[FlextTargetOracleOicProcessedRecord].ok(
-            FlextTargetOracleOicProcessedRecord.model_validate({
-                "stream_name": stream_name,
-                "record": record,
-            }),
-        )
-
-
 __all__: list[str] = [
     "FlextTargetOracleOicProcessedRecord",
-    "FlextTargetOracleOicRecordProcessor",
 ]

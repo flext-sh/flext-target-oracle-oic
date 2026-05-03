@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from enum import StrEnum, unique
-
 from flext_meltano import c
 from flext_oracle_oic import FlextOracleOicConstants
 
@@ -33,20 +31,6 @@ class FlextTargetOracleOicConstants(c, FlextOracleOicConstants):
         DEFAULT_SCHEDULE_TYPE: str = "ONCE"
         DEFAULT_USE_OAUTH2: bool = True
         DEFAULT_VERIFY_SSL: bool = True
-
-        @unique
-        class OICConnectionAction(StrEnum):
-            """Supported connection actions."""
-
-            CREATE = "create"
-            UPDATE = "update"
-
-        @unique
-        class OICIntegrationAction(StrEnum):
-            """Supported integration actions."""
-
-            IMPORT = "import"
-            ACTIVATE = "activate"
 
 
 c = FlextTargetOracleOicConstants
