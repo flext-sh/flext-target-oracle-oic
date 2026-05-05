@@ -50,7 +50,8 @@ class FlextTargetOracleOicSettings(FlextSettingsBase):
 
     def get_oauth_client_secret_value(self) -> str:
         """Return the plaintext secret value for outgoing requests."""
-        return self.oauth_client_secret.get_secret_value()
+        secret_value: str = self.oauth_client_secret.get_secret_value()
+        return secret_value
 
     def get_oauth_headers(self) -> t.StrMapping:
         """Return static HTTP headers required for token requests."""
