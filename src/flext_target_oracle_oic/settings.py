@@ -9,12 +9,11 @@ from __future__ import annotations
 
 from typing import Annotated, ClassVar
 
-from flext_core import FlextSettings
+from flext_core import FlextSettingsBase
 from flext_target_oracle_oic import c, m, t, u
 
 
-@FlextSettings.auto_register("target-oracle-oic")
-class FlextTargetOracleOicSettings(FlextSettings):
+class FlextTargetOracleOicSettings(FlextSettingsBase):
     """Runtime settings for Oracle OIC target authentication and IO."""
 
     model_config: ClassVar[m.SettingsConfigDict] = m.SettingsConfigDict(
