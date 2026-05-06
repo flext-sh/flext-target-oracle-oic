@@ -120,7 +120,7 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                 if not isinstance(payload, Mapping):
                     msg = "OAuth2 token response did not include a JSON object body"
                     raise TypeError(msg)
-                payload_raw: t.JsonMapping = dict(payload.items())
+                payload_raw = t.json_mapping_adapter().validate_python(payload)
                 access_token = payload_raw.get("access_token")
                 if not isinstance(access_token, str) or not access_token:
                     msg = "OAuth2 token response did not include a valid access_token"

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from flext_meltano import c
-from flext_oracle_oic import FlextOracleOicConstants
+from flext_oracle_oic import FlextOracleOicConstants, t
 
 
 class FlextTargetOracleOicConstants(c, FlextOracleOicConstants):
@@ -34,4 +34,4 @@ class FlextTargetOracleOicConstants(c, FlextOracleOicConstants):
 
 
 c = FlextTargetOracleOicConstants
-__all__: tuple[str, ...] = ("FlextTargetOracleOicConstants", "c")
+__all__: t.StrSequence = ("FlextTargetOracleOicConstants", "c")
