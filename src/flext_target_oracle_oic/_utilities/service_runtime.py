@@ -39,11 +39,11 @@ class FlextTargetOracleOicServiceRuntime:
         )
         return sink_class(
             target=cls.Target(
-                config=dict(normalized_target_config),
+                config=t.json_dict_adapter().validate_python(normalized_target_config),
                 validate_config=False,
             ),
             stream_name=stream_name,
-            schema=dict(schema),
+            schema=t.json_dict_adapter().validate_python(schema),
             key_properties=[],
         )
 

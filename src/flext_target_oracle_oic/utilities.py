@@ -90,7 +90,7 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                     payload["scope"] = self.config.oauth_scope
                 if self.config.oauth_client_aud:
                     payload["audience"] = self.config.oauth_client_aud
-                return dict(payload)
+                return t.json_dict_adapter().validate_python(payload)
 
             def get_access_token(self, *, force_refresh: bool = False) -> str:
                 """Get the current access token, optionally forcing a refresh."""
