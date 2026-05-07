@@ -1,0 +1,29 @@
+src/flext_target_oracle_oic/_utilities/service_runtime.py
+  h_5cf852cc46bf92 42,46
+src/flext_target_oracle_oic/utilities.py
+  s_552d8e4891a938::t_ca3cd088638233 93
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.4.1",
+  "base_commit_sha": "aab0d782179cd1c4a188473b582b12555ee9ed38",
+  "prompts": {},
+  "humans": {
+    "h_5cf852cc46bf92": {
+      "author": "FLEXT Bot <team@flext.sh>"
+    },
+    "h_9db9d35f50cf33": {
+      "author": "FLEXT Bot"
+    }
+  },
+  "sessions": {
+    "s_552d8e4891a938": {
+      "agent_id": {
+        "tool": "github-copilot",
+        "id": "35c0040b-2ae9-466e-90aa-7721509e1e19",
+        "model": "unknown"
+      },
+      "human_author": "FLEXT Bot <team@flext.sh>"
+    }
+  }
+}
