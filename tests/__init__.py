@@ -14,10 +14,12 @@ from flext_core.lazy import (
 if _t.TYPE_CHECKING:
     from flext_tests import td, tf, tk, tm, tv
 
-    from flext_target_oracle_oic import d, e, h, r, s, x
+    from flext_target_oracle_oic import d, e, h, r, x
+    from tests.base import TestsFlextTargetOracleOicServiceBase, s
     from tests.constants import TestsFlextTargetOracleOicConstants, c
     from tests.models import TestsFlextTargetOracleOicModels, m
     from tests.protocols import TestsFlextTargetOracleOicProtocols, p
+    from tests.settings import TestsFlextTargetOracleOicSettings
     from tests.typings import TestsFlextTargetOracleOicTypes, t
     from tests.unit.test_cli_entrypoint import TestsFlextTargetOracleOicCliEntrypoint
     from tests.unit.test_e2e import DummySingerTargetE2E, TestsFlextTargetOracleOicE2e
@@ -34,6 +36,10 @@ _LAZY_IMPORTS = merge_lazy_imports(
     (".unit",),
     build_lazy_import_map(
         {
+            ".base": (
+                "TestsFlextTargetOracleOicServiceBase",
+                "s",
+            ),
             ".constants": (
                 "TestsFlextTargetOracleOicConstants",
                 "c",
@@ -46,6 +52,7 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "TestsFlextTargetOracleOicProtocols",
                 "p",
             ),
+            ".settings": ("TestsFlextTargetOracleOicSettings",),
             ".typings": (
                 "TestsFlextTargetOracleOicTypes",
                 "t",
@@ -72,7 +79,6 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "e",
                 "h",
                 "r",
-                "s",
                 "x",
             ),
             "flext_tests": (
@@ -119,6 +125,8 @@ __all__: list[str] = [
     "TestsFlextTargetOracleOicModels",
     "TestsFlextTargetOracleOicModuleGovernance",
     "TestsFlextTargetOracleOicProtocols",
+    "TestsFlextTargetOracleOicServiceBase",
+    "TestsFlextTargetOracleOicSettings",
     "TestsFlextTargetOracleOicTarget",
     "TestsFlextTargetOracleOicTypes",
     "TestsFlextTargetOracleOicUtilities",
