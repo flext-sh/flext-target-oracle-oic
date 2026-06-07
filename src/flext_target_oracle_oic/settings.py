@@ -9,8 +9,8 @@ from __future__ import annotations
 
 from typing import Annotated, ClassVar
 
-from flext_core import FlextSettingsBase
-from flext_target_oracle_oic import c, m, t, u
+from flext_core import FlextSettingsBase, u
+from flext_target_oracle_oic import c, m, t
 
 
 class FlextTargetOracleOicSettings(FlextSettingsBase):
