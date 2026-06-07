@@ -1,0 +1,21 @@
+tests/settings.py
+  s_73cbfc60e45e37::t_d667359090693d 5-6,9,16-39
+src/flext_target_oracle_oic/settings.py
+  s_73cbfc60e45e37::t_4ec3846deddaa1 12-13
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "d5180ec1981b821c9db3b896e57b20cf2dab5102",
+  "prompts": {},
+  "sessions": {
+    "s_73cbfc60e45e37": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "80f2c44c-f1f2-49a0-8035-ccac60ac602b",
+        "model": "claude-opus-4-8"
+      },
+      "human_author": "Zed <hi@zed.dev>"
+    }
+  }
+}
