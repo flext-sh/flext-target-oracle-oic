@@ -2,7 +2,7 @@
 
 # flext-target-oracle-oic Documentation
 
-- Version: `unknown`
+- Version: `0.12.0-dev`
 - Project class: `integration`
 - Package: `flext_target_oracle_oic`
 - Description: FLEXT Target Oracle OIC - Singer Target for Oracle Integration Cloud
