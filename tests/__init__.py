@@ -12,26 +12,51 @@ from flext_core.lazy import (
 )
 
 if _t.TYPE_CHECKING:
-    from flext_tests import td, tf, tk, tm, tv
+    from flext_tests import td as td, tf as tf, tk as tk, tv as tv
 
-    from flext_target_oracle_oic import d, e, h, r, x
-    from tests.base import TestsFlextTargetOracleOicServiceBase, s
-    from tests.constants import TestsFlextTargetOracleOicConstants, c
-    from tests.models import TestsFlextTargetOracleOicModels, m
-    from tests.protocols import TestsFlextTargetOracleOicProtocols, p
-    from tests.settings import TestsFlextTargetOracleOicSettings
-    from tests.typings import TestsFlextTargetOracleOicTypes, t
-    from tests.unit.test_cli_entrypoint import TestsFlextTargetOracleOicCliEntrypoint
-    from tests.unit.test_e2e import DummySingerTargetE2E, TestsFlextTargetOracleOicE2e
+    from flext_target_oracle_oic import d as d, e as e, h as h, r as r, x as x
+    from tests.base import (
+        TestsFlextTargetOracleOicServiceBase as TestsFlextTargetOracleOicServiceBase,
+        s as s,
+    )
+    from tests.constants import (
+        TestsFlextTargetOracleOicConstants as TestsFlextTargetOracleOicConstants,
+        c as c,
+    )
+    from tests.models import (
+        TestsFlextTargetOracleOicModels as TestsFlextTargetOracleOicModels,
+        m as m,
+    )
+    from tests.protocols import (
+        TestsFlextTargetOracleOicProtocols as TestsFlextTargetOracleOicProtocols,
+        p as p,
+    )
+    from tests.settings import (
+        TestsFlextTargetOracleOicSettings as TestsFlextTargetOracleOicSettings,
+    )
+    from tests.typings import (
+        TestsFlextTargetOracleOicTypes as TestsFlextTargetOracleOicTypes,
+        t as t,
+    )
+    from tests.unit.test_cli_entrypoint import (
+        TestsFlextTargetOracleOicCliEntrypoint as TestsFlextTargetOracleOicCliEntrypoint,
+    )
+    from tests.unit.test_e2e import (
+        DummySingerTargetE2E as DummySingerTargetE2E,
+        TestsFlextTargetOracleOicE2e as TestsFlextTargetOracleOicE2e,
+    )
     from tests.unit.test_module_governance import (
-        TestsFlextTargetOracleOicModuleGovernance,
+        TestsFlextTargetOracleOicModuleGovernance as TestsFlextTargetOracleOicModuleGovernance,
     )
     from tests.unit.test_target import (
-        AuthTestSettings,
-        DummySingerTarget,
-        TestsFlextTargetOracleOicTarget,
+        AuthTestSettings as AuthTestSettings,
+        DummySingerTarget as DummySingerTarget,
+        TestsFlextTargetOracleOicTarget as TestsFlextTargetOracleOicTarget,
     )
-    from tests.utilities import TestsFlextTargetOracleOicUtilities, u
+    from tests.utilities import (
+        TestsFlextTargetOracleOicUtilities as TestsFlextTargetOracleOicUtilities,
+        u as u,
+    )
 _LAZY_IMPORTS = merge_lazy_imports(
     (".unit",),
     build_lazy_import_map(
@@ -85,7 +110,6 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "td",
                 "tf",
                 "tk",
-                "tm",
                 "tv",
             ),
         },
@@ -142,7 +166,6 @@ __all__: list[str] = [
     "td",
     "tf",
     "tk",
-    "tm",
     "tv",
     "u",
     "x",
