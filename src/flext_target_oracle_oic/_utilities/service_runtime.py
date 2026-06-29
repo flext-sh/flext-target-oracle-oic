@@ -2,12 +2,10 @@
 
 from __future__ import annotations
 
-from flext_target_oracle_oic import (
+from flext_target_oracle_oic import m, t, u
+from flext_target_oracle_oic.target import (
     FlextTargetOracleOic,
     FlextTargetOracleOicBaseSink,
-    m,
-    t,
-    u,
 )
 
 

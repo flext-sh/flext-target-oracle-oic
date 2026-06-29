@@ -11,16 +11,17 @@ from typing import ClassVar
 from unittest.mock import Mock, patch
 
 import pytest
+from flext_tests import r as result_type
 from singer_sdk.target_base import Target as SingerTarget
 
-from flext_target_oracle_oic import (
+from flext_target_oracle_oic import FlextTargetOracleOicSettings, u
+from flext_target_oracle_oic.target import (
     FlextTargetOracleOic,
     FlextTargetOracleOicConnectionsSink,
     FlextTargetOracleOicIntegrationsSink,
-    FlextTargetOracleOicSettings,
-    u,
 )
-from tests import c, r as result_type, t
+from tests.constants import c
+from tests.typings import t
 
 
 class AuthTestSettings(FlextTargetOracleOicSettings):

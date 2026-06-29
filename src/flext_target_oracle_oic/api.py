@@ -11,12 +11,12 @@ from __future__ import annotations
 
 from typing import Annotated, override
 
-from flext_meltano import FlextMeltanoTargetServiceBase
-from flext_target_oracle_oic import (
+from flext_meltano.services.consumer_bases.target_service_base import (
+    FlextMeltanoTargetServiceBase,
+)
+from flext_target_oracle_oic import p, t, u
+from flext_target_oracle_oic._utilities.service_runtime import (
     FlextTargetOracleOicServiceRuntime,
-    p,
-    t,
-    u,
 )
 
 

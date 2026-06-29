@@ -15,13 +15,13 @@ from typing import ClassVar
 import pytest
 from singer_sdk.target_base import Target as SingerTarget
 
-from flext_target_oracle_oic import (
+from flext_target_oracle_oic.target import (
     FlextTargetOracleOicConnectionsSink,
     FlextTargetOracleOicIntegrationsSink,
     FlextTargetOracleOicLookupsSink,
     FlextTargetOracleOicPackagesSink,
 )
-from tests import t
+from tests.typings import t
 
 
 class DummySingerTargetE2E(SingerTarget):

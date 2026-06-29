@@ -3,63 +3,12 @@
 
 from __future__ import annotations
 
-import typing as _t
-
 from flext_core.lazy import (
     build_lazy_import_map,
     install_lazy_exports,
     merge_lazy_imports,
 )
 
-if _t.TYPE_CHECKING:
-    from flext_tests import td as td, tf as tf, tk as tk, tm as tm, tv as tv
-
-    from flext_target_oracle_oic import d as d, e as e, h as h, r as r, x as x
-    from tests.base import (
-        TestsFlextTargetOracleOicServiceBase as TestsFlextTargetOracleOicServiceBase,
-        s as s,
-    )
-    from tests.constants import (
-        TestsFlextTargetOracleOicConstants as TestsFlextTargetOracleOicConstants,
-        c as c,
-    )
-    from tests.models import (
-        TestsFlextTargetOracleOicModels as TestsFlextTargetOracleOicModels,
-        m as m,
-    )
-    from tests.protocols import (
-        TestsFlextTargetOracleOicProtocols as TestsFlextTargetOracleOicProtocols,
-        p as p,
-    )
-    from tests.settings import (
-        TestsFlextTargetOracleOicSettings as TestsFlextTargetOracleOicSettings,
-    )
-    from tests.typings import (
-        TestsFlextTargetOracleOicTypes as TestsFlextTargetOracleOicTypes,
-        t as t,
-    )
-    from tests.unit.test_cli_entrypoint import (
-        TestsFlextTargetOracleOicCliEntrypoint as TestsFlextTargetOracleOicCliEntrypoint,
-    )
-    from tests.unit.test_e2e import (
-        TestsFlextTargetOracleOicE2e as TestsFlextTargetOracleOicE2e,
-    )
-    from tests.unit.test_e2e_sinks import (
-        DummySingerTargetE2E as DummySingerTargetE2E,
-        TestsFlextTargetOracleOicE2eSinks as TestsFlextTargetOracleOicE2eSinks,
-    )
-    from tests.unit.test_module_governance import (
-        TestsFlextTargetOracleOicModuleGovernance as TestsFlextTargetOracleOicModuleGovernance,
-    )
-    from tests.unit.test_target import (
-        AuthTestSettings as AuthTestSettings,
-        DummySingerTarget as DummySingerTarget,
-        TestsFlextTargetOracleOicTarget as TestsFlextTargetOracleOicTarget,
-    )
-    from tests.utilities import (
-        TestsFlextTargetOracleOicUtilities as TestsFlextTargetOracleOicUtilities,
-        u as u,
-    )
 _LAZY_IMPORTS = merge_lazy_imports(
     (".unit",),
     build_lazy_import_map(
@@ -68,6 +17,7 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "TestsFlextTargetOracleOicServiceBase",
                 "s",
             ),
+            ".conftest": ("conftest",),
             ".constants": (
                 "TestsFlextTargetOracleOicConstants",
                 "c",
@@ -85,6 +35,7 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "TestsFlextTargetOracleOicTypes",
                 "t",
             ),
+            ".unit": ("unit",),
             ".unit.test_cli_entrypoint": ("TestsFlextTargetOracleOicCliEntrypoint",),
             ".unit.test_e2e": ("TestsFlextTargetOracleOicE2e",),
             ".unit.test_e2e_sinks": (
@@ -103,19 +54,17 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "TestsFlextTargetOracleOicUtilities",
                 "u",
             ),
-            "flext_target_oracle_oic": (
+            "flext_tests": (
                 "d",
                 "e",
                 "h",
                 "r",
-                "x",
-            ),
-            "flext_tests": (
                 "td",
                 "tf",
                 "tk",
                 "tm",
                 "tv",
+                "x",
             ),
         },
     ),
@@ -142,36 +91,9 @@ _LAZY_IMPORTS = merge_lazy_imports(
 )
 
 
-install_lazy_exports(__name__, globals(), _LAZY_IMPORTS)
-
-__all__: list[str] = [
-    "AuthTestSettings",
-    "DummySingerTarget",
-    "TestsFlextTargetOracleOicCliEntrypoint",
-    "TestsFlextTargetOracleOicConstants",
-    "TestsFlextTargetOracleOicE2e",
-    "TestsFlextTargetOracleOicModels",
-    "TestsFlextTargetOracleOicModuleGovernance",
-    "TestsFlextTargetOracleOicProtocols",
-    "TestsFlextTargetOracleOicServiceBase",
-    "TestsFlextTargetOracleOicSettings",
-    "TestsFlextTargetOracleOicTarget",
-    "TestsFlextTargetOracleOicTypes",
-    "TestsFlextTargetOracleOicUtilities",
-    "c",
-    "d",
-    "e",
-    "h",
-    "m",
-    "p",
-    "r",
-    "s",
-    "t",
-    "td",
-    "tf",
-    "tk",
-    "tm",
-    "tv",
-    "u",
-    "x",
-]
+install_lazy_exports(
+    __name__,
+    globals(),
+    _LAZY_IMPORTS,
+    publish_all=False,
+)

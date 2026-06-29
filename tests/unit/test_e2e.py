@@ -23,14 +23,16 @@ from pathlib import Path
 import pytest
 
 from flext_target_oracle_oic import (
+    FlextTargetOracleOicSettings,
+)
+from flext_target_oracle_oic.target import (
     FlextTargetOracleOic,
     FlextTargetOracleOicConnectionsSink,
     FlextTargetOracleOicIntegrationsSink,
     FlextTargetOracleOicLookupsSink,
     FlextTargetOracleOicPackagesSink,
-    FlextTargetOracleOicSettings,
 )
-from tests import t
+from tests.typings import t
 
 
 def load_test_config() -> t.StrMapping:
