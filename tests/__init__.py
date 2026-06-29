@@ -42,8 +42,11 @@ if _t.TYPE_CHECKING:
         TestsFlextTargetOracleOicCliEntrypoint as TestsFlextTargetOracleOicCliEntrypoint,
     )
     from tests.unit.test_e2e import (
-        DummySingerTargetE2E as DummySingerTargetE2E,
         TestsFlextTargetOracleOicE2e as TestsFlextTargetOracleOicE2e,
+    )
+    from tests.unit.test_e2e_sinks import (
+        DummySingerTargetE2E as DummySingerTargetE2E,
+        TestsFlextTargetOracleOicE2eSinks as TestsFlextTargetOracleOicE2eSinks,
     )
     from tests.unit.test_module_governance import (
         TestsFlextTargetOracleOicModuleGovernance as TestsFlextTargetOracleOicModuleGovernance,
@@ -83,9 +86,10 @@ _LAZY_IMPORTS = merge_lazy_imports(
                 "t",
             ),
             ".unit.test_cli_entrypoint": ("TestsFlextTargetOracleOicCliEntrypoint",),
-            ".unit.test_e2e": (
+            ".unit.test_e2e": ("TestsFlextTargetOracleOicE2e",),
+            ".unit.test_e2e_sinks": (
                 "DummySingerTargetE2E",
-                "TestsFlextTargetOracleOicE2e",
+                "TestsFlextTargetOracleOicE2eSinks",
             ),
             ".unit.test_module_governance": (
                 "TestsFlextTargetOracleOicModuleGovernance",
@@ -143,7 +147,6 @@ install_lazy_exports(__name__, globals(), _LAZY_IMPORTS)
 __all__: list[str] = [
     "AuthTestSettings",
     "DummySingerTarget",
-    "DummySingerTargetE2E",
     "TestsFlextTargetOracleOicCliEntrypoint",
     "TestsFlextTargetOracleOicConstants",
     "TestsFlextTargetOracleOicE2e",

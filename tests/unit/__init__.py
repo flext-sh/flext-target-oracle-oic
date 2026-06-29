@@ -8,9 +8,10 @@ from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 _LAZY_IMPORTS = build_lazy_import_map(
     {
         ".test_cli_entrypoint": ("TestsFlextTargetOracleOicCliEntrypoint",),
-        ".test_e2e": (
+        ".test_e2e": ("TestsFlextTargetOracleOicE2e",),
+        ".test_e2e_sinks": (
             "DummySingerTargetE2E",
-            "TestsFlextTargetOracleOicE2e",
+            "TestsFlextTargetOracleOicE2eSinks",
         ),
         ".test_module_governance": ("TestsFlextTargetOracleOicModuleGovernance",),
         ".test_target": (
