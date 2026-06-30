@@ -7,15 +7,17 @@ from flext_core.lazy import build_lazy_import_map
 
 FLEXT_TARGET_ORACLE_OIC_LAZY_IMPORTS_PART_01 = build_lazy_import_map(
     {
-        "._utilities.service_runtime": ("FlextTargetOracleOicServiceRuntime",),
+        "._utilities": ("_utilities",),
         ".api": (
             "FlextTargetOracleOicService",
             "target_oracle_oic",
         ),
+        ".application": ("application",),
         ".cli": (
             "FlextTargetOracleOicCli",
             "main",
         ),
+        ".connection": ("connection",),
         ".constants": (
             "FlextTargetOracleOicConstants",
             "c",
@@ -24,11 +26,13 @@ FLEXT_TARGET_ORACLE_OIC_LAZY_IMPORTS_PART_01 = build_lazy_import_map(
             "FlextTargetOracleOicModels",
             "m",
         ),
+        ".patterns": ("patterns",),
         ".protocols": (
             "FlextTargetOracleOicProtocols",
             "p",
         ),
         ".settings": ("FlextTargetOracleOicSettings",),
+        ".singer": ("singer",),
         ".typings": (
             "FlextTargetOracleOicTypes",
             "t",
