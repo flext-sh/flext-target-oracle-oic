@@ -1,24 +1,20 @@
-"""Oracle OIC patterns using flext-core patterns.
-
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-
-"""
+# AUTO-GENERATED FILE — Regenerate with: make gen
+"""Patterns package."""
 
 from __future__ import annotations
 
-from flext_target_oracle_oic.patterns.oic_patterns import (
-    OICDataTransformer,
-    OICEntryManager,
-    OICSchemaMapper,
-    OICTypeConverter,
-)
-from flext_target_oracle_oic.typings import t
+from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 
-__all__: list[str] = [
-    "OICDataTransformer",
-    "OICEntryManager",
-    "OICSchemaMapper",
-    "OICTypeConverter",
-    "t",
-]
+_LAZY_IMPORTS = build_lazy_import_map(
+    {
+        ".oic_patterns": ("oic_patterns",),
+    },
+)
+
+
+install_lazy_exports(
+    __name__,
+    globals(),
+    _LAZY_IMPORTS,
+    publish_all=False,
+)

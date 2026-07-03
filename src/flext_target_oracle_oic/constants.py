@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from flext_meltano import FlextMeltanoConstants
-from flext_oracle_oic import FlextOracleOicConstants
+from flext_meltano import c
+from flext_oracle_oic import FlextOracleOicConstants, t
 
 
-class FlextTargetOracleOicConstants(FlextMeltanoConstants, FlextOracleOicConstants):
+class FlextTargetOracleOicConstants(c, FlextOracleOicConstants):
     """Namespace class for OIC target constants."""
 
     class TargetOracleOic:
@@ -29,7 +29,9 @@ class FlextTargetOracleOicConstants(FlextMeltanoConstants, FlextOracleOicConstan
         DEFAULT_VERSION: str = "01.00.0000"
         DEFAULT_PATTERN: str = "ORCHESTRATION"
         DEFAULT_SCHEDULE_TYPE: str = "ONCE"
+        DEFAULT_USE_OAUTH2: bool = True
+        DEFAULT_VERIFY_SSL: bool = True
 
 
 c = FlextTargetOracleOicConstants
-__all__ = ["FlextTargetOracleOicConstants", "c"]
+__all__: t.StrSequence = ("FlextTargetOracleOicConstants", "c")

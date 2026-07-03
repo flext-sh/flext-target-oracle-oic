@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-from flext_meltano import FlextMeltanoTypes
+from flext_meltano import t
 from flext_oracle_oic import FlextOracleOicTypes
 
 
-class FlextTargetOracleOicTypes(FlextMeltanoTypes, FlextOracleOicTypes):
+class FlextTargetOracleOicTypes(t, FlextOracleOicTypes):
     """Type namespace for target Oracle OIC domain."""
 
 
 t = FlextTargetOracleOicTypes
-__all__ = ["FlextTargetOracleOicTypes", "t"]
+__all__: list[str] = ["FlextTargetOracleOicTypes", "t"]

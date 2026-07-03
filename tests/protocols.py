@@ -1,6 +1,6 @@
 """Test protocol definitions for flext-target-oracle-oic.
 
-Provides TestsFlextTargetOracleOicProtocols, combining FlextTestsProtocols with
+Provides TestsFlextTargetOracleOicProtocols, combining TestsFlextProtocols with
 FlextTargetOracleOicProtocols for test-specific protocol definitions.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
@@ -11,30 +11,30 @@ from __future__ import annotations
 
 from flext_tests import FlextTestsProtocols
 
-from flext_target_oracle_oic.protocols import FlextTargetOracleOicProtocols
+from flext_target_oracle_oic import FlextTargetOracleOicProtocols
 
 
 class TestsFlextTargetOracleOicProtocols(
-    FlextTestsProtocols, FlextTargetOracleOicProtocols
+    FlextTestsProtocols,
+    FlextTargetOracleOicProtocols,
 ):
-    """Test protocols combining FlextTestsProtocols and FlextTargetOracleOicProtocols.
+    """Test protocols combining TestsFlextProtocols and FlextTargetOracleOicProtocols.
 
     Provides access to:
-    - p.Tests.Docker.* (from FlextTestsProtocols)
-    - p.Tests.Factory.* (from FlextTestsProtocols)
-    - p.TargetOracleOic.* (from FlextTargetOracleOicProtocols)
+    - p.Tests.Docker.* (from TestsFlextProtocols)
+    - p.Tests.Factory.* (from TestsFlextProtocols)
+    - p.FlextTargetOracleOic.* (from FlextTargetOracleOicProtocols)
     """
 
     class Tests(FlextTestsProtocols.Tests):
         """Project-specific test protocols.
 
-        Extends FlextTestsProtocols.Tests with TargetOracleOic-specific protocols.
+        Extends TestsFlextProtocols.Tests with FlextTargetOracleOic-specific protocols.
         """
 
-        class TargetOracleOic:
-            """TargetOracleOic-specific test protocols."""
+        class FlextTargetOracleOic:
+            """FlextTargetOracleOic-specific test protocols."""
 
 
 p = TestsFlextTargetOracleOicProtocols
-p = TestsFlextTargetOracleOicProtocols
-__all__ = ["TestsFlextTargetOracleOicProtocols", "p"]
+__all__: list[str] = ["TestsFlextTargetOracleOicProtocols", "p"]

@@ -1,5 +1,6 @@
 """Configuration for target-oracle-oic using flext-core patterns.
 
+from flext_target_oracle_oic.utilities import u
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 
@@ -7,46 +8,53 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from collections.abc import Mapping
-from typing import Annotated
+from typing import Annotated, ClassVar
 
-from flext_core import FlextSettings
-from pydantic import Field, SecretStr
-
-from flext_target_oracle_oic.constants import c
+from flext_core import FlextSettingsBase
+from flext_target_oracle_oic import c, m, t, u
 
 
-class TargetOracleOicConfig(FlextSettings):
+class FlextTargetOracleOicSettings(FlextSettingsBase):
     """Runtime settings for Oracle OIC target authentication and IO."""
 
-    oauth_client_id: Annotated[str, Field(..., description="OAuth client identifier")]
+    model_config: ClassVar[m.SettingsConfigDict] = m.SettingsConfigDict(
+        env_prefix="FLEXT_TARGET_ORACLE_OIC_", extra="ignore"
+    )
+
+    oauth_client_id: Annotated[str, u.Field(..., description="OAuth client identifier")]
     oauth_client_secret: Annotated[
-        SecretStr, Field(..., description="OAuth client secret")
+        t.SecretStr,
+        u.Field(..., description="OAuth client secret"),
     ]
-    oauth_token_url: Annotated[str, Field(..., description="OAuth token endpoint URL")]
+    oauth_token_url: Annotated[
+        str, u.Field(..., description="OAuth token endpoint URL")
+    ]
     oauth_scope: Annotated[
         str | None,
-        Field(
-            default=c.TargetOracleOic.DEFAULT_OAUTH_SCOPE,
+        u.Field(
             description="OAuth scope used in token requests",
         ),
-    ]
+    ] = c.TargetOracleOic.DEFAULT_OAUTH_SCOPE
     oauth_client_aud: Annotated[
         str | None,
-        Field(
-            default=None,
+        u.Field(
             description="Optional audience used by OAuth provider",
         ),
-    ]
+    ] = None
     timeout: Annotated[
-        int, Field(default=30, ge=1, description="HTTP timeout in seconds")
-    ]
+        int,
+        u.Field(
+            ge=1,
+            description="HTTP timeout in seconds",
+        ),
+    ] = c.DEFAULT_TIMEOUT_SECONDS
 
     def get_oauth_client_secret_value(self) -> str:
         """Return the plaintext secret value for outgoing requests."""
-        return self.oauth_client_secret.get_secret_value()
+        secret_value: str = self.oauth_client_secret.get_secret_value()
+        return secret_value
 
-    def get_oauth_headers(self) -> Mapping[str, str]:
+    def get_oauth_headers(self) -> t.StrMapping:
         """Return static HTTP headers required for token requests."""
         return {
             c.TargetOracleOic.HEADER_CONTENT_TYPE: c.TargetOracleOic.HEADER_CONTENT_TYPE_FORM,
@@ -54,4 +62,4 @@ class TargetOracleOicConfig(FlextSettings):
         }
 
 
-__all__ = ["TargetOracleOicConfig"]
+__all__: list[str] = ["FlextTargetOracleOicSettings"]

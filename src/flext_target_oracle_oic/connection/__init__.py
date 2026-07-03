@@ -1,14 +1,21 @@
-"""Oracle OIC connection management using flext-core patterns.
-
-Copyright (c) 2025 FLEXT Team. All rights reserved.
-SPDX-License-Identifier: MIT
-
-"""
+# AUTO-GENERATED FILE — Regenerate with: make gen
+"""Connection package."""
 
 from __future__ import annotations
 
-from flext_target_oracle_oic.connection.connection import OICConnection
-from flext_target_oracle_oic.connection.settings import OICConnectionSettings
-from flext_target_oracle_oic.typings import t
+from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 
-__all__: list[str] = ["OICConnection", "OICConnectionSettings", "t"]
+_LAZY_IMPORTS = build_lazy_import_map(
+    {
+        ".connection": ("connection",),
+        ".settings": ("settings",),
+    },
+)
+
+
+install_lazy_exports(
+    __name__,
+    globals(),
+    _LAZY_IMPORTS,
+    publish_all=False,
+)
