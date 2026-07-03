@@ -1,5 +1,6 @@
 """Configuration for target-oracle-oic using flext-core patterns.
 
+from flext_target_oracle_oic.utilities import u
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 
@@ -9,8 +10,8 @@ from __future__ import annotations
 
 from typing import Annotated, ClassVar
 
-from flext_core import FlextSettingsBase, u
-from flext_target_oracle_oic import c, m, t
+from flext_core import FlextSettingsBase
+from flext_target_oracle_oic import c, m, t, u
 
 
 class FlextTargetOracleOicSettings(FlextSettingsBase):
