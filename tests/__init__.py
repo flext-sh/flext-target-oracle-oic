@@ -25,48 +25,48 @@ if TYPE_CHECKING:
         x as x,
     )
 
-    from flext_target_oracle_oic.tests.base import (
+    from tests.base import (
         TestsFlextTargetOracleOicServiceBase as TestsFlextTargetOracleOicServiceBase,
         s as s,
     )
-    from flext_target_oracle_oic.tests.constants import (
+    from tests.constants import (
         TestsFlextTargetOracleOicConstants as TestsFlextTargetOracleOicConstants,
         c as c,
     )
-    from flext_target_oracle_oic.tests.models import (
+    from tests.models import (
         TestsFlextTargetOracleOicModels as TestsFlextTargetOracleOicModels,
         m as m,
     )
-    from flext_target_oracle_oic.tests.protocols import (
+    from tests.protocols import (
         TestsFlextTargetOracleOicProtocols as TestsFlextTargetOracleOicProtocols,
         p as p,
     )
-    from flext_target_oracle_oic.tests.settings import (
+    from tests.settings import (
         TestsFlextTargetOracleOicSettings as TestsFlextTargetOracleOicSettings,
     )
-    from flext_target_oracle_oic.tests.typings import (
+    from tests.typings import (
         TestsFlextTargetOracleOicTypes as TestsFlextTargetOracleOicTypes,
         t as t,
     )
-    from flext_target_oracle_oic.tests.unit.test_cli_entrypoint import (
+    from tests.unit.test_cli_entrypoint import (
         TestsFlextTargetOracleOicCliEntrypoint as TestsFlextTargetOracleOicCliEntrypoint,
     )
-    from flext_target_oracle_oic.tests.unit.test_e2e import (
+    from tests.unit.test_e2e import (
         TestsFlextTargetOracleOicE2e as TestsFlextTargetOracleOicE2e,
     )
-    from flext_target_oracle_oic.tests.unit.test_e2e_sinks import (
+    from tests.unit.test_e2e_sinks import (
         DummySingerTargetE2E as DummySingerTargetE2E,
         TestsFlextTargetOracleOicE2eSinks as TestsFlextTargetOracleOicE2eSinks,
     )
-    from flext_target_oracle_oic.tests.unit.test_module_governance import (
+    from tests.unit.test_module_governance import (
         TestsFlextTargetOracleOicModuleGovernance as TestsFlextTargetOracleOicModuleGovernance,
     )
-    from flext_target_oracle_oic.tests.unit.test_target import (
+    from tests.unit.test_target import (
         AuthTestSettings as AuthTestSettings,
         DummySingerTarget as DummySingerTarget,
         TestsFlextTargetOracleOicTarget as TestsFlextTargetOracleOicTarget,
     )
-    from flext_target_oracle_oic.tests.utilities import (
+    from tests.utilities import (
         TestsFlextTargetOracleOicUtilities as TestsFlextTargetOracleOicUtilities,
         u as u,
     )
