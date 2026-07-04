@@ -97,22 +97,7 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                 if self._access_token is not None and (not force_refresh):
                     return self._access_token
                 try:
-                    api_config = FlextApiSettings.model_validate({
-                        "base_url": self.config.oauth_token_url,
-                        "timeout": self.config.timeout,
-                    })
-                    response_result = FlextApi(settings=api_config).post(
-                        "",
-                        data=self.build_token_request_data(),
-                        headers=dict(self.config.get_oauth_headers()),
-                    )
-                    if response_result.failure:
-                        msg = f"Failed to request OAuth2 token: {response_result.error}"
-                        raise RuntimeError(msg)
-                    response = response_result.value
-                    if response.status_code >= c.API.HTTP_ERROR_STATUS_THRESHOLD:
-                        msg = f"Failed to request OAuth2 token: HTTP {response.status_code}"
-                        raise RuntimeError(msg)
+                    response = self._request_access_token()
                 except c.Meltano.SINGER_SAFE_EXCEPTIONS as exc:
                     msg = f"Failed to request OAuth2 token: {exc}"
                     raise RuntimeError(msg) from exc
@@ -130,6 +115,26 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                     self._auth_scheme = token_type
                 self._access_token = access_token
                 return access_token
+
+            def _request_access_token(self) -> m.Api.HttpResponse:
+                """Request one OAuth2 access-token response."""
+                api_config = FlextApiSettings.model_validate({
+                    "base_url": self.config.oauth_token_url,
+                    "timeout": self.config.timeout,
+                })
+                response_result = FlextApi(settings=api_config).post(
+                    "",
+                    data=self.build_token_request_data(),
+                    headers=dict(self.config.get_oauth_headers()),
+                )
+                if response_result.failure:
+                    msg = f"Failed to request OAuth2 token: {response_result.error}"
+                    raise RuntimeError(msg)
+                response = response_result.value
+                if response.status_code >= c.API.HTTP_ERROR_STATUS_THRESHOLD:
+                    msg = f"Failed to request OAuth2 token: HTTP {response.status_code}"
+                    raise RuntimeError(msg)
+                return response
 
             @staticmethod
             def create_config_from_dict(
