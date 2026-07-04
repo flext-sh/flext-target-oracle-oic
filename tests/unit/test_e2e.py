@@ -72,10 +72,8 @@ class TestsFlextTargetOracleOicE2e:
     def test_target_initialization(
         self,
         target: FlextTargetOracleOic,
-        test_config: t.StrMapping,
     ) -> None:
         """Test target initialization with valid configuration."""
-        _ = test_config
         if target.name != "target-oracle-oic":
             msg: str = f"Expected {'target-oracle-oic'}, got {target.name}"
             raise AssertionError(msg)
