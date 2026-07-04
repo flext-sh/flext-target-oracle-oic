@@ -41,7 +41,7 @@ FLEXT_TARGET_ORACLE_OIC_LAZY_IMPORTS_PART_01 = build_lazy_import_map(
             "FlextTargetOracleOicUtilities",
             "u",
         ),
-        "flext_core": (
+        "flext_meltano": (
             "d",
             "e",
             "h",
