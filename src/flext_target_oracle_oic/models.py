@@ -20,11 +20,13 @@ class FlextTargetOracleOicModels(m, FlextOracleOicModels):
             """Connection payload model."""
 
             id: Annotated[
-                t.NonEmptyStr, u.Field(description="Unique connection identifier")
+                t.NonEmptyStr,
+                u.Field(description="Unique connection identifier"),
             ]
             name: Annotated[t.NonEmptyStr, u.Field(description="Connection name")]
             adapter_type: Annotated[
-                t.NonEmptyStr, u.Field(description="Type of adapter used")
+                t.NonEmptyStr,
+                u.Field(description="Type of adapter used"),
             ]
             properties: Annotated[
                 t.JsonMapping,
@@ -35,7 +37,8 @@ class FlextTargetOracleOicModels(m, FlextOracleOicModels):
             """Integration payload model."""
 
             id: Annotated[
-                t.NonEmptyStr, u.Field(description="Unique integration identifier")
+                t.NonEmptyStr,
+                u.Field(description="Unique integration identifier"),
             ]
             name: Annotated[t.NonEmptyStr, u.Field(description="Integration name")]
             version: Annotated[str, u.Field(description="Integration version")] = (
@@ -49,7 +52,8 @@ class FlextTargetOracleOicModels(m, FlextOracleOicModels):
             """Package payload model."""
 
             id: Annotated[
-                t.NonEmptyStr, u.Field(description="Unique package identifier")
+                t.NonEmptyStr,
+                u.Field(description="Unique package identifier"),
             ]
             name: Annotated[t.NonEmptyStr, u.Field(description="Package name")]
             version: Annotated[str, u.Field(description="Package version")] = (
@@ -73,7 +77,8 @@ class FlextTargetOracleOicModels(m, FlextOracleOicModels):
             """Project payload model."""
 
             id: Annotated[
-                t.NonEmptyStr, u.Field(description="Unique project identifier")
+                t.NonEmptyStr,
+                u.Field(description="Unique project identifier"),
             ]
             name: Annotated[t.NonEmptyStr, u.Field(description="Project name")]
 

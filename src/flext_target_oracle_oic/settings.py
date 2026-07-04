@@ -19,7 +19,8 @@ class FlextTargetOracleOicSettings(FlextSettingsBase):
     """Runtime settings for Oracle OIC target authentication and IO."""
 
     model_config: ClassVar[m.SettingsConfigDict] = m.SettingsConfigDict(
-        env_prefix="FLEXT_TARGET_ORACLE_OIC_", extra="ignore"
+        env_prefix="FLEXT_TARGET_ORACLE_OIC_",
+        extra="ignore",
     )
 
     oauth_client_id: Annotated[str, u.Field(..., description="OAuth client identifier")]
@@ -28,7 +29,8 @@ class FlextTargetOracleOicSettings(FlextSettingsBase):
         u.Field(..., description="OAuth client secret"),
     ]
     oauth_token_url: Annotated[
-        str, u.Field(..., description="OAuth token endpoint URL")
+        str,
+        u.Field(..., description="OAuth token endpoint URL"),
     ]
     oauth_scope: Annotated[
         str | None,

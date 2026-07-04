@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import pytest
 
@@ -32,7 +33,9 @@ from flext_target_oracle_oic.target import (
     FlextTargetOracleOicLookupsSink,
     FlextTargetOracleOicPackagesSink,
 )
-from tests.typings import t
+
+if TYPE_CHECKING:
+    from tests.typings import t
 
 
 def load_test_config() -> t.StrMapping:

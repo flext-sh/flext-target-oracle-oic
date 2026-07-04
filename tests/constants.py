@@ -16,7 +16,8 @@ from flext_target_oracle_oic import FlextTargetOracleOicConstants
 
 
 class TestsFlextTargetOracleOicConstants(
-    FlextTestsConstants, FlextTargetOracleOicConstants
+    FlextTestsConstants,
+    FlextTargetOracleOicConstants,
 ):
     """Test constants for flext-target-oracle-oic."""
 
