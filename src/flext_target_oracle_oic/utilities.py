@@ -75,7 +75,7 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
 
             @property
             def auth_headers(self) -> t.StrMapping:
-                """Get the authentication headers block for requests."""
+                """The authentication headers block for requests."""
                 token = self.get_access_token()
                 return {"Authorization": f"{self._auth_scheme} {token}"}
 
@@ -93,7 +93,7 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                 return t.json_dict_adapter().validate_python(payload)
 
             def get_access_token(self, *, force_refresh: bool = False) -> str:
-                """Get the current access token, optionally forcing a refresh."""
+                """The current access token, optionally forcing a refresh."""
                 if self._access_token is not None and (not force_refresh):
                     return self._access_token
                 try:
