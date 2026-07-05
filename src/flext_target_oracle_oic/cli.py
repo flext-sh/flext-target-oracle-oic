@@ -2,10 +2,8 @@
 
 from __future__ import annotations
 
-from flext_target_oracle_oic import (
-    FlextTargetOracleOicService,
-    t,
-)
+from flext_target_oracle_oic import t
+from flext_target_oracle_oic.api import FlextTargetOracleOicService
 
 
 class FlextTargetOracleOicCli:
@@ -15,7 +13,8 @@ class FlextTargetOracleOicCli:
     def run(cls, args: t.StrSequence | None = None) -> int:
         """Execute the canonical target CLI entry point."""
         _ = cls
-        return FlextTargetOracleOicService().cli_main(args)
+        exit_code: int = FlextTargetOracleOicService().cli_main(args)
+        return exit_code
 
 
 def main() -> int:

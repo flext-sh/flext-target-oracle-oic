@@ -128,8 +128,8 @@ dev = [
 ]
 
 [project.scripts]
-flext-target-oracle-oic = "flext_target_oracle_oic.target:main"
-target-oracle-oic = "flext_target_oracle_oic.target:main"
+flext-target-oracle-oic = "flext_target_oracle_oic.cli:main"
+target-oracle-oic = "flext_target_oracle_oic.cli:main"
 
 [project.urls]
 Documentation = "https://github.com/flext-sh/flext/blob/main/README.md"
