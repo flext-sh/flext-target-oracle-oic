@@ -3,14 +3,54 @@
 
 from __future__ import annotations
 
-from flext_core.lazy import merge_lazy_imports
-from flext_target_oracle_oic._exports_lazy_part_01 import (
-    FLEXT_TARGET_ORACLE_OIC_LAZY_IMPORTS_PART_01,
-)
+from flext_core.lazy import build_lazy_import_map, merge_lazy_imports
 
-_LOCAL_LAZY_IMPORTS = {
-    **FLEXT_TARGET_ORACLE_OIC_LAZY_IMPORTS_PART_01,
-}
+_LOCAL_LAZY_IMPORTS = build_lazy_import_map(
+    {
+        "._utilities": ("_utilities",),
+        ".api": (
+            "FlextTargetOracleOicService",
+            "target_oracle_oic",
+        ),
+        ".application": ("application",),
+        ".cli": (
+            "FlextTargetOracleOicCli",
+            "main",
+        ),
+        ".connection": ("connection",),
+        ".constants": (
+            "FlextTargetOracleOicConstants",
+            "c",
+        ),
+        ".models": (
+            "FlextTargetOracleOicModels",
+            "m",
+        ),
+        ".patterns": ("patterns",),
+        ".protocols": (
+            "FlextTargetOracleOicProtocols",
+            "p",
+        ),
+        ".settings": ("FlextTargetOracleOicSettings",),
+        ".singer": ("singer",),
+        ".typings": (
+            "FlextTargetOracleOicTypes",
+            "t",
+        ),
+        ".utilities": (
+            "FlextTargetOracleOicUtilities",
+            "u",
+        ),
+        "flext_core._root_typing_parts.facades": (
+            "d",
+            "e",
+            "h",
+            "r",
+            "s",
+            "x",
+        ),
+    },
+)
 
 FLEXT_TARGET_ORACLE_OIC_LAZY_IMPORTS = merge_lazy_imports(
     (),
