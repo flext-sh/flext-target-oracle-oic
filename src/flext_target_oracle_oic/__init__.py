@@ -19,7 +19,10 @@ from flext_target_oracle_oic.__version__ import (
 
 if TYPE_CHECKING:
     from flext_oracle_oic import d, e, h, r, s, x
-    from flext_target_oracle_oic.api import FlextTargetOracleOicService
+    from flext_target_oracle_oic.api import (
+        FlextTargetOracleOicService,
+        target_oracle_oic,
+    )
     from flext_target_oracle_oic.cli import FlextTargetOracleOicCli, main
     from flext_target_oracle_oic.constants import FlextTargetOracleOicConstants, c
     from flext_target_oracle_oic.models import FlextTargetOracleOicModels, m
