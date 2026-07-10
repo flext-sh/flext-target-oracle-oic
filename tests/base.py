@@ -17,7 +17,6 @@ class TestsFlextTargetOracleOicServiceBase(tests_s):
     @override
     def fetch_settings(cls) -> TestsFlextTargetOracleOicSettings:
         """Return the typed Target Oracle OIC+Tests settings singleton."""
-        return TestsFlextTargetOracleOicSettings.fetch_global()
 
     @classmethod
     @override

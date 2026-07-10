@@ -10,12 +10,12 @@ from __future__ import annotations
 
 from typing import Annotated, ClassVar
 
-from flext_core import FlextSettingsBase
+from flext_core import FlextSettings
 from flext_meltano import u
 from flext_target_oracle_oic import c, m, t
 
 
-class FlextTargetOracleOicSettings(FlextSettingsBase):
+class FlextTargetOracleOicSettings(FlextSettings):
     """Runtime settings for Oracle OIC target authentication and IO."""
 
     model_config: ClassVar[m.SettingsConfigDict] = m.SettingsConfigDict(
@@ -23,15 +23,15 @@ class FlextTargetOracleOicSettings(FlextSettingsBase):
         extra="ignore",
     )
 
-    oauth_client_id: Annotated[str, u.Field(..., description="OAuth client identifier")]
+    oauth_client_id: Annotated[str, u.Field(description="OAuth client identifier")] = ""
     oauth_client_secret: Annotated[
         t.SecretStr,
-        u.Field(..., description="OAuth client secret"),
-    ]
+        u.Field(description="OAuth client secret"),
+    ] = t.SecretStr("")
     oauth_token_url: Annotated[
         str,
-        u.Field(..., description="OAuth token endpoint URL"),
-    ]
+        u.Field(description="OAuth token endpoint URL"),
+    ] = ""
     oauth_scope: Annotated[
         str | None,
         u.Field(
@@ -65,4 +65,8 @@ class FlextTargetOracleOicSettings(FlextSettingsBase):
         }
 
 
-__all__: list[str] = ["FlextTargetOracleOicSettings"]
+
+settings: FlextTargetOracleOicSettings = FlextTargetOracleOicSettings.fetch_global()
+"""Pre-instantiated project settings singleton — ``from flext_target_oracle_oic import settings``."""
+
+__all__: list[str] = ["FlextTargetOracleOicSettings", "settings"]
