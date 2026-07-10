@@ -84,7 +84,7 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                 payload: t.MutableStrMapping = {
                     "grant_type": "client_credentials",
                     "client_id": config.oauth_client_id,
-                    "client_secret": config.get_oauth_client_secret_value(),
+                    "client_secret": config.oauth_client_secret.get_secret_value(),
                 }
                 if config.oauth_scope:
                     payload["scope"] = config.oauth_scope
@@ -125,7 +125,7 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                 response_result = FlextApi(settings=api_config).post(
                     "",
                     data=self.build_token_request_data(),
-                    headers=dict(config.get_oauth_headers()),
+                    headers={"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"},
                 )
                 if response_result.failure:
                     msg = f"Failed to request OAuth2 token: {response_result.error}"

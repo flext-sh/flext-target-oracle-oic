@@ -1,69 +1,55 @@
-"""Configuration for target-oracle-oic using flext-core patterns.
+"""Settings for flext-target-oracle-oic — namespaced under ``settings.TargetOracleOic``.
 
-from flext_target_oracle_oic.utilities import u
+Universal fields via MRO; project fields in the ``TargetOracleOic`` group with
+simple scalar types (env-settable). Secrets are plain strings so they can come
+from env/params; consumers wrap them as needed.
+
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
-
 """
 
 from __future__ import annotations
 
-from typing import Annotated, ClassVar
+from typing import TYPE_CHECKING, Annotated
 
-from flext_core import FlextSettings
-from flext_meltano import u
-from flext_target_oracle_oic import c, m, t
+from pydantic import BaseModel, Field
+from pydantic_settings import SettingsConfigDict
+
+from flext_meltano import FlextMeltanoSettings
 
 
-class FlextTargetOracleOicSettings(FlextSettings):
-    """Runtime settings for Oracle OIC target authentication and IO."""
+class FlextTargetOracleOicSettings(FlextMeltanoSettings):
+    """Oracle OIC target settings; fields under ``settings.TargetOracleOic.*``."""
 
-    model_config: ClassVar[m.SettingsConfigDict] = m.SettingsConfigDict(
+    model_config = SettingsConfigDict(
         env_prefix="FLEXT_TARGET_ORACLE_OIC_",
+        env_nested_delimiter="__",
         extra="ignore",
     )
 
-    oauth_client_id: Annotated[str, u.Field(description="OAuth client identifier")] = ""
-    oauth_client_secret: Annotated[
-        t.SecretStr,
-        u.Field(description="OAuth client secret"),
-    ] = t.SecretStr("")
-    oauth_token_url: Annotated[
-        str,
-        u.Field(description="OAuth token endpoint URL"),
-    ] = ""
-    oauth_scope: Annotated[
-        str | None,
-        u.Field(
-            description="OAuth scope used in token requests",
-        ),
-    ] = c.TargetOracleOic.DEFAULT_OAUTH_SCOPE
-    oauth_client_aud: Annotated[
-        str | None,
-        u.Field(
-            description="Optional audience used by OAuth provider",
-        ),
-    ] = None
-    timeout: Annotated[
-        int,
-        u.Field(
-            ge=1,
-            description="HTTP timeout in seconds",
-        ),
-    ] = c.DEFAULT_TIMEOUT_SECONDS
+    class _TargetOracleOic(BaseModel):
+        """Namespaced Oracle OIC target settings."""
 
-    def get_oauth_client_secret_value(self) -> str:
-        """Return the plaintext secret value for outgoing requests."""
-        secret_value: str = self.oauth_client_secret.get_secret_value()
-        return secret_value
+        oauth_client_id: Annotated[str, Field(default="", description="OAuth client identifier")]
+        oauth_client_secret: Annotated[str, Field(default="", description="OAuth client secret")]
+        oauth_token_url: Annotated[str, Field(default="", description="OAuth token endpoint URL")]
+        oauth_scope: Annotated[
+            str | None,
+            Field(default="oic_instance", description="OAuth scope used in token requests"),
+        ]
+        oauth_client_aud: Annotated[
+            str | None,
+            Field(default=None, description="Optional audience used by OAuth provider"),
+        ]
+        timeout: Annotated[int, Field(default=30, ge=1, description="HTTP timeout in seconds")]
 
-    def get_oauth_headers(self) -> t.StrMapping:
-        """Return static HTTP headers required for token requests."""
-        return {
-            c.TargetOracleOic.HEADER_CONTENT_TYPE: c.TargetOracleOic.HEADER_CONTENT_TYPE_FORM,
-            c.TargetOracleOic.HEADER_ACCEPT: c.TargetOracleOic.HEADER_CONTENT_TYPE_JSON,
-        }
-
+    if TYPE_CHECKING:
+        TargetOracleOic: _TargetOracleOic
+    else:
+        TargetOracleOic: _TargetOracleOic = Field(
+            default_factory=_TargetOracleOic,
+            description="Namespaced Oracle OIC target settings.",
+        )
 
 
 settings: FlextTargetOracleOicSettings = FlextTargetOracleOicSettings.fetch_global()
