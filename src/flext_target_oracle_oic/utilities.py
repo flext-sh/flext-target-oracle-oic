@@ -125,7 +125,10 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                 response_result = FlextApi(settings=api_config).post(
                     "",
                     data=self.build_token_request_data(),
-                    headers={"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"},
+                    headers={
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        "Accept": "application/json",
+                    },
                 )
                 if response_result.failure:
                     msg = f"Failed to request OAuth2 token: {response_result.error}"

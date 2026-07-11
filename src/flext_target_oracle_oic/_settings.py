@@ -30,18 +30,28 @@ class FlextTargetOracleOicSettings(FlextMeltanoSettings):
     class _TargetOracleOic(BaseModel):
         """Namespaced Oracle OIC target settings."""
 
-        oauth_client_id: Annotated[str, Field(default="", description="OAuth client identifier")]
-        oauth_client_secret: Annotated[str, Field(default="", description="OAuth client secret")]
-        oauth_token_url: Annotated[str, Field(default="", description="OAuth token endpoint URL")]
+        oauth_client_id: Annotated[
+            str, Field(default="", description="OAuth client identifier")
+        ]
+        oauth_client_secret: Annotated[
+            str, Field(default="", description="OAuth client secret")
+        ]
+        oauth_token_url: Annotated[
+            str, Field(default="", description="OAuth token endpoint URL")
+        ]
         oauth_scope: Annotated[
             str | None,
-            Field(default="oic_instance", description="OAuth scope used in token requests"),
+            Field(
+                default="oic_instance", description="OAuth scope used in token requests"
+            ),
         ]
         oauth_client_aud: Annotated[
             str | None,
             Field(default=None, description="Optional audience used by OAuth provider"),
         ]
-        timeout: Annotated[int, Field(default=30, ge=1, description="HTTP timeout in seconds")]
+        timeout: Annotated[
+            int, Field(default=30, ge=1, description="HTTP timeout in seconds")
+        ]
 
     if TYPE_CHECKING:
         TargetOracleOic: _TargetOracleOic
