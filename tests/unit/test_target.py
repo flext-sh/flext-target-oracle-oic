@@ -95,7 +95,7 @@ class TestsFlextTargetOracleOicTarget:
             raise AssertionError(msg)
         properties = schema["properties"]
         assert isinstance(properties, dict)
-        assert "oauth_client_id" in properties
+        assert "TargetOracleOic" in properties
 
     def test_oic_authenticator_builds_payload(self) -> None:
         authenticator = u.TargetOracleOic.Authenticator(_build_auth_config())
@@ -140,15 +140,16 @@ def _build_auth_config(
     oauth_scope: str | None = "urn:opc:resource:consumer:all",
     oauth_client_aud: str | None = "https://idcs.example.com",
 ) -> FlextTargetOracleOicSettings:
+    # Build via __new__ to avoid touching the flext-core settings singleton;
+    # oauth fields live under the TargetOracleOic namespace (ADR-005).
     settings = AuthTestSettings.__new__(AuthTestSettings)
-    object.__setattr__(settings, "oauth_client_id", "client-id")
-    object.__setattr__(settings, "oauth_client_secret", t.SecretStr("client-secret"))
-    object.__setattr__(
-        settings,
-        "oauth_token_url",
-        "https://idcs.example.com/oauth2/v1/token",
-    )
-    object.__setattr__(settings, "oauth_scope", oauth_scope)
-    object.__setattr__(settings, "oauth_client_aud", oauth_client_aud)
-    object.__setattr__(settings, "timeout", 30)
+    namespace = FlextTargetOracleOicSettings._TargetOracleOic.model_validate({
+        "oauth_client_id": "client-id",
+        "oauth_client_secret": "client-secret",
+        "oauth_token_url": "https://idcs.example.com/oauth2/v1/token",
+        "oauth_scope": oauth_scope,
+        "oauth_client_aud": oauth_client_aud,
+        "timeout": 30,
+    })
+    object.__setattr__(settings, "TargetOracleOic", namespace)
     return settings

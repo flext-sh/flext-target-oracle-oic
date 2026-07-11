@@ -121,10 +121,10 @@ class TestsFlextTargetOracleOicE2e:
         if not isinstance(properties_raw, dict):
             msg = f"Expected {'properties'} in {schema_raw}"
             raise AssertionError(msg)
-        if "oauth_token_url" not in properties_raw:
-            msg = f"Expected {'oauth_token_url'} in {properties_raw}"
+        if "TargetOracleOic" not in properties_raw:
+            msg = f"Expected {'TargetOracleOic'} in {properties_raw}"
             raise AssertionError(msg)
-        assert isinstance(properties_raw["oauth_token_url"], dict)
+        assert isinstance(properties_raw["TargetOracleOic"], dict)
 
     @pytest.fixture
     def test_config(self) -> t.StrMapping:
