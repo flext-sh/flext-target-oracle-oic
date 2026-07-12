@@ -97,7 +97,7 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                 return t.json_dict_adapter().validate_python(payload)
 
             def get_access_token(self, *, force_refresh: bool = False) -> str:
-                """The current access token, optionally forcing a refresh."""
+                """Return the current access token, optionally forcing a refresh."""
                 if self._access_token is not None and (not force_refresh):
                     return self._access_token
                 try:
