@@ -11,7 +11,7 @@
 - Keywords: `data-loading`, `enterprise`, `etl`, `flext`, `singer`, `target`, `typed`
 - Main facades: _none_
 - Alias exports: `c`, `d`, `e`, `h`, `m`, `p`, `r`, `s`, `t`, `u`, `x`
-- Public symbol exports: `main`, `FlextTargetOracleOicSettings`, `settings`, `target_oracle_oic`, `FlextTargetOracleOicModels`, `FlextTargetOracleOicConstants`, `FlextTargetOracleOicProtocols`, `FlextTargetOracleOicTypes`, `FlextTargetOracleOicService`, `FlextTargetOracleOicUtilities` (+1 more)
+- Public symbol exports: `FlextTargetOracleOicSettings`, `FlextTargetOracleOicService`, `FlextTargetOracleOicCli`, `FlextTargetOracleOicProtocols`, `FlextTargetOracleOicConstants`, `FlextTargetOracleOicTypes`, `target_oracle_oic`, `settings`, `FlextTargetOracleOicUtilities`, `FlextTargetOracleOicModels` (+1 more)
 - Exported module shortcuts: _none_
 - Generated module pages: `7`
 
