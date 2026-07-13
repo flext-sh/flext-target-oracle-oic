@@ -35,7 +35,7 @@ from flext_target_oracle_oic.target import (
 )
 
 if TYPE_CHECKING:
-    from tests.typings import t
+    from tests import t
 
 
 def load_test_config() -> t.StrMapping:

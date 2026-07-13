@@ -20,7 +20,7 @@ from flext_target_oracle_oic.target import (
     FlextTargetOracleOicLookupsSink,
     FlextTargetOracleOicPackagesSink,
 )
-from tests.typings import t
+from tests import t
 
 if TYPE_CHECKING:
     from pathlib import Path

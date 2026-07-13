@@ -20,8 +20,7 @@ from flext_target_oracle_oic.target import (
     FlextTargetOracleOicConnectionsSink,
     FlextTargetOracleOicIntegrationsSink,
 )
-from tests.constants import c
-from tests.typings import t
+from tests import c, t
 
 
 class AuthTestSettings(FlextTargetOracleOicSettings):
