@@ -22,17 +22,15 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
+from flext_tests import tm
 
 from flext_target_oracle_oic import (
-    FlextTargetOracleOicSettings,
-)
-from flext_target_oracle_oic.target import (
-from flext_tests import tm
     FlextTargetOracleOic,
     FlextTargetOracleOicConnectionsSink,
     FlextTargetOracleOicIntegrationsSink,
     FlextTargetOracleOicLookupsSink,
     FlextTargetOracleOicPackagesSink,
+    FlextTargetOracleOicSettings,
 )
 
 if TYPE_CHECKING:
