@@ -34,11 +34,9 @@ class FlextTargetOracleOicService(FlextMeltanoTargetServiceBase):
         schema: t.JsonMapping,
     ) -> p.Meltano.SingerDrainSink:
         """Create an Oracle OIC sink for a stream."""
-        target_config: t.JsonMapping = settings_overrides or {}
         return FlextTargetOracleOicServiceRuntime.create_sink(
             stream_name=stream_name,
             schema=schema,
-            target_config=target_config,
         )
 
 
