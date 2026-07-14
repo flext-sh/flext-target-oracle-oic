@@ -12,6 +12,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, ClassVar
 
 import pytest
+from flext_tests import tm
 from singer_sdk.target_base import Target as SingerTarget
 
 from flext_target_oracle_oic.target import (
@@ -74,7 +75,7 @@ class TestsFlextTargetOracleOicE2eSinks:
         ]
         for record in records:
             sink.process_record(record, {})
-        assert len(records) == 2
+        tm.that(len(records), eq=2)
 
     def test_sink_authenticator_setup(self, singer_target: SingerTarget) -> None:
         """Test sink can be constructed with singer target."""
@@ -165,7 +166,7 @@ class TestsFlextTargetOracleOicE2eSinks:
         ]
         for record in records:
             sink.process_record(record, {})
-        assert len(records) == 10
+        tm.that(len(records), eq=10)
 
     def test_lookups_sink_record_processing(self, singer_target: SingerTarget) -> None:
         """Test lookups sink record processing."""
@@ -185,7 +186,7 @@ class TestsFlextTargetOracleOicE2eSinks:
             {"id": "test-lookup", "name": "Test Lookup", "version": "1.0"},
             {},
         )
-        assert sink.stream_name == "lookups"
+        tm.that(sink.stream_name, eq="lookups")
 
     def test_cli_integration(self, singer_target: SingerTarget, tmp_path: Path) -> None:
         """Test sink processing path with singer-like input payload."""
