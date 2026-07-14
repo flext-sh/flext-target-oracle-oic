@@ -25,12 +25,14 @@ import pytest
 from flext_tests import tm
 
 from flext_target_oracle_oic import (
-    FlextTargetOracleOic,
+    FlextTargetOracleOicService,
+    FlextTargetOracleOicSettings,
+)
+from flext_target_oracle_oic.target import (
     FlextTargetOracleOicConnectionsSink,
     FlextTargetOracleOicIntegrationsSink,
     FlextTargetOracleOicLookupsSink,
     FlextTargetOracleOicPackagesSink,
-    FlextTargetOracleOicSettings,
 )
 
 if TYPE_CHECKING:
@@ -66,14 +68,14 @@ def load_test_config() -> t.StrMapping:
 
 
 @pytest.fixture
-def target() -> FlextTargetOracleOic:
-    return FlextTargetOracleOic()
+def target() -> FlextTargetOracleOicService:
+    return FlextTargetOracleOicService()
 
 
 class TestsFlextTargetOracleOicE2e:
     def test_target_initialization(
         self,
-        target: FlextTargetOracleOic,
+        target: FlextTargetOracleOicService,
     ) -> None:
         """Test target initialization with valid configuration."""
         if target.name != "target-oracle-oic":
@@ -81,7 +83,7 @@ class TestsFlextTargetOracleOicE2e:
             raise AssertionError(msg)
         tm.that(target.fetch_sink_class("connections"), is_=type)
 
-    def test_sink_class_mapping(self, target: FlextTargetOracleOic) -> None:
+    def test_sink_class_mapping(self, target: FlextTargetOracleOicService) -> None:
         """Test sink class mapping for known streams."""
         if (
             target.fetch_sink_class("connections")
@@ -102,7 +104,7 @@ class TestsFlextTargetOracleOicE2e:
             msg = f"Expected {target.default_sink_class}, got {default_sink}"
             raise AssertionError(msg)
 
-    def test_config_validation(self, target: FlextTargetOracleOic) -> None:
+    def test_config_validation(self, target: FlextTargetOracleOicService) -> None:
         """Test setup/teardown result contract."""
         setup_result = target.setup()
         tm.ok(setup_result)
@@ -130,4 +132,4 @@ class TestsFlextTargetOracleOicE2e:
         return load_test_config()
 
     def test_target_smoke_class(self) -> None:
-        tm.that(FlextTargetOracleOic.name, eq="target-oracle-oic")
+        tm.that(FlextTargetOracleOicService.name, eq="target-oracle-oic")
