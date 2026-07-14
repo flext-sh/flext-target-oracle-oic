@@ -9,7 +9,8 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar
+from pathlib import Path
+from typing import ClassVar
 
 import pytest
 from flext_tests import tm
@@ -22,9 +23,6 @@ from flext_target_oracle_oic.target import (
     FlextTargetOracleOicPackagesSink,
 )
 from tests import t
-
-if TYPE_CHECKING:
-    from pathlib import Path
 
 
 class DummySingerTargetE2E(SingerTarget):

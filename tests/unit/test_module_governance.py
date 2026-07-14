@@ -4,14 +4,11 @@ from __future__ import annotations
 
 import importlib
 import inspect
+from collections.abc import Iterator
 from pathlib import Path
-from typing import TYPE_CHECKING
+from types import ModuleType
 
 from tests import c
-
-if TYPE_CHECKING:
-    from collections.abc import Iterator
-    from types import ModuleType
 
 
 def _package_root() -> Path:

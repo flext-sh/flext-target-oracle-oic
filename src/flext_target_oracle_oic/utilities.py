@@ -9,8 +9,15 @@ from collections.abc import (
 from flext_api import FlextApi, FlextApiSettings
 from flext_meltano import u
 from flext_oracle_oic import FlextOracleOicUtilities
-from flext_target_oracle_oic import c, m, p, r, t
-from flext_target_oracle_oic._settings import FlextTargetOracleOicSettings
+from flext_target_oracle_oic import (
+    FlextTargetOracleOicSettings,
+    c,
+    m,
+    p,
+    r,
+    settings,
+    t,
+)
 
 
 class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
@@ -68,11 +75,10 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
         class Authenticator:
             """OAuth2 Authenticator for Oracle Integration Cloud."""
 
-            def __init__(self, settings: FlextTargetOracleOicSettings) -> None:
+            def __init__(self) -> None:
                 """Initialize the authenticator with target configuration."""
                 # NOTE (multi-agent): keep settings on self; methods below read
-                # oauth fields via self.settings (FLEXT settings SSOT).
-                self.settings: FlextTargetOracleOicSettings = settings
+                # oauth fields via settings (FLEXT settings SSOT).
                 self._access_token: str | None = None
                 self._auth_scheme: str = c.TargetOracleOic.AUTH_SCHEME_BEARER
 
@@ -84,7 +90,7 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
 
             def build_token_request_data(self) -> t.JsonDict:
                 """Build the payload for requesting an OAuth2 token."""
-                oic = self.settings.TargetOracleOic
+                oic = settings.TargetOracleOic
                 payload: t.MutableStrMapping = {
                     "grant_type": "client_credentials",
                     "client_id": oic.oauth_client_id,
@@ -122,7 +128,7 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
 
             def _request_access_token(self) -> m.Api.HttpResponse:
                 """Request one OAuth2 access-token response."""
-                oic = self.settings.TargetOracleOic
+                oic = settings.TargetOracleOic
                 api_config = FlextApiSettings.model_validate({
                     "base_url": oic.oauth_token_url,
                     "timeout": oic.timeout,
