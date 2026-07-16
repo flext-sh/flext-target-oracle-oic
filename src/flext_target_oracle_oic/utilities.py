@@ -44,7 +44,7 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
             @staticmethod
             def create_oic_connection(
                 data: t.JsonMapping,
-            ) -> m.TargetOracleOic.OICConnection:
+            ) -> p.TargetOracleOic.OICConnection:
                 """Create an OICConnection model from generic payload via Pydantic validation."""
                 return m.TargetOracleOic.OICConnection.model_validate({
                     **data,
@@ -54,21 +54,21 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
             @staticmethod
             def create_oic_integration(
                 data: t.JsonMapping,
-            ) -> m.TargetOracleOic.OICIntegration:
+            ) -> p.TargetOracleOic.OICIntegration:
                 """Create an OICIntegration model from generic payload via Pydantic validation."""
                 return m.TargetOracleOic.OICIntegration.model_validate(data)
 
             @staticmethod
             def create_oic_package(
                 data: t.JsonMapping,
-            ) -> m.TargetOracleOic.OICPackage:
+            ) -> p.TargetOracleOic.OICPackage:
                 """Create an OICPackage model from generic payload via Pydantic validation."""
                 return m.TargetOracleOic.OICPackage.model_validate(data)
 
             @staticmethod
             def create_oic_lookup(
                 data: t.JsonMapping,
-            ) -> m.TargetOracleOic.OICLookup:
+            ) -> p.TargetOracleOic.OICLookup:
                 """Create an OICLookup model from generic payload via Pydantic validation."""
                 return m.TargetOracleOic.OICLookup.model_validate(data)
 
@@ -126,7 +126,7 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                 self._access_token = access_token
                 return access_token
 
-            def _request_access_token(self) -> m.Api.HttpResponse:
+            def _request_access_token(self) -> p.Api.HttpResponse:
                 """Request one OAuth2 access-token response."""
                 oic = settings.TargetOracleOic
                 api_config = FlextApiSettings.model_validate({
