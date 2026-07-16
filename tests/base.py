@@ -4,13 +4,13 @@ from __future__ import annotations
 
 from typing import override
 
-from flext_tests import s as tests_s
+from flext_tests import s
 
-from flext_target_oracle_oic import m
+from flext_target_oracle_oic import m, p
 from tests.settings import TestsFlextTargetOracleOicSettings
 
 
-class TestsFlextTargetOracleOicServiceBase(tests_s):
+class TestsFlextTargetOracleOicServiceBase(s):
     """Target Oracle OIC test service base with source and test settings namespaces."""
 
     # NOTE (multi-agent): flext-tests owns fetch_settings; this project
