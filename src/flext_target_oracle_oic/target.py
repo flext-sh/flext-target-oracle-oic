@@ -2,15 +2,17 @@
 
 from __future__ import annotations
 
-from collections.abc import (
-    Mapping,
-)
-from typing import ClassVar, override
+from typing import TYPE_CHECKING, ClassVar, override
 
 from flext_meltano.services.singer_target import (
     FlextMeltanoTargetAbstractions,
 )
 from flext_target_oracle_oic import c, m, p, r, t, u
+
+if TYPE_CHECKING:
+    from collections.abc import (
+        Mapping,
+    )
 
 
 class FlextTargetOracleOicBaseSink(m.Meltano.SingerSinkBase):
