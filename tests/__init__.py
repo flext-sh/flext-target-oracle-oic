@@ -39,7 +39,7 @@ if TYPE_CHECKING:
     )
     from tests.protocols import (
         TestsFlextTargetOracleOicProtocols as TestsFlextTargetOracleOicProtocols,
-        p,
+        p as p,
     )
     from tests.settings import (
         TestsFlextTargetOracleOicSettings as TestsFlextTargetOracleOicSettings,
@@ -68,7 +68,7 @@ if TYPE_CHECKING:
     )
     from tests.utilities import (
         TestsFlextTargetOracleOicUtilities as TestsFlextTargetOracleOicUtilities,
-        u,
+        u as u,
     )
 _LAZY_IMPORTS = merge_lazy_imports(
     (".unit",),
