@@ -124,9 +124,8 @@ class TestsFlextTargetOracleOicTarget:
         with patch(
             "flext_api.FlextApi.post",
             return_value=result_type[Mock].ok(mock_response),
-        ):
-            with pytest.raises(RuntimeError, match="access_token"):
-                authenticator.get_access_token()
+        ), pytest.raises(RuntimeError, match="access_token"):
+            authenticator.get_access_token()
 
 
 @pytest.fixture
