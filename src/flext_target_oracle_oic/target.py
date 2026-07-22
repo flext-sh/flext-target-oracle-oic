@@ -4,15 +4,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, ClassVar, override
 
-from flext_meltano.services.singer_target import (
-    FlextMeltanoTargetAbstractions,
-)
+from flext_meltano.services.singer_target import FlextMeltanoTargetAbstractions
 from flext_target_oracle_oic import c, m, p, r, t, u
 
 if TYPE_CHECKING:
-    from collections.abc import (
-        Mapping,
-    )
+    from collections.abc import Mapping
 
 
 class FlextTargetOracleOicBaseSink(m.Meltano.SingerSinkBase):
@@ -27,9 +23,7 @@ class FlextTargetOracleOicBaseSink(m.Meltano.SingerSinkBase):
 
     @override
     def process_record(
-        self,
-        record: t.MutableJsonMapping,
-        context: t.MutableJsonMapping,
+        self, record: t.MutableJsonMapping, context: t.MutableJsonMapping
     ) -> None:
         """Default sink behavior: log incoming record metadata."""
         _ = context

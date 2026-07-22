@@ -22,7 +22,6 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import pytest
-from flext_tests import tm
 
 from flext_target_oracle_oic import FlextTargetOracleOicSettings
 from flext_target_oracle_oic.target import (
@@ -32,6 +31,7 @@ from flext_target_oracle_oic.target import (
     FlextTargetOracleOicLookupsSink,
     FlextTargetOracleOicPackagesSink,
 )
+from flext_tests import tm
 
 if TYPE_CHECKING:
     from tests import t
@@ -71,10 +71,7 @@ def target() -> FlextTargetOracleOic:
 
 
 class TestsFlextTargetOracleOicE2e:
-    def test_target_initialization(
-        self,
-        target: FlextTargetOracleOic,
-    ) -> None:
+    def test_target_initialization(self, target: FlextTargetOracleOic) -> None:
         """Test target initialization with valid configuration."""
         if target.name != "target-oracle-oic":
             msg: str = f"Expected {'target-oracle-oic'}, got {target.name}"

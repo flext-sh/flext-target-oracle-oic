@@ -19,7 +19,7 @@ def _package_root() -> Path:
     return Path(
         Path(__file__).resolve().parents[parent_depth]
         / c.TargetOracleOic.Tests.SRC_DIR
-        / c.TargetOracleOic.Tests.PACKAGE_DIR,
+        / c.TargetOracleOic.Tests.PACKAGE_DIR
     )
 
 
@@ -66,7 +66,7 @@ class TestsFlextTargetOracleOicModuleGovernance:
             for name, _ in _module_top_level_attrs(module):
                 if name in {"logger", "_logger"}:
                     violations.append(
-                        str(module_path.relative_to(_package_root().parent)),
+                        str(module_path.relative_to(_package_root().parent))
                     )
                     break
         assert not violations, (
@@ -77,8 +77,7 @@ class TestsFlextTargetOracleOicModuleGovernance:
         violations: list[str] = []
         for module_path in _iter_package_modules():
             allowed_functions = c.TargetOracleOic.Tests.ALLOWED_MODULE_FUNCTIONS.get(
-                module_path.name,
-                frozenset(),
+                module_path.name, frozenset()
             )
             module = _import_package_module(module_path)
             if module is None:
@@ -90,7 +89,7 @@ class TestsFlextTargetOracleOicModuleGovernance:
             )
             if unexpected_functions:
                 violations.append(
-                    f"{module_path.relative_to(_package_root().parent)}: {unexpected_functions}",
+                    f"{module_path.relative_to(_package_root().parent)}: {unexpected_functions}"
                 )
         assert not violations, (
             f"Top-level functions are forbidden outside approved entrypoints: {violations}"

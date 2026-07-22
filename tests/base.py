@@ -4,9 +4,8 @@ from __future__ import annotations
 
 from typing import override
 
-from flext_tests import s as tests_s
-
 from flext_target_oracle_oic import m
+from flext_tests import s as tests_s
 from tests.settings import TestsFlextTargetOracleOicSettings
 
 
@@ -19,7 +18,7 @@ class TestsFlextTargetOracleOicServiceBase(tests_s):
     @override
     def _runtime_bootstrap_options(cls) -> m.RuntimeBootstrapOptions:
         return m.RuntimeBootstrapOptions(
-            settings_type=TestsFlextTargetOracleOicSettings,
+            settings_type=TestsFlextTargetOracleOicSettings
         )
 
 

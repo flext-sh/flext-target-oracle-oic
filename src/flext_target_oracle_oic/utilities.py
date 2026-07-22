@@ -2,9 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import (
-    Mapping,
-)
+from collections.abc import Mapping
 
 from flext_api import FlextApi, FlextApiSettings
 from flext_meltano import u
@@ -52,16 +50,12 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                 return m.TargetOracleOic.OICIntegration.model_validate(data)
 
             @staticmethod
-            def create_oic_package(
-                data: t.JsonMapping,
-            ) -> m.TargetOracleOic.OICPackage:
+            def create_oic_package(data: t.JsonMapping) -> m.TargetOracleOic.OICPackage:
                 """Create an OICPackage model from generic payload via Pydantic validation."""
                 return m.TargetOracleOic.OICPackage.model_validate(data)
 
             @staticmethod
-            def create_oic_lookup(
-                data: t.JsonMapping,
-            ) -> m.TargetOracleOic.OICLookup:
+            def create_oic_lookup(data: t.JsonMapping) -> m.TargetOracleOic.OICLookup:
                 """Create an OICLookup model from generic payload via Pydantic validation."""
                 return m.TargetOracleOic.OICLookup.model_validate(data)
 
@@ -165,7 +159,4 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
 
 
 u = FlextTargetOracleOicUtilities
-__all__: list[str] = [
-    "FlextTargetOracleOicUtilities",
-    "u",
-]
+__all__: list[str] = ["FlextTargetOracleOicUtilities", "u"]

@@ -11,7 +11,6 @@ from typing import ClassVar
 from unittest.mock import Mock, patch
 
 import pytest
-from flext_tests import r as result_type, tm
 from singer_sdk.target_base import Target as SingerTarget
 
 from flext_target_oracle_oic import FlextTargetOracleOicSettings, u
@@ -20,6 +19,7 @@ from flext_target_oracle_oic.target import (
     FlextTargetOracleOicConnectionsSink,
     FlextTargetOracleOicIntegrationsSink,
 )
+from flext_tests import r as result_type, tm
 from tests import c, t
 
 
@@ -50,8 +50,7 @@ class TestsFlextTargetOracleOicTarget:
         }
 
     def test_target_initialization_with_valid_config(
-        self,
-        valid_config: t.StrMapping,
+        self, valid_config: t.StrMapping
     ) -> None:
         """Test target initialization with valid configuration."""
         _ = valid_config
@@ -107,7 +106,7 @@ class TestsFlextTargetOracleOicTarget:
 
     def test_oic_authenticator_omits_optional_scope_and_audience(self) -> None:
         authenticator = u.TargetOracleOic.Authenticator(
-            _build_auth_config(oauth_scope="", oauth_client_aud=None),
+            _build_auth_config(oauth_scope="", oauth_client_aud=None)
         )
         payload = authenticator.build_token_request_data()
         tm.that(payload, lacks="scope")
@@ -121,12 +120,14 @@ class TestsFlextTargetOracleOicTarget:
         mock_response.status_code = 200
         mock_response.body = {"token_type": "Bearer"}
 
-        with patch(
-            "flext_api.FlextApi.post",
-            return_value=result_type[Mock].ok(mock_response),
+        with (
+            patch(
+                "flext_api.FlextApi.post",
+                return_value=result_type[Mock].ok(mock_response),
+            ),
+            pytest.raises(RuntimeError, match="access_token"),
         ):
-            with pytest.raises(RuntimeError, match="access_token"):
-                authenticator.get_access_token()
+            authenticator.get_access_token()
 
 
 @pytest.fixture

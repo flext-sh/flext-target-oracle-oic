@@ -8,14 +8,12 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_tests import FlextTestsUtilities
-
 from flext_target_oracle_oic import FlextTargetOracleOicUtilities
+from flext_tests import FlextTestsUtilities
 
 
 class TestsFlextTargetOracleOicUtilities(
-    FlextTestsUtilities,
-    FlextTargetOracleOicUtilities,
+    FlextTestsUtilities, FlextTargetOracleOicUtilities
 ):
     """Test utilities for flext-target-oracle-oic."""
 

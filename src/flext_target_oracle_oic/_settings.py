@@ -22,9 +22,7 @@ class FlextTargetOracleOicSettings(FlextMeltanoSettings):
     """Oracle OIC target settings; fields under ``settings.TargetOracleOic.*``."""
 
     model_config = SettingsConfigDict(
-        env_prefix="FLEXT_TARGET_ORACLE_OIC_",
-        env_nested_delimiter="__",
-        extra="ignore",
+        env_prefix="FLEXT_TARGET_ORACLE_OIC_", env_nested_delimiter="__", extra="ignore"
     )
 
     class _TargetOracleOic(BaseModel):

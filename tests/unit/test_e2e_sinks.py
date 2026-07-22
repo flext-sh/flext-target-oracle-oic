@@ -12,7 +12,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, ClassVar
 
 import pytest
-from flext_tests import tm
 from singer_sdk.target_base import Target as SingerTarget
 
 from flext_target_oracle_oic.target import (
@@ -21,6 +20,7 @@ from flext_target_oracle_oic.target import (
     FlextTargetOracleOicLookupsSink,
     FlextTargetOracleOicPackagesSink,
 )
+from flext_tests import tm
 from tests import t
 
 if TYPE_CHECKING:
@@ -87,8 +87,7 @@ class TestsFlextTargetOracleOicE2eSinks:
         )
 
     def test_connections_sink_record_processing(
-        self,
-        singer_target: SingerTarget,
+        self, singer_target: SingerTarget
     ) -> None:
         """Test connections sink record processing."""
         sink = FlextTargetOracleOicConnectionsSink(
@@ -99,7 +98,7 @@ class TestsFlextTargetOracleOicE2eSinks:
                     "id": {"type": "string"},
                     "name": {"type": "string"},
                     "adapter_type": {"type": "string"},
-                },
+                }
             },
             key_properties=["id"],
         )
@@ -111,8 +110,7 @@ class TestsFlextTargetOracleOicE2eSinks:
         sink.process_record(test_record, {})
 
     def test_integrations_sink_record_processing(
-        self,
-        singer_target: SingerTarget,
+        self, singer_target: SingerTarget
     ) -> None:
         """Test integrations sink record processing."""
         sink = FlextTargetOracleOicIntegrationsSink(
@@ -123,7 +121,7 @@ class TestsFlextTargetOracleOicE2eSinks:
                     "id": {"type": "string"},
                     "name": {"type": "string"},
                     "archive_content": {"type": "string"},
-                },
+                }
             },
             key_properties=["id"],
         )
@@ -152,7 +150,7 @@ class TestsFlextTargetOracleOicE2eSinks:
             target=singer_target,
             stream_name="packages",
             schema={
-                "properties": {"id": {"type": "string"}, "name": {"type": "string"}},
+                "properties": {"id": {"type": "string"}, "name": {"type": "string"}}
             },
             key_properties=["id"],
         )
@@ -178,13 +176,12 @@ class TestsFlextTargetOracleOicE2eSinks:
                     "id": {"type": "string"},
                     "name": {"type": "string"},
                     "version": {"type": "string"},
-                },
+                }
             },
             key_properties=["id"],
         )
         sink.process_record(
-            {"id": "test-lookup", "name": "Test Lookup", "version": "1.0"},
-            {},
+            {"id": "test-lookup", "name": "Test Lookup", "version": "1.0"}, {}
         )
         tm.that(sink.stream_name, eq="lookups")
 
@@ -194,10 +191,7 @@ class TestsFlextTargetOracleOicE2eSinks:
         sink = FlextTargetOracleOicConnectionsSink(
             target=singer_target,
             stream_name="connections",
-            schema={
-                "type": "object",
-                "properties": {"id": {"type": "string"}},
-            },
+            schema={"type": "object", "properties": {"id": {"type": "string"}}},
             key_properties=["id"],
         )
         sink.process_record({"id": "test-cli-connection"}, {})
