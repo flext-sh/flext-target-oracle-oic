@@ -103,7 +103,7 @@ api:
 
 Configure FLEXT programmatically in your code:
 
-```text
+```python
 from flext_cli import u
 from flext_core import FlextSettings
 from flext_ldif import FlextLdifSettings
@@ -124,7 +124,7 @@ ldif_config = FlextLdifSettings(
 
 ### flext-ldif Configuration
 
-```text
+```python
 from flext_ldif import FlextLdifSettings
 
 settings = FlextLdifSettings(
@@ -228,7 +228,6 @@ except c.ValidationError as e:
 FLEXT supports configuration inheritance for complex setups:
 
 ```python
-from flext_cli import u
 from flext_core import FlextSettings
 
 # Base configuration
@@ -236,9 +235,8 @@ base_config = FlextSettings(log_level="INFO", environment="production")
 
 # Extended configuration
 extended_config = FlextSettings(
-    **base_config.dict(),
+    **base_config.model_dump(),
     debug=True,  # Override for development
-    custom_setting="value",
 )
 ```
 
@@ -296,6 +294,7 @@ class MyAppConfig(FlextSettings):
 
 ```python
 from __future__ import annotations
+from flext_core import m, u
 
 
 class FlextLdifSettings(m.BaseModel):
