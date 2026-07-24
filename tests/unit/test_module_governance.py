@@ -4,11 +4,14 @@ from __future__ import annotations
 
 import importlib
 import inspect
-from collections.abc import Iterator
 from pathlib import Path
-from types import ModuleType
+from typing import TYPE_CHECKING
 
-from tests.constants import c
+from tests import c
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+    from types import ModuleType
 
 
 def _package_root() -> Path:
@@ -74,8 +77,7 @@ class TestsFlextTargetOracleOicModuleGovernance:
         violations: list[str] = []
         for module_path in _iter_package_modules():
             allowed_functions = c.TargetOracleOic.Tests.ALLOWED_MODULE_FUNCTIONS.get(
-                module_path.name,
-                frozenset(),
+                module_path.name, frozenset()
             )
             module = _import_package_module(module_path)
             if module is None:
@@ -87,7 +89,7 @@ class TestsFlextTargetOracleOicModuleGovernance:
             )
             if unexpected_functions:
                 violations.append(
-                    f"{module_path.relative_to(_package_root().parent)}: {unexpected_functions}",
+                    f"{module_path.relative_to(_package_root().parent)}: {unexpected_functions}"
                 )
         assert not violations, (
             f"Top-level functions are forbidden outside approved entrypoints: {violations}"

@@ -11,7 +11,6 @@ from typing import ClassVar
 from unittest.mock import Mock, patch
 
 import pytest
-from flext_tests import r as result_type
 from singer_sdk.target_base import Target as SingerTarget
 
 from flext_target_oracle_oic import FlextTargetOracleOicSettings, u
@@ -20,8 +19,8 @@ from flext_target_oracle_oic.target import (
     FlextTargetOracleOicConnectionsSink,
     FlextTargetOracleOicIntegrationsSink,
 )
-from tests.constants import c
-from tests.typings import t
+from flext_tests import r as result_type, tm
+from tests import c, t
 
 
 class AuthTestSettings(FlextTargetOracleOicSettings):
@@ -51,8 +50,7 @@ class TestsFlextTargetOracleOicTarget:
         }
 
     def test_target_initialization_with_valid_config(
-        self,
-        valid_config: t.StrMapping,
+        self, valid_config: t.StrMapping
     ) -> None:
         """Test target initialization with valid configuration."""
         _ = valid_config
@@ -60,7 +58,7 @@ class TestsFlextTargetOracleOicTarget:
         if target.name != "target-oracle-oic":
             msg: str = f"Expected {'target-oracle-oic'}, got {target.name}"
             raise AssertionError(msg)
-        assert isinstance(target.fetch_sink_class("connections"), type)
+        tm.that(target.fetch_sink_class("connections"), is_=type)
 
     def test_target_initialization_with_minimal_config(self) -> None:
         """Test method."""
@@ -89,30 +87,30 @@ class TestsFlextTargetOracleOicTarget:
     def test_config_schema(self) -> None:
         """Test method."""
         schema = FlextTargetOracleOicSettings.model_json_schema()
-        assert isinstance(schema, dict)
+        tm.that(schema, is_=dict)
         if "properties" not in schema:
             msg = f"Expected {'properties'} in {schema}"
             raise AssertionError(msg)
         properties = schema["properties"]
-        assert isinstance(properties, dict)
-        assert "oauth_client_id" in properties
+        tm.that(properties, is_=dict)
+        tm.that(properties, has="TargetOracleOic")
 
     def test_oic_authenticator_builds_payload(self) -> None:
         authenticator = u.TargetOracleOic.Authenticator(_build_auth_config())
         payload = authenticator.build_token_request_data()
-        assert payload["grant_type"] == "client_credentials"
-        assert payload["client_id"] == "client-id"
-        assert payload["client_secret"] == "client-secret"
-        assert payload["scope"] == "urn:opc:resource:consumer:all"
-        assert payload["audience"] == "https://idcs.example.com"
+        tm.that(payload["grant_type"], eq="client_credentials")
+        tm.that(payload["client_id"], eq="client-id")
+        tm.that(payload["client_secret"], eq="client-secret")
+        tm.that(payload["scope"], eq="urn:opc:resource:consumer:all")
+        tm.that(payload["audience"], eq="https://idcs.example.com")
 
     def test_oic_authenticator_omits_optional_scope_and_audience(self) -> None:
         authenticator = u.TargetOracleOic.Authenticator(
-            _build_auth_config(oauth_scope="", oauth_client_aud=None),
+            _build_auth_config(oauth_scope="", oauth_client_aud=None)
         )
         payload = authenticator.build_token_request_data()
-        assert "scope" not in payload
-        assert "audience" not in payload
+        tm.that(payload, lacks="scope")
+        tm.that(payload, lacks="audience")
 
     def test_oic_authenticator_rejects_invalid_token_response(self) -> None:
 
@@ -122,12 +120,14 @@ class TestsFlextTargetOracleOicTarget:
         mock_response.status_code = 200
         mock_response.body = {"token_type": "Bearer"}
 
-        with patch(
-            "flext_api.FlextApi.post",
-            return_value=result_type[Mock].ok(mock_response),
+        with (
+            patch(
+                "flext_api.FlextApi.post",
+                return_value=result_type[Mock].ok(mock_response),
+            ),
+            pytest.raises(RuntimeError, match="access_token"),
         ):
-            with pytest.raises(RuntimeError, match="access_token"):
-                authenticator.get_access_token()
+            authenticator.get_access_token()
 
 
 @pytest.fixture
@@ -140,15 +140,16 @@ def _build_auth_config(
     oauth_scope: str | None = "urn:opc:resource:consumer:all",
     oauth_client_aud: str | None = "https://idcs.example.com",
 ) -> FlextTargetOracleOicSettings:
+    # Build via __new__ to avoid touching the flext-core settings singleton;
+    # oauth fields live under the TargetOracleOic namespace (ADR-005).
     settings = AuthTestSettings.__new__(AuthTestSettings)
-    object.__setattr__(settings, "oauth_client_id", "client-id")
-    object.__setattr__(settings, "oauth_client_secret", t.SecretStr("client-secret"))
-    object.__setattr__(
-        settings,
-        "oauth_token_url",
-        "https://idcs.example.com/oauth2/v1/token",
-    )
-    object.__setattr__(settings, "oauth_scope", oauth_scope)
-    object.__setattr__(settings, "oauth_client_aud", oauth_client_aud)
-    object.__setattr__(settings, "timeout", 30)
+    namespace = FlextTargetOracleOicSettings._TargetOracleOic.model_validate({
+        "oauth_client_id": "client-id",
+        "oauth_client_secret": "client-secret",
+        "oauth_token_url": "https://idcs.example.com/oauth2/v1/token",
+        "oauth_scope": oauth_scope,
+        "oauth_client_aud": oauth_client_aud,
+        "timeout": 30,
+    })
+    object.__setattr__(settings, "TargetOracleOic", namespace)
     return settings

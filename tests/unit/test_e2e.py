@@ -19,12 +19,11 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import pytest
 
-from flext_target_oracle_oic import (
-    FlextTargetOracleOicSettings,
-)
+from flext_target_oracle_oic import FlextTargetOracleOicSettings
 from flext_target_oracle_oic.target import (
     FlextTargetOracleOic,
     FlextTargetOracleOicConnectionsSink,
@@ -32,7 +31,10 @@ from flext_target_oracle_oic.target import (
     FlextTargetOracleOicLookupsSink,
     FlextTargetOracleOicPackagesSink,
 )
-from tests.typings import t
+from flext_tests import tm
+
+if TYPE_CHECKING:
+    from tests import t
 
 
 def load_test_config() -> t.StrMapping:
@@ -69,17 +71,12 @@ def target() -> FlextTargetOracleOic:
 
 
 class TestsFlextTargetOracleOicE2e:
-    def test_target_initialization(
-        self,
-        target: FlextTargetOracleOic,
-        test_config: t.StrMapping,
-    ) -> None:
+    def test_target_initialization(self, target: FlextTargetOracleOic) -> None:
         """Test target initialization with valid configuration."""
-        _ = test_config
         if target.name != "target-oracle-oic":
             msg: str = f"Expected {'target-oracle-oic'}, got {target.name}"
             raise AssertionError(msg)
-        assert isinstance(target.fetch_sink_class("connections"), type)
+        tm.that(target.fetch_sink_class("connections"), is_=type)
 
     def test_sink_class_mapping(self, target: FlextTargetOracleOic) -> None:
         """Test sink class mapping for known streams."""
@@ -105,13 +102,13 @@ class TestsFlextTargetOracleOicE2e:
     def test_config_validation(self, target: FlextTargetOracleOic) -> None:
         """Test setup/teardown result contract."""
         setup_result = target.setup()
-        assert setup_result.success
-        assert setup_result.value is not None
-        assert setup_result.value is True
+        tm.ok(setup_result)
+        tm.that(setup_result.value, none=False)
+        tm.that(setup_result.value, eq=True)
         teardown_result = target.teardown()
-        assert teardown_result.success
-        assert teardown_result.value is not None
-        assert teardown_result.value is True
+        tm.ok(teardown_result)
+        tm.that(teardown_result.value, none=False)
+        tm.that(teardown_result.value, eq=True)
 
     def test_conditional_config_generation(self) -> None:
         """Test schema generation from pydantic configuration model."""
@@ -120,14 +117,14 @@ class TestsFlextTargetOracleOicE2e:
         if not isinstance(properties_raw, dict):
             msg = f"Expected {'properties'} in {schema_raw}"
             raise AssertionError(msg)
-        if "oauth_token_url" not in properties_raw:
-            msg = f"Expected {'oauth_token_url'} in {properties_raw}"
+        if "TargetOracleOic" not in properties_raw:
+            msg = f"Expected {'TargetOracleOic'} in {properties_raw}"
             raise AssertionError(msg)
-        assert isinstance(properties_raw["oauth_token_url"], dict)
+        tm.that(properties_raw["TargetOracleOic"], is_=dict)
 
     @pytest.fixture
     def test_config(self) -> t.StrMapping:
         return load_test_config()
 
     def test_target_smoke_class(self) -> None:
-        assert FlextTargetOracleOic.name == "target-oracle-oic"
+        tm.that(FlextTargetOracleOic.name, eq="target-oracle-oic")

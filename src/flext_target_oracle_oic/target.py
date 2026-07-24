@@ -2,15 +2,13 @@
 
 from __future__ import annotations
 
-from collections.abc import (
-    Mapping,
-)
-from typing import ClassVar, override
+from typing import TYPE_CHECKING, ClassVar, override
 
-from flext_meltano.services.singer_target import (
-    FlextMeltanoTargetAbstractions,
-)
+from flext_meltano.services.singer_target import FlextMeltanoTargetAbstractions
 from flext_target_oracle_oic import c, m, p, r, t, u
+
+if TYPE_CHECKING:
+    from collections.abc import Mapping
 
 
 class FlextTargetOracleOicBaseSink(m.Meltano.SingerSinkBase):
@@ -25,9 +23,7 @@ class FlextTargetOracleOicBaseSink(m.Meltano.SingerSinkBase):
 
     @override
     def process_record(
-        self,
-        record: t.MutableJsonMapping,
-        context: t.MutableJsonMapping,
+        self, record: t.MutableJsonMapping, context: t.MutableJsonMapping
     ) -> None:
         """Default sink behavior: log incoming record metadata."""
         _ = context
@@ -77,7 +73,7 @@ class FlextTargetOracleOic(FlextMeltanoTargetAbstractions):
         return self._sink_classes.get(stream_name, self.default_sink_class)
 
     def setup(self) -> p.Result[bool]:
-        """Setup target resources."""
+        """Set up target resources."""
         return r[bool].ok(value=True)
 
     def teardown(self) -> p.Result[bool]:
