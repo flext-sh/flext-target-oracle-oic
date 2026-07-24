@@ -113,10 +113,7 @@ settings = FlextSettings(log_level="INFO", debug=False, environment="production"
 
 # LDIF configuration
 ldif_config = FlextLdifSettings(
-    ldif={
-        "ldif_encoding": "utf-8",
-        "ldif_strict_validation": True,
-    },
+    ldif={"ldif_encoding": "utf-8", "ldif_strict_validation": True}
 )
 ```
 
@@ -154,7 +151,7 @@ settings = FlextApiSettings(
         "max_retries": 3,
         "verify_ssl": True,
         "headers": {"User-Agent": "FLEXT-API/1.0"},
-    },
+    }
 )
 ```
 
@@ -164,8 +161,7 @@ settings = FlextApiSettings(
 from flext_auth import FlextAuthSettings
 
 settings = FlextAuthSettings(
-    secret_key="your-secret-key",
-    Auth={"algorithm": "HS256", "expiry_minutes": 30},
+    secret_key="your-secret-key", Auth={"algorithm": "HS256", "expiry_minutes": 30}
 )
 ```
 
