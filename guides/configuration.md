@@ -103,7 +103,7 @@ api:
 
 Configure FLEXT programmatically in your code:
 
-```python
+```text
 from flext_cli import u
 from flext_core import FlextSettings
 from flext_ldif import FlextLdifSettings
@@ -113,10 +113,10 @@ settings = FlextSettings(log_level="INFO", debug=False, environment="production"
 
 # LDIF configuration
 ldif_config = FlextLdifSettings(
-    default_encoding="utf-8",
-    strict_validation=True,
-    servers_enabled=True,
-    batch_size=1000,
+    ldif={
+        "ldif_encoding": "utf-8",
+        "ldif_strict_validation": True,
+    },
 )
 ```
 
@@ -124,7 +124,7 @@ ldif_config = FlextLdifSettings(
 
 ### flext-ldif Configuration
 
-```python
+```text
 from flext_ldif import FlextLdifSettings
 
 settings = FlextLdifSettings(
