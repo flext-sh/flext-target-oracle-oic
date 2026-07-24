@@ -148,11 +148,13 @@ settings = FlextLdifSettings(
 from flext_api import FlextApiSettings
 
 settings = FlextApiSettings(
-    base_url="https://api.example.com",
-    timeout=30,
-    retry_attempts=3,
-    verify_ssl=True,
-    headers={"User-Agent": "FLEXT-API/1.0"},
+    Api={
+        "base_url": "https://api.example.com",
+        "timeout": 30,
+        "max_retries": 3,
+        "verify_ssl": True,
+        "headers": {"User-Agent": "FLEXT-API/1.0"},
+    },
 )
 ```
 
@@ -163,9 +165,7 @@ from flext_auth import FlextAuthSettings
 
 settings = FlextAuthSettings(
     secret_key="your-secret-key",
-    algorithm=c.Auth.Algorithms.HS256,
-    access_token_expire_minutes=30,
-    refresh_token_expire_days=7,
+    Auth={"algorithm": "HS256", "expiry_minutes": 30},
 )
 ```
 
@@ -213,14 +213,14 @@ All configuration is validated using Pydantic v2 models:
 
 ```python
 from flext_cli import u
-from flext_core import FlextSettings
+from flext_core import c, FlextSettings
 
 try:
     settings = FlextSettings(
         log_level="INVALID_LEVEL"  # This will raise ValidationError
     )
 except c.ValidationError as e:
-    u.Cli.print(f"Configuration error: {e}")
+    u.Cli.info(f"Configuration error: {e}")
 ```
 
 ## Configuration Inheritance
