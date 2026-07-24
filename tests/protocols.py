@@ -15,8 +15,7 @@ from flext_target_oracle_oic import FlextTargetOracleOicProtocols
 
 
 class TestsFlextTargetOracleOicProtocols(
-    FlextTestsProtocols,
-    FlextTargetOracleOicProtocols,
+    FlextTestsProtocols, FlextTargetOracleOicProtocols
 ):
     """Test protocols combining TestsFlextProtocols and FlextTargetOracleOicProtocols.
 

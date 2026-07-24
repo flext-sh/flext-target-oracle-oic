@@ -10,8 +10,7 @@ from flext_target_oracle_oic import FlextTargetOracleOicSettings, t, u
 
 
 class TestsFlextTargetOracleOicSettings(
-    FlextTargetOracleOicSettings,
-    FlextTestsSettings,
+    FlextTargetOracleOicSettings, FlextTestsSettings
 ):
     """Target Oracle OIC settings extended with the shared test namespace.
 
@@ -20,8 +19,7 @@ class TestsFlextTargetOracleOicSettings(
     """
 
     oauth_client_id: Annotated[
-        str,
-        u.Field(default="test-oic-client-id", description="Test OAuth client id."),
+        str, u.Field(default="test-oic-client-id", description="Test OAuth client id.")
     ]
     oauth_client_secret: Annotated[
         t.SecretStr,

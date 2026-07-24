@@ -72,63 +72,30 @@ if TYPE_CHECKING:
     )
 _LAZY_IMPORTS = merge_lazy_imports(
     (".unit",),
-    build_lazy_import_map(
-        {
-            ".base": (
-                "TestsFlextTargetOracleOicServiceBase",
-                "s",
-            ),
-            ".conftest": ("conftest",),
-            ".constants": (
-                "TestsFlextTargetOracleOicConstants",
-                "c",
-            ),
-            ".models": (
-                "TestsFlextTargetOracleOicModels",
-                "m",
-            ),
-            ".protocols": (
-                "TestsFlextTargetOracleOicProtocols",
-                "p",
-            ),
-            ".settings": ("TestsFlextTargetOracleOicSettings",),
-            ".typings": (
-                "TestsFlextTargetOracleOicTypes",
-                "t",
-            ),
-            ".unit": ("unit",),
-            ".unit.test_cli_entrypoint": ("TestsFlextTargetOracleOicCliEntrypoint",),
-            ".unit.test_e2e": ("TestsFlextTargetOracleOicE2e",),
-            ".unit.test_e2e_sinks": (
-                "DummySingerTargetE2E",
-                "TestsFlextTargetOracleOicE2eSinks",
-            ),
-            ".unit.test_module_governance": (
-                "TestsFlextTargetOracleOicModuleGovernance",
-            ),
-            ".unit.test_target": (
-                "AuthTestSettings",
-                "DummySingerTarget",
-                "TestsFlextTargetOracleOicTarget",
-            ),
-            ".utilities": (
-                "TestsFlextTargetOracleOicUtilities",
-                "u",
-            ),
-            "flext_tests": (
-                "d",
-                "e",
-                "h",
-                "r",
-                "td",
-                "tf",
-                "tk",
-                "tm",
-                "tv",
-                "x",
-            ),
-        },
-    ),
+    build_lazy_import_map({
+        ".base": ("TestsFlextTargetOracleOicServiceBase", "s"),
+        ".conftest": ("conftest",),
+        ".constants": ("TestsFlextTargetOracleOicConstants", "c"),
+        ".models": ("TestsFlextTargetOracleOicModels", "m"),
+        ".protocols": ("TestsFlextTargetOracleOicProtocols", "p"),
+        ".settings": ("TestsFlextTargetOracleOicSettings",),
+        ".typings": ("TestsFlextTargetOracleOicTypes", "t"),
+        ".unit": ("unit",),
+        ".unit.test_cli_entrypoint": ("TestsFlextTargetOracleOicCliEntrypoint",),
+        ".unit.test_e2e": ("TestsFlextTargetOracleOicE2e",),
+        ".unit.test_e2e_sinks": (
+            "DummySingerTargetE2E",
+            "TestsFlextTargetOracleOicE2eSinks",
+        ),
+        ".unit.test_module_governance": ("TestsFlextTargetOracleOicModuleGovernance",),
+        ".unit.test_target": (
+            "AuthTestSettings",
+            "DummySingerTarget",
+            "TestsFlextTargetOracleOicTarget",
+        ),
+        ".utilities": ("TestsFlextTargetOracleOicUtilities", "u"),
+        "flext_tests": ("d", "e", "h", "r", "td", "tf", "tk", "tm", "tv", "x"),
+    }),
     exclude_names=(
         "cleanup_submodule_namespace",
         "install_lazy_exports",
@@ -152,9 +119,4 @@ _LAZY_IMPORTS = merge_lazy_imports(
 )
 
 
-install_lazy_exports(
-    __name__,
-    globals(),
-    _LAZY_IMPORTS,
-    publish_all=False,
-)
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, publish_all=False)

@@ -71,10 +71,7 @@ def target() -> FlextTargetOracleOic:
 
 
 class TestsFlextTargetOracleOicE2e:
-    def test_target_initialization(
-        self,
-        target: FlextTargetOracleOic,
-    ) -> None:
+    def test_target_initialization(self, target: FlextTargetOracleOic) -> None:
         """Test target initialization with valid configuration."""
         if target.name != "target-oracle-oic":
             msg: str = f"Expected {'target-oracle-oic'}, got {target.name}"

@@ -23,9 +23,7 @@ class FlextTargetOracleOicBaseSink(m.Meltano.SingerSinkBase):
 
     @override
     def process_record(
-        self,
-        record: t.MutableJsonMapping,
-        context: t.MutableJsonMapping,
+        self, record: t.MutableJsonMapping, context: t.MutableJsonMapping
     ) -> None:
         """Default sink behavior: log incoming record metadata."""
         _ = context

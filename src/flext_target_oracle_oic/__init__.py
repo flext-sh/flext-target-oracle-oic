@@ -51,47 +51,17 @@ if TYPE_CHECKING:
         FlextTargetOracleOicUtilities as FlextTargetOracleOicUtilities,
         u,
     )
-_LAZY_IMPORTS = build_lazy_import_map(
-    {
-        "._settings": ("FlextTargetOracleOicSettings", "settings"),
-        ".api": (
-            "FlextTargetOracleOicService",
-            "target_oracle_oic",
-        ),
-        ".cli": (
-            "FlextTargetOracleOicCli",
-            "main",
-        ),
-        ".constants": (
-            "FlextTargetOracleOicConstants",
-            "c",
-        ),
-        ".models": (
-            "FlextTargetOracleOicModels",
-            "m",
-        ),
-        ".protocols": (
-            "FlextTargetOracleOicProtocols",
-            "p",
-        ),
-        ".typings": (
-            "FlextTargetOracleOicTypes",
-            "t",
-        ),
-        ".utilities": (
-            "FlextTargetOracleOicUtilities",
-            "u",
-        ),
-        "flext_oracle_oic": (
-            "d",
-            "e",
-            "h",
-            "r",
-            "s",
-            "x",
-        ),
-    },
-)
+_LAZY_IMPORTS = build_lazy_import_map({
+    "._settings": ("FlextTargetOracleOicSettings", "settings"),
+    ".api": ("FlextTargetOracleOicService", "target_oracle_oic"),
+    ".cli": ("FlextTargetOracleOicCli", "main"),
+    ".constants": ("FlextTargetOracleOicConstants", "c"),
+    ".models": ("FlextTargetOracleOicModels", "m"),
+    ".protocols": ("FlextTargetOracleOicProtocols", "p"),
+    ".typings": ("FlextTargetOracleOicTypes", "t"),
+    ".utilities": ("FlextTargetOracleOicUtilities", "u"),
+    "flext_oracle_oic": ("d", "e", "h", "r", "s", "x"),
+})
 
 
 __all__: tuple[str, ...] = (
@@ -128,9 +98,4 @@ __all__: tuple[str, ...] = (
 )
 
 
-install_lazy_exports(
-    __name__,
-    globals(),
-    _LAZY_IMPORTS,
-    public_exports=__all__,
-)
+install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, public_exports=__all__)

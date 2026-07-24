@@ -57,16 +57,12 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                 return m.TargetOracleOic.OICIntegration.model_validate(data)
 
             @staticmethod
-            def create_oic_package(
-                data: t.JsonMapping,
-            ) -> p.TargetOracleOic.OICPackage:
+            def create_oic_package(data: t.JsonMapping) -> p.TargetOracleOic.OICPackage:
                 """Create an OICPackage model from generic payload via Pydantic validation."""
                 return m.TargetOracleOic.OICPackage.model_validate(data)
 
             @staticmethod
-            def create_oic_lookup(
-                data: t.JsonMapping,
-            ) -> p.TargetOracleOic.OICLookup:
+            def create_oic_lookup(data: t.JsonMapping) -> p.TargetOracleOic.OICLookup:
                 """Create an OICLookup model from generic payload via Pydantic validation."""
                 return m.TargetOracleOic.OICLookup.model_validate(data)
 
@@ -169,7 +165,4 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
 
 
 u = FlextTargetOracleOicUtilities
-__all__: list[str] = [
-    "FlextTargetOracleOicUtilities",
-    "u",
-]
+__all__: list[str] = ["FlextTargetOracleOicUtilities", "u"]
