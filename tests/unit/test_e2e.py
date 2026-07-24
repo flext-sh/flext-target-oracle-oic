@@ -116,7 +116,7 @@ class TestsFlextTargetOracleOicE2e:
         properties_raw = schema_raw.get("properties")
         if not isinstance(properties_raw, dict):
             msg = f"Expected {'properties'} in {schema_raw}"
-            raise AssertionError(msg)
+            raise TypeError(msg)
         if "TargetOracleOic" not in properties_raw:
             msg = f"Expected {'TargetOracleOic'} in {properties_raw}"
             raise AssertionError(msg)

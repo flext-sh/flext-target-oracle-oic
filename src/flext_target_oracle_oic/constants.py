@@ -24,7 +24,6 @@ class FlextTargetOracleOicConstants(c, FlextOracleOicConstants):
         HEADER_CONTENT_TYPE_JSON: str = "application/json"
         HEADER_ACCEPT: str = "Accept"
         HEADER_AUTHORIZATION: str = "Authorization"
-        API_PATH_OAUTH_TOKEN: str = "/oauth2/v1/token"
         API_PATH_INTEGRATION: str = "/ic/api/integration/v1"
         DEFAULT_VERSION: str = "01.00.0000"
         DEFAULT_PATTERN: str = "ORCHESTRATION"

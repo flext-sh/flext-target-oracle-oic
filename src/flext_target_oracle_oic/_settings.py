@@ -59,6 +59,13 @@ class FlextTargetOracleOicSettings(FlextMeltanoSettings):
             description="Namespaced Oracle OIC target settings.",
         )
 
+    @classmethod
+    def build_target_oracle_oic(
+        cls, data: dict[str, str | int | None] | None = None
+    ) -> _TargetOracleOic:
+        """Build and validate a ``TargetOracleOic`` namespace instance."""
+        return cls._TargetOracleOic.model_validate(data or {})
+
 
 settings: FlextTargetOracleOicSettings = FlextTargetOracleOicSettings.fetch_global()
 """Pre-instantiated project settings singleton — ``from flext_target_oracle_oic import settings``."""
