@@ -1,4 +1,4 @@
-# AUTO-GENERATED FILE — Regenerate with: make gen
+# @generated AUTO-GENERATED FILE — Regenerate with: make gen
 """Flext Target Oracle Oic package."""
 
 from __future__ import annotations
@@ -6,52 +6,56 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from flext_core.lazy import build_lazy_import_map, install_lazy_exports
-from flext_target_oracle_oic.__version__ import (
-    __author__,
-    __author_email__,
-    __description__,
-    __license__,
-    __title__,
-    __url__,
-    __version__,
-    __version_info__,
-)
+
+from .__version__ import __author__ as __author__
+from .__version__ import __author_email__ as __author_email__
+from .__version__ import __description__ as __description__
+from .__version__ import __license__ as __license__
+from .__version__ import __title__ as __title__
+from .__version__ import __url__ as __url__
+from .__version__ import __version__ as __version__
+from .__version__ import __version_info__ as __version_info__
 
 if TYPE_CHECKING:
-    from flext_oracle_oic import d as d, e as e, h as h, r as r, s as s, x as x
-    from flext_target_oracle_oic._settings import (
-        FlextTargetOracleOicSettings as FlextTargetOracleOicSettings,
-        settings as settings,
-    )
-    from flext_target_oracle_oic.api import (
-        FlextTargetOracleOicService as FlextTargetOracleOicService,
-        target_oracle_oic as target_oracle_oic,
-    )
-    from flext_target_oracle_oic.cli import (
-        FlextTargetOracleOicCli as FlextTargetOracleOicCli,
-        main as main,
-    )
-    from flext_target_oracle_oic.constants import (
+    from flext_oracle_oic import d as d
+    from flext_oracle_oic import e as e
+    from flext_oracle_oic import h as h
+    from flext_oracle_oic import r as r
+    from flext_oracle_oic import s as s
+    from flext_oracle_oic import x as x
+
+    from ._config import FlextTargetOracleOicConfig as FlextTargetOracleOicConfig
+    from ._config import config as config
+    from ._settings import FlextTargetOracleOicSettings as FlextTargetOracleOicSettings
+    from ._settings import settings as settings
+    from .api import FlextTargetOracleOicService as FlextTargetOracleOicService
+    from .api import target_oracle_oic as target_oracle_oic
+    from .cli import FlextTargetOracleOicCli as FlextTargetOracleOicCli
+    from .cli import main as main
+    from .constants import (
         FlextTargetOracleOicConstants as FlextTargetOracleOicConstants,
-        c as c,
     )
-    from flext_target_oracle_oic.models import (
-        FlextTargetOracleOicModels as FlextTargetOracleOicModels,
-        m as m,
-    )
-    from flext_target_oracle_oic.protocols import (
+
+    c: type[FlextTargetOracleOicConstants]
+    from .models import FlextTargetOracleOicModels as FlextTargetOracleOicModels
+
+    m: type[FlextTargetOracleOicModels]
+    from .protocols import (
         FlextTargetOracleOicProtocols as FlextTargetOracleOicProtocols,
-        p,
     )
-    from flext_target_oracle_oic.typings import (
-        FlextTargetOracleOicTypes as FlextTargetOracleOicTypes,
-        t as t,
-    )
-    from flext_target_oracle_oic.utilities import (
+
+    p: type[FlextTargetOracleOicProtocols]
+    from .typings import FlextTargetOracleOicTypes as FlextTargetOracleOicTypes
+
+    t: type[FlextTargetOracleOicTypes]
+    from .utilities import (
         FlextTargetOracleOicUtilities as FlextTargetOracleOicUtilities,
-        u,
     )
-_LAZY_IMPORTS = build_lazy_import_map({
+
+    u: type[FlextTargetOracleOicUtilities]
+
+_LAZY_MODULES: dict[str, tuple[str, ...]] = {
+    "._config": ("FlextTargetOracleOicConfig", "config"),
     "._settings": ("FlextTargetOracleOicSettings", "settings"),
     ".api": ("FlextTargetOracleOicService", "target_oracle_oic"),
     ".cli": ("FlextTargetOracleOicCli", "main"),
@@ -61,11 +65,19 @@ _LAZY_IMPORTS = build_lazy_import_map({
     ".typings": ("FlextTargetOracleOicTypes", "t"),
     ".utilities": ("FlextTargetOracleOicUtilities", "u"),
     "flext_oracle_oic": ("d", "e", "h", "r", "s", "x"),
-})
+}
 
 
-__all__: tuple[str, ...] = (
+_LAZY_ALIAS_GROUPS: dict[str, tuple[tuple[str, str], ...]] = {}
+
+
+_LAZY_IMPORTS = build_lazy_import_map(
+    _LAZY_MODULES, alias_groups=_LAZY_ALIAS_GROUPS, sort_keys=False
+)
+
+_PUBLIC_EXPORTS: tuple[str, ...] = (
     "FlextTargetOracleOicCli",
+    "FlextTargetOracleOicConfig",
     "FlextTargetOracleOicConstants",
     "FlextTargetOracleOicModels",
     "FlextTargetOracleOicProtocols",
@@ -82,6 +94,7 @@ __all__: tuple[str, ...] = (
     "__version__",
     "__version_info__",
     "c",
+    "config",
     "d",
     "e",
     "h",
@@ -97,5 +110,6 @@ __all__: tuple[str, ...] = (
     "x",
 )
 
+__all__: tuple[str, ...] = tuple(_PUBLIC_EXPORTS)
 
 install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, public_exports=__all__)
