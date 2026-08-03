@@ -10,9 +10,8 @@ from __future__ import annotations
 
 from typing import Final
 
-from flext_tests import FlextTestsConstants
-
 from flext_target_oracle_oic import FlextTargetOracleOicConstants
+from flext_tests import FlextTestsConstants
 
 
 class TestsFlextTargetOracleOicConstants(
@@ -30,10 +29,10 @@ class TestsFlextTargetOracleOicConstants(
             SRC_DIR: Final[str] = "src"
             PACKAGE_DIR: Final[str] = "flext_target_oracle_oic"
             ALLOWED_MODULE_FUNCTIONS: Final[dict[str, frozenset[str]]] = {
-                "cli.py": frozenset({"main"}),
+                "cli.py": frozenset({"main"})
             }
             DEFAULT_PROPERTIES: Final[dict[str, dict[str, str]]] = {
-                "id": {"type": "string"},
+                "id": {"type": "string"}
             }
 
 

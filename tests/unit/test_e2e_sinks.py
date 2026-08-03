@@ -9,8 +9,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from pathlib import Path
-from typing import ClassVar
+from typing import TYPE_CHECKING, ClassVar
 
 import pytest
 from singer_sdk.target_base import Target as SingerTarget
@@ -21,7 +20,11 @@ from flext_target_oracle_oic.target import (
     FlextTargetOracleOicLookupsSink,
     FlextTargetOracleOicPackagesSink,
 )
-from tests.typings import t
+from flext_tests import tm
+from tests import t
+
+if TYPE_CHECKING:
+    from pathlib import Path
 
 
 class DummySingerTargetE2E(SingerTarget):
@@ -72,7 +75,7 @@ class TestsFlextTargetOracleOicE2eSinks:
         ]
         for record in records:
             sink.process_record(record, {})
-        assert len(records) == 2
+        tm.that(len(records), eq=2)
 
     def test_sink_authenticator_setup(self, singer_target: SingerTarget) -> None:
         """Test sink can be constructed with singer target."""
@@ -84,8 +87,7 @@ class TestsFlextTargetOracleOicE2eSinks:
         )
 
     def test_connections_sink_record_processing(
-        self,
-        singer_target: SingerTarget,
+        self, singer_target: SingerTarget
     ) -> None:
         """Test connections sink record processing."""
         sink = FlextTargetOracleOicConnectionsSink(
@@ -96,7 +98,7 @@ class TestsFlextTargetOracleOicE2eSinks:
                     "id": {"type": "string"},
                     "name": {"type": "string"},
                     "adapter_type": {"type": "string"},
-                },
+                }
             },
             key_properties=["id"],
         )
@@ -108,8 +110,7 @@ class TestsFlextTargetOracleOicE2eSinks:
         sink.process_record(test_record, {})
 
     def test_integrations_sink_record_processing(
-        self,
-        singer_target: SingerTarget,
+        self, singer_target: SingerTarget
     ) -> None:
         """Test integrations sink record processing."""
         sink = FlextTargetOracleOicIntegrationsSink(
@@ -120,7 +121,7 @@ class TestsFlextTargetOracleOicE2eSinks:
                     "id": {"type": "string"},
                     "name": {"type": "string"},
                     "archive_content": {"type": "string"},
-                },
+                }
             },
             key_properties=["id"],
         )
@@ -149,7 +150,7 @@ class TestsFlextTargetOracleOicE2eSinks:
             target=singer_target,
             stream_name="packages",
             schema={
-                "properties": {"id": {"type": "string"}, "name": {"type": "string"}},
+                "properties": {"id": {"type": "string"}, "name": {"type": "string"}}
             },
             key_properties=["id"],
         )
@@ -163,7 +164,7 @@ class TestsFlextTargetOracleOicE2eSinks:
         ]
         for record in records:
             sink.process_record(record, {})
-        assert len(records) == 10
+        tm.that(len(records), eq=10)
 
     def test_lookups_sink_record_processing(self, singer_target: SingerTarget) -> None:
         """Test lookups sink record processing."""
@@ -175,15 +176,14 @@ class TestsFlextTargetOracleOicE2eSinks:
                     "id": {"type": "string"},
                     "name": {"type": "string"},
                     "version": {"type": "string"},
-                },
+                }
             },
             key_properties=["id"],
         )
         sink.process_record(
-            {"id": "test-lookup", "name": "Test Lookup", "version": "1.0"},
-            {},
+            {"id": "test-lookup", "name": "Test Lookup", "version": "1.0"}, {}
         )
-        assert sink.stream_name == "lookups"
+        tm.that(sink.stream_name, eq="lookups")
 
     def test_cli_integration(self, singer_target: SingerTarget, tmp_path: Path) -> None:
         """Test sink processing path with singer-like input payload."""
@@ -191,10 +191,7 @@ class TestsFlextTargetOracleOicE2eSinks:
         sink = FlextTargetOracleOicConnectionsSink(
             target=singer_target,
             stream_name="connections",
-            schema={
-                "type": "object",
-                "properties": {"id": {"type": "string"}},
-            },
+            schema={"type": "object", "properties": {"id": {"type": "string"}}},
             key_properties=["id"],
         )
         sink.process_record({"id": "test-cli-connection"}, {})

@@ -19,21 +19,13 @@ class FlextTargetOracleOicServiceRuntime:
 
     @classmethod
     def create_sink(
-        cls,
-        *,
-        stream_name: str,
-        schema: t.JsonMapping,
-        target_config: t.JsonMapping,
+        cls, *, stream_name: str, schema: t.JsonMapping, target_config: t.ScalarMapping
     ) -> FlextTargetOracleOicBaseSink:
         """Create the service-level Singer sink adapter."""
-        normalized_target_config = u.normalize_to_json_mapping(
-            target_config,
-        )
+        normalized_target_config = u.normalize_to_json_mapping(target_config)
         runtime_target = FlextTargetOracleOic()
         sink_class: type[FlextTargetOracleOicBaseSink] = (
-            runtime_target.fetch_sink_class(
-                stream_name,
-            )
+            runtime_target.fetch_sink_class(stream_name)
         )
         return sink_class(
             target=cls.Target(

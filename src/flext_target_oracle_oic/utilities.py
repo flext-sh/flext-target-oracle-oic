@@ -2,14 +2,13 @@
 
 from __future__ import annotations
 
-from collections.abc import (
-    Mapping,
-)
+from collections.abc import Mapping
 
 from flext_api import FlextApi, FlextApiSettings
 from flext_meltano import u
 from flext_oracle_oic import FlextOracleOicUtilities
-from flext_target_oracle_oic import FlextTargetOracleOicSettings, c, m, p, r, t
+from flext_target_oracle_oic import c, m, p, r, t
+from flext_target_oracle_oic._settings import FlextTargetOracleOicSettings
 
 
 class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
@@ -51,16 +50,12 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                 return m.TargetOracleOic.OICIntegration.model_validate(data)
 
             @staticmethod
-            def create_oic_package(
-                data: t.JsonMapping,
-            ) -> m.TargetOracleOic.OICPackage:
+            def create_oic_package(data: t.JsonMapping) -> m.TargetOracleOic.OICPackage:
                 """Create an OICPackage model from generic payload via Pydantic validation."""
                 return m.TargetOracleOic.OICPackage.model_validate(data)
 
             @staticmethod
-            def create_oic_lookup(
-                data: t.JsonMapping,
-            ) -> m.TargetOracleOic.OICLookup:
+            def create_oic_lookup(data: t.JsonMapping) -> m.TargetOracleOic.OICLookup:
                 """Create an OICLookup model from generic payload via Pydantic validation."""
                 return m.TargetOracleOic.OICLookup.model_validate(data)
 
@@ -69,50 +64,38 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
 
             def __init__(self, settings: FlextTargetOracleOicSettings) -> None:
                 """Initialize the authenticator with target configuration."""
-                self.config: FlextTargetOracleOicSettings = settings
+                # NOTE (multi-agent): keep settings on self; methods below read
+                # oauth fields via self.settings (FLEXT settings SSOT).
+                self.settings: FlextTargetOracleOicSettings = settings
                 self._access_token: str | None = None
                 self._auth_scheme: str = c.TargetOracleOic.AUTH_SCHEME_BEARER
 
             @property
             def auth_headers(self) -> t.StrMapping:
-                """Get the authentication headers block for requests."""
+                """The authentication headers block for requests."""
                 token = self.get_access_token()
                 return {"Authorization": f"{self._auth_scheme} {token}"}
 
             def build_token_request_data(self) -> t.JsonDict:
                 """Build the payload for requesting an OAuth2 token."""
+                oic = self.settings.TargetOracleOic
                 payload: t.MutableStrMapping = {
                     "grant_type": "client_credentials",
-                    "client_id": self.config.oauth_client_id,
-                    "client_secret": self.config.get_oauth_client_secret_value(),
+                    "client_id": oic.oauth_client_id,
+                    "client_secret": oic.oauth_client_secret,
                 }
-                if self.config.oauth_scope:
-                    payload["scope"] = self.config.oauth_scope
-                if self.config.oauth_client_aud:
-                    payload["audience"] = self.config.oauth_client_aud
+                if oic.oauth_scope:
+                    payload["scope"] = oic.oauth_scope
+                if oic.oauth_client_aud:
+                    payload["audience"] = oic.oauth_client_aud
                 return t.json_dict_adapter().validate_python(payload)
 
             def get_access_token(self, *, force_refresh: bool = False) -> str:
-                """Get the current access token, optionally forcing a refresh."""
+                """Return the current access token, optionally forcing a refresh."""
                 if self._access_token is not None and (not force_refresh):
                     return self._access_token
                 try:
-                    api_config = FlextApiSettings.model_validate({
-                        "base_url": self.config.oauth_token_url,
-                        "timeout": self.config.timeout,
-                    })
-                    response_result = FlextApi(settings=api_config).post(
-                        "",
-                        data=self.build_token_request_data(),
-                        headers=dict(self.config.get_oauth_headers()),
-                    )
-                    if response_result.failure:
-                        msg = f"Failed to request OAuth2 token: {response_result.error}"
-                        raise RuntimeError(msg)
-                    response = response_result.value
-                    if response.status_code >= c.API.HTTP_ERROR_STATUS_THRESHOLD:
-                        msg = f"Failed to request OAuth2 token: HTTP {response.status_code}"
-                        raise RuntimeError(msg)
+                    response = self._request_access_token()
                 except c.Meltano.SINGER_SAFE_EXCEPTIONS as exc:
                     msg = f"Failed to request OAuth2 token: {exc}"
                     raise RuntimeError(msg) from exc
@@ -130,6 +113,30 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                     self._auth_scheme = token_type
                 self._access_token = access_token
                 return access_token
+
+            def _request_access_token(self) -> m.Api.HttpResponse:
+                """Request one OAuth2 access-token response."""
+                oic = self.settings.TargetOracleOic
+                api_config = FlextApiSettings.model_validate({
+                    "base_url": oic.oauth_token_url,
+                    "timeout": oic.timeout,
+                })
+                response_result = FlextApi(settings=api_config).post(
+                    "",
+                    data=self.build_token_request_data(),
+                    headers={
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        "Accept": "application/json",
+                    },
+                )
+                if response_result.failure:
+                    msg = f"Failed to request OAuth2 token: {response_result.error}"
+                    raise RuntimeError(msg)
+                response = response_result.value
+                if response.status_code >= c.API.HTTP_ERROR_STATUS_THRESHOLD:
+                    msg = f"Failed to request OAuth2 token: HTTP {response.status_code}"
+                    raise RuntimeError(msg)
+                return response
 
             @staticmethod
             def create_config_from_dict(
@@ -152,7 +159,4 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
 
 
 u = FlextTargetOracleOicUtilities
-__all__: list[str] = [
-    "FlextTargetOracleOicUtilities",
-    "u",
-]
+__all__: list[str] = ["FlextTargetOracleOicUtilities", "u"]
