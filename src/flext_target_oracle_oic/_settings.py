@@ -12,10 +12,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Annotated
 
-from pydantic import BaseModel, Field
 from pydantic_settings import SettingsConfigDict
 
-from flext_meltano import FlextMeltanoSettings
+from flext_meltano import FlextMeltanoSettings, m
 
 
 class FlextTargetOracleOicSettings(FlextMeltanoSettings):
@@ -25,36 +24,36 @@ class FlextTargetOracleOicSettings(FlextMeltanoSettings):
         env_prefix="FLEXT_TARGET_ORACLE_OIC_", env_nested_delimiter="__", extra="ignore"
     )
 
-    class _TargetOracleOic(BaseModel):
+    class _TargetOracleOic(m.BaseModel):
         """Namespaced Oracle OIC target settings."""
 
         oauth_client_id: Annotated[
-            str, Field(default="", description="OAuth client identifier")
+            str, m.Field(default="", description="OAuth client identifier")
         ]
         oauth_client_secret: Annotated[
-            str, Field(default="", description="OAuth client secret")
+            str, m.Field(default="", description="OAuth client secret")
         ]
         oauth_token_url: Annotated[
-            str, Field(default="", description="OAuth token endpoint URL")
+            str, m.Field(default="", description="OAuth token endpoint URL")
         ]
         oauth_scope: Annotated[
             str | None,
-            Field(
+            m.Field(
                 default="oic_instance", description="OAuth scope used in token requests"
             ),
         ]
         oauth_client_aud: Annotated[
             str | None,
-            Field(default=None, description="Optional audience used by OAuth provider"),
+            m.Field(default=None, description="Optional audience used by OAuth provider"),
         ]
         timeout: Annotated[
-            int, Field(default=30, ge=1, description="HTTP timeout in seconds")
+            int, m.Field(default=30, ge=1, description="HTTP timeout in seconds")
         ]
 
     if TYPE_CHECKING:
         TargetOracleOic: _TargetOracleOic
     else:
-        TargetOracleOic: _TargetOracleOic = Field(
+        TargetOracleOic: _TargetOracleOic = m.Field(
             default_factory=_TargetOracleOic,
             description="Namespaced Oracle OIC target settings.",
         )
