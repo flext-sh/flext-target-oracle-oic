@@ -1,8 +1,12 @@
 <!-- AUTO-GENERATED — DO NOT EDIT MANUALLY -->
 
-# flext_target_oracle_oic.connection.connection
+# flext_target_oracle_oic
 
-::: flext_target_oracle_oic.connection.connection
+<!-- TOC START -->
+- No sections found
+<!-- TOC END -->
+
+::: flext_target_oracle_oic
     options:
       show_root_heading: true
       show_root_full_path: false

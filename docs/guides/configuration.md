@@ -104,7 +104,6 @@ api:
 Configure FLEXT programmatically in your code:
 
 ```python
-from flext_cli import u
 from flext_core import FlextSettings
 from flext_ldif import FlextLdifSettings
 
@@ -114,9 +113,7 @@ settings = FlextSettings(log_level="INFO", debug=False, environment="production"
 # LDIF configuration
 ldif_config = FlextLdifSettings(
     ldif={"ldif_encoding": "utf-8", "ldif_strict_validation": True}
-)
-```
-
+)```
 ## Project-Specific Configuration
 
 ### flext-ldif Configuration
@@ -136,9 +133,7 @@ settings = FlextLdifSettings(
     batch_size=1000,
     parallel_processing=True,
     max_workers=4,
-)
-```
-
+)```
 ### flext-api Configuration
 
 ```python
@@ -152,9 +147,7 @@ settings = FlextApiSettings(
         "verify_ssl": True,
         "headers": {"User-Agent": "FLEXT-API/1.0"},
     }
-)
-```
-
+)```
 ### flext-auth Configuration
 
 ```python
@@ -162,9 +155,7 @@ from flext_auth import FlextAuthSettings
 
 settings = FlextAuthSettings(
     secret_key="your-secret-key", Auth={"algorithm": "HS256", "expiry_minutes": 30}
-)
-```
-
+)```
 ## Environment-Specific Configuration
 
 ### Development Environment
@@ -216,9 +207,7 @@ try:
         log_level="INVALID_LEVEL"  # This will raise ValidationError
     )
 except c.ValidationError as e:
-    u.Cli.info(f"Configuration error: {e}")
-```
-
+    u.Cli.info(f"Configuration error: {e}")```
 ## Configuration Inheritance
 
 FLEXT supports configuration inheritance for complex setups:
@@ -233,9 +222,7 @@ base_config = FlextSettings(log_level="INFO", environment="production")
 extended_config = FlextSettings(
     **base_config.model_dump(),
     debug=True,  # Override for development
-)
-```
-
+)```
 ## Best Practices
 
 ### 1. Use Environment Variables for Secrets
@@ -263,9 +250,7 @@ def main():
         return 1
 
     # Continue with application logic
-    return 0
-```
-
+    return 0```
 ### 3. Use Configuration Classes
 
 ```python
@@ -283,9 +268,7 @@ class MyAppConfig(FlextSettings):
     def validate_another_setting(cls, v):
         if v < 0:
             raise ValueError("another_setting must be positive")
-        return v
-```
-
+        return v```
 ### 4. Document Configuration Options
 
 ```python
@@ -302,9 +285,7 @@ class FlextLdifSettings(m.BaseModel):
 
     strict_validation: bool = u.Field(
         default=True, description="Enable strict RFC validation"
-    )
-```
-
+    )```
 ## Troubleshooting
 
 ### Common Configuration Issues
@@ -343,9 +324,7 @@ u.Cli.print(settings.dict())
 if settings.is_valid():
     u.Cli.print("Configuration is valid")
 else:
-    u.Cli.print("Configuration has errors")
-```
-
+    u.Cli.print("Configuration has errors")```
 ## Examples
 
 ### Complete Configuration Example
@@ -353,7 +332,7 @@ else:
 ```python
 from __future__ import annotations
 
-#!/usr/bin/env python3
+# !/usr/bin/env python3
 """Complete FLEXT configuration example."""
 
 import os
@@ -387,9 +366,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
-```
-
+    main()```
 ## Reference
 
 - FLEXT Core Configuration
