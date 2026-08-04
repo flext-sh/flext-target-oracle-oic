@@ -52,6 +52,8 @@ class FlextTargetOracleOicSettings(FlextMeltanoSettings):
             int, m.Field(default=30, ge=1, description="HTTP timeout in seconds")
         ]
 
+    # Why: mro-4p0t — nested namespace uses default_factory only; no build_* wrapper.
+
     if TYPE_CHECKING:
         TargetOracleOic: _TargetOracleOic
     else:
@@ -59,14 +61,6 @@ class FlextTargetOracleOicSettings(FlextMeltanoSettings):
             default_factory=_TargetOracleOic,
             description="Namespaced Oracle OIC target settings.",
         )
-
-    @classmethod
-    def build_target_oracle_oic(
-        cls, data: dict[str, str | int | None] | None = None
-    ) -> _TargetOracleOic:
-        """Build and validate a ``TargetOracleOic`` namespace instance."""
-        return cls._TargetOracleOic.model_validate(data or {})
-
 
 settings: FlextTargetOracleOicSettings = FlextTargetOracleOicSettings.fetch_global()
 """Pre-instantiated project settings singleton — ``from flext_target_oracle_oic import settings``."""
