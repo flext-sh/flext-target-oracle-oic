@@ -142,12 +142,12 @@ def _build_auth_config(
 ) -> FlextTargetOracleOicSettings:
     # Build via model_construct to avoid touching the flext-core settings singleton;
     # oauth fields live under the TargetOracleOic namespace (ADR-005).
-    namespace = AuthTestSettings._TargetOracleOic(
-        oauth_client_id="client-id",
-        oauth_client_secret="client-secret",
-        oauth_token_url="https://idcs.example.com/oauth2/v1/token",
-        oauth_scope=oauth_scope,
-        oauth_client_aud=oauth_client_aud,
-        timeout=30,
-    )
-    return AuthTestSettings.model_construct(TargetOracleOic=namespace)
+    namespace = {
+        "oauth_client_id": "client-id",
+        "oauth_client_secret": "test_secret_67890",
+        "oauth_token_url": "https://idcs.example.com/oauth2/v1/token",
+        "oauth_scope": oauth_scope,
+        "oauth_client_aud": oauth_client_aud,
+        "timeout": 30,
+    }
+    return AuthTestSettings.model_validate({"TargetOracleOic": namespace})
