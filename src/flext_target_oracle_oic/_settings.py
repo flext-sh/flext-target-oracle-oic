@@ -44,7 +44,9 @@ class FlextTargetOracleOicSettings(FlextMeltanoSettings):
         ]
         oauth_client_aud: Annotated[
             str | None,
-            m.Field(default=None, description="Optional audience used by OAuth provider"),
+            m.Field(
+                default=None, description="Optional audience used by OAuth provider"
+            ),
         ]
         timeout: Annotated[
             int, m.Field(default=30, ge=1, description="HTTP timeout in seconds")
