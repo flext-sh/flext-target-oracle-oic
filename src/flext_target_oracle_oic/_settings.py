@@ -62,6 +62,7 @@ class FlextTargetOracleOicSettings(FlextMeltanoSettings):
             description="Namespaced Oracle OIC target settings.",
         )
 
+
 settings: FlextTargetOracleOicSettings = FlextTargetOracleOicSettings.fetch_global()
 """Pre-instantiated project settings singleton — ``from flext_target_oracle_oic import settings``."""
 
