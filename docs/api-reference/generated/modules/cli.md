@@ -2,6 +2,10 @@
 
 # flext_target_oracle_oic.cli
 
+<!-- TOC START -->
+- No sections found
+<!-- TOC END -->
+
 ::: flext_target_oracle_oic.cli
     options:
       show_root_heading: true
