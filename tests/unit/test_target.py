@@ -100,7 +100,7 @@ class TestsFlextTargetOracleOicTarget:
         payload = authenticator.build_token_request_data()
         tm.that(payload["grant_type"], eq="client_credentials")
         tm.that(payload["client_id"], eq="client-id")
-        tm.that(payload["client_secret"], eq="client-secret")
+        tm.that(payload["client_secret"], eq="test_secret_67890")
         tm.that(payload["scope"], eq="urn:opc:resource:consumer:all")
         tm.that(payload["audience"], eq="https://idcs.example.com")
 
