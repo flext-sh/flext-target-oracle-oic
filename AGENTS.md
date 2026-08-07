@@ -34,6 +34,8 @@ src/flext_target_oracle_oic/
 ## Conventions (specific to this package)
 
 - Named OIC streams map to **dedicated sink classes**; supporting logic lives in `singer/`/`application/`/`connection/`/`patterns/`.
+- Config/settings canonical pattern: ADR-012.
+- Codemod governance (ast-grep + make mod): ADR-014.
 
 ## Commands
 
