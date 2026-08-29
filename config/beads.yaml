@@ -1,0 +1,4 @@
+version: 1
+workspace: flext-target-oracle-oic
+database: flext-target-oracle-oic
+issue_prefix: flext-target-oracle-oic
