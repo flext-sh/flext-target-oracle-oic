@@ -37,7 +37,4 @@ class FlextTargetOracleOicService(FlextMeltanoTargetServiceBase):
             stream_name=stream_name, schema=schema, target_config=target_config
         )
 
-
-target_oracle_oic = FlextTargetOracleOicService
-
-__all__: list[str] = ["FlextTargetOracleOicService", "target_oracle_oic"]
+__all__: list[str] = ["FlextTargetOracleOicService", ]
