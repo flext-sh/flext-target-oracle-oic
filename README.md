@@ -53,10 +53,10 @@ slot registry verification).
 - Parent FLEXT chain: read this project's `pyproject.toml` `dependencies` array
   filtered by `flext-*`. The FLEXT cascade is encoded in the inheritance lists
   of the facade classes listed under Module Map above.
-- Public extensions exposed by this project: `FlextTargetOracleOicCli`,
-  `FlextTargetOracleOicConfig`, `FlextTargetOracleOicConstants`,
-  `FlextTargetOracleOicModels`, `FlextTargetOracleOicProtocols`,
-  `FlextTargetOracleOicService` (+3 more).
+- Public extensions exposed by this project: `FlextTargetOracleOic`,
+  `FlextTargetOracleOicBaseSink`, `FlextTargetOracleOicCli`,
+  `FlextTargetOracleOicConfig`, `FlextTargetOracleOicConnectionsSink`,
+  `FlextTargetOracleOicConstants` (+9 more).
 - Library abstraction boundaries: see AGENTS.md §2.7.
 
 ## Quality Gates
