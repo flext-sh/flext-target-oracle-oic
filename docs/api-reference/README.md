@@ -25,9 +25,10 @@ This section is generated from public exports and real docstrings.
 
 ## Surface Summary
 
-- Primary facades: `FlextTargetOracleOicCli`, `FlextTargetOracleOicConfig`,
-  `FlextTargetOracleOicConstants`, `FlextTargetOracleOicModels`,
-  `FlextTargetOracleOicProtocols`, `FlextTargetOracleOicService` (+3 more)
-- Generated module pages: `7`
+- Primary facades: `FlextTargetOracleOic`, `FlextTargetOracleOicBaseSink`,
+  `FlextTargetOracleOicCli`, `FlextTargetOracleOicConfig`,
+  `FlextTargetOracleOicConnectionsSink`, `FlextTargetOracleOicConstants` (+9
+  more)
+- Generated module pages: `8`
 
 Back to [project docs](../index.md).
