@@ -28,7 +28,7 @@
   `FlextTargetOracleOicCli`, `FlextTargetOracleOicConfig`,
   `FlextTargetOracleOicConnectionsSink`, `FlextTargetOracleOicConstants`,
   `FlextTargetOracleOicIntegrationsSink`, `FlextTargetOracleOicLookupsSink`,
-  `FlextTargetOracleOicModels`, `FlextTargetOracleOicPackagesSink` (+8 more)
+  `FlextTargetOracleOicModels`, `FlextTargetOracleOicPackagesSink` (+9 more)
 - Exported module shortcuts: _none_
 - Generated module pages: `8`
 
