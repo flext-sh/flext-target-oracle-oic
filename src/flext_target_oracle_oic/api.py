@@ -38,6 +38,4 @@ class FlextTargetOracleOicService(FlextMeltanoTargetServiceBase):
         )
 
 
-target_oracle_oic = FlextTargetOracleOicService
-
-__all__: list[str] = ["FlextTargetOracleOicService", "target_oracle_oic"]
+__all__: list[str] = ["FlextTargetOracleOicService"]
