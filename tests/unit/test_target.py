@@ -7,8 +7,9 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import ClassVar
-from unittest.mock import Mock, patch
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from threading import Thread
+from typing import TYPE_CHECKING, ClassVar
 
 import pytest
 from singer_sdk.target_base import Target as SingerTarget
@@ -19,8 +20,11 @@ from flext_target_oracle_oic.target import (
     FlextTargetOracleOicConnectionsSink,
     FlextTargetOracleOicIntegrationsSink,
 )
-from flext_tests import r as result_type, tm
+from flext_tests import tm
 from tests import c, t
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
 
 class AuthTestSettings(FlextTargetOracleOicSettings):
@@ -112,22 +116,40 @@ class TestsFlextTargetOracleOicTarget:
         tm.that(payload, lacks="scope")
         tm.that(payload, lacks="audience")
 
-    def test_oic_authenticator_rejects_invalid_token_response(self) -> None:
-
-        authenticator = u.TargetOracleOic.Authenticator(_build_auth_config())
-
-        mock_response = Mock()
-        mock_response.status_code = 200
-        mock_response.body = {"token_type": "Bearer"}
-
-        with (
-            patch(
-                "flext_api.FlextApi.post",
-                return_value=result_type[Mock].ok(mock_response),
-            ),
-            pytest.raises(RuntimeError, match="access_token"),
-        ):
+    def test_oic_authenticator_rejects_invalid_token_response(
+        self, local_token_url: str
+    ) -> None:
+        """A 200 token response without access_token fails loud over real HTTP."""
+        authenticator = u.TargetOracleOic.Authenticator(
+            _build_auth_config(oauth_token_url=local_token_url)
+        )
+        with pytest.raises(RuntimeError, match="access_token"):
             authenticator.get_access_token()
+
+
+class _TokenWithoutAccessTokenHandler(BaseHTTPRequestHandler):
+    """Local token endpoint answering 200 with a body lacking access_token."""
+
+    def do_POST(self) -> None:
+        """Answer one token request with deterministic token-type-only JSON."""
+        body = b'{"token_type": "Bearer"}'
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+
+@pytest.fixture
+def local_token_url() -> Iterator[str]:
+    """Run one ephemeral local OAuth2 token endpoint for the duration of a test."""
+    server = HTTPServer(("127.0.0.1", 0), _TokenWithoutAccessTokenHandler)
+    thread = Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    yield f"http://127.0.0.1:{server.server_address[1]}"
+    server.shutdown()
+    server.server_close()
+    thread.join(timeout=5)
 
 
 @pytest.fixture
@@ -137,6 +159,7 @@ def singer_target() -> SingerTarget:
 
 def _build_auth_config(
     *,
+    oauth_token_url: str | None = None,
     oauth_scope: str | None = "urn:opc:resource:consumer:all",
     oauth_client_aud: str | None = "https://idcs.example.com",
 ) -> FlextTargetOracleOicSettings:
@@ -145,7 +168,11 @@ def _build_auth_config(
     namespace = {
         "oauth_client_id": "client-id",
         "oauth_client_secret": "test_secret_67890",
-        "oauth_token_url": "https://idcs.example.com/oauth2/v1/token",
+        "oauth_token_url": (
+            oauth_token_url
+            if oauth_token_url is not None
+            else c.TargetOracleOic.Tests.OAUTH_ENDPOINT_URL
+        ),
         "oauth_scope": oauth_scope,
         "oauth_client_aud": oauth_client_aud,
         "timeout": 30,
