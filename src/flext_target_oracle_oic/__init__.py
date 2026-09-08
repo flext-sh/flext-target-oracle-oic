@@ -20,7 +20,8 @@ from .__version__ import (
 )
 
 if TYPE_CHECKING:
-    from flext_oracle_oic import FlextOracleOicConstants, d, e, h, r, s, x
+    from flext_meltano import d, e, h, r, s, x
+    from flext_oracle_oic import FlextOracleOicConstants
 
     from ._config import FlextTargetOracleOicConfig, config
     from ._settings import FlextTargetOracleOicSettings, settings
@@ -110,15 +111,8 @@ _LAZY_IMPORTS = MappingProxyType(
             ),
             ".typings": ("FlextTargetOracleOicTypes", "t"),
             ".utilities": ("FlextTargetOracleOicUtilities", "u"),
-            "flext_oracle_oic": (
-                "FlextOracleOicConstants",
-                "d",
-                "e",
-                "h",
-                "r",
-                "s",
-                "x",
-            ),
+            "flext_meltano": ("d", "e", "h", "r", "s", "x"),
+            "flext_oracle_oic": ("FlextOracleOicConstants",),
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,
