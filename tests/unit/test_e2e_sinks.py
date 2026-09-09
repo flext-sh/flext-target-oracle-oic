@@ -12,6 +12,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, ClassVar
 
 import pytest
+from flext_tests import tm
 from singer_sdk.target_base import Target as SingerTarget
 
 from flext_target_oracle_oic.target import (
@@ -20,7 +21,6 @@ from flext_target_oracle_oic.target import (
     FlextTargetOracleOicLookupsSink,
     FlextTargetOracleOicPackagesSink,
 )
-from flext_tests import tm
 from tests import t
 
 if TYPE_CHECKING:

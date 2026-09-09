@@ -10,8 +10,9 @@ from __future__ import annotations
 
 from typing import Final
 
-from flext_target_oracle_oic import FlextTargetOracleOicConstants
 from flext_tests import FlextTestsConstants
+
+from flext_target_oracle_oic import FlextTargetOracleOicConstants
 
 
 class TestsFlextTargetOracleOicConstants(

@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, ClassVar, override
 
 from flext_meltano.services.singer_target import FlextMeltanoTargetAbstractions
+
 from flext_target_oracle_oic import c, m, p, r, t
 
 if TYPE_CHECKING:

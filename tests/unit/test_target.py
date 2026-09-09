@@ -12,6 +12,7 @@ from threading import Thread
 from typing import TYPE_CHECKING, ClassVar
 
 import pytest
+from flext_tests import tm
 from singer_sdk.target_base import Target as SingerTarget
 
 from flext_target_oracle_oic import FlextTargetOracleOicSettings, u
@@ -20,7 +21,6 @@ from flext_target_oracle_oic.target import (
     FlextTargetOracleOicConnectionsSink,
     FlextTargetOracleOicIntegrationsSink,
 )
-from flext_tests import tm
 from tests import c, t
 
 if TYPE_CHECKING:

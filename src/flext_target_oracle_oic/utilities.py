@@ -7,6 +7,7 @@ from collections.abc import Mapping
 from flext_api import FlextApi, FlextApiSettings
 from flext_meltano import u
 from flext_oracle_oic import FlextOracleOicUtilities
+
 from flext_target_oracle_oic import c, m, p, r, t
 
 from ._settings import FlextTargetOracleOicSettings
