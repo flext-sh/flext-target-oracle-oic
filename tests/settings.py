@@ -4,8 +4,9 @@ from __future__ import annotations
 
 from typing import Annotated
 
-from flext_target_oracle_oic import FlextTargetOracleOicSettings, t, u
 from flext_tests import FlextTestsSettings
+
+from flext_target_oracle_oic import FlextTargetOracleOicSettings, t, u
 
 
 class TestsFlextTargetOracleOicSettings(
