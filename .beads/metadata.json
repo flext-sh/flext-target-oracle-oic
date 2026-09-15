@@ -1,7 +1,6 @@
 {
-  "database": "dolt",
   "backend": "dolt",
+  "database": "dolt",
   "dolt_mode": "server",
-  "dolt_database": "flext",
-  "project_id": "1a7ffde9-9e2f-49d0-bc30-4491678c04d4"
+  "dolt_database": "flext"
 }
