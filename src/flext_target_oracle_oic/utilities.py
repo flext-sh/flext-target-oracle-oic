@@ -39,7 +39,9 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                 data: t.JsonMapping,
             ) -> m.TargetOracleOic.OICConnection:
                 """Create an OICConnection model from generic payload via Pydantic validation."""
-                return m.TargetOracleOic.OICConnection.model_validate({
+                return m.TypeAdapter[m.TargetOracleOic.OICConnection](
+                    m.TargetOracleOic.OICConnection
+                ).validate_python({
                     **data,
                     "properties": data,
                 })
@@ -49,17 +51,23 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                 data: t.JsonMapping,
             ) -> m.TargetOracleOic.OICIntegration:
                 """Create an OICIntegration model from generic payload via Pydantic validation."""
-                return m.TargetOracleOic.OICIntegration.model_validate(data)
+                return m.TypeAdapter[m.TargetOracleOic.OICIntegration](
+                    m.TargetOracleOic.OICIntegration
+                ).validate_python(data)
 
             @staticmethod
             def create_oic_package(data: t.JsonMapping) -> m.TargetOracleOic.OICPackage:
                 """Create an OICPackage model from generic payload via Pydantic validation."""
-                return m.TargetOracleOic.OICPackage.model_validate(data)
+                return m.TypeAdapter[m.TargetOracleOic.OICPackage](
+                    m.TargetOracleOic.OICPackage
+                ).validate_python(data)
 
             @staticmethod
             def create_oic_lookup(data: t.JsonMapping) -> m.TargetOracleOic.OICLookup:
                 """Create an OICLookup model from generic payload via Pydantic validation."""
-                return m.TargetOracleOic.OICLookup.model_validate(data)
+                return m.TypeAdapter[m.TargetOracleOic.OICLookup](
+                    m.TargetOracleOic.OICLookup
+                ).validate_python(data)
 
         class Authenticator:
             """OAuth2 Authenticator for Oracle Integration Cloud."""
