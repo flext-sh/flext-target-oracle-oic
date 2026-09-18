@@ -39,27 +39,39 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                 data: t.JsonMapping,
             ) -> m.TargetOracleOic.OICConnection:
                 """Create an OICConnection model from generic payload via Pydantic validation."""
-                return m.TargetOracleOic.OICConnection.model_validate({
-                    **data,
-                    "properties": data,
-                })
+                connection: m.TargetOracleOic.OICConnection = (
+                    m.TargetOracleOic.OICConnection.model_validate({
+                        **data,
+                        "properties": data,
+                    })
+                )
+                return connection
 
             @staticmethod
             def create_oic_integration(
                 data: t.JsonMapping,
             ) -> m.TargetOracleOic.OICIntegration:
                 """Create an OICIntegration model from generic payload via Pydantic validation."""
-                return m.TargetOracleOic.OICIntegration.model_validate(data)
+                integration: m.TargetOracleOic.OICIntegration = (
+                    m.TargetOracleOic.OICIntegration.model_validate(data)
+                )
+                return integration
 
             @staticmethod
             def create_oic_package(data: t.JsonMapping) -> m.TargetOracleOic.OICPackage:
                 """Create an OICPackage model from generic payload via Pydantic validation."""
-                return m.TargetOracleOic.OICPackage.model_validate(data)
+                package: m.TargetOracleOic.OICPackage = (
+                    m.TargetOracleOic.OICPackage.model_validate(data)
+                )
+                return package
 
             @staticmethod
             def create_oic_lookup(data: t.JsonMapping) -> m.TargetOracleOic.OICLookup:
                 """Create an OICLookup model from generic payload via Pydantic validation."""
-                return m.TargetOracleOic.OICLookup.model_validate(data)
+                lookup: m.TargetOracleOic.OICLookup = (
+                    m.TargetOracleOic.OICLookup.model_validate(data)
+                )
+                return lookup
 
         class Authenticator:
             """OAuth2 Authenticator for Oracle Integration Cloud."""
@@ -125,7 +137,7 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                     "base_url": "",
                     "timeout": oic.timeout,
                 })
-                response_result = FlextApi(settings=api_config).post(
+                response_result = FlextApi(runtime_settings=api_config).post(
                     oic.oauth_token_url,
                     data=self.build_token_request_data(),
                     headers={
