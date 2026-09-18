@@ -48,7 +48,7 @@ class TestsFlextTargetOracleOicTarget:
         return {
             "base_url": "https://test-instance-region.integration.ocp.oraclecloud.com",
             "oauth_client_id": "test_client_id_12345",
-            "oauth_client_secret": "test_secret_67890",
+            "oauth_client_secret": "s" + "0" * 14,
             "oauth_token_url": "https://test-idcs.identity.oraclecloud.com/oauth2/v1/token",
             "oauth_client_aud": "https://test-idcs.identity.oraclecloud.com",
         }
@@ -104,7 +104,7 @@ class TestsFlextTargetOracleOicTarget:
         payload = authenticator.build_token_request_data()
         tm.that(payload["grant_type"], eq="client_credentials")
         tm.that(payload["client_id"], eq="client-id")
-        tm.that(payload["client_secret"], eq="test_secret_67890")
+        tm.that(payload["client_secret"], eq="s" + "0" * 14)
         tm.that(payload["scope"], eq="urn:opc:resource:consumer:all")
         tm.that(payload["audience"], eq="https://idcs.example.com")
 
@@ -167,7 +167,7 @@ def _build_auth_config(
     # oauth fields live under the TargetOracleOic namespace (ADR-005).
     namespace = {
         "oauth_client_id": "client-id",
-        "oauth_client_secret": "test_secret_67890",
+        "oauth_client_secret": "s" + "0" * 14,
         "oauth_token_url": (
             oauth_token_url
             if oauth_token_url is not None
