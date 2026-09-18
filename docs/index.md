@@ -12,7 +12,7 @@
 
 <!-- AUTO-GENERATED — DO NOT EDIT MANUALLY -->
 
-- Version: `0.12.0rc0`
+- Version: `0.12.0`
 - Project class: `integration`
 - Package: `flext_target_oracle_oic`
 - Description: FLEXT Target Oracle OIC - Singer Target for Oracle Integration Cloud

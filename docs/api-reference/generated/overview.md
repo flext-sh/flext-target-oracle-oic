@@ -9,7 +9,7 @@
 <!-- AUTO-GENERATED — DO NOT EDIT MANUALLY -->
 
 - Package: `flext_target_oracle_oic`
-- Version: `0.12.0rc0`
+- Version: `0.12.0`
 - Description: FLEXT Target Oracle OIC - Singer Target for Oracle Integration Cloud
 - Doc summary: Flext Target Oracle Oic package.
 - Classifiers: `Development Status :: 3 - Alpha`, `Intended Audience :: Developers`,
