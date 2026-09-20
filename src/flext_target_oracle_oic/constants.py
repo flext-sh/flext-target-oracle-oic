@@ -5,31 +5,14 @@ from __future__ import annotations
 from flext_meltano import c
 from flext_oracle_oic import FlextOracleOicConstants, t
 
+from ._constants.base import FlextTargetOracleOicConstantsBase
+
 
 class FlextTargetOracleOicConstants(c, FlextOracleOicConstants):
     """Namespace class for OIC target constants."""
 
-    class TargetOracleOic:
+    class TargetOracleOic(FlextTargetOracleOicConstantsBase):
         """Target Oracle OIC domain constants."""
-
-        STREAM_CONNECTIONS: str = "connections"
-        STREAM_INTEGRATIONS: str = "integrations"
-        STREAM_PACKAGES: str = "packages"
-        STREAM_LOOKUPS: str = "lookups"
-        TARGET_NAME: str = "target-oracle-oic"
-        AUTH_SCHEME_BEARER: str = "Bearer"
-        DEFAULT_OAUTH_SCOPE: str = "oic_instance"
-        HEADER_CONTENT_TYPE: str = "Content-Type"
-        HEADER_CONTENT_TYPE_FORM: str = "application/x-www-form-urlencoded"
-        HEADER_CONTENT_TYPE_JSON: str = "application/json"
-        HEADER_ACCEPT: str = "Accept"
-        HEADER_AUTHORIZATION: str = "Authorization"
-        API_PATH_INTEGRATION: str = "/ic/api/integration/v1"
-        DEFAULT_VERSION: str = "01.00.0000"
-        DEFAULT_PATTERN: str = "ORCHESTRATION"
-        DEFAULT_SCHEDULE_TYPE: str = "ONCE"
-        DEFAULT_USE_OAUTH2: bool = True
-        DEFAULT_VERIFY_SSL: bool = True
 
 
 c = FlextTargetOracleOicConstants
