@@ -13,13 +13,12 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Annotated
 
 from flext_meltano import FlextMeltanoSettings, m
-from pydantic_settings import SettingsConfigDict
 
 
 class FlextTargetOracleOicSettings(FlextMeltanoSettings):
     """Oracle OIC target settings; fields under ``settings.TargetOracleOic.*``."""
 
-    model_config = SettingsConfigDict(
+    model_config = m.SettingsConfigDict(
         env_prefix="FLEXT_TARGET_ORACLE_OIC_", env_nested_delimiter="__", extra="ignore"
     )
 

@@ -6,12 +6,12 @@ from types import MappingProxyType
 from typing import Annotated
 
 from flext_meltano import m
-from flext_oracle_oic import FlextOracleOicModels, u
+from flext_oracle_oic import m as _oracle_oic_m, u
 
 from flext_target_oracle_oic import c, p, r, t
 
 
-class FlextTargetOracleOicModels(m, FlextOracleOicModels):
+class FlextTargetOracleOicModels(m, _oracle_oic_m):
     """Namespace class for OIC target models."""
 
     class TargetOracleOic:

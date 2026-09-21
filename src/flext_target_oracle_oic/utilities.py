@@ -4,16 +4,19 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 
-from flext_api import FlextApi, FlextApiSettings
+from flext_api import (
+    FlextApi as _api_FlextApi,
+    FlextApiSettings as _api_FlextApiSettings,
+)
 from flext_meltano import u
-from flext_oracle_oic import FlextOracleOicUtilities
+from flext_oracle_oic import u as _oracle_oic_u
 
 from flext_target_oracle_oic import c, m, p, r, t
 
 from ._settings import FlextTargetOracleOicSettings
 
 
-class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
+class FlextTargetOracleOicUtilities(u, _oracle_oic_u):
     """Namespace for message-building and validation helpers."""
 
     class TargetOracleOic:
@@ -133,11 +136,11 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                 oic = self.settings.TargetOracleOic
                 # The token endpoint is already absolute; an empty client
                 # base_url makes FlextApi pass the request URL through as-is.
-                api_config = FlextApiSettings.model_validate({
+                api_config = _api_FlextApiSettings.model_validate({
                     "base_url": "",
                     "timeout": oic.timeout,
                 })
-                response_result = FlextApi(runtime_settings=api_config).post(
+                response_result = _api_FlextApi(runtime_settings=api_config).post(
                     oic.oauth_token_url,
                     data=self.build_token_request_data(),
                     headers={

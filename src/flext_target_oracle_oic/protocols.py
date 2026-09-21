@@ -8,10 +8,10 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from flext_meltano import p
-from flext_oracle_oic import FlextOracleOicProtocols
+from flext_oracle_oic import p as _oracle_oic_p
 
 
-class FlextTargetOracleOicProtocols(p, FlextOracleOicProtocols):
+class FlextTargetOracleOicProtocols(p, _oracle_oic_p):
     """Singer Target Oracle OIC protocols extending OracleOic and Meltano protocols.
 
     Extends both FlextOracleOicProtocols and FlextMeltanoProtocols via multiple inheritance
