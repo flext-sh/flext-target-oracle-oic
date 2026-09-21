@@ -9,18 +9,12 @@ from typing import TYPE_CHECKING
 from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 
 from .__version__ import (
-    __author__ as __author__,
-    __author_email__ as __author_email__,
-    __description__ as __description__,
-    __license__ as __license__,
-    __title__ as __title__,
-    __url__ as __url__,
-    __version__ as __version__,
-    __version_info__ as __version_info__,
+    __author__ as __author__, __author_email__ as __author_email__, __description__ as __description__, __license__ as __license__,
+    __title__ as __title__, __url__ as __url__, __version__ as __version__, __version_info__ as __version_info__,
 )
 
 if TYPE_CHECKING:
-    from flext_oracle_oic import FlextOracleOicConstants, d, e, h, r, s, x
+    from flext_meltano import d, e, h, r, s, x
 
     from .__version__ import FlextTargetOracleOicVersion
     from ._config import FlextTargetOracleOicConfig, config
@@ -37,12 +31,8 @@ if TYPE_CHECKING:
         FlextTargetOracleOicProtocols as p,
     )
     from .target import (
-        FlextTargetOracleOic,
-        FlextTargetOracleOicBaseSink,
-        FlextTargetOracleOicConnectionsSink,
-        FlextTargetOracleOicIntegrationsSink,
-        FlextTargetOracleOicLookupsSink,
-        FlextTargetOracleOicPackagesSink,
+        FlextTargetOracleOic, FlextTargetOracleOicBaseSink, FlextTargetOracleOicConnectionsSink, FlextTargetOracleOicIntegrationsSink,
+        FlextTargetOracleOicLookupsSink, FlextTargetOracleOicPackagesSink,
     )
     from .typings import FlextTargetOracleOicTypes, FlextTargetOracleOicTypes as t
     from .utilities import (
@@ -50,46 +40,16 @@ if TYPE_CHECKING:
         FlextTargetOracleOicUtilities as u,
     )
 __all__: tuple[str, ...] = (
-    "FlextOracleOicConstants",
-    "FlextTargetOracleOic",
-    "FlextTargetOracleOicBaseSink",
-    "FlextTargetOracleOicCli",
-    "FlextTargetOracleOicConfig",
-    "FlextTargetOracleOicConnectionsSink",
-    "FlextTargetOracleOicConstants",
-    "FlextTargetOracleOicIntegrationsSink",
-    "FlextTargetOracleOicLookupsSink",
-    "FlextTargetOracleOicModels",
-    "FlextTargetOracleOicPackagesSink",
-    "FlextTargetOracleOicProtocols",
-    "FlextTargetOracleOicService",
-    "FlextTargetOracleOicSettings",
-    "FlextTargetOracleOicTypes",
-    "FlextTargetOracleOicUtilities",
-    "FlextTargetOracleOicVersion",
-    "__author__",
-    "__author_email__",
-    "__description__",
-    "__license__",
-    "__title__",
-    "__url__",
-    "__version__",
-    "__version_info__",
-    "c",
-    "config",
-    "d",
-    "e",
-    "h",
-    "m",
-    "main",
-    "p",
-    "r",
-    "s",
-    "settings",
-    "t",
-    "target_oracle_oic",
-    "u",
-    "x",
+    "FlextTargetOracleOic", "FlextTargetOracleOicBaseSink", "FlextTargetOracleOicCli", "FlextTargetOracleOicConfig",
+    "FlextTargetOracleOicConnectionsSink", "FlextTargetOracleOicConstants", "FlextTargetOracleOicIntegrationsSink", "FlextTargetOracleOicLookupsSink",
+    "FlextTargetOracleOicModels", "FlextTargetOracleOicPackagesSink", "FlextTargetOracleOicProtocols", "FlextTargetOracleOicService",
+    "FlextTargetOracleOicSettings", "FlextTargetOracleOicTypes", "FlextTargetOracleOicUtilities", "FlextTargetOracleOicVersion",
+    "__author__", "__author_email__", "__description__", "__license__",
+    "__title__", "__url__", "__version__", "__version_info__",
+    "c", "config", "d", "e",
+    "h", "m", "main", "p",
+    "r", "s", "settings", "t",
+    "target_oracle_oic", "u", "x",
 )
 
 _LAZY_IMPORTS = MappingProxyType(
@@ -104,24 +64,14 @@ _LAZY_IMPORTS = MappingProxyType(
             ".models": ("FlextTargetOracleOicModels", "m"),
             ".protocols": ("FlextTargetOracleOicProtocols", "p"),
             ".target": (
-                "FlextTargetOracleOic",
-                "FlextTargetOracleOicBaseSink",
+                "FlextTargetOracleOic", "FlextTargetOracleOicBaseSink",
                 "FlextTargetOracleOicConnectionsSink",
                 "FlextTargetOracleOicIntegrationsSink",
-                "FlextTargetOracleOicLookupsSink",
-                "FlextTargetOracleOicPackagesSink",
+                "FlextTargetOracleOicLookupsSink", "FlextTargetOracleOicPackagesSink",
             ),
             ".typings": ("FlextTargetOracleOicTypes", "t"),
             ".utilities": ("FlextTargetOracleOicUtilities", "u"),
-            "flext_oracle_oic": (
-                "FlextOracleOicConstants",
-                "d",
-                "e",
-                "h",
-                "r",
-                "s",
-                "x",
-            ),
+            "flext_meltano": ("d", "e", "h", "r", "s", "x"),
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,
