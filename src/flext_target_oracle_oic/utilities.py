@@ -4,7 +4,10 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 
-from flext_api import FlextApi as _api_FlextApi, FlextApiSettings as _api_FlextApiSettings
+from flext_api import (
+    FlextApi as _api_FlextApi,
+    FlextApiSettings as _api_FlextApiSettings,
+)
 from flext_meltano import u
 from flext_oracle_oic import u as _oracle_oic_u
 
