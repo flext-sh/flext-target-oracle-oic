@@ -24,9 +24,10 @@ dependency fan-in of the connectors.
 src/flext_target_oracle_oic/
 ├── api.py            # FlextTargetOracleOicService(FlextMeltanoTargetServiceBase)
 ├── target.py         # FlextTargetOracleOic(FlextMeltanoTargetAbstractions) — per-stream OIC sinks
-├── cli.py
-├── singer/ application/ connection/ patterns/   # supporting implementation
+├── cli.py            # FlextTargetOracleOicCli + main entry point
 ├── constants.py typings.py protocols.py models.py utilities.py   # AUTO-GENERATED facets
+├── _config.py _settings.py   # private config/settings
+├── config/           # execution parametrization (YAML)
 └── _utilities/
 ```
 
@@ -39,16 +40,17 @@ src/flext_target_oracle_oic/
 
 ## Conventions (specific to this package)
 
-- Named OIC streams map to **dedicated sink classes**; supporting logic lives in
-  `singer/`/`application/`/`connection/`/`patterns/`.
+- Named OIC streams map to **dedicated sink classes** in `target.py`; supporting
+  logic lives in `_utilities/`.
 - Config/settings canonical pattern: ADR-012.
 - Codemod governance (ast-grep + make mod): ADR-014.
 
 ## Commands
 
 ```bash
-make check PROJECT=flext-target-oracle-oic
-make test PROJECT=flext-target-oracle-oic # tests/unit
+make setup
+make check
+make test
 ```
 
 <!-- AIHUB-AGENTS-SCOPE-LOCAL-END -->
