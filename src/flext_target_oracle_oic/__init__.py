@@ -20,6 +20,7 @@ from .__version__ import (
 )
 
 if TYPE_CHECKING:
+<<<<<<< HEAD
     from flext_api import api
     from flext_auth import auth
     from flext_cli import cli
@@ -29,6 +30,11 @@ if TYPE_CHECKING:
     from pydantic_core import from_json, to_json, to_jsonable_python
 
     from flext_core import core, d, e, h, lazy_attribute, r, x
+=======
+    from flext_meltano import s
+
+    from flext_core import d, e, h, r, x
+>>>>>>> origin/0.12.0-dev
 
     from ._config import FlextTargetOracleOicConfig, config
     from ._settings import FlextTargetOracleOicSettings, settings
@@ -119,6 +125,7 @@ _LAZY_IMPORTS = MappingProxyType(
             ),
             ".typings": ("FlextTargetOracleOicTypes", "t"),
             ".utilities": ("FlextTargetOracleOicUtilities", "u"),
+<<<<<<< HEAD
             "flext_api": ("api",),
             "flext_auth": ("auth",),
             "flext_cli": ("cli",),
@@ -127,6 +134,10 @@ _LAZY_IMPORTS = MappingProxyType(
             "flext_oracle_oic": ("oracle_oic",),
             "flext_web": ("web",),
             "pydantic_core": ("from_json", "to_json", "to_jsonable_python"),
+=======
+            "flext_core": ("d", "e", "h", "r", "x"),
+            "flext_meltano": ("s",),
+>>>>>>> origin/0.12.0-dev
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,
