@@ -49,7 +49,9 @@ class FlextTargetOracleOicConfig(FlextSettings, FlextMeltanoConfig):
 
     TargetOracleOic: Annotated[
         _TargetOracleOicNamespace,
-        m.Field(description="Open namespace exposing ``config/*.yaml`` under ``TargetOracleOic``."),
+        m.Field(
+            description="Open namespace exposing ``config/*.yaml`` under ``TargetOracleOic``."
+        ),
     ] = _TargetOracleOicNamespace()
 
 

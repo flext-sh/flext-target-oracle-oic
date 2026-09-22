@@ -29,7 +29,7 @@ This section is generated from public exports and real docstrings.
 
 - Primary facades: `FlextTargetOracleOic`, `FlextTargetOracleOicBaseSink`,
   `FlextTargetOracleOicCli`, `FlextTargetOracleOicConfig`,
-  `FlextTargetOracleOicConnectionsSink`, `FlextTargetOracleOicConstants` (+9 more)
+  `FlextTargetOracleOicConnectionsSink`, `FlextTargetOracleOicConstants` (+10 more)
 - Generated module pages: `8`
 
 Back to [project docs](../index.md).
