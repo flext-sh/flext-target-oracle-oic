@@ -10,15 +10,7 @@ from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 
 if TYPE_CHECKING:
     from flext_meltano import meltano
-<<<<<<< HEAD
-<<<<<<< HEAD
     from flext_oracle_oic import auth, oracle_oic, providers, web
-=======
-    from flext_oracle_oic import oracle_oic
->>>>>>> origin/chore/regen-20260923
-=======
-    from flext_oracle_oic import auth, oracle_oic, providers, web
->>>>>>> origin/chore/regen-20260923
     from flext_tests import (
         api,
         cli,
@@ -126,15 +118,7 @@ _LAZY_IMPORTS = MappingProxyType(
             ".unit": ("unit",),
             ".utilities": ("TestsFlextTargetOracleOicUtilities", "u"),
             "flext_meltano": ("meltano",),
-<<<<<<< HEAD
-<<<<<<< HEAD
             "flext_oracle_oic": ("auth", "oracle_oic", "providers", "web"),
-=======
-            "flext_oracle_oic": ("oracle_oic",),
->>>>>>> origin/chore/regen-20260923
-=======
-            "flext_oracle_oic": ("auth", "oracle_oic", "providers", "web"),
->>>>>>> origin/chore/regen-20260923
             "flext_target_oracle_oic": ("main", "target_oracle_oic"),
             "flext_tests": (
                 "api",
