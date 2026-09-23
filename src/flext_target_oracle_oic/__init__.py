@@ -20,37 +20,7 @@ from .__version__ import (
 )
 
 if TYPE_CHECKING:
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> origin/chore/regen-20260923
-    from flext_meltano import (
-        cli,
-        core,
-        d,
-        e,
-        h,
-        lazy_attribute,
-        meltano,
-        r,
-        s,
-        services,
-        x,
-    )
-    from flext_oracle_oic import api, auth, oracle_oic, providers, web
-<<<<<<< HEAD
-=======
-    from flext_api import api
-    from flext_auth import auth
-    from flext_cli import cli
-    from flext_meltano import meltano, s
-    from flext_oracle_oic import oracle_oic
-    from flext_web import web
-
-    from flext_core import core, d, e, h, lazy_attribute, r, x
->>>>>>> origin/chore/regen-20260923
-=======
->>>>>>> origin/chore/regen-20260923
+    from flext_meltano import d, e, h, r, s, x
 
     from ._config import FlextTargetOracleOicConfig, config
     from ._settings import FlextTargetOracleOicSettings, settings
@@ -95,30 +65,20 @@ __all__: tuple[str, ...] = (
     "__url__",
     "__version__",
     "__version_info__",
-    "api",
-    "auth",
     "c",
-    "cli",
     "config",
-    "core",
     "d",
     "e",
     "h",
-    "lazy_attribute",
     "m",
     "main",
-    "meltano",
-    "oracle_oic",
     "p",
-    "providers",
     "r",
     "s",
-    "services",
     "settings",
     "t",
     "target_oracle_oic",
     "u",
-    "web",
     "x",
 )
 
@@ -142,36 +102,7 @@ _LAZY_IMPORTS = MappingProxyType(
             ),
             ".typings": ("FlextTargetOracleOicTypes", "t"),
             ".utilities": ("FlextTargetOracleOicUtilities", "u"),
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> origin/chore/regen-20260923
-            "flext_meltano": (
-                "cli",
-                "core",
-                "d",
-                "e",
-                "h",
-                "lazy_attribute",
-                "meltano",
-                "r",
-                "s",
-                "services",
-                "x",
-            ),
-            "flext_oracle_oic": ("api", "auth", "oracle_oic", "providers", "web"),
-<<<<<<< HEAD
-=======
-            "flext_api": ("api",),
-            "flext_auth": ("auth",),
-            "flext_cli": ("cli",),
-            "flext_core": ("core", "d", "e", "h", "lazy_attribute", "r", "x"),
-            "flext_meltano": ("meltano", "s"),
-            "flext_oracle_oic": ("oracle_oic",),
-            "flext_web": ("web",),
->>>>>>> origin/chore/regen-20260923
-=======
->>>>>>> origin/chore/regen-20260923
+            "flext_meltano": ("d", "e", "h", "r", "s", "x"),
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,
