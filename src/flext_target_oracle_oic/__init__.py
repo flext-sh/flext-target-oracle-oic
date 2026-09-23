@@ -33,7 +33,7 @@ if TYPE_CHECKING:
         services,
         x,
     )
-    from flext_oracle_oic import api, auth, oracle_oic, providers, web
+    from flext_oracle_oic import api, auth, oracle_oic, web
 
     from ._config import FlextTargetOracleOicConfig, config
     from ._settings import FlextTargetOracleOicSettings, settings
@@ -93,7 +93,6 @@ __all__: tuple[str, ...] = (
     "meltano",
     "oracle_oic",
     "p",
-    "providers",
     "r",
     "s",
     "services",
@@ -138,7 +137,7 @@ _LAZY_IMPORTS = MappingProxyType(
                 "services",
                 "x",
             ),
-            "flext_oracle_oic": ("api", "auth", "oracle_oic", "providers", "web"),
+            "flext_oracle_oic": ("api", "auth", "oracle_oic", "web"),
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,
