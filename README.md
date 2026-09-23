@@ -58,7 +58,7 @@ verification).
 - Public extensions exposed by this project: `FlextTargetOracleOic`,
   `FlextTargetOracleOicBaseSink`, `FlextTargetOracleOicCli`,
   `FlextTargetOracleOicConfig`, `FlextTargetOracleOicConnectionsSink`,
-  `FlextTargetOracleOicConstants` (+10 more).
+  `FlextTargetOracleOicConstants` (+9 more).
 - Library abstraction boundaries: see AGENTS.md §2.7.
 
 ## Quality Gates
