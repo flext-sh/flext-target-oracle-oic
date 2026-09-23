@@ -21,6 +21,9 @@ from .__version__ import (
 
 if TYPE_CHECKING:
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/chore/regen-20260923
     from flext_meltano import (
         cli,
         core,
@@ -35,6 +38,7 @@ if TYPE_CHECKING:
         x,
     )
     from flext_oracle_oic import api, auth, oracle_oic, providers, web
+<<<<<<< HEAD
 =======
     from flext_api import api
     from flext_auth import auth
@@ -44,6 +48,8 @@ if TYPE_CHECKING:
     from flext_web import web
 
     from flext_core import core, d, e, h, lazy_attribute, r, x
+>>>>>>> origin/chore/regen-20260923
+=======
 >>>>>>> origin/chore/regen-20260923
 
     from ._config import FlextTargetOracleOicConfig, config
@@ -107,6 +113,7 @@ __all__: tuple[str, ...] = (
     "providers",
     "r",
     "s",
+    "services",
     "settings",
     "t",
     "target_oracle_oic",
@@ -136,6 +143,9 @@ _LAZY_IMPORTS = MappingProxyType(
             ".typings": ("FlextTargetOracleOicTypes", "t"),
             ".utilities": ("FlextTargetOracleOicUtilities", "u"),
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> origin/chore/regen-20260923
             "flext_meltano": (
                 "cli",
                 "core",
@@ -150,6 +160,7 @@ _LAZY_IMPORTS = MappingProxyType(
                 "x",
             ),
             "flext_oracle_oic": ("api", "auth", "oracle_oic", "providers", "web"),
+<<<<<<< HEAD
 =======
             "flext_api": ("api",),
             "flext_auth": ("auth",),
@@ -158,6 +169,8 @@ _LAZY_IMPORTS = MappingProxyType(
             "flext_meltano": ("meltano", "s"),
             "flext_oracle_oic": ("oracle_oic",),
             "flext_web": ("web",),
+>>>>>>> origin/chore/regen-20260923
+=======
 >>>>>>> origin/chore/regen-20260923
         }),
         alias_groups=MappingProxyType({}),
