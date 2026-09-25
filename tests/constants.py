@@ -8,7 +8,7 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Final
+from typing import ClassVar
 
 from flext_tests import FlextTestsConstants
 
@@ -26,14 +26,16 @@ class TestsFlextTargetOracleOicConstants(
         class Tests(FlextTestsConstants.Tests):
             """Target Oracle OIC-specific test constants."""
 
-            PROJECT_ROOT_PARENT_DEPTH: Final[int] = 1
-            SRC_DIR: Final[str] = "src"
-            PACKAGE_DIR: Final[str] = "flext_target_oracle_oic"
-            OAUTH_ENDPOINT_URL: Final[str] = "https://idcs.example.com/oauth2/v1/token"
-            ALLOWED_MODULE_FUNCTIONS: Final[dict[str, frozenset[str]]] = {
+            PROJECT_ROOT_PARENT_DEPTH: ClassVar[int] = 1
+            SRC_DIR: ClassVar[str] = "src"
+            PACKAGE_DIR: ClassVar[str] = "flext_target_oracle_oic"
+            OAUTH_ENDPOINT_URL: ClassVar[str] = (
+                "https://idcs.example.com/oauth2/v1/token"
+            )
+            ALLOWED_MODULE_FUNCTIONS: ClassVar[dict[str, frozenset[str]]] = {
                 "cli.py": frozenset({"main"})
             }
-            DEFAULT_PROPERTIES: Final[dict[str, dict[str, str]]] = {
+            DEFAULT_PROPERTIES: ClassVar[dict[str, dict[str, str]]] = {
                 "id": {"type": "string"}
             }
 
