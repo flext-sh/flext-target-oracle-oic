@@ -9,31 +9,7 @@ from typing import TYPE_CHECKING
 from flext_core.lazy import build_lazy_import_map, install_lazy_exports
 
 if TYPE_CHECKING:
-    from flext_meltano import meltano
-    from flext_oracle_oic import auth, oracle_oic, providers, web
-    from flext_tests import (
-        api,
-        cli,
-        config,
-        core,
-        d,
-        e,
-        h,
-        install_local_packages,
-        lazy_attribute,
-        load_infra_report,
-        r,
-        services,
-        settings,
-        td,
-        tf,
-        tk,
-        tm,
-        tv,
-        x,
-    )
-
-    from flext_target_oracle_oic import main, target_oracle_oic
+    from flext_tests import api, d, e, h, r, td, tf, tk, tm, tv, x
 
     from . import unit
     from .base import (
@@ -72,29 +48,15 @@ __all__: tuple[str, ...] = (
     "TestsFlextTargetOracleOicTypes",
     "TestsFlextTargetOracleOicUtilities",
     "api",
-    "auth",
     "c",
-    "cli",
-    "config",
-    "core",
     "d",
     "e",
     "h",
-    "install_local_packages",
-    "lazy_attribute",
-    "load_infra_report",
     "m",
-    "main",
-    "meltano",
-    "oracle_oic",
     "p",
-    "providers",
     "r",
     "s",
-    "services",
-    "settings",
     "t",
-    "target_oracle_oic",
     "td",
     "tf",
     "tk",
@@ -102,7 +64,6 @@ __all__: tuple[str, ...] = (
     "tv",
     "u",
     "unit",
-    "web",
     "x",
 )
 
@@ -117,23 +78,12 @@ _LAZY_IMPORTS = MappingProxyType(
             ".typings": ("TestsFlextTargetOracleOicTypes", "t"),
             ".unit": ("unit",),
             ".utilities": ("TestsFlextTargetOracleOicUtilities", "u"),
-            "flext_meltano": ("meltano",),
-            "flext_oracle_oic": ("auth", "oracle_oic", "providers", "web"),
-            "flext_target_oracle_oic": ("main", "target_oracle_oic"),
             "flext_tests": (
                 "api",
-                "cli",
-                "config",
-                "core",
                 "d",
                 "e",
                 "h",
-                "install_local_packages",
-                "lazy_attribute",
-                "load_infra_report",
                 "r",
-                "services",
-                "settings",
                 "td",
                 "tf",
                 "tk",

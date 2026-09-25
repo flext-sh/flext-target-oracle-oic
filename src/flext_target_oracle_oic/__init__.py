@@ -20,28 +20,21 @@ from .__version__ import (
 )
 
 if TYPE_CHECKING:
-    from flext_meltano import (
-        cli,
-        core,
-        d,
-        e,
-        h,
-        lazy_attribute,
-        meltano,
-        r,
-        s,
-        services,
-        x,
-    )
-    from flext_oracle_oic import api, auth, oracle_oic, providers, web
+    from flext_meltano import d, e, h, r, s, x
 
     from ._config import FlextTargetOracleOicConfig, config
     from ._settings import FlextTargetOracleOicSettings, settings
     from .api import FlextTargetOracleOicService, target_oracle_oic
     from .cli import FlextTargetOracleOicCli, main
-    from .constants import FlextTargetOracleOicConstants, c
-    from .models import FlextTargetOracleOicModels, m
-    from .protocols import FlextTargetOracleOicProtocols, p
+    from .constants import (
+        FlextTargetOracleOicConstants,
+        FlextTargetOracleOicConstants as c,
+    )
+    from .models import FlextTargetOracleOicModels, FlextTargetOracleOicModels as m
+    from .protocols import (
+        FlextTargetOracleOicProtocols,
+        FlextTargetOracleOicProtocols as p,
+    )
     from .target import (
         FlextTargetOracleOic,
         FlextTargetOracleOicBaseSink,
@@ -50,8 +43,11 @@ if TYPE_CHECKING:
         FlextTargetOracleOicLookupsSink,
         FlextTargetOracleOicPackagesSink,
     )
-    from .typings import FlextTargetOracleOicTypes, t
-    from .utilities import FlextTargetOracleOicUtilities, u
+    from .typings import FlextTargetOracleOicTypes, FlextTargetOracleOicTypes as t
+    from .utilities import (
+        FlextTargetOracleOicUtilities,
+        FlextTargetOracleOicUtilities as u,
+    )
 
 
 __all__: tuple[str, ...] = (
@@ -78,30 +74,20 @@ __all__: tuple[str, ...] = (
     "__url__",
     "__version__",
     "__version_info__",
-    "api",
-    "auth",
     "c",
-    "cli",
     "config",
-    "core",
     "d",
     "e",
     "h",
-    "lazy_attribute",
     "m",
     "main",
-    "meltano",
-    "oracle_oic",
     "p",
-    "providers",
     "r",
     "s",
-    "services",
     "settings",
     "t",
     "target_oracle_oic",
     "u",
-    "web",
     "x",
 )
 
@@ -125,20 +111,7 @@ _LAZY_IMPORTS = MappingProxyType(
             ),
             ".typings": ("FlextTargetOracleOicTypes", "t"),
             ".utilities": ("FlextTargetOracleOicUtilities", "u"),
-            "flext_meltano": (
-                "cli",
-                "core",
-                "d",
-                "e",
-                "h",
-                "lazy_attribute",
-                "meltano",
-                "r",
-                "s",
-                "services",
-                "x",
-            ),
-            "flext_oracle_oic": ("api", "auth", "oracle_oic", "providers", "web"),
+            "flext_meltano": ("d", "e", "h", "r", "s", "x"),
         }),
         alias_groups=MappingProxyType({}),
         sort_keys=False,
