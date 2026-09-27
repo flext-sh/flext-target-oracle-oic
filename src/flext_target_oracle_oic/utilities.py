@@ -8,15 +8,15 @@ from flext_api import (
     FlextApi as _api_FlextApi,
     FlextApiSettings as _api_FlextApiSettings,
 )
-from flext_meltano import u
-from flext_oracle_oic import u as _oracle_oic_u
+from flext_meltano import FlextMeltanoUtilities
+from flext_oracle_oic import FlextOracleOicUtilities
 
 from flext_target_oracle_oic import c, m, p, r, t
 
 from ._settings import FlextTargetOracleOicSettings
 
 
-class FlextTargetOracleOicUtilities(u, _oracle_oic_u):
+class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtilities):
     """Namespace for message-building and validation helpers."""
 
     class TargetOracleOic:

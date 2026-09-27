@@ -26,9 +26,15 @@ if TYPE_CHECKING:
     from ._settings import FlextTargetOracleOicSettings, settings
     from .api import FlextTargetOracleOicService, target_oracle_oic
     from .cli import FlextTargetOracleOicCli, main
-    from .constants import FlextTargetOracleOicConstants, c
-    from .models import FlextTargetOracleOicModels, m
-    from .protocols import FlextTargetOracleOicProtocols, p
+    from .constants import (
+        FlextTargetOracleOicConstants,
+        FlextTargetOracleOicConstants as c,
+    )
+    from .models import FlextTargetOracleOicModels, FlextTargetOracleOicModels as m
+    from .protocols import (
+        FlextTargetOracleOicProtocols,
+        FlextTargetOracleOicProtocols as p,
+    )
     from .target import (
         FlextTargetOracleOic,
         FlextTargetOracleOicBaseSink,
@@ -37,8 +43,11 @@ if TYPE_CHECKING:
         FlextTargetOracleOicLookupsSink,
         FlextTargetOracleOicPackagesSink,
     )
-    from .typings import FlextTargetOracleOicTypes, t
-    from .utilities import FlextTargetOracleOicUtilities, u
+    from .typings import FlextTargetOracleOicTypes, FlextTargetOracleOicTypes as t
+    from .utilities import (
+        FlextTargetOracleOicUtilities,
+        FlextTargetOracleOicUtilities as u,
+    )
 
 
 __all__: tuple[str, ...] = (
