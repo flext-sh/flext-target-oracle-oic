@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 from flext_target_oracle_oic import t
-from flext_target_oracle_oic.api import FlextTargetOracleOicService
+
+from .api import FlextTargetOracleOicService
 
 
 class FlextTargetOracleOicCli:
