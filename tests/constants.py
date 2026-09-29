@@ -29,9 +29,7 @@ class TestsFlextTargetOracleOicConstants(
             PROJECT_ROOT_PARENT_DEPTH: ClassVar[int] = 1
             SRC_DIR: Final[str] = "src"
             PACKAGE_DIR: Final[str] = "flext_target_oracle_oic"
-            OAUTH_ENDPOINT_URL: Final[str] = (
-                "https://idcs.example.com/oauth2/v1/token"
-            )
+            OAUTH_ENDPOINT_URL: Final[str] = "https://idcs.example.com/oauth2/v1/token"
             ALLOWED_MODULE_FUNCTIONS: ClassVar[dict[str, frozenset[str]]] = {
                 "cli.py": frozenset({"main"})
             }
