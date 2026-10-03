@@ -1,8 +1,8 @@
 """Settings for flext-target-oracle-oic — namespaced under ``settings.TargetOracleOic``.
 
 Universal fields via MRO; project fields in the ``TargetOracleOic`` group with
-simple scalar types (env-settable). Secrets are plain strings so they can come
-from env/params; consumers wrap them as needed.
+simple scalar types (env-settable). OIC connection and OAuth credentials are
+owned by ``settings.OracleOic`` (flext-oracle-oic) and never re-declared here.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -25,27 +25,6 @@ class FlextTargetOracleOicSettings(FlextMeltanoSettings):
     class _TargetOracleOic(m.BaseModel):
         """Namespaced Oracle OIC target settings."""
 
-        oauth_client_id: Annotated[
-            str, m.Field(default="", description="OAuth client identifier")
-        ]
-        oauth_client_secret: Annotated[
-            str, m.Field(default="", description="OAuth client secret")
-        ]
-        oauth_token_url: Annotated[
-            str, m.Field(default="", description="OAuth token endpoint URL")
-        ]
-        oauth_scope: Annotated[
-            str | None,
-            m.Field(
-                default="oic_instance", description="OAuth scope used in token requests"
-            ),
-        ]
-        oauth_client_aud: Annotated[
-            str | None,
-            m.Field(
-                default=None, description="Optional audience used by OAuth provider"
-            ),
-        ]
         timeout: Annotated[
             int, m.Field(default=30, ge=1, description="HTTP timeout in seconds")
         ]

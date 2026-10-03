@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from flext_target_oracle_oic import m, t, u
+from flext_target_oracle_oic import c, m, t, u
 from flext_target_oracle_oic.target import (
     FlextTargetOracleOic,
     FlextTargetOracleOicBaseSink,
@@ -15,7 +15,7 @@ class FlextTargetOracleOicServiceRuntime:
     class Target(m.Meltano.SingerTargetBase):
         """Minimal Singer target used by the service facade."""
 
-        name = "target-oracle-oic"
+        name = c.TargetOracleOic.TARGET_NAME
 
     @classmethod
     def create_sink(

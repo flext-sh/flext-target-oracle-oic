@@ -1,18 +1,30 @@
 """Tests for Oracle OIC target CLI entrypoint.
 
+Runs the REAL installed console script through the flext-cli SSOT runner
+(``u.Cli.capture``) with an empty Singer stream on stdin, exactly as an
+orchestrator invokes the target.
+
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
 
-from flext_tests import tm
+import pytest
+from flext_tests import tm, u
 
-from flext_target_oracle_oic import main
+from tests import c
 
 
 class TestsFlextTargetOracleOicCliEntrypoint:
     """Behavior contract for test_cli_entrypoint."""
 
-    def test_main_entrypoint_returns_zero(self) -> None:
-        tm.that(main(), eq=0)
+    pytestmark = pytest.mark.slow
+
+    def test_console_drains_empty_stream_with_exit_zero(self) -> None:
+        result = u.Cli.capture(
+            [c.TargetOracleOic.TARGET_NAME],
+            remove_env_keys=("PYTHONPATH",),
+            input_data="",
+        )
+        tm.ok(result)
