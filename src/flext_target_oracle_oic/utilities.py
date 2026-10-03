@@ -34,48 +34,6 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
                     return r[bool].fail(f"Missing required settings fields: {missing}")
                 return r[bool].ok(value=True)
 
-        class Factories:
-            """Factory helpers for OIC model instances."""
-
-            @staticmethod
-            def create_oic_connection(
-                data: t.JsonMapping,
-            ) -> m.TargetOracleOic.OICConnection:
-                """Create an OICConnection model from generic payload via Pydantic validation."""
-                connection: m.TargetOracleOic.OICConnection = (
-                    m.TargetOracleOic.OICConnection.model_validate({
-                        **data,
-                        "properties": data,
-                    })
-                )
-                return connection
-
-            @staticmethod
-            def create_oic_integration(
-                data: t.JsonMapping,
-            ) -> m.TargetOracleOic.OICIntegration:
-                """Create an OICIntegration model from generic payload via Pydantic validation."""
-                integration: m.TargetOracleOic.OICIntegration = (
-                    m.TargetOracleOic.OICIntegration.model_validate(data)
-                )
-                return integration
-
-            @staticmethod
-            def create_oic_package(data: t.JsonMapping) -> m.TargetOracleOic.OICPackage:
-                """Create an OICPackage model from generic payload via Pydantic validation."""
-                package: m.TargetOracleOic.OICPackage = (
-                    m.TargetOracleOic.OICPackage.model_validate(data)
-                )
-                return package
-
-            @staticmethod
-            def create_oic_lookup(data: t.JsonMapping) -> m.TargetOracleOic.OICLookup:
-                """Create an OICLookup model from generic payload via Pydantic validation."""
-                lookup: m.TargetOracleOic.OICLookup = (
-                    m.TargetOracleOic.OICLookup.model_validate(data)
-                )
-                return lookup
-
         class Authenticator:
             """OAuth2 Authenticator for Oracle Integration Cloud."""
 
@@ -156,25 +114,6 @@ class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtiliti
                     msg = f"Failed to request OAuth2 token: HTTP {response.status_code}"
                     raise RuntimeError(msg)
                 return response
-
-            @staticmethod
-            def create_config_from_dict(
-                config_dict: t.ConfigurationMapping,
-            ) -> FlextTargetOracleOicSettings:
-                """Create FlextTargetOracleOicSettings from dictionary."""
-                return FlextTargetOracleOicSettings.model_validate(config_dict)
-
-            @staticmethod
-            def create_config_with_env_overrides(
-                **overrides: t.Scalar,
-            ) -> FlextTargetOracleOicSettings:
-                """Create FlextTargetOracleOicSettings with environment variable overrides."""
-                return FlextTargetOracleOicSettings.model_validate(overrides)
-
-            @staticmethod
-            def create_singer_config_schema() -> t.JsonMapping:
-                """Create Singer configuration schema from FlextTargetOracleOicSettings."""
-                return FlextTargetOracleOicSettings.model_json_schema()
 
 
 u = FlextTargetOracleOicUtilities
