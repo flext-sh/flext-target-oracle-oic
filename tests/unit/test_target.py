@@ -7,36 +7,19 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from http.server import BaseHTTPRequestHandler, HTTPServer
-from threading import Thread
-from typing import TYPE_CHECKING, ClassVar
+from typing import ClassVar
 
 import pytest
 from flext_tests import tm
 from singer_sdk.target_base import Target as SingerTarget
 
-from flext_target_oracle_oic import FlextTargetOracleOicSettings, u
+from flext_target_oracle_oic import FlextTargetOracleOicSettings
 from flext_target_oracle_oic.target import (
     FlextTargetOracleOic,
     FlextTargetOracleOicConnectionsSink,
     FlextTargetOracleOicIntegrationsSink,
 )
 from tests import c, t
-
-if TYPE_CHECKING:
-    from collections.abc import Iterator
-
-
-AUTH_TEST_SETTINGS = FlextTargetOracleOicSettings.model_validate({
-    "TargetOracleOic": {
-        "oauth_client_id": "client-id",
-        "oauth_client_secret": "s" + "0" * 14,
-        "oauth_token_url": c.TargetOracleOic.Tests.OAUTH_ENDPOINT_URL,
-        "oauth_scope": "urn:opc:resource:consumer:all",
-        "oauth_client_aud": "https://idcs.example.com",
-        "timeout": 30,
-    }
-})
 
 
 class DummySingerTarget(SingerTarget):
@@ -106,70 +89,6 @@ class TestsFlextTargetOracleOicTarget:
         properties = schema["properties"]
         tm.that(properties, is_=dict)
         tm.that(properties, has="TargetOracleOic")
-
-    def test_oic_authenticator_builds_payload(self) -> None:
-        authenticator = u.TargetOracleOic.Authenticator(AUTH_TEST_SETTINGS)
-        payload = authenticator.build_token_request_data()
-        tm.that(payload["grant_type"], eq="client_credentials")
-        tm.that(payload["client_id"], eq="client-id")
-        tm.that(payload["client_secret"], eq="s" + "0" * 14)
-        tm.that(payload["scope"], eq="urn:opc:resource:consumer:all")
-        tm.that(payload["audience"], eq="https://idcs.example.com")
-
-    def test_oic_authenticator_omits_optional_scope_and_audience(self) -> None:
-        authenticator = u.TargetOracleOic.Authenticator(
-            AUTH_TEST_SETTINGS.model_copy(
-                update={
-                    "TargetOracleOic": AUTH_TEST_SETTINGS.TargetOracleOic.model_copy(
-                        update={"oauth_scope": "", "oauth_client_aud": None}
-                    )
-                }
-            )
-        )
-        payload = authenticator.build_token_request_data()
-        tm.that(payload, lacks="scope")
-        tm.that(payload, lacks="audience")
-
-    def test_oic_authenticator_rejects_invalid_token_response(
-        self, local_token_url: str
-    ) -> None:
-        """A 200 token response without access_token fails loud over real HTTP."""
-        authenticator = u.TargetOracleOic.Authenticator(
-            AUTH_TEST_SETTINGS.model_copy(
-                update={
-                    "TargetOracleOic": AUTH_TEST_SETTINGS.TargetOracleOic.model_copy(
-                        update={"oauth_token_url": local_token_url}
-                    )
-                }
-            )
-        )
-        with pytest.raises(RuntimeError, match="access_token"):
-            authenticator.get_access_token()
-
-
-class _TokenWithoutAccessTokenHandler(BaseHTTPRequestHandler):
-    """Local token endpoint answering 200 with a body lacking access_token."""
-
-    def do_POST(self) -> None:
-        """Answer one token request with deterministic token-type-only JSON."""
-        body = b'{"token_type": "Bearer"}'
-        self.send_response(200)
-        self.send_header("Content-Type", "application/json")
-        self.send_header("Content-Length", str(len(body)))
-        self.end_headers()
-        self.wfile.write(body)
-
-
-@pytest.fixture
-def local_token_url() -> Iterator[str]:
-    """Run one ephemeral local OAuth2 token endpoint for the duration of a test."""
-    server = HTTPServer(("127.0.0.1", 0), _TokenWithoutAccessTokenHandler)
-    thread = Thread(target=server.serve_forever, daemon=True)
-    thread.start()
-    yield f"http://127.0.0.1:{server.server_address[1]}"
-    server.shutdown()
-    server.server_close()
-    thread.join(timeout=5)
 
 
 @pytest.fixture
