@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-from flext_meltano import t
+from flext_meltano import FlextMeltanoTypes
 from flext_oracle_oic import FlextOracleOicTypes
 
 
-class FlextTargetOracleOicTypes(t, FlextOracleOicTypes):
+class FlextTargetOracleOicTypes(FlextMeltanoTypes, FlextOracleOicTypes):
     """Type namespace for target Oracle OIC domain."""
 
 

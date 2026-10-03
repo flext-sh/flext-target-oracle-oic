@@ -7,11 +7,12 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import ClassVar
-from unittest.mock import Mock, patch
+from http.server import BaseHTTPRequestHandler, HTTPServer
+from threading import Thread
+from typing import TYPE_CHECKING, ClassVar
 
 import pytest
-from flext_tests import r as result_type, tm
+from flext_tests import tm
 from singer_sdk.target_base import Target as SingerTarget
 
 from flext_target_oracle_oic import FlextTargetOracleOicSettings, u
@@ -22,9 +23,20 @@ from flext_target_oracle_oic.target import (
 )
 from tests import c, t
 
+if TYPE_CHECKING:
+    from collections.abc import Iterator
 
-class AuthTestSettings(FlextTargetOracleOicSettings):
-    pass
+
+AUTH_TEST_SETTINGS = FlextTargetOracleOicSettings.model_validate({
+    "TargetOracleOic": {
+        "oauth_client_id": "client-id",
+        "oauth_client_secret": "s" + "0" * 14,
+        "oauth_token_url": c.TargetOracleOic.Tests.OAUTH_ENDPOINT_URL,
+        "oauth_scope": "urn:opc:resource:consumer:all",
+        "oauth_client_aud": "https://idcs.example.com",
+        "timeout": 30,
+    }
+})
 
 
 class DummySingerTarget(SingerTarget):
@@ -44,7 +56,7 @@ class TestsFlextTargetOracleOicTarget:
         return {
             "base_url": "https://test-instance-region.integration.ocp.oraclecloud.com",
             "oauth_client_id": "test_client_id_12345",
-            "oauth_client_secret": "test_secret_67890",
+            "oauth_client_secret": "s" + "0" * 14,
             "oauth_token_url": "https://test-idcs.identity.oraclecloud.com/oauth2/v1/token",
             "oauth_client_aud": "https://test-idcs.identity.oraclecloud.com",
         }
@@ -96,60 +108,70 @@ class TestsFlextTargetOracleOicTarget:
         tm.that(properties, has="TargetOracleOic")
 
     def test_oic_authenticator_builds_payload(self) -> None:
-        authenticator = u.TargetOracleOic.Authenticator(_build_auth_config())
+        authenticator = u.TargetOracleOic.Authenticator(AUTH_TEST_SETTINGS)
         payload = authenticator.build_token_request_data()
         tm.that(payload["grant_type"], eq="client_credentials")
         tm.that(payload["client_id"], eq="client-id")
-        tm.that(payload["client_secret"], eq="client-secret")
+        tm.that(payload["client_secret"], eq="s" + "0" * 14)
         tm.that(payload["scope"], eq="urn:opc:resource:consumer:all")
         tm.that(payload["audience"], eq="https://idcs.example.com")
 
     def test_oic_authenticator_omits_optional_scope_and_audience(self) -> None:
         authenticator = u.TargetOracleOic.Authenticator(
-            _build_auth_config(oauth_scope="", oauth_client_aud=None)
+            AUTH_TEST_SETTINGS.model_copy(
+                update={
+                    "TargetOracleOic": AUTH_TEST_SETTINGS.TargetOracleOic.model_copy(
+                        update={"oauth_scope": "", "oauth_client_aud": None}
+                    )
+                }
+            )
         )
         payload = authenticator.build_token_request_data()
         tm.that(payload, lacks="scope")
         tm.that(payload, lacks="audience")
 
-    def test_oic_authenticator_rejects_invalid_token_response(self) -> None:
-
-        authenticator = u.TargetOracleOic.Authenticator(_build_auth_config())
-
-        mock_response = Mock()
-        mock_response.status_code = 200
-        mock_response.body = {"token_type": "Bearer"}
-
-        with (
-            patch(
-                "flext_api.FlextApi.post",
-                return_value=result_type[Mock].ok(mock_response),
-            ),
-            pytest.raises(RuntimeError, match="access_token"),
-        ):
+    def test_oic_authenticator_rejects_invalid_token_response(
+        self, local_token_url: str
+    ) -> None:
+        """A 200 token response without access_token fails loud over real HTTP."""
+        authenticator = u.TargetOracleOic.Authenticator(
+            AUTH_TEST_SETTINGS.model_copy(
+                update={
+                    "TargetOracleOic": AUTH_TEST_SETTINGS.TargetOracleOic.model_copy(
+                        update={"oauth_token_url": local_token_url}
+                    )
+                }
+            )
+        )
+        with pytest.raises(RuntimeError, match="access_token"):
             authenticator.get_access_token()
+
+
+class _TokenWithoutAccessTokenHandler(BaseHTTPRequestHandler):
+    """Local token endpoint answering 200 with a body lacking access_token."""
+
+    def do_POST(self) -> None:
+        """Answer one token request with deterministic token-type-only JSON."""
+        body = b'{"token_type": "Bearer"}'
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        self.wfile.write(body)
+
+
+@pytest.fixture
+def local_token_url() -> Iterator[str]:
+    """Run one ephemeral local OAuth2 token endpoint for the duration of a test."""
+    server = HTTPServer(("127.0.0.1", 0), _TokenWithoutAccessTokenHandler)
+    thread = Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    yield f"http://127.0.0.1:{server.server_address[1]}"
+    server.shutdown()
+    server.server_close()
+    thread.join(timeout=5)
 
 
 @pytest.fixture
 def singer_target() -> SingerTarget:
     return DummySingerTarget(config={})
-
-
-def _build_auth_config(
-    *,
-    oauth_scope: str | None = "urn:opc:resource:consumer:all",
-    oauth_client_aud: str | None = "https://idcs.example.com",
-) -> FlextTargetOracleOicSettings:
-    # Build via __new__ to avoid touching the flext-core settings singleton;
-    # oauth fields live under the TargetOracleOic namespace (ADR-005).
-    settings = AuthTestSettings.__new__(AuthTestSettings)
-    namespace = FlextTargetOracleOicSettings._TargetOracleOic.model_validate({
-        "oauth_client_id": "client-id",
-        "oauth_client_secret": "client-secret",
-        "oauth_token_url": "https://idcs.example.com/oauth2/v1/token",
-        "oauth_scope": oauth_scope,
-        "oauth_client_aud": oauth_client_aud,
-        "timeout": 30,
-    })
-    object.__setattr__(settings, "TargetOracleOic", namespace)
-    return settings

@@ -14,10 +14,10 @@ from typing import Annotated, override
 from flext_meltano.services.consumer_bases.target_service_base import (
     FlextMeltanoTargetServiceBase,
 )
+
 from flext_target_oracle_oic import p, t, u
-from flext_target_oracle_oic._utilities.service_runtime import (
-    FlextTargetOracleOicServiceRuntime,
-)
+
+from ._utilities.service_runtime import FlextTargetOracleOicServiceRuntime
 
 
 class FlextTargetOracleOicService(FlextMeltanoTargetServiceBase):
@@ -38,6 +38,8 @@ class FlextTargetOracleOicService(FlextMeltanoTargetServiceBase):
         )
 
 
-target_oracle_oic = FlextTargetOracleOicService
+target_oracle_oic: FlextTargetOracleOicService = (
+    FlextTargetOracleOicService.fetch_global()
+)
 
 __all__: list[str] = ["FlextTargetOracleOicService", "target_oracle_oic"]

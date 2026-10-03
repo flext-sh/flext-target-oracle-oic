@@ -4,21 +4,19 @@ from __future__ import annotations
 
 from collections.abc import Mapping
 
-from flext_api import FlextApi, FlextApiSettings
-from flext_meltano import u
-from flext_oracle_oic import FlextOracleOicUtilities
-from flext_target_oracle_oic import (
-    FlextTargetOracleOicSettings,
-    c,
-    m,
-    p,
-    r,
-    settings,
-    t,
+from flext_api import (
+    FlextApi as _api_FlextApi,
+    FlextApiSettings as _api_FlextApiSettings,
 )
+from flext_meltano import FlextMeltanoUtilities
+from flext_oracle_oic import FlextOracleOicUtilities
+
+from flext_target_oracle_oic import c, m, p, r, t
+
+from ._settings import FlextTargetOracleOicSettings
 
 
-class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
+class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtilities):
     """Namespace for message-building and validation helpers."""
 
     class TargetOracleOic:
@@ -36,43 +34,14 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                     return r[bool].fail(f"Missing required settings fields: {missing}")
                 return r[bool].ok(value=True)
 
-        class Factories:
-            """Factory helpers for OIC model instances."""
-
-            @staticmethod
-            def create_oic_connection(
-                data: t.JsonMapping,
-            ) -> p.TargetOracleOic.OICConnection:
-                """Create an OICConnection model from generic payload via Pydantic validation."""
-                return m.TargetOracleOic.OICConnection.model_validate({
-                    **data,
-                    "properties": data,
-                })
-
-            @staticmethod
-            def create_oic_integration(
-                data: t.JsonMapping,
-            ) -> p.TargetOracleOic.OICIntegration:
-                """Create an OICIntegration model from generic payload via Pydantic validation."""
-                return m.TargetOracleOic.OICIntegration.model_validate(data)
-
-            @staticmethod
-            def create_oic_package(data: t.JsonMapping) -> p.TargetOracleOic.OICPackage:
-                """Create an OICPackage model from generic payload via Pydantic validation."""
-                return m.TargetOracleOic.OICPackage.model_validate(data)
-
-            @staticmethod
-            def create_oic_lookup(data: t.JsonMapping) -> p.TargetOracleOic.OICLookup:
-                """Create an OICLookup model from generic payload via Pydantic validation."""
-                return m.TargetOracleOic.OICLookup.model_validate(data)
-
         class Authenticator:
             """OAuth2 Authenticator for Oracle Integration Cloud."""
 
-            def __init__(self) -> None:
+            def __init__(self, settings: FlextTargetOracleOicSettings) -> None:
                 """Initialize the authenticator with target configuration."""
                 # NOTE (multi-agent): keep settings on self; methods below read
-                # oauth fields via settings (FLEXT settings SSOT).
+                # oauth fields via self.settings (FLEXT settings SSOT).
+                self.settings: FlextTargetOracleOicSettings = settings
                 self._access_token: str | None = None
                 self._auth_scheme: str = c.TargetOracleOic.AUTH_SCHEME_BEARER
 
@@ -84,7 +53,7 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
 
             def build_token_request_data(self) -> t.JsonDict:
                 """Build the payload for requesting an OAuth2 token."""
-                oic = settings.TargetOracleOic
+                oic = self.settings.TargetOracleOic
                 payload: t.MutableStrMapping = {
                     "grant_type": "client_credentials",
                     "client_id": oic.oauth_client_id,
@@ -120,15 +89,17 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                 self._access_token = access_token
                 return access_token
 
-            def _request_access_token(self) -> p.Api.HttpResponse:
+            def _request_access_token(self) -> m.Api.HttpResponse:
                 """Request one OAuth2 access-token response."""
-                oic = settings.TargetOracleOic
-                api_config = FlextApiSettings.model_validate({
-                    "base_url": oic.oauth_token_url,
+                oic = self.settings.TargetOracleOic
+                # The token endpoint is already absolute; an empty client
+                # base_url makes FlextApi pass the request URL through as-is.
+                api_config = _api_FlextApiSettings.model_validate({
+                    "base_url": "",
                     "timeout": oic.timeout,
                 })
-                response_result = FlextApi(settings=api_config).post(
-                    "",
+                response_result = _api_FlextApi(runtime_settings=api_config).post(
+                    oic.oauth_token_url,
                     data=self.build_token_request_data(),
                     headers={
                         "Content-Type": "application/x-www-form-urlencoded",
@@ -143,25 +114,6 @@ class FlextTargetOracleOicUtilities(u, FlextOracleOicUtilities):
                     msg = f"Failed to request OAuth2 token: HTTP {response.status_code}"
                     raise RuntimeError(msg)
                 return response
-
-            @staticmethod
-            def create_config_from_dict(
-                config_dict: t.ConfigurationMapping,
-            ) -> FlextTargetOracleOicSettings:
-                """Create FlextTargetOracleOicSettings from dictionary."""
-                return FlextTargetOracleOicSettings.model_validate(config_dict)
-
-            @staticmethod
-            def create_config_with_env_overrides(
-                **overrides: t.Scalar,
-            ) -> FlextTargetOracleOicSettings:
-                """Create FlextTargetOracleOicSettings with environment variable overrides."""
-                return FlextTargetOracleOicSettings.model_validate(overrides)
-
-            @staticmethod
-            def create_singer_config_schema() -> t.JsonMapping:
-                """Create Singer configuration schema from FlextTargetOracleOicSettings."""
-                return FlextTargetOracleOicSettings.model_json_schema()
 
 
 u = FlextTargetOracleOicUtilities

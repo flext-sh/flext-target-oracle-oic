@@ -2,12 +2,9 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from flext_target_oracle_oic import t
 
-from flext_target_oracle_oic.api import FlextTargetOracleOicService
-
-if TYPE_CHECKING:
-    from flext_target_oracle_oic import t
+from .api import FlextTargetOracleOicService
 
 
 class FlextTargetOracleOicCli:

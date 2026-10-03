@@ -5,18 +5,19 @@ from __future__ import annotations
 from types import MappingProxyType
 from typing import Annotated
 
-from flext_meltano import m
+from flext_meltano import FlextMeltanoModels
 from flext_oracle_oic import FlextOracleOicModels, u
+
 from flext_target_oracle_oic import c, p, r, t
 
 
-class FlextTargetOracleOicModels(m, FlextOracleOicModels):
+class FlextTargetOracleOicModels(FlextMeltanoModels, FlextOracleOicModels):
     """Namespace class for OIC target models."""
 
     class TargetOracleOic:
         """TargetOracleOic domain namespace."""
 
-        class OICConnection(m.ArbitraryTypesModel):
+        class OICConnection(FlextMeltanoModels.ArbitraryTypesModel):
             """Connection payload model."""
 
             id: Annotated[
@@ -31,7 +32,7 @@ class FlextTargetOracleOicModels(m, FlextOracleOicModels):
                 u.Field(description="Connection properties and configuration"),
             ] = u.Field(default_factory=MappingProxyType)
 
-        class OICIntegration(m.ArbitraryTypesModel):
+        class OICIntegration(FlextMeltanoModels.ArbitraryTypesModel):
             """Integration payload model."""
 
             id: Annotated[
@@ -45,7 +46,7 @@ class FlextTargetOracleOicModels(m, FlextOracleOicModels):
                 c.TargetOracleOic.DEFAULT_PATTERN
             )
 
-        class OICPackage(m.ArbitraryTypesModel):
+        class OICPackage(FlextMeltanoModels.ArbitraryTypesModel):
             """Package payload model."""
 
             id: Annotated[
@@ -56,7 +57,7 @@ class FlextTargetOracleOicModels(m, FlextOracleOicModels):
                 c.TargetOracleOic.DEFAULT_VERSION
             )
 
-        class OICLookup(m.ArbitraryTypesModel):
+        class OICLookup(FlextMeltanoModels.ArbitraryTypesModel):
             """Lookup payload model."""
 
             name: Annotated[t.NonEmptyStr, u.Field(description="Lookup name")]
@@ -69,7 +70,7 @@ class FlextTargetOracleOicModels(m, FlextOracleOicModels):
                 u.Field(description="Row data for the lookup"),
             ] = ()
 
-        class OICProject(m.ArbitraryTypesModel):
+        class OICProject(FlextMeltanoModels.ArbitraryTypesModel):
             """Project payload model."""
 
             id: Annotated[

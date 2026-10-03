@@ -3,71 +3,64 @@
 
 from __future__ import annotations
 
+from types import MappingProxyType
 from typing import TYPE_CHECKING
 
 from flext_core.lazy import build_lazy_import_map, install_lazy_exports
-from flext_target_oracle_oic.__version__ import (
-    __author__,
-    __author_email__,
-    __description__,
-    __license__,
-    __title__,
-    __url__,
-    __version__,
-    __version_info__,
+
+from .__version__ import (
+    __author__ as __author__,
+    __author_email__ as __author_email__,
+    __description__ as __description__,
+    __license__ as __license__,
+    __title__ as __title__,
+    __url__ as __url__,
+    __version__ as __version__,
+    __version_info__ as __version_info__,
 )
 
 if TYPE_CHECKING:
-    from flext_oracle_oic import d as d, e as e, h as h, r as r, s as s, x as x
-    from flext_target_oracle_oic._settings import (
-        FlextTargetOracleOicSettings as FlextTargetOracleOicSettings,
-        settings as settings,
+    from flext_meltano import d, e, h, r, s, x
+
+    from ._config import FlextTargetOracleOicConfig, config
+    from ._settings import FlextTargetOracleOicSettings, settings
+    from .api import FlextTargetOracleOicService, target_oracle_oic
+    from .cli import FlextTargetOracleOicCli, main
+    from .constants import (
+        FlextTargetOracleOicConstants,
+        FlextTargetOracleOicConstants as c,
     )
-    from flext_target_oracle_oic.api import (
-        FlextTargetOracleOicService as FlextTargetOracleOicService,
-        target_oracle_oic as target_oracle_oic,
+    from .models import FlextTargetOracleOicModels, FlextTargetOracleOicModels as m
+    from .protocols import (
+        FlextTargetOracleOicProtocols,
+        FlextTargetOracleOicProtocols as p,
     )
-    from flext_target_oracle_oic.cli import (
-        FlextTargetOracleOicCli as FlextTargetOracleOicCli,
-        main as main,
+    from .target import (
+        FlextTargetOracleOic,
+        FlextTargetOracleOicBaseSink,
+        FlextTargetOracleOicConnectionsSink,
+        FlextTargetOracleOicIntegrationsSink,
+        FlextTargetOracleOicLookupsSink,
+        FlextTargetOracleOicPackagesSink,
     )
-    from flext_target_oracle_oic.constants import (
-        FlextTargetOracleOicConstants as FlextTargetOracleOicConstants,
-        c as c,
+    from .typings import FlextTargetOracleOicTypes, FlextTargetOracleOicTypes as t
+    from .utilities import (
+        FlextTargetOracleOicUtilities,
+        FlextTargetOracleOicUtilities as u,
     )
-    from flext_target_oracle_oic.models import (
-        FlextTargetOracleOicModels as FlextTargetOracleOicModels,
-        m as m,
-    )
-    from flext_target_oracle_oic.protocols import (
-        FlextTargetOracleOicProtocols as FlextTargetOracleOicProtocols,
-        p,
-    )
-    from flext_target_oracle_oic.typings import (
-        FlextTargetOracleOicTypes as FlextTargetOracleOicTypes,
-        t as t,
-    )
-    from flext_target_oracle_oic.utilities import (
-        FlextTargetOracleOicUtilities as FlextTargetOracleOicUtilities,
-        u,
-    )
-_LAZY_IMPORTS = build_lazy_import_map({
-    "._settings": ("FlextTargetOracleOicSettings", "settings"),
-    ".api": ("FlextTargetOracleOicService", "target_oracle_oic"),
-    ".cli": ("FlextTargetOracleOicCli", "main"),
-    ".constants": ("FlextTargetOracleOicConstants", "c"),
-    ".models": ("FlextTargetOracleOicModels", "m"),
-    ".protocols": ("FlextTargetOracleOicProtocols", "p"),
-    ".typings": ("FlextTargetOracleOicTypes", "t"),
-    ".utilities": ("FlextTargetOracleOicUtilities", "u"),
-    "flext_oracle_oic": ("d", "e", "h", "r", "s", "x"),
-})
 
 
 __all__: tuple[str, ...] = (
+    "FlextTargetOracleOic",
+    "FlextTargetOracleOicBaseSink",
     "FlextTargetOracleOicCli",
+    "FlextTargetOracleOicConfig",
+    "FlextTargetOracleOicConnectionsSink",
     "FlextTargetOracleOicConstants",
+    "FlextTargetOracleOicIntegrationsSink",
+    "FlextTargetOracleOicLookupsSink",
     "FlextTargetOracleOicModels",
+    "FlextTargetOracleOicPackagesSink",
     "FlextTargetOracleOicProtocols",
     "FlextTargetOracleOicService",
     "FlextTargetOracleOicSettings",
@@ -82,6 +75,7 @@ __all__: tuple[str, ...] = (
     "__version__",
     "__version_info__",
     "c",
+    "config",
     "d",
     "e",
     "h",
@@ -97,5 +91,31 @@ __all__: tuple[str, ...] = (
     "x",
 )
 
+_LAZY_IMPORTS = MappingProxyType(
+    build_lazy_import_map(
+        MappingProxyType({
+            "._config": ("FlextTargetOracleOicConfig", "config"),
+            "._settings": ("FlextTargetOracleOicSettings", "settings"),
+            ".api": ("FlextTargetOracleOicService", "target_oracle_oic"),
+            ".cli": ("FlextTargetOracleOicCli", "main"),
+            ".constants": ("FlextTargetOracleOicConstants", "c"),
+            ".models": ("FlextTargetOracleOicModels", "m"),
+            ".protocols": ("FlextTargetOracleOicProtocols", "p"),
+            ".target": (
+                "FlextTargetOracleOic",
+                "FlextTargetOracleOicBaseSink",
+                "FlextTargetOracleOicConnectionsSink",
+                "FlextTargetOracleOicIntegrationsSink",
+                "FlextTargetOracleOicLookupsSink",
+                "FlextTargetOracleOicPackagesSink",
+            ),
+            ".typings": ("FlextTargetOracleOicTypes", "t"),
+            ".utilities": ("FlextTargetOracleOicUtilities", "u"),
+            "flext_meltano": ("d", "e", "h", "r", "s", "x"),
+        }),
+        alias_groups=MappingProxyType({}),
+        sort_keys=False,
+    )
+)
 
 install_lazy_exports(__name__, globals(), _LAZY_IMPORTS, public_exports=__all__)
