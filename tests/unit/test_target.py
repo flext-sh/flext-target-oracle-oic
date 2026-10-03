@@ -27,8 +27,16 @@ if TYPE_CHECKING:
     from collections.abc import Iterator
 
 
-class AuthTestSettings(FlextTargetOracleOicSettings):
-    pass
+AUTH_TEST_SETTINGS = FlextTargetOracleOicSettings.model_validate({
+    "TargetOracleOic": {
+        "oauth_client_id": "client-id",
+        "oauth_client_secret": "s" + "0" * 14,
+        "oauth_token_url": c.TargetOracleOic.Tests.OAUTH_ENDPOINT_URL,
+        "oauth_scope": "urn:opc:resource:consumer:all",
+        "oauth_client_aud": "https://idcs.example.com",
+        "timeout": 30,
+    }
+})
 
 
 class DummySingerTarget(SingerTarget):
@@ -100,7 +108,7 @@ class TestsFlextTargetOracleOicTarget:
         tm.that(properties, has="TargetOracleOic")
 
     def test_oic_authenticator_builds_payload(self) -> None:
-        authenticator = u.TargetOracleOic.Authenticator(_build_auth_config())
+        authenticator = u.TargetOracleOic.Authenticator(AUTH_TEST_SETTINGS)
         payload = authenticator.build_token_request_data()
         tm.that(payload["grant_type"], eq="client_credentials")
         tm.that(payload["client_id"], eq="client-id")
@@ -110,7 +118,13 @@ class TestsFlextTargetOracleOicTarget:
 
     def test_oic_authenticator_omits_optional_scope_and_audience(self) -> None:
         authenticator = u.TargetOracleOic.Authenticator(
-            _build_auth_config(oauth_scope="", oauth_client_aud=None)
+            AUTH_TEST_SETTINGS.model_copy(
+                update={
+                    "TargetOracleOic": AUTH_TEST_SETTINGS.TargetOracleOic.model_copy(
+                        update={"oauth_scope": "", "oauth_client_aud": None}
+                    )
+                }
+            )
         )
         payload = authenticator.build_token_request_data()
         tm.that(payload, lacks="scope")
@@ -121,7 +135,13 @@ class TestsFlextTargetOracleOicTarget:
     ) -> None:
         """A 200 token response without access_token fails loud over real HTTP."""
         authenticator = u.TargetOracleOic.Authenticator(
-            _build_auth_config(oauth_token_url=local_token_url)
+            AUTH_TEST_SETTINGS.model_copy(
+                update={
+                    "TargetOracleOic": AUTH_TEST_SETTINGS.TargetOracleOic.model_copy(
+                        update={"oauth_token_url": local_token_url}
+                    )
+                }
+            )
         )
         with pytest.raises(RuntimeError, match="access_token"):
             authenticator.get_access_token()
@@ -155,26 +175,3 @@ def local_token_url() -> Iterator[str]:
 @pytest.fixture
 def singer_target() -> SingerTarget:
     return DummySingerTarget(config={})
-
-
-def _build_auth_config(
-    *,
-    oauth_token_url: str | None = None,
-    oauth_scope: str | None = "urn:opc:resource:consumer:all",
-    oauth_client_aud: str | None = "https://idcs.example.com",
-) -> FlextTargetOracleOicSettings:
-    # Build via model_construct to avoid touching the flext-core settings singleton;
-    # oauth fields live under the TargetOracleOic namespace (ADR-005).
-    namespace = {
-        "oauth_client_id": "client-id",
-        "oauth_client_secret": "s" + "0" * 14,
-        "oauth_token_url": (
-            oauth_token_url
-            if oauth_token_url is not None
-            else c.TargetOracleOic.Tests.OAUTH_ENDPOINT_URL
-        ),
-        "oauth_scope": oauth_scope,
-        "oauth_client_aud": oauth_client_aud,
-        "timeout": 30,
-    }
-    return AuthTestSettings.model_validate({"TargetOracleOic": namespace})
