@@ -455,6 +455,7 @@ runtime-evaluated-base-classes = [
   "flext_meltano.meltano.Target",
   "flext_meltano.services.singer_target.FlextMeltanoTargetAbstractions",
   "flext_target_oracle_oic.FlextTargetOracleOicSettings",
+  "flext_target_oracle_oic.m.BaseModel",
   "flext_tests.FlextTestsServiceBase",
   "flext_tests.FlextTestsSettings",
   "pydantic.BaseModel",
