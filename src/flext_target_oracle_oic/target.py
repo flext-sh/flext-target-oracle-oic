@@ -1,4 +1,9 @@
-"""Singer target sink definitions for Oracle OIC."""
+"""Singer target sink definitions for Oracle OIC.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+src/flext_target_oracle_oic/target
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 
@@ -22,7 +27,9 @@ class FlextTargetOracleOicBaseSink(m.Meltano.SingerSinkBase):
 
     @override
     def process_record(
-        self, record: t.MutableJsonMapping, context: t.MutableJsonMapping
+        self,
+        record: t.MutableJsonMapping,
+        context: t.MutableJsonMapping,
     ) -> None:
         """Default sink behavior: log incoming record metadata."""
         _ = context
@@ -68,15 +75,29 @@ class FlextTargetOracleOic(FlextMeltanoTargetAbstractions):
     }
 
     def fetch_sink_class(self, stream_name: str) -> type[FlextTargetOracleOicBaseSink]:
-        """Resolve sink class by stream name."""
+        """Resolve sink class by stream name.
+
+        Returns:
+            The resulting ``type[FlextTargetOracleOicBaseSink]``.
+        """
         return self._sink_classes.get(stream_name, self.default_sink_class)
 
-    def setup(self) -> p.Result[bool]:
-        """Set up target resources."""
+    @staticmethod
+    def setup() -> p.Result[bool]:
+        """Set up target resources.
+
+        Returns:
+            The resulting ``p.Result[bool]``.
+        """
         return r[bool].ok(value=True)
 
-    def teardown(self) -> p.Result[bool]:
-        """Teardown target resources."""
+    @staticmethod
+    def teardown() -> p.Result[bool]:
+        """Teardown target resources.
+
+        Returns:
+            The resulting ``p.Result[bool]``.
+        """
         return r[bool].ok(value=True)
 
 

@@ -1,10 +1,14 @@
-"""CLI facade for target Oracle OIC package."""
+"""CLI facade for target Oracle OIC package.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+src/flext_target_oracle_oic/cli
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 
 from flext_target_oracle_oic import t
-
-from .api import FlextTargetOracleOicService
+from flext_target_oracle_oic.api import FlextTargetOracleOicService
 
 
 class FlextTargetOracleOicCli:
@@ -12,14 +16,22 @@ class FlextTargetOracleOicCli:
 
     @classmethod
     def run(cls, args: t.StrSequence | None = None) -> int:
-        """Execute the canonical target CLI entry point."""
+        """Execute the canonical target CLI entry point.
+
+        Returns:
+            The resulting ``int``.
+        """
         _ = cls
         exit_code: int = FlextTargetOracleOicService().cli_main(args)
         return exit_code
 
 
 def main() -> int:
-    """Run the target Oracle OIC CLI entry point."""
+    """Run the target Oracle OIC CLI entry point.
+
+    Returns:
+        The resulting ``int``.
+    """
     return FlextTargetOracleOicCli.run()
 
 

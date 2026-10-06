@@ -21,7 +21,9 @@ class TestsFlextTargetOracleOicCliEntrypoint:
 
     pytestmark = pytest.mark.slow
 
-    def test_console_drains_empty_stream_with_exit_zero(self) -> None:
+    @staticmethod
+    def test_console_drains_empty_stream_with_exit_zero() -> None:
+        """Test console drains empty stream with exit zero."""
         result = u.Cli.capture(
             [c.TargetOracleOic.TARGET_NAME],
             remove_env_keys=("PYTHONPATH",),

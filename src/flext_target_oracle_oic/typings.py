@@ -1,4 +1,9 @@
-"""Project type aliases for target Oracle OIC."""
+"""Project type aliases for target Oracle OIC.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+src/flext_target_oracle_oic/typings
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 
