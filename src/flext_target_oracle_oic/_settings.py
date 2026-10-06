@@ -44,6 +44,9 @@ class FlextTargetOracleOicSettings(FlextMeltanoSettings):
 
 
 settings: FlextTargetOracleOicSettings = FlextTargetOracleOicSettings.fetch_global()
-"""Pre-instantiated project settings singleton — ``from flext_target_oracle_oic import settings``."""
+"""Pre-instantiated project settings singleton.
+
+Exposed as ``from flext_target_oracle_oic import settings``.
+"""
 
 __all__: list[str] = ["FlextTargetOracleOicSettings", "settings"]

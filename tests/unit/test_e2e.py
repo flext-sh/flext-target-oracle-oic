@@ -105,14 +105,18 @@ class TestsFlextTargetOracleOicE2e:
             target.fetch_sink_class("connections")
             is not FlextTargetOracleOicConnectionsSink
         ):
-            msg = f"Expected {FlextTargetOracleOicConnectionsSink}, got {target.fetch_sink_class('connections')}"
+            expected = FlextTargetOracleOicConnectionsSink
+            got = target.fetch_sink_class("connections")
+            msg = f"Expected {expected}, got {got}"
             raise AssertionError(msg)
         assert (
             target.fetch_sink_class("integrations")
             is FlextTargetOracleOicIntegrationsSink
         )
         if target.fetch_sink_class("packages") is not FlextTargetOracleOicPackagesSink:
-            msg = f"Expected {FlextTargetOracleOicPackagesSink}, got {target.fetch_sink_class('packages')}"
+            expected = FlextTargetOracleOicPackagesSink
+            got = target.fetch_sink_class("packages")
+            msg = f"Expected {expected}, got {got}"
             raise AssertionError(msg)
         assert target.fetch_sink_class("lookups") is FlextTargetOracleOicLookupsSink
         default_sink = target.fetch_sink_class("unknown_stream")
