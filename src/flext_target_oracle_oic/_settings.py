@@ -19,14 +19,17 @@ class FlextTargetOracleOicSettings(FlextMeltanoSettings):
     """Oracle OIC target settings; fields under ``settings.TargetOracleOic.*``."""
 
     model_config = m.SettingsConfigDict(
-        env_prefix="FLEXT_TARGET_ORACLE_OIC_", env_nested_delimiter="__", extra="ignore"
+        env_prefix="FLEXT_TARGET_ORACLE_OIC_",
+        env_nested_delimiter="__",
+        extra="ignore",
     )
 
     class _TargetOracleOic(m.BaseModel):
         """Namespaced Oracle OIC target settings."""
 
         timeout: Annotated[
-            int, m.Field(default=30, ge=1, description="HTTP timeout in seconds")
+            int,
+            m.Field(default=30, ge=1, description="HTTP timeout in seconds"),
         ]
 
     # Why: mro-4p0t — nested namespace uses default_factory only; no build_* wrapper.

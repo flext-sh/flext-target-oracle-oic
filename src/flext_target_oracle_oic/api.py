@@ -14,8 +14,9 @@ from typing import Annotated, override
 from flext_meltano import meltano
 
 from flext_target_oracle_oic import c, p, t, u
-
-from ._utilities.service_runtime import FlextTargetOracleOicServiceRuntime
+from flext_target_oracle_oic._utilities.service_runtime import (
+    FlextTargetOracleOicServiceRuntime,
+)
 
 
 class FlextTargetOracleOicService(meltano.Target):
@@ -27,12 +28,20 @@ class FlextTargetOracleOicService(meltano.Target):
 
     @override
     def create_sink(
-        self, stream_name: str, schema: t.JsonMapping
+        self,
+        stream_name: str,
+        schema: t.JsonMapping,
     ) -> p.Meltano.SingerDrainSink:
-        """Create an Oracle OIC sink for a stream."""
+        """Create an Oracle OIC sink for a stream.
+
+        Returns:
+            The resulting ``p.Meltano.SingerDrainSink``.
+        """
         target_config: t.ScalarMapping = self.settings_overrides or {}
         return FlextTargetOracleOicServiceRuntime.create_sink(
-            stream_name=stream_name, schema=schema, target_config=target_config
+            stream_name=stream_name,
+            schema=schema,
+            target_config=target_config,
         )
 
 

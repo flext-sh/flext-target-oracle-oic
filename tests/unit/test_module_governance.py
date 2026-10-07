@@ -1,4 +1,9 @@
-"""Governance checks for Oracle OIC module structure."""
+"""Governance checks for Oracle OIC module structure.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+tests/unit/test_module_governance
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 
