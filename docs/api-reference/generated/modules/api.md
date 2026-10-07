@@ -1,4 +1,4 @@
-# flext-target-oracle-oic Public API
+# flext_target_oracle_oic.api
 
 <!-- TOC START -->
 
@@ -6,7 +6,7 @@
 
 <!-- AUTO-GENERATED — DO NOT EDIT MANUALLY -->
 
-::: flext_target_oracle_oic
+::: flext_target_oracle_oic.api
 
     options:
       show_root_heading: true

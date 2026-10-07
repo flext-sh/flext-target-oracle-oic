@@ -1,4 +1,9 @@
-"""Service base for flext-target-oracle-oic tests."""
+"""Service base for flext-target-oracle-oic tests.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+tests/base
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 
@@ -19,7 +24,7 @@ class TestsFlextTargetOracleOicServiceBase(FlextTestsServiceBase):
     @override
     def runtime_bootstrap_options(cls) -> m.RuntimeBootstrapOptions:
         return m.RuntimeBootstrapOptions(
-            settings_type=TestsFlextTargetOracleOicSettings
+            settings_type=TestsFlextTargetOracleOicSettings,
         )
 
 

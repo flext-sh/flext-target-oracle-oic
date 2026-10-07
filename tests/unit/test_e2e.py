@@ -38,7 +38,11 @@ if TYPE_CHECKING:
 
 
 def load_test_config() -> t.StrMapping:
-    """Load real test configuration from environment variables."""
+    """Load real test configuration from environment variables.
+
+    Returns:
+        The resulting ``t.StrMapping``.
+    """
     env_file = Path(".env")
     if env_file.exists():
         with env_file.open(encoding="utf-8") as f:
@@ -67,19 +71,36 @@ def load_test_config() -> t.StrMapping:
 
 @pytest.fixture
 def target() -> FlextTargetOracleOic:
+    """Provide ``target``.
+
+    Returns:
+        The resulting ``FlextTargetOracleOic``.
+    """
     return FlextTargetOracleOic()
 
 
 class TestsFlextTargetOracleOicE2e:
-    def test_target_initialization(self, target: FlextTargetOracleOic) -> None:
-        """Test target initialization with valid configuration."""
+    """Tests for ``FlextTargetOracleOicE2e``."""
+
+    @staticmethod
+    def test_target_initialization(target: FlextTargetOracleOic) -> None:
+        """Test target initialization with valid configuration.
+
+        Raises:
+            AssertionError: If ``target.name != 'target-oracle-oic'``.
+        """
         if target.name != "target-oracle-oic":
             msg: str = f"Expected {'target-oracle-oic'}, got {target.name}"
             raise AssertionError(msg)
         tm.that(target.fetch_sink_class("connections"), is_=type)
 
-    def test_sink_class_mapping(self, target: FlextTargetOracleOic) -> None:
-        """Test sink class mapping for known streams."""
+    @staticmethod
+    def test_sink_class_mapping(target: FlextTargetOracleOic) -> None:
+        """Test sink class mapping for known streams.
+
+        Raises:
+            AssertionError: If Expected.
+        """
         if (
             target.fetch_sink_class("connections")
             is not FlextTargetOracleOicConnectionsSink
@@ -99,7 +120,8 @@ class TestsFlextTargetOracleOicE2e:
             msg = f"Expected {target.default_sink_class}, got {default_sink}"
             raise AssertionError(msg)
 
-    def test_config_validation(self, target: FlextTargetOracleOic) -> None:
+    @staticmethod
+    def test_config_validation(target: FlextTargetOracleOic) -> None:
         """Test setup/teardown result contract."""
         setup_result = target.setup()
         tm.ok(setup_result)
@@ -110,8 +132,14 @@ class TestsFlextTargetOracleOicE2e:
         tm.that(teardown_result.value, none=False)
         tm.that(teardown_result.value, eq=True)
 
-    def test_conditional_config_generation(self) -> None:
-        """Test schema generation from pydantic configuration model."""
+    @staticmethod
+    def test_conditional_config_generation() -> None:
+        """Test schema generation from pydantic configuration model.
+
+        Raises:
+            AssertionError: If Expected.
+            TypeError: If Expected.
+        """
         schema_raw = FlextTargetOracleOicSettings.model_json_schema()
         properties_raw = schema_raw.get("properties")
         if not isinstance(properties_raw, dict):
@@ -122,9 +150,17 @@ class TestsFlextTargetOracleOicE2e:
             raise AssertionError(msg)
         tm.that(properties_raw["TargetOracleOic"], is_=dict)
 
+    @staticmethod
     @pytest.fixture
-    def test_config(self) -> t.StrMapping:
+    def test_config() -> t.StrMapping:
+        """Test config.
+
+        Returns:
+            The resulting ``t.StrMapping``.
+        """
         return load_test_config()
 
-    def test_target_smoke_class(self) -> None:
+    @staticmethod
+    def test_target_smoke_class() -> None:
+        """Test target smoke class."""
         tm.that(FlextTargetOracleOic.name, eq="target-oracle-oic")

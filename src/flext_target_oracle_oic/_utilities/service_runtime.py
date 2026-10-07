@@ -1,4 +1,9 @@
-"""Internal runtime adapters for the target-oracle-oic service facade."""
+"""Internal runtime adapters for the target-oracle-oic service facade.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+src/flext_target_oracle_oic/_utilities/service_runtime
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 
@@ -19,9 +24,17 @@ class FlextTargetOracleOicServiceRuntime:
 
     @classmethod
     def create_sink(
-        cls, *, stream_name: str, schema: t.JsonMapping, target_config: t.ScalarMapping
+        cls,
+        *,
+        stream_name: str,
+        schema: t.JsonMapping,
+        target_config: t.ScalarMapping,
     ) -> FlextTargetOracleOicBaseSink:
-        """Create the service-level Singer sink adapter."""
+        """Create the service-level Singer sink adapter.
+
+        Returns:
+            The resulting ``FlextTargetOracleOicBaseSink``.
+        """
         normalized_target_config = u.normalize_to_json_mapping(target_config)
         runtime_target = FlextTargetOracleOic()
         sink_class: type[FlextTargetOracleOicBaseSink] = (

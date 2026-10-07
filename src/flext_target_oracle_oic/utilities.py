@@ -1,4 +1,9 @@
-"""Utilities facade for target Oracle OIC."""
+"""Utilities facade for target Oracle OIC.
+
+Copyright (c) 2026 FLEXT Team. All rights reserved.
+src/flext_target_oracle_oic/utilities
+SPDX-License-Identifier: MIT
+"""
 
 from __future__ import annotations
 
