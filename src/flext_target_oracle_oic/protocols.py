@@ -14,7 +14,8 @@ from flext_oracle_oic import FlextOracleOicProtocols
 class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtocols):
     """Singer Target Oracle OIC protocols extending OracleOic and Meltano protocols.
 
-    Extends both FlextOracleOicProtocols and FlextMeltanoProtocols via multiple inheritance
+    Extends both FlextOracleOicProtocols and FlextMeltanoProtocols via
+    multiple inheritance
     to inherit all Oracle OIC protocols, Meltano protocols, and foundation protocols.
 
     Architecture:

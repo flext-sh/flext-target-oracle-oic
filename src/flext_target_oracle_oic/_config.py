@@ -1,8 +1,10 @@
-"""FlextTargetOracleOicConfig — frozen config singleton for flext-target-oracle-oic (ADR-005 §7).
+"""FlextTargetOracleOicConfig — frozen config singleton for flext-target-oracle-oic.
 
-Model-less: business rules live in ``config/*.yaml`` under the ``TargetOracleOic:`` key and
-are exposed through the open ``config.TargetOracleOic`` namespace (``extra="allow"``), with
-no per-domain model. Access is ``config.TargetOracleOic.<domain>[<key>...]``.
+See ADR-005 §7.
+
+Model-less: business rules live in ``config/*.yaml`` under the ``TargetOracleOic:``
+key, exposed through the open ``config.TargetOracleOic`` namespace (``extra="allow"``)
+with no per-domain model. Access is ``config.TargetOracleOic.<domain>[<key>...]``.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -47,12 +49,17 @@ class FlextTargetOracleOicConfig(FlextMeltanoConfig):
     TargetOracleOic: Annotated[
         _TargetOracleOicNamespace,
         m.Field(
-            description="Open namespace exposing ``config/*.yaml`` under ``TargetOracleOic``.",
+            description=(
+                "Open namespace exposing ``config/*.yaml`` under ``TargetOracleOic``."
+            ),
         ),
     ] = _TargetOracleOicNamespace()
 
 
 config: FlextTargetOracleOicConfig = FlextTargetOracleOicConfig.fetch_global()
-"""Pre-instantiated frozen config singleton — ``from flext_target_oracle_oic import config``."""
+"""Pre-instantiated frozen config singleton.
+
+Exposed as ``from flext_target_oracle_oic import config``.
+"""
 
 __all__: list[str] = ["FlextTargetOracleOicConfig", "config"]

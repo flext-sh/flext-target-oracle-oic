@@ -92,14 +92,18 @@ class TestsFlextTargetOracleOicTarget:
             target.fetch_sink_class("connections")
             is not FlextTargetOracleOicConnectionsSink
         ):
-            msg: str = f"Expected {FlextTargetOracleOicConnectionsSink}, got {target.fetch_sink_class('connections')}"
+            expected = FlextTargetOracleOicConnectionsSink
+            got = target.fetch_sink_class("connections")
+            msg: str = f"Expected {expected}, got {got}"
             raise AssertionError(msg)
         assert (
             target.fetch_sink_class("integrations")
             is FlextTargetOracleOicIntegrationsSink
         )
         if target.fetch_sink_class("unknown_stream") is not target.default_sink_class:
-            msg = f"Expected {target.default_sink_class}, got {target.fetch_sink_class('unknown_stream')}"
+            expected = target.default_sink_class
+            got = target.fetch_sink_class("unknown_stream")
+            msg = f"Expected {expected}, got {got}"
             raise AssertionError(msg)
 
     @staticmethod
