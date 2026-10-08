@@ -8,10 +8,8 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from flext_target_oracle_oic import c, m, t, u
-from flext_target_oracle_oic.target import (
-    FlextTargetOracleOic,
-    FlextTargetOracleOicBaseSink,
-)
+from flext_target_oracle_oic._utilities.sink import FlextTargetOracleOicSink
+from flext_target_oracle_oic.target import FlextTargetOracleOic
 
 
 class FlextTargetOracleOicServiceRuntime:
@@ -29,18 +27,14 @@ class FlextTargetOracleOicServiceRuntime:
         stream_name: str,
         schema: t.JsonMapping,
         target_config: t.ScalarMapping,
-    ) -> FlextTargetOracleOicBaseSink:
+    ) -> FlextTargetOracleOicSink:
         """Create the service-level Singer sink adapter.
 
         Returns:
-            The resulting ``FlextTargetOracleOicBaseSink``.
+            The resulting ``FlextTargetOracleOicSink``.
         """
         normalized_target_config = u.normalize_to_json_mapping(target_config)
-        runtime_target = FlextTargetOracleOic()
-        sink_class: type[FlextTargetOracleOicBaseSink] = (
-            runtime_target.fetch_sink_class(stream_name)
-        )
-        return sink_class(
+        return FlextTargetOracleOic.default_sink_class(
             target=cls.Target(
                 config=t.json_dict_adapter().validate_python(normalized_target_config),
                 validate_config=False,

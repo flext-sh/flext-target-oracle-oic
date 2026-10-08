@@ -1,4 +1,4 @@
-"""Singer target sink definitions for Oracle OIC.
+"""Singer target definition for Oracle OIC.
 
 Copyright (c) 2026 FLEXT Team. All rights reserved.
 src/flext_target_oracle_oic/target
@@ -7,80 +7,21 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar, override
+from typing import ClassVar
 
 from flext_meltano.services.singer_target import FlextMeltanoTargetAbstractions
 
-from flext_target_oracle_oic import c, m, p, r, t
-
-if TYPE_CHECKING:
-    from collections.abc import Mapping
-
-
-class FlextTargetOracleOicBaseSink(m.Meltano.SingerSinkBase):
-    """Base sink implementation used by OIC stream sinks."""
-
-    @override
-    def process_batch(self, context: t.MutableJsonMapping) -> None:
-        """Singer batch hook implementation."""
-        _ = context
-
-    @override
-    def process_record(
-        self,
-        record: t.MutableJsonMapping,
-        context: t.MutableJsonMapping,
-    ) -> None:
-        """Default sink behavior: log incoming record metadata."""
-        _ = context
-        self.logger.debug("Processing OIC record: %s", record.keys())
-
-
-class FlextTargetOracleOicConnectionsSink(FlextTargetOracleOicBaseSink):
-    """Sink for OIC connections stream."""
-
-    name = c.TargetOracleOic.STREAM_CONNECTIONS
-
-
-class FlextTargetOracleOicIntegrationsSink(FlextTargetOracleOicBaseSink):
-    """Sink for OIC integrations stream."""
-
-    name = c.TargetOracleOic.STREAM_INTEGRATIONS
-
-
-class FlextTargetOracleOicPackagesSink(FlextTargetOracleOicBaseSink):
-    """Sink for OIC packages stream."""
-
-    name = c.TargetOracleOic.STREAM_PACKAGES
-
-
-class FlextTargetOracleOicLookupsSink(FlextTargetOracleOicBaseSink):
-    """Sink for OIC lookups stream."""
-
-    name = c.TargetOracleOic.STREAM_LOOKUPS
+from flext_target_oracle_oic import c, p, r
+from flext_target_oracle_oic._utilities.sink import FlextTargetOracleOicSink
 
 
 class FlextTargetOracleOic(FlextMeltanoTargetAbstractions):
     """Singer target entry point for Oracle OIC."""
 
     name: ClassVar[str] = c.TargetOracleOic.TARGET_NAME
-    default_sink_class: ClassVar[type[FlextTargetOracleOicBaseSink]] = (
-        FlextTargetOracleOicBaseSink
+    default_sink_class: ClassVar[type[FlextTargetOracleOicSink]] = (
+        FlextTargetOracleOicSink
     )
-    _sink_classes: ClassVar[Mapping[str, type[FlextTargetOracleOicBaseSink]]] = {
-        c.TargetOracleOic.STREAM_CONNECTIONS: FlextTargetOracleOicConnectionsSink,
-        c.TargetOracleOic.STREAM_INTEGRATIONS: FlextTargetOracleOicIntegrationsSink,
-        c.TargetOracleOic.STREAM_PACKAGES: FlextTargetOracleOicPackagesSink,
-        c.TargetOracleOic.STREAM_LOOKUPS: FlextTargetOracleOicLookupsSink,
-    }
-
-    def fetch_sink_class(self, stream_name: str) -> type[FlextTargetOracleOicBaseSink]:
-        """Resolve sink class by stream name.
-
-        Returns:
-            The resulting ``type[FlextTargetOracleOicBaseSink]``.
-        """
-        return self._sink_classes.get(stream_name, self.default_sink_class)
 
     @staticmethod
     def setup() -> p.Result[bool]:
@@ -101,11 +42,4 @@ class FlextTargetOracleOic(FlextMeltanoTargetAbstractions):
         return r[bool].ok(value=True)
 
 
-__all__: list[str] = [
-    "FlextTargetOracleOic",
-    "FlextTargetOracleOicBaseSink",
-    "FlextTargetOracleOicConnectionsSink",
-    "FlextTargetOracleOicIntegrationsSink",
-    "FlextTargetOracleOicLookupsSink",
-    "FlextTargetOracleOicPackagesSink",
-]
+__all__: list[str] = ["FlextTargetOracleOic"]
