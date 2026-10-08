@@ -11,7 +11,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
-from flext_tests import tm, u
+from flext_tests import m, tm, u
 
 from tests import c
 
@@ -26,7 +26,7 @@ class TestsFlextTargetOracleOicCliEntrypoint:
         """Test console drains empty stream with exit zero."""
         result = u.Cli.capture(
             [c.TargetOracleOic.TARGET_NAME],
-            options=u.Cli.ProcessOptions(
+            options=m.Cli.ProcessOptions(
                 remove_env_keys=("PYTHONPATH",),
                 input_data="",
             ),
