@@ -9,212 +9,69 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, ClassVar
+from typing import ClassVar
 
 import pytest
 from flext_tests import tm
 from singer_sdk.target_base import Target as SingerTarget
 
-from flext_target_oracle_oic.target import (
-    FlextTargetOracleOicConnectionsSink,
-    FlextTargetOracleOicIntegrationsSink,
-    FlextTargetOracleOicLookupsSink,
-    FlextTargetOracleOicPackagesSink,
-)
-from tests import t
-
-if TYPE_CHECKING:
-    from pathlib import Path
-
-
-class DummySingerTargetE2E(SingerTarget):
-    """Define ``DummySingerTargetE2E``."""
-
-    name = "dummy-target-oracle-oic"
-    config_jsonschema: ClassVar[dict[str, str | t.MappingKV[str, t.StrMapping]]] = {
-        "type": "object",
-        "properties": dict[str, t.StrMapping](),
-    }
-
-
-@pytest.fixture
-def singer_target() -> SingerTarget:
-    """Provide ``singer_target``.
-
-    Returns:
-        The resulting ``SingerTarget``.
-    """
-    return DummySingerTargetE2E(config={})
+from flext_target_oracle_oic.target import FlextTargetOracleOic
+from tests import c, t
 
 
 class TestsFlextTargetOracleOicE2eSinks:
-    """Tests for ``FlextTargetOracleOicE2eSinks``."""
+    """Tests for the Oracle OIC Singer sink."""
 
-    @staticmethod
-    def test_sink_initialization(singer_target: SingerTarget) -> None:
-        """Test sink initialization for each stream type.
+    class DummySingerTarget(SingerTarget):
+        """Minimal Singer target hosting the sink under test."""
 
-        Raises:
-            AssertionError: If ``sink.stream_name != stream_name``.
-        """
-        sinks_to_test = [
-            ("connections", FlextTargetOracleOicConnectionsSink),
-            ("integrations", FlextTargetOracleOicIntegrationsSink),
-            ("packages", FlextTargetOracleOicPackagesSink),
-            ("lookups", FlextTargetOracleOicLookupsSink),
-        ]
-        for stream_name, sink_class in sinks_to_test:
-            sink = sink_class(
-                target=singer_target,
-                stream_name=stream_name,
-                schema={"properties": {"id": {"type": "string"}}},
-                key_properties=["id"],
-            )
-            if sink.stream_name != stream_name:
-                msg: str = f"Expected {stream_name}, got {sink.stream_name}"
-                raise AssertionError(msg)
-            sink.process_record({"id": "ok"}, {})
-
-    @staticmethod
-    def test_process_singer_messages(singer_target: SingerTarget) -> None:
-        """Test processing Singer-like records end-to-end through sink."""
-        sink = FlextTargetOracleOicConnectionsSink(
-            target=singer_target,
-            stream_name="connections",
-            schema={"properties": {"id": {"type": "string"}}},
-            key_properties=["id"],
-        )
-        records: list[t.MutableJsonMapping] = [
-            {"id": "test-connection-1", "name": "Test Connection"},
-            {"id": "test-connection-2", "name": "Test Connection 2"},
-        ]
-        for record in records:
-            sink.process_record(record, {})
-        tm.that(len(records), eq=2)
-
-    @staticmethod
-    def test_sink_authenticator_setup(singer_target: SingerTarget) -> None:
-        """Test sink can be constructed with singer target."""
-        FlextTargetOracleOicConnectionsSink(
-            target=singer_target,
-            stream_name="connections",
-            schema={"properties": {"id": {"type": "string"}}},
-            key_properties=["id"],
-        )
-
-    @staticmethod
-    def test_connections_sink_record_processing(
-        singer_target: SingerTarget,
-    ) -> None:
-        """Test connections sink record processing."""
-        sink = FlextTargetOracleOicConnectionsSink(
-            target=singer_target,
-            stream_name="connections",
-            schema={
-                "properties": {
-                    "id": {"type": "string"},
-                    "name": {"type": "string"},
-                    "adapter_type": {"type": "string"},
-                },
-            },
-            key_properties=["id"],
-        )
-        test_record: t.MutableJsonMapping = {
-            "id": "TEST_CONNECTION_E2E",
-            "name": "E2E Test Connection",
-            "adapter_type": "REST",
+        name = "dummy-target-oracle-oic"
+        config_jsonschema: ClassVar[dict[str, str | t.MappingKV[str, t.StrMapping]]] = {
+            "type": "object",
+            "properties": dict[str, t.StrMapping](),
         }
-        sink.process_record(test_record, {})
 
     @staticmethod
-    def test_integrations_sink_record_processing(
+    @pytest.fixture
+    def singer_target() -> SingerTarget:
+        """Provide ``singer_target``.
+
+        Returns:
+            The resulting ``SingerTarget``.
+        """
+        return TestsFlextTargetOracleOicE2eSinks.DummySingerTarget(config={})
+
+    @staticmethod
+    @pytest.mark.parametrize("stream_name", c.TargetOracleOic.Tests.STREAM_NAMES)
+    def test_sink_processes_records_per_stream(
         singer_target: SingerTarget,
+        stream_name: str,
     ) -> None:
-        """Test integrations sink record processing."""
-        sink = FlextTargetOracleOicIntegrationsSink(
+        """The target sink binds to each stream and processes its records."""
+        sink = FlextTargetOracleOic.default_sink_class(
             target=singer_target,
-            stream_name="integrations",
-            schema={
-                "properties": {
-                    "id": {"type": "string"},
-                    "name": {"type": "string"},
-                    "archive_content": {"type": "string"},
-                },
-            },
-            key_properties=["id"],
-        )
-        sink.process_record(
-            {
-                "id": "TEST_INTEGRATION_E2E",
-                "name": "E2E Test Integration",
-                "archive_content": "base64_encoded_iar_content_here",
-            },
-            {},
-        )
-
-    @staticmethod
-    def test_connections_sink_validation(singer_target: SingerTarget) -> None:
-        """Test connections sink record validation."""
-        sink = FlextTargetOracleOicConnectionsSink(
-            target=singer_target,
-            stream_name="connections",
-            schema={"properties": {"id": {"type": "string"}}},
-            key_properties=["id"],
-        )
-        sink.process_record({}, {})
-
-    @staticmethod
-    def test_packages_sink_record_processing(singer_target: SingerTarget) -> None:
-        """Test packages sink record processing."""
-        sink = FlextTargetOracleOicPackagesSink(
-            target=singer_target,
-            stream_name="packages",
+            stream_name=stream_name,
             schema={
                 "properties": {"id": {"type": "string"}, "name": {"type": "string"}},
             },
             key_properties=["id"],
         )
+        tm.that(sink.stream_name, eq=stream_name)
         records: list[t.MutableJsonMapping] = [
-            {
-                "id": f"pkg-{i}",
-                "name": f"Package {i}",
-                "archive_content": f"fake-package-content-{i}",
-            }
-            for i in range(10)
+            {"id": f"{stream_name}-{i}", "name": f"Record {i}"} for i in range(3)
         ]
         for record in records:
             sink.process_record(record, {})
-        tm.that(len(records), eq=10)
+        sink.process_batch({})
 
     @staticmethod
-    def test_lookups_sink_record_processing(singer_target: SingerTarget) -> None:
-        """Test lookups sink record processing."""
-        sink = FlextTargetOracleOicLookupsSink(
+    def test_sink_accepts_empty_record(singer_target: SingerTarget) -> None:
+        """An empty record passes through the sink record hook."""
+        sink = FlextTargetOracleOic.default_sink_class(
             target=singer_target,
-            stream_name="lookups",
-            schema={
-                "properties": {
-                    "id": {"type": "string"},
-                    "name": {"type": "string"},
-                    "version": {"type": "string"},
-                },
-            },
+            stream_name=c.TargetOracleOic.Tests.STREAM_NAMES[0],
+            schema={"properties": {"id": {"type": "string"}}},
             key_properties=["id"],
         )
-        sink.process_record(
-            {"id": "test-lookup", "name": "Test Lookup", "version": "1.0"},
-            {},
-        )
-        tm.that(sink.stream_name, eq="lookups")
-
-    @staticmethod
-    def test_cli_integration(singer_target: SingerTarget, tmp_path: Path) -> None:
-        """Test sink processing path with singer-like input payload."""
-        _ = tmp_path
-        sink = FlextTargetOracleOicConnectionsSink(
-            target=singer_target,
-            stream_name="connections",
-            schema={"type": "object", "properties": {"id": {"type": "string"}}},
-            key_properties=["id"],
-        )
-        sink.process_record({"id": "test-cli-connection"}, {})
+        sink.process_record({}, {})
+        tm.that(sink.stream_name, eq=c.TargetOracleOic.Tests.STREAM_NAMES[0])

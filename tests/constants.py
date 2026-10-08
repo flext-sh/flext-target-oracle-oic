@@ -36,6 +36,12 @@ class TestsFlextTargetOracleOicConstants(
             DEFAULT_PROPERTIES: ClassVar[dict[str, dict[str, str]]] = {
                 "id": {"type": "string"},
             }
+            STREAM_NAMES: Final[tuple[str, ...]] = (
+                "connections",
+                "integrations",
+                "packages",
+                "lookups",
+            )
 
 
 c = TestsFlextTargetOracleOicConstants
