@@ -19,16 +19,16 @@
   Typed
 - Project class: `integration`
 - Keywords: `data-loading`, `enterprise`, `etl`, `flext`, `singer`, `target`, `typed`
-- Main facades: `FlextTargetOracleOic`, `FlextTargetOracleOicBaseSink`,
-  `FlextTargetOracleOicCli`, `FlextTargetOracleOicConfig`,
-  `FlextTargetOracleOicConnectionsSink`, `FlextTargetOracleOicConstants`,
-  `FlextTargetOracleOicIntegrationsSink`, `FlextTargetOracleOicLookupsSink` (+7 more)
+- Main facades: `FlextTargetOracleOic`, `FlextTargetOracleOicCli`,
+  `FlextTargetOracleOicConfig`, `FlextTargetOracleOicConstants`,
+  `FlextTargetOracleOicModels`, `FlextTargetOracleOicProtocols`,
+  `FlextTargetOracleOicService`, `FlextTargetOracleOicSettings` (+2 more)
 - Alias exports: `c`, `d`, `e`, `h`, `m`, `p`, `r`, `s`, `t`, `u`, `x`
-- Public symbol exports: `FlextTargetOracleOic`, `FlextTargetOracleOicBaseSink`,
-  `FlextTargetOracleOicCli`, `FlextTargetOracleOicConfig`,
-  `FlextTargetOracleOicConnectionsSink`, `FlextTargetOracleOicConstants`,
-  `FlextTargetOracleOicIntegrationsSink`, `FlextTargetOracleOicLookupsSink`,
-  `FlextTargetOracleOicModels`, `FlextTargetOracleOicPackagesSink` (+9 more)
+- Public symbol exports: `FlextTargetOracleOic`, `FlextTargetOracleOicCli`,
+  `FlextTargetOracleOicConfig`, `FlextTargetOracleOicConstants`,
+  `FlextTargetOracleOicModels`, `FlextTargetOracleOicProtocols`,
+  `FlextTargetOracleOicService`, `FlextTargetOracleOicSettings`,
+  `FlextTargetOracleOicTypes`, `FlextTargetOracleOicUtilities` (+4 more)
 - Exported module shortcuts: _none_
 - Generated module pages: `8`
 

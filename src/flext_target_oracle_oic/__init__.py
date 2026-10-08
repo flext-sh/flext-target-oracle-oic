@@ -35,29 +35,17 @@ if TYPE_CHECKING:
     from flext_target_oracle_oic.constants import FlextTargetOracleOicConstants, c
     from flext_target_oracle_oic.models import FlextTargetOracleOicModels, m
     from flext_target_oracle_oic.protocols import FlextTargetOracleOicProtocols, p
-    from flext_target_oracle_oic.target import (
-        FlextTargetOracleOic,
-        FlextTargetOracleOicBaseSink,
-        FlextTargetOracleOicConnectionsSink,
-        FlextTargetOracleOicIntegrationsSink,
-        FlextTargetOracleOicLookupsSink,
-        FlextTargetOracleOicPackagesSink,
-    )
+    from flext_target_oracle_oic.target import FlextTargetOracleOic
     from flext_target_oracle_oic.typings import FlextTargetOracleOicTypes, t
     from flext_target_oracle_oic.utilities import FlextTargetOracleOicUtilities, u
 
 
 __all__: tuple[str, ...] = (
     "FlextTargetOracleOic",
-    "FlextTargetOracleOicBaseSink",
     "FlextTargetOracleOicCli",
     "FlextTargetOracleOicConfig",
-    "FlextTargetOracleOicConnectionsSink",
     "FlextTargetOracleOicConstants",
-    "FlextTargetOracleOicIntegrationsSink",
-    "FlextTargetOracleOicLookupsSink",
     "FlextTargetOracleOicModels",
-    "FlextTargetOracleOicPackagesSink",
     "FlextTargetOracleOicProtocols",
     "FlextTargetOracleOicService",
     "FlextTargetOracleOicSettings",
@@ -93,15 +81,10 @@ install_lazy_exports(
     globals(),
     MappingProxyType({
         "FlextTargetOracleOic": ".target",
-        "FlextTargetOracleOicBaseSink": ".target",
         "FlextTargetOracleOicCli": ".cli",
         "FlextTargetOracleOicConfig": "._config",
-        "FlextTargetOracleOicConnectionsSink": ".target",
         "FlextTargetOracleOicConstants": ".constants",
-        "FlextTargetOracleOicIntegrationsSink": ".target",
-        "FlextTargetOracleOicLookupsSink": ".target",
         "FlextTargetOracleOicModels": ".models",
-        "FlextTargetOracleOicPackagesSink": ".target",
         "FlextTargetOracleOicProtocols": ".protocols",
         "FlextTargetOracleOicService": ".api",
         "FlextTargetOracleOicSettings": "._settings",

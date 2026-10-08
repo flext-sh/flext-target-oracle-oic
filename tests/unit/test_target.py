@@ -7,127 +7,48 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import ClassVar
-
-import pytest
 from flext_tests import tm
-from singer_sdk.target_base import Target as SingerTarget
 
-from flext_target_oracle_oic import FlextTargetOracleOicSettings
-from flext_target_oracle_oic.target import (
-    FlextTargetOracleOic,
-    FlextTargetOracleOicConnectionsSink,
-    FlextTargetOracleOicIntegrationsSink,
+from flext_target_oracle_oic import (
+    FlextTargetOracleOicService,
+    FlextTargetOracleOicSettings,
 )
-from tests import c, t
-
-
-class DummySingerTarget(SingerTarget):
-    """Minimal Singer target implementation for sink tests."""
-
-    name = "dummy-target-oracle-oic"
-    config_jsonschema: ClassVar[dict[str, str | t.MappingKV[str, t.StrMapping]]] = {
-        "type": "object",
-        "properties": c.TargetOracleOic.Tests.DEFAULT_PROPERTIES,
-    }
+from flext_target_oracle_oic.target import FlextTargetOracleOic
+from tests import c
 
 
 class TestsFlextTargetOracleOicTarget:
-    """Tests for ``FlextTargetOracleOicTarget``."""
+    """Tests for ``FlextTargetOracleOic``."""
 
     @staticmethod
-    @pytest.fixture
-    def valid_config() -> t.StrMapping:
-        """Create valid configuration for testing.
-
-        Returns:
-            The resulting ``t.StrMapping``.
-        """
-        return {
-            "base_url": "https://test-instance-region.integration.ocp.oraclecloud.com",
-            "oauth_client_id": "test_client_id_12345",
-            "oauth_client_secret": "s" + "0" * 14,
-            "oauth_token_url": "https://test-idcs.identity.oraclecloud.com/oauth2/v1/token",
-            "oauth_client_aud": "https://test-idcs.identity.oraclecloud.com",
-        }
-
-    @staticmethod
-    def test_target_initialization_with_valid_config(
-        valid_config: t.StrMapping,
-    ) -> None:
-        """Test target initialization with valid configuration.
-
-        Raises:
-            AssertionError: If ``target.name != 'target-oracle-oic'``.
-        """
-        _ = valid_config
+    def test_target_name() -> None:
+        """The target exposes its declared Singer name."""
         target = FlextTargetOracleOic()
-        if target.name != "target-oracle-oic":
-            msg: str = f"Expected {'target-oracle-oic'}, got {target.name}"
-            raise AssertionError(msg)
-        tm.that(target.fetch_sink_class("connections"), is_=type)
+        tm.that(target.name, eq=c.TargetOracleOic.TARGET_NAME)
 
     @staticmethod
-    def test_target_initialization_with_minimal_config() -> None:
-        """Test method.
-
-        Raises:
-            AssertionError: If ``target.name != 'target-oracle-oic'``.
-        """
-        target = FlextTargetOracleOic()
-        if target.name != "target-oracle-oic":
-            msg: str = f"Expected {'target-oracle-oic'}, got {target.name}"
-            raise AssertionError(msg)
+    def test_default_sink_class_is_a_type() -> None:
+        """The target declares one sink class for every stream."""
+        tm.that(FlextTargetOracleOic.default_sink_class, is_=type)
 
     @staticmethod
-    def test_get_sink_mapping() -> None:
-        """Test method.
-
-        Raises:
-            AssertionError: If ``target.fetch_sink_class('connections') is not
-                FlextTargetOracleOicConnectionsSink``; or if Expected.
-        """
-        target = FlextTargetOracleOic()
-        if (
-            target.fetch_sink_class("connections")
-            is not FlextTargetOracleOicConnectionsSink
-        ):
-            expected = FlextTargetOracleOicConnectionsSink
-            got = target.fetch_sink_class("connections")
-            msg: str = f"Expected {expected}, got {got}"
-            raise AssertionError(msg)
-        assert (
-            target.fetch_sink_class("integrations")
-            is FlextTargetOracleOicIntegrationsSink
-        )
-        if target.fetch_sink_class("unknown_stream") is not target.default_sink_class:
-            expected = target.default_sink_class
-            got = target.fetch_sink_class("unknown_stream")
-            msg = f"Expected {expected}, got {got}"
-            raise AssertionError(msg)
+    def test_service_creates_sink_per_stream() -> None:
+        """The service builds the target's sink bound to each stream name."""
+        service = FlextTargetOracleOicService()
+        for stream_name in c.TargetOracleOic.Tests.STREAM_NAMES:
+            sink = service.create_sink(
+                stream_name,
+                {"properties": c.TargetOracleOic.Tests.DEFAULT_PROPERTIES},
+            )
+            tm.that(sink, is_=FlextTargetOracleOic.default_sink_class)
+            tm.that(sink.stream_name, eq=stream_name)
 
     @staticmethod
     def test_config_schema() -> None:
-        """Test method.
-
-        Raises:
-            AssertionError: If Expected.
-        """
+        """The settings schema nests the TargetOracleOic namespace."""
         schema = FlextTargetOracleOicSettings.model_json_schema()
         tm.that(schema, is_=dict)
-        if "properties" not in schema:
-            msg = f"Expected {'properties'} in {schema}"
-            raise AssertionError(msg)
+        tm.that(schema, has="properties")
         properties = schema["properties"]
         tm.that(properties, is_=dict)
         tm.that(properties, has="TargetOracleOic")
-
-
-@pytest.fixture
-def singer_target() -> SingerTarget:
-    """Provide ``singer_target``.
-
-    Returns:
-        The resulting ``SingerTarget``.
-    """
-    return DummySingerTarget(config={})

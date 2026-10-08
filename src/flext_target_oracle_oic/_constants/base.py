@@ -12,10 +12,6 @@ from typing import Final
 
 
 class FlextTargetOracleOicConstantsBase:
-    """Base Oracle OIC target constants: target name and stream names."""
+    """Base Oracle OIC target constants: target name."""
 
-    STREAM_CONNECTIONS: Final[str] = "connections"
-    STREAM_INTEGRATIONS: Final[str] = "integrations"
-    STREAM_PACKAGES: Final[str] = "packages"
-    STREAM_LOOKUPS: Final[str] = "lookups"
     TARGET_NAME: Final[str] = "target-oracle-oic"
