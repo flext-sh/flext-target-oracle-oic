@@ -26,7 +26,9 @@ class TestsFlextTargetOracleOicCliEntrypoint:
         """Test console drains empty stream with exit zero."""
         result = u.Cli.capture(
             [c.TargetOracleOic.TARGET_NAME],
-            remove_env_keys=("PYTHONPATH",),
-            input_data="",
+            options=u.Cli.ProcessOptions(
+                remove_env_keys=("PYTHONPATH",),
+                input_data="",
+            ),
         )
         tm.ok(result)
