@@ -19,7 +19,6 @@ from __future__ import annotations
 
 import os
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 import pytest
 from flext_tests import tm
@@ -32,9 +31,7 @@ from flext_target_oracle_oic.target import (
     FlextTargetOracleOicLookupsSink,
     FlextTargetOracleOicPackagesSink,
 )
-
-if TYPE_CHECKING:
-    from tests import t
+from tests import t
 
 
 def load_test_config() -> t.StrMapping:
@@ -144,7 +141,9 @@ class TestsFlextTargetOracleOicE2e:
             AssertionError: If Expected.
             TypeError: If Expected.
         """
-        schema_raw = FlextTargetOracleOicSettings.model_json_schema()
+        schema_raw = t.json_mapping_adapter().validate_python(
+            FlextTargetOracleOicSettings.model_json_schema(),
+        )
         properties_raw = schema_raw.get("properties")
         if not isinstance(properties_raw, dict):
             msg = f"Expected {'properties'} in {schema_raw}"
