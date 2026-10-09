@@ -28,8 +28,6 @@ class TestsFlextTargetOracleOicConstants(
             """Target Oracle OIC-specific test constants."""
 
             PROJECT_ROOT_PARENT_DEPTH: ClassVar[int] = 1
-            SRC_DIR: str = "src"
-            PACKAGE_DIR: str = "flext_target_oracle_oic"
             ALLOWED_MODULE_FUNCTIONS: ClassVar[dict[str, frozenset[str]]] = {
                 "cli.py": frozenset({"main"}),
             }
