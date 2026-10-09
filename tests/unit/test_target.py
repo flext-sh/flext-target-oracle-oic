@@ -12,6 +12,7 @@ from flext_tests import tm
 from flext_target_oracle_oic import (
     FlextTargetOracleOicService,
     FlextTargetOracleOicSettings,
+    m,
 )
 from flext_target_oracle_oic.target import FlextTargetOracleOic
 from tests import c
@@ -41,6 +42,9 @@ class TestsFlextTargetOracleOicTarget:
                 {"properties": c.TargetOracleOic.Tests.DEFAULT_PROPERTIES},
             )
             tm.that(sink, is_=FlextTargetOracleOic.default_sink_class)
+            # The drain contract carries no stream identity; narrow to the
+            # concrete Singer sink base (runtime-verified) before reading it.
+            assert isinstance(sink, m.Meltano.SingerSinkBase)
             tm.that(sink.stream_name, eq=stream_name)
 
     @staticmethod

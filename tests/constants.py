@@ -12,7 +12,7 @@ from typing import ClassVar, Final
 
 from flext_tests import FlextTestsConstants
 
-from flext_target_oracle_oic import FlextTargetOracleOicConstants
+from flext_target_oracle_oic import FlextTargetOracleOicConstants, t
 
 
 class TestsFlextTargetOracleOicConstants(
@@ -28,12 +28,12 @@ class TestsFlextTargetOracleOicConstants(
             """Target Oracle OIC-specific test constants."""
 
             PROJECT_ROOT_PARENT_DEPTH: ClassVar[int] = 1
-            SRC_DIR: Final[str] = "src"
-            PACKAGE_DIR: Final[str] = "flext_target_oracle_oic"
+            SRC_DIR: str = "src"
+            PACKAGE_DIR: str = "flext_target_oracle_oic"
             ALLOWED_MODULE_FUNCTIONS: ClassVar[dict[str, frozenset[str]]] = {
                 "cli.py": frozenset({"main"}),
             }
-            DEFAULT_PROPERTIES: ClassVar[dict[str, dict[str, str]]] = {
+            DEFAULT_PROPERTIES: ClassVar[dict[str, t.JsonValue]] = {
                 "id": {"type": "string"},
             }
             STREAM_NAMES: Final[tuple[str, ...]] = (
