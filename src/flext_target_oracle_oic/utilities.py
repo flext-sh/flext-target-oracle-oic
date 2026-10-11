@@ -10,8 +10,14 @@ from __future__ import annotations
 from flext_meltano import FlextMeltanoUtilities
 from flext_oracle_oic import FlextOracleOicUtilities
 
+from flext_target_oracle_oic._utilities.service_runtime import (
+    FlextTargetOracleOicServiceRuntime,
+)
 
-class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtilities):
+
+class FlextTargetOracleOicUtilities(
+    FlextMeltanoUtilities, FlextOracleOicUtilities, FlextTargetOracleOicServiceRuntime
+):
     """Utilities composed from Meltano and Oracle OIC via MRO."""
 
 
