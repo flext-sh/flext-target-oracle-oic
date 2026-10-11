@@ -55,7 +55,7 @@ class TestsFlextTargetOracleOicE2e:
         Raises:
             TypeError: If the schema carries no properties mapping.
         """
-        schema_raw = t.json_mapping_adapter().validate_python(
+        schema_raw = u.json_mapping_adapter().validate_python(
             FlextTargetOracleOicSettings.model_json_schema(),
         )
         properties_raw = schema_raw.get("properties")
