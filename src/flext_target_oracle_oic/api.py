@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from typing import Annotated, override
 
-from flext_meltano import meltano
+from flext_meltano import Target
 
 from flext_target_oracle_oic import c, p, t, u
 from flext_target_oracle_oic._utilities.service_runtime import (
@@ -19,7 +19,7 @@ from flext_target_oracle_oic._utilities.service_runtime import (
 )
 
 
-class FlextTargetOracleOicService(meltano.Target):
+class FlextTargetOracleOicService(Target):
     """Orchestrator for target-oracle-oic. All behavior from base via MRO."""
 
     target_name: Annotated[t.NonEmptyStr, u.Field(description="Singer target name")] = (
