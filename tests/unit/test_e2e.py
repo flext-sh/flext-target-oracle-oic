@@ -14,7 +14,7 @@ import pytest
 
 from flext_target_oracle_oic import FlextTargetOracleOicSettings
 from flext_target_oracle_oic.target import FlextTargetOracleOic
-from tests import c, t, tm
+from tests import c, tm, u
 
 
 @pytest.fixture
