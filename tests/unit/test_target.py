@@ -7,15 +7,13 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_tests import tm
-
 from flext_target_oracle_oic import (
     FlextTargetOracleOicService,
     FlextTargetOracleOicSettings,
     m,
 )
 from flext_target_oracle_oic.target import FlextTargetOracleOic
-from tests import c
+from tests import c, tm
 
 
 class TestsFlextTargetOracleOicTarget:

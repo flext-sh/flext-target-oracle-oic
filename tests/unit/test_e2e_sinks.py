@@ -12,11 +12,10 @@ from __future__ import annotations
 from typing import ClassVar
 
 import pytest
-from flext_tests import tm
 from singer_sdk.target_base import Target as SingerTarget
 
 from flext_target_oracle_oic.target import FlextTargetOracleOic
-from tests import c, t
+from tests import c, t, tm
 
 
 class TestsFlextTargetOracleOicE2eSinks:

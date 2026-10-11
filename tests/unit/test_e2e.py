@@ -11,11 +11,10 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
-from flext_tests import tm
 
 from flext_target_oracle_oic import FlextTargetOracleOicSettings
 from flext_target_oracle_oic.target import FlextTargetOracleOic
-from tests import c, t
+from tests import c, t, tm
 
 
 @pytest.fixture
