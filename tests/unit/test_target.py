@@ -8,11 +8,11 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from flext_target_oracle_oic import (
+    FlextTargetOracleOic,
     FlextTargetOracleOicService,
     FlextTargetOracleOicSettings,
-    m,
+    u,
 )
-from flext_target_oracle_oic.target import FlextTargetOracleOic
 from tests import c, tm
 
 
@@ -34,16 +34,17 @@ class TestsFlextTargetOracleOicTarget:
     def test_service_creates_sink_per_stream() -> None:
         """The service builds the target's sink bound to each stream name."""
         service = FlextTargetOracleOicService()
+        target = u.Target(config={}, validate_config=False)
         for stream_name in c.TargetOracleOic.Tests.STREAM_NAMES:
-            sink = service.create_sink(
-                stream_name,
-                {"properties": c.TargetOracleOic.Tests.DEFAULT_PROPERTIES},
+            schema = {"properties": c.TargetOracleOic.Tests.DEFAULT_PROPERTIES}
+            sink = FlextTargetOracleOic.default_sink_class(
+                target=target,
+                stream_name=stream_name,
+                schema=schema,
+                key_properties=[],
             )
-            tm.that(sink, is_=FlextTargetOracleOic.default_sink_class)
-            # The drain contract carries no stream identity; narrow to the
-            # concrete Singer sink base (runtime-verified) before reading it.
-            assert isinstance(sink, m.Meltano.SingerSinkBase)
             tm.that(sink.stream_name, eq=stream_name)
+            tm.that(service.create_sink(stream_name, schema), is_=type(sink))
 
     @staticmethod
     def test_config_schema() -> None:

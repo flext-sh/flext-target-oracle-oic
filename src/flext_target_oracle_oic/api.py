@@ -45,8 +45,9 @@ class FlextTargetOracleOicService(FlextMeltanoTargetServiceBase):
         )
 
 
-target_oracle_oic: FlextTargetOracleOicService = (
-    FlextTargetOracleOicService.fetch_global()
-)
+_service: FlextTargetOracleOicService = FlextTargetOracleOicService.fetch_global()
+
+target_oracle_oic: FlextTargetOracleOicService = _service
+"""Shared FlextTargetOracleOicService facade instance."""
 
 __all__: list[str] = ["FlextTargetOracleOicService", "target_oracle_oic"]
