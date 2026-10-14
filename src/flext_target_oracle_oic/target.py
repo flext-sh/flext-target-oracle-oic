@@ -1,7 +1,6 @@
 """Singer target definition for Oracle OIC.
 
 Copyright (c) 2026 FLEXT Team. All rights reserved.
-src/flext_target_oracle_oic/target
 SPDX-License-Identifier: MIT
 """
 

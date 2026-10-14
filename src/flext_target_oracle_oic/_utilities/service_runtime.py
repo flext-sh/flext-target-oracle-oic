@@ -1,7 +1,6 @@
 """Internal runtime adapters for the target-oracle-oic service facade.
 
 Copyright (c) 2026 FLEXT Team. All rights reserved.
-src/flext_target_oracle_oic/_utilities/service_runtime
 SPDX-License-Identifier: MIT
 """
 
@@ -31,8 +30,14 @@ class FlextTargetOracleOicServiceRuntime:
     ) -> FlextTargetOracleOicSink:
         """Create the service-level Singer sink adapter.
 
+        Args:
+            stream_name: Name of the Singer stream the sink receives.
+            schema: Singer schema describing the stream's record structure.
+            target_config: Scalar target configuration applied to the sink's
+                target instance.
+
         Returns:
-            The resulting ``FlextTargetOracleOicSink``.
+            The created Oracle OIC sink adapter.
         """
         normalized_target_config = u.normalize_to_json_mapping(target_config)
         return FlextTargetOracleOic.default_sink_class(

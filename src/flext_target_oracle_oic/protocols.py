@@ -32,7 +32,7 @@ class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtoco
     service: p.Service[str]
 
     # Oracle OIC protocols (inherited)
-    oic: p.OracleOic.*
+    # oic: p.OracleOic.*
 
     # Meltano protocols (inherited)
     target: p.Meltano.Target

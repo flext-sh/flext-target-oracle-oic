@@ -1,7 +1,6 @@
 """Singer sink used by every Oracle OIC target stream.
 
 Copyright (c) 2026 FLEXT Team. All rights reserved.
-src/flext_target_oracle_oic/_utilities/sink
 SPDX-License-Identifier: MIT
 """
 
@@ -17,7 +16,11 @@ class FlextTargetOracleOicSink(m.Meltano.SingerSinkBase):
 
     @override
     def process_batch(self, context: t.MutableJsonMapping) -> None:
-        """Singer batch hook implementation."""
+        """Accept a Singer batch without additional processing.
+
+        Args:
+            context: Singer batch context supplied by the target pipeline.
+        """
         _ = context
 
     @override
@@ -26,7 +29,12 @@ class FlextTargetOracleOicSink(m.Meltano.SingerSinkBase):
         record: t.MutableJsonMapping,
         context: t.MutableJsonMapping,
     ) -> None:
-        """Log incoming record metadata for the sink's stream."""
+        """Log incoming record metadata for the sink's stream.
+
+        Args:
+            record: Raw record mapping received for the stream.
+            context: Singer record context supplied by the target pipeline.
+        """
         _ = context
         self.logger.debug("Processing OIC record: %s", record.keys())
 

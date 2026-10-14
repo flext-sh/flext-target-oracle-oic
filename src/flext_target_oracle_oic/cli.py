@@ -1,7 +1,6 @@
 """CLI facade for target Oracle OIC package.
 
 Copyright (c) 2026 FLEXT Team. All rights reserved.
-src/flext_target_oracle_oic/cli
 SPDX-License-Identifier: MIT
 """
 
@@ -18,8 +17,12 @@ class FlextTargetOracleOicCli:
     def run(cls, args: t.StrSequence | None = None) -> int:
         """Execute the canonical target CLI entry point.
 
+        Args:
+            args: Optional command-line arguments; defaults to ``sys.argv[1:]``
+                when omitted.
+
         Returns:
-            The resulting ``int``.
+            The process exit code.
         """
         _ = cls
         exit_code: int = FlextTargetOracleOicService().cli_main(args)
