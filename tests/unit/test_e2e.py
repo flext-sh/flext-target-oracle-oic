@@ -23,6 +23,7 @@ def target() -> FlextTargetOracleOic:
 
     Returns:
         The resulting ``FlextTargetOracleOic``.
+
     """
     return FlextTargetOracleOic()
 
@@ -54,6 +55,7 @@ class TestsFlextTargetOracleOicE2e:
 
         Raises:
             TypeError: If the schema carries no properties mapping.
+
         """
         schema_raw = u.json_mapping_adapter().validate_python(
             FlextTargetOracleOicSettings.model_json_schema(),
