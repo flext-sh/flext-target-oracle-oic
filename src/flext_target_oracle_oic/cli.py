@@ -23,6 +23,7 @@ class FlextTargetOracleOicCli:
 
         Returns:
             The process exit code.
+
         """
         _ = cls
         exit_code: int = FlextTargetOracleOicService().cli_main(args)
@@ -33,7 +34,8 @@ def main() -> int:
     """Run the target Oracle OIC CLI entry point.
 
     Returns:
-        The resulting ``int``.
+        The process exit code.
+
     """
     return FlextTargetOracleOicCli.run()
 

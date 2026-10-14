@@ -27,7 +27,8 @@ class FlextTargetOracleOic(FlextMeltanoTargetAbstractions):
         """Set up target resources.
 
         Returns:
-            The resulting ``p.Result[bool]``.
+            Successful result confirming the target is ready.
+
         """
         return r[bool].ok(value=True)
 
@@ -36,7 +37,8 @@ class FlextTargetOracleOic(FlextMeltanoTargetAbstractions):
         """Teardown target resources.
 
         Returns:
-            The resulting ``p.Result[bool]``.
+            Successful result confirming the target is released.
+
         """
         return r[bool].ok(value=True)
 

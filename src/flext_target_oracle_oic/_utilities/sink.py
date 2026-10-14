@@ -20,6 +20,7 @@ class FlextTargetOracleOicSink(m.Meltano.SingerSinkBase):
 
         Args:
             context: Singer batch context supplied by the target pipeline.
+
         """
         _ = context
 
@@ -34,6 +35,7 @@ class FlextTargetOracleOicSink(m.Meltano.SingerSinkBase):
         Args:
             record: Raw record mapping received for the stream.
             context: Singer record context supplied by the target pipeline.
+
         """
         _ = context
         self.logger.debug("Processing OIC record: %s", record.keys())

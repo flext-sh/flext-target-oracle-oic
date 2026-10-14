@@ -38,6 +38,7 @@ class FlextTargetOracleOicServiceRuntime:
 
         Returns:
             The created Oracle OIC sink adapter.
+
         """
         normalized_target_config = u.normalize_to_json_mapping(target_config)
         return FlextTargetOracleOic.default_sink_class(

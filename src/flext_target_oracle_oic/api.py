@@ -40,6 +40,7 @@ class FlextTargetOracleOicService(FlextMeltanoTargetServiceBase):
 
         Returns:
             The created Oracle OIC sink adapter.
+
         """
         target_config: t.ScalarMapping = self.settings_overrides or {}
         return FlextTargetOracleOicServiceRuntime.create_sink(
