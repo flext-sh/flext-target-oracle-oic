@@ -7,6 +7,7 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from flext_core import u
+
 from flext_target_oracle_oic import c, m, t
 from flext_target_oracle_oic._utilities.sink import FlextTargetOracleOicSink
 from flext_target_oracle_oic.target import FlextTargetOracleOic
