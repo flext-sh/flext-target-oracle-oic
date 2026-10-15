@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from typing import Annotated, override
 
-from flext_meltano import meltano
+from flext_meltano import FlextMeltanoTargetServiceBase
 
 from flext_target_oracle_oic import c, p, t, u
 from flext_target_oracle_oic._utilities.service_runtime import (
@@ -19,7 +19,7 @@ from flext_target_oracle_oic._utilities.service_runtime import (
 )
 
 
-class FlextTargetOracleOicService(meltano.Target):
+class FlextTargetOracleOicService(FlextMeltanoTargetServiceBase):
     """Orchestrator for target-oracle-oic. All behavior from base via MRO."""
 
     target_name: Annotated[t.NonEmptyStr, u.Field(description="Singer target name")] = (
@@ -34,8 +34,13 @@ class FlextTargetOracleOicService(meltano.Target):
     ) -> p.Meltano.SingerDrainSink:
         """Create an Oracle OIC sink for a stream.
 
+        Args:
+            stream_name: Name of the Singer stream the sink receives.
+            schema: Singer schema describing the stream's record structure.
+
         Returns:
-            The resulting ``p.Meltano.SingerDrainSink``.
+            The created Oracle OIC sink adapter.
+
         """
         target_config: t.ScalarMapping = self.settings_overrides or {}
         return FlextTargetOracleOicServiceRuntime.create_sink(
@@ -45,8 +50,9 @@ class FlextTargetOracleOicService(meltano.Target):
         )
 
 
-target_oracle_oic: FlextTargetOracleOicService = (
-    FlextTargetOracleOicService.fetch_global()
-)
+_service: FlextTargetOracleOicService = FlextTargetOracleOicService.fetch_global()
+
+target_oracle_oic: FlextTargetOracleOicService = _service
+"""Shared FlextTargetOracleOicService facade instance."""
 
 __all__: list[str] = ["FlextTargetOracleOicService", "target_oracle_oic"]

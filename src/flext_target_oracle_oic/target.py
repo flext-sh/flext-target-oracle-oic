@@ -1,7 +1,6 @@
 """Singer target definition for Oracle OIC.
 
 Copyright (c) 2026 FLEXT Team. All rights reserved.
-src/flext_target_oracle_oic/target
 SPDX-License-Identifier: MIT
 """
 
@@ -28,7 +27,8 @@ class FlextTargetOracleOic(FlextMeltanoTargetAbstractions):
         """Set up target resources.
 
         Returns:
-            The resulting ``p.Result[bool]``.
+            Successful result confirming the target is ready.
+
         """
         return r[bool].ok(value=True)
 
@@ -37,7 +37,8 @@ class FlextTargetOracleOic(FlextMeltanoTargetAbstractions):
         """Teardown target resources.
 
         Returns:
-            The resulting ``p.Result[bool]``.
+            Successful result confirming the target is released.
+
         """
         return r[bool].ok(value=True)
 

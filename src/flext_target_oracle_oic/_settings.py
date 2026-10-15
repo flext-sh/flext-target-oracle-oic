@@ -28,9 +28,8 @@ class FlextTargetOracleOicSettings(FlextMeltanoSettings):
         """Namespaced Oracle OIC target settings."""
 
         timeout: Annotated[
-            int,
-            m.Field(default=30, ge=1, description="HTTP timeout in seconds"),
-        ]
+            int, m.Field(ge=1, description="HTTP timeout in seconds")
+        ] = 30
 
     # Why: mro-4p0t — nested namespace uses default_factory only; no build_* wrapper.
 

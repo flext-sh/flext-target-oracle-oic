@@ -11,11 +11,10 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 import pytest
-from flext_tests import tm
 
 from flext_target_oracle_oic import FlextTargetOracleOicSettings
 from flext_target_oracle_oic.target import FlextTargetOracleOic
-from tests import c, t
+from tests import c, tm, u
 
 
 @pytest.fixture
@@ -24,6 +23,7 @@ def target() -> FlextTargetOracleOic:
 
     Returns:
         The resulting ``FlextTargetOracleOic``.
+
     """
     return FlextTargetOracleOic()
 
@@ -55,8 +55,9 @@ class TestsFlextTargetOracleOicE2e:
 
         Raises:
             TypeError: If the schema carries no properties mapping.
+
         """
-        schema_raw = t.json_mapping_adapter().validate_python(
+        schema_raw = u.json_mapping_adapter().validate_python(
             FlextTargetOracleOicSettings.model_json_schema(),
         )
         properties_raw = schema_raw.get("properties")
