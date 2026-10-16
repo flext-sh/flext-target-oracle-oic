@@ -22,13 +22,13 @@
 - Main facades: `FlextTargetOracleOic`, `FlextTargetOracleOicCli`,
   `FlextTargetOracleOicConfig`, `FlextTargetOracleOicConstants`,
   `FlextTargetOracleOicModels`, `FlextTargetOracleOicProtocols`,
-  `FlextTargetOracleOicService`, `FlextTargetOracleOicSettings` (+2 more)
+  `FlextTargetOracleOicService`, `FlextTargetOracleOicSettings` (+3 more)
 - Alias exports: `c`, `d`, `e`, `h`, `m`, `p`, `r`, `s`, `t`, `u`, `x`
 - Public symbol exports: `FlextTargetOracleOic`, `FlextTargetOracleOicCli`,
   `FlextTargetOracleOicConfig`, `FlextTargetOracleOicConstants`,
   `FlextTargetOracleOicModels`, `FlextTargetOracleOicProtocols`,
   `FlextTargetOracleOicService`, `FlextTargetOracleOicSettings`,
-  `FlextTargetOracleOicTypes`, `FlextTargetOracleOicUtilities` (+4 more)
+  `FlextTargetOracleOicTypes`, `FlextTargetOracleOicUtilities` (+5 more)
 - Exported module shortcuts: _none_
 - Generated module pages: `8`
 

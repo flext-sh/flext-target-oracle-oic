@@ -15,3 +15,6 @@ class FlextTargetOracleOicConstantsBase:
     """Base Oracle OIC target constants: target name."""
 
     TARGET_NAME: Final[str] = "target-oracle-oic"
+
+
+__all__: list[str] = ["FlextTargetOracleOicConstantsBase"]
