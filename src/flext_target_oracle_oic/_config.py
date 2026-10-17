@@ -15,8 +15,7 @@ from __future__ import annotations
 from typing import Annotated
 
 from flext_meltano import FlextMeltanoConfig, m
-
-from flext_target_oracle_oic._models.config import FlextTargetOracleOicModelsConfig
+from flext_meltano.models import FlextMeltanoModelsConfig
 
 
 class FlextTargetOracleOicConfig(FlextMeltanoConfig):
@@ -27,13 +26,13 @@ class FlextTargetOracleOicConfig(FlextMeltanoConfig):
     """
 
     TargetOracleOic: Annotated[
-        FlextTargetOracleOicModelsConfig.TargetOracleOicNamespace,
+        FlextMeltanoModelsConfig.MeltanoNamespace,
         m.Field(
             description=(
                 "Open namespace exposing ``config/*.yaml`` under ``TargetOracleOic``."
             ),
         ),
-    ] = FlextTargetOracleOicModelsConfig.TargetOracleOicNamespace()
+    ] = FlextMeltanoModelsConfig.MeltanoNamespace()
 
 
 config: FlextTargetOracleOicConfig = FlextTargetOracleOicConfig.fetch_global()
