@@ -13,7 +13,7 @@ from typing import Annotated, override
 
 from flext_meltano import FlextMeltanoTargetServiceBase
 
-from flext_target_oracle_oic import c, p, t, u
+from flext_target_oracle_oic import c, m, p, t
 from flext_target_oracle_oic._utilities.service_runtime import (
     FlextTargetOracleOicServiceRuntime,
 )
@@ -22,7 +22,7 @@ from flext_target_oracle_oic._utilities.service_runtime import (
 class FlextTargetOracleOicService(FlextMeltanoTargetServiceBase):
     """Orchestrator for target-oracle-oic. All behavior from base via MRO."""
 
-    target_name: Annotated[t.NonEmptyStr, u.Field(description="Singer target name")] = (
+    target_name: Annotated[t.NonEmptyStr, m.Field(description="Singer target name")] = (
         c.TargetOracleOic.TARGET_NAME
     )
 
