@@ -16,7 +16,11 @@ class TestsFlextTargetOracleOicSettings(
     FlextTargetOracleOicSettings,
     FlextTestsSettings,
 ):
-    """Target Oracle OIC settings extended with the shared test namespace."""
+    """Target Oracle OIC settings extended with the shared test namespace.
+
+    Supplies test defaults for the production OAuth credential fields so the
+    suite's argless ``fetch_global()`` construction succeeds without real creds.
+    """
 
 
 __all__: list[str] = ["TestsFlextTargetOracleOicSettings"]
