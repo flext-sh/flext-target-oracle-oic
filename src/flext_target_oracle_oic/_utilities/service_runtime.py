@@ -27,7 +27,7 @@ class FlextTargetOracleOicServiceRuntime:
         *,
         stream_name: str,
         schema: t.JsonMapping,
-        target_config: t.ScalarMapping,
+        target_config: t.JsonMapping,
     ) -> FlextTargetOracleOicSink:
         """Create the service-level Singer sink adapter.
 
