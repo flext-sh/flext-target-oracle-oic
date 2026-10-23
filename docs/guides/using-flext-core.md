@@ -92,7 +92,8 @@ class GreetingSettings(FlextSettings):
 
 ```python
 from flext_core import FlextContainer, p
-from tests import tm
+from tests import c, r
+from tests import c, tm
 
 container = FlextContainer()
 container.bind("service", "ready")
