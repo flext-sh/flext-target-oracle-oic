@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import ClassVar
 
-from flext_meltano.services.singer_target import FlextMeltanoTargetAbstractions
+from flext_meltano import FlextMeltanoTargetAbstractions
 
 from flext_target_oracle_oic import c, p, r
 from flext_target_oracle_oic._utilities.sink import FlextTargetOracleOicSink
