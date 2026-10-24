@@ -24,7 +24,7 @@ class FlextTargetOracleOicSettings(FlextMeltanoSettings):
         extra="ignore",
     )
 
-    class _TargetOracleOic(m.BaseModel):
+    class _TargetOracleOic(m.StrictModel):
         """Namespaced Oracle OIC target settings."""
 
         timeout: Annotated[

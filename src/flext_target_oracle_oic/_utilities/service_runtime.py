@@ -27,7 +27,7 @@ class FlextTargetOracleOicServiceRuntime:
         *,
         stream_name: str,
         schema: t.JsonMapping,
-        target_config: t.ScalarMapping,
+        target_config: t.JsonMapping,
     ) -> FlextTargetOracleOicSink:
         """Create the service-level Singer sink adapter.
 
@@ -44,11 +44,11 @@ class FlextTargetOracleOicServiceRuntime:
         normalized_target_config = u.normalize_to_json_mapping(target_config)
         return FlextTargetOracleOic.default_sink_class(
             target=cls.Target(
-                config=t.json_dict_adapter().validate_python(normalized_target_config),
+                config=u.json_dict_adapter().validate_python(normalized_target_config),
                 validate_config=False,
             ),
             stream_name=stream_name,
-            schema=t.json_dict_adapter().validate_python(schema),
+            schema=u.json_dict_adapter().validate_python(schema),
             key_properties=[],
         )
 
