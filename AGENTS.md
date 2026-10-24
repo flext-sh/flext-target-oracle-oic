@@ -1,12 +1,13 @@
 # AGENTS.md — flext-target-oracle-oic
 
-> **Parent workspace law** lives in [`../AGENTS.md`](../AGENTS.md) — read it first.
-> Universal engineering core: `~/.agents/UNIVERSAL_CORE.md`. Composition: global
-> skills + parent/root `AGENTS.md` + this scope delta. Do not re-embed universal law.
->
-> **Standalone / independent mode:** when `../AGENTS.md` does not resolve, pin the
-> parent raw `AGENTS.md` URL to the same branch/release as this package (never
-> `main`): <https://raw.githubusercontent.com/flext-sh/flext/0.12.0-dev/AGENTS.md>
+Read the branch-matched [FLEXT root](../AGENTS.md) and its local flext-law through
+that root's authority entry point. In standalone mode resolve the same branch or
+release; a coincidental parent instruction file does not establish FLEXT authority.
+This file adds only this package's domain delta. Command routing, architecture
+and universal execution stay with their parent owners.
+
+Embedded AI Hub or Beads generated blocks are retired delivery material, not
+active local rules. Their withdrawal remains the publisher's responsibility.
 
 <!-- AIHUB-AGENTS-SCOPE-LOCAL-BEGIN -->
 
@@ -19,40 +20,10 @@ Singer **target** (loader) for Oracle Integration Cloud. Thin driver over
 `flext-meltano` (ADR-006), delegating OIC operations to `flext-oracle-oic`. Widest
 dependency fan-in of the connectors.
 
-## Structure
-
-```text
-src/flext_target_oracle_oic/
-├── api.py            # FlextTargetOracleOicService(FlextMeltanoTargetServiceBase)
-├── target.py         # FlextTargetOracleOic(FlextMeltanoTargetAbstractions) — per-stream OIC sinks
-├── cli.py            # FlextTargetOracleOicCli + main entry point
-├── constants.py typings.py protocols.py models.py utilities.py   # AUTO-GENERATED facets
-├── _config.py _settings.py   # private config/settings
-├── config/           # execution parametrization (YAML)
-└── _utilities/
-```
-
-## Code Map
-
-| Symbol                        | Kind  | Location    | Role                                                                       |
-| ----------------------------- | ----- | ----------- | -------------------------------------------------------------------------- |
-| `FlextTargetOracleOicService` | class | `api.py`    | `FlextMeltanoTargetServiceBase`                                            |
-| `FlextTargetOracleOic`        | class | `target.py` | `FlextMeltanoTargetAbstractions`; maps named OIC streams → dedicated sinks |
-
 ## Conventions (specific to this package)
 
 - Named OIC streams map to **dedicated sink classes** in `target.py`; supporting
   logic lives in `_utilities/`.
-- Config/settings canonical pattern: ADR-012.
-- Codemod governance (ast-grep + make mod): ADR-014.
-
-## Commands
-
-```bash
-make setup
-make check
-make test
-```
 
 <!-- AIHUB-AGENTS-SCOPE-LOCAL-END -->
 
