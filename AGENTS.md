@@ -43,7 +43,7 @@ src/flext_target_oracle_oic/
 
 - Named OIC streams map to **dedicated sink classes** in `target.py`; supporting
   logic lives in `_utilities/`.
-- Config/settings canonical pattern: ADR-012.
+- Config/settings canonical pattern: ADR-005 (SSOT) and ADR-024 (DI config contract).
 - Codemod governance (ast-grep + make mod): ADR-014.
 
 ## Commands
@@ -51,7 +51,7 @@ src/flext_target_oracle_oic/
 ```bash
 make setup
 make check
-make test
+make tests
 ```
 
 <!-- AIHUB-AGENTS-SCOPE-LOCAL-END -->
