@@ -20,5 +20,4 @@ class FlextTargetOracleOicModels(
 
 
 m = FlextTargetOracleOicModels
-
 __all__: list[str] = ["FlextTargetOracleOicModels", "m"]
