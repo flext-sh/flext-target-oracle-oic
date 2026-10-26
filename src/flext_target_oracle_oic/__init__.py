@@ -13,7 +13,8 @@ from typing import TYPE_CHECKING
 from flext_core.lazy import install_lazy_exports
 
 if TYPE_CHECKING:
-    from flext_meltano import d, e, h, r, s, x
+    from flext_meltano import cli, d, e, h, meltano, r, s, x
+    from flext_oracle_oic import api, auth, oracle_oic, web
 
     from flext_target_oracle_oic.__version__ import (
         FlextTargetOracleOicVersion,
@@ -61,13 +62,18 @@ __all__: tuple[str, ...] = (
     "__url__",
     "__version__",
     "__version_info__",
+    "api",
+    "auth",
     "c",
+    "cli",
     "config",
     "d",
     "e",
     "h",
     "m",
     "main",
+    "meltano",
+    "oracle_oic",
     "p",
     "r",
     "s",
@@ -75,6 +81,7 @@ __all__: tuple[str, ...] = (
     "t",
     "target_oracle_oic",
     "u",
+    "web",
     "x",
 )
 
@@ -100,13 +107,18 @@ install_lazy_exports(
         "__title__": ".__version__",
         "__url__": ".__version__",
         "__version_info__": ".__version__",
+        "api": "flext_oracle_oic",
+        "auth": "flext_oracle_oic",
         "c": ".constants",
+        "cli": "flext_meltano",
         "config": "._config",
         "d": "flext_meltano",
         "e": "flext_meltano",
         "h": "flext_meltano",
         "m": ".models",
         "main": ".cli",
+        "meltano": "flext_meltano",
+        "oracle_oic": "flext_oracle_oic",
         "p": ".protocols",
         "r": "flext_meltano",
         "s": "flext_meltano",
@@ -114,6 +126,7 @@ install_lazy_exports(
         "t": ".typings",
         "target_oracle_oic": ".api",
         "u": ".utilities",
+        "web": "flext_oracle_oic",
         "x": "flext_meltano",
     }),
     public_exports=__all__,
