@@ -7,13 +7,13 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_meltano import FlextMeltanoConstants
-from flext_oracle_oic import FlextOracleOicConstants
+from flext_meltano import c
+from flext_oracle_oic import c as flext_oracle_oic_c
 
 from flext_target_oracle_oic._constants import FlextTargetOracleOicConstantsBase
 
 
-class FlextTargetOracleOicConstants(FlextMeltanoConstants, FlextOracleOicConstants):
+class FlextTargetOracleOicConstants(c, flext_oracle_oic_c):
     """Namespace class for OIC target constants."""
 
     class TargetOracleOic(FlextTargetOracleOicConstantsBase):
