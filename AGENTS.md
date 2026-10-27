@@ -24,7 +24,8 @@ dependency fan-in of the connectors.
 ```text
 src/flext_target_oracle_oic/
 ├── api.py            # FlextTargetOracleOicService(FlextMeltanoTargetServiceBase)
-├── target.py         # FlextTargetOracleOic(FlextMeltanoTargetAbstractions) — per-stream OIC sinks
+├── target.py         # FlextTargetOracleOic(FlextMeltanoTargetAbstractions)
+│                     # — per-stream OIC sinks
 ├── cli.py            # FlextTargetOracleOicCli + main entry point
 ├── constants.py typings.py protocols.py models.py utilities.py   # AUTO-GENERATED facets
 ├── _config.py _settings.py   # private config/settings
