@@ -9,11 +9,14 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import ClassVar
+from typing import TYPE_CHECKING, ClassVar
 
 from flext_tests import FlextTestsConstants
 
-from flext_target_oracle_oic import FlextTargetOracleOicConstants, t
+from flext_target_oracle_oic import FlextTargetOracleOicConstants
+
+if TYPE_CHECKING:
+    from tests import t
 
 
 class TestsFlextTargetOracleOicConstants(

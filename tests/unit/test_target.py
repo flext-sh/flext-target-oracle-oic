@@ -11,9 +11,8 @@ from flext_target_oracle_oic import (
     FlextTargetOracleOic,
     FlextTargetOracleOicService,
     FlextTargetOracleOicSettings,
-    u,
 )
-from tests import c, tm
+from tests import c, tm, u
 
 
 class TestsFlextTargetOracleOicTarget:

@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 
-from flext_target_oracle_oic.api import FlextTargetOracleOicService
+from flext_target_oracle_oic import FlextTargetOracleOicService
 
 
 class FlextTargetOracleOicCli:
