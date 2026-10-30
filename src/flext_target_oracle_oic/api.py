@@ -1,7 +1,7 @@
 """FLEXT service orchestrator for target-oracle-oic.
 
 Thin facade over ``meltano.Target`` — all infrastructure from the base via MRO.
-Only domain-specific sink creation defined here.
+The sink factory is declared, never overridden.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
 SPDX-License-Identifier: MIT
@@ -9,45 +9,21 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Annotated, override
+from typing import Annotated, ClassVar
 
 from flext_meltano import FlextMeltanoTargetServiceBase
 
-from flext_target_oracle_oic import c, p, t, u
-from flext_target_oracle_oic._utilities.service_runtime import (
-    FlextTargetOracleOicServiceRuntime,
-)
+from flext_target_oracle_oic import c, m, p, t, u
 
 
 class FlextTargetOracleOicService(FlextMeltanoTargetServiceBase):
     """Orchestrator for target-oracle-oic. All behavior from base via MRO."""
 
-    target_name: Annotated[t.NonEmptyStr, u.Field(description="Singer target name")] = (
+    target_name: Annotated[t.NonEmptyStr, m.Field(description="Singer target name")] = (
         c.TargetOracleOic.TARGET_NAME
     )
 
-    @override
-    def create_sink(
-        self,
-        stream_name: str,
-        schema: t.JsonMapping,
-    ) -> p.Meltano.SingerDrainSink:
-        """Create an Oracle OIC sink for a stream.
-
-        Args:
-            stream_name: Name of the Singer stream the sink receives.
-            schema: Singer schema describing the stream's record structure.
-
-        Returns:
-            The created Oracle OIC sink adapter.
-
-        """
-        target_config: t.ScalarMapping = self.settings_overrides or {}
-        return FlextTargetOracleOicServiceRuntime.create_sink(
-            stream_name=stream_name,
-            schema=schema,
-            target_config=target_config,
-        )
+    sink_factory: ClassVar[p.Meltano.SinkFactory] = u.create_sink
 
 
 _service: FlextTargetOracleOicService = FlextTargetOracleOicService.fetch_global()

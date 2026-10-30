@@ -31,9 +31,10 @@ class TestsFlextTargetOracleOicE2eSinks:
                 "name": f"Record {index}",
             }
             tm.ok(service.process_record(stream_name, record, schema))
-        batch = service.process_batch(stream_name, [{"id": "batch"}], schema)
-        tm.ok(batch)
-        tm.that(batch.value, eq=1)
+        tm.ok(
+            service.process_record(stream_name, {"id": c.ProcessingMode.BATCH}, schema)
+        )
+        tm.ok(service.flush(stream_name))
 
     @staticmethod
     def test_service_accepts_empty_record() -> None:
