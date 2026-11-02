@@ -1,3 +1,4 @@
+# AUTO-GENERATED FILE — Regenerate with: make gen
 """Singer Oracle OIC target protocols for FLEXT ecosystem.
 
 Copyright (c) 2025 FLEXT Team. All rights reserved.
@@ -10,8 +11,14 @@ from __future__ import annotations
 from flext_meltano import FlextMeltanoProtocols
 from flext_oracle_oic import FlextOracleOicProtocols
 
+from flext_target_oracle_oic._protocols.config import (
+    FlextTargetOracleOicProtocolsConfig,
+)
 
-class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtocols):
+
+class FlextTargetOracleOicProtocols(
+    FlextMeltanoProtocols, FlextOracleOicProtocols, FlextTargetOracleOicProtocolsConfig
+):
     """Singer Target Oracle OIC protocols extending OracleOic and Meltano protocols.
 
     Extends both FlextOracleOicProtocols and FlextMeltanoProtocols via
