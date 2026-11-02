@@ -11,7 +11,7 @@ from typing import override
 
 from flext_tests import FlextTestsServiceBase
 
-from tests import TestsFlextTargetOracleOicSettings, m
+from tests import TestsFlextTargetOracleOicSettings, m, p
 
 
 class TestsFlextTargetOracleOicServiceBase(FlextTestsServiceBase):
