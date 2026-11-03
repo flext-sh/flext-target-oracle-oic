@@ -11,9 +11,7 @@ from __future__ import annotations
 from flext_meltano import FlextMeltanoProtocols
 from flext_oracle_oic import FlextOracleOicProtocols
 
-from flext_target_oracle_oic._protocols.config import (
-    FlextTargetOracleOicProtocolsConfig,
-)
+from flext_target_oracle_oic._protocols import FlextTargetOracleOicProtocolsConfig
 
 
 class FlextTargetOracleOicProtocols(

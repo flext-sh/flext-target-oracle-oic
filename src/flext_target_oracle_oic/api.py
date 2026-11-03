@@ -23,7 +23,7 @@ class FlextTargetOracleOicService(FlextMeltanoTargetServiceBase):
         c.TargetOracleOic.TARGET_NAME
     )
 
-    sink_factory: ClassVar[p.Meltano.SinkFactory] = u.create_sink
+    sink_factory: ClassVar[p.Meltano.SinkFactory] = u.FlextTargetOracleOic.create_sink
 
 
 _service: FlextTargetOracleOicService = FlextTargetOracleOicService.fetch_global()
