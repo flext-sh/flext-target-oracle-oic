@@ -9,14 +9,12 @@ SPDX-License-Identifier: MIT
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, ClassVar
+from types import MappingProxyType
+from typing import ClassVar
 
 from flext_tests import FlextTestsConstants
 
 from flext_target_oracle_oic import FlextTargetOracleOicConstants
-
-if TYPE_CHECKING:
-    from tests import t
 
 
 class TestsFlextTargetOracleOicConstants(
@@ -32,12 +30,12 @@ class TestsFlextTargetOracleOicConstants(
             """Target Oracle OIC-specific test constants."""
 
             PROJECT_ROOT_PARENT_DEPTH: ClassVar[int] = 1
-            ALLOWED_MODULE_FUNCTIONS: ClassVar[Mapping[str, frozenset[str]]] = {
-                "cli.py": frozenset({"main"}),
-            }
-            DEFAULT_PROPERTIES: ClassVar[t.JsonDict] = {
-                "id": {"type": "string"},
-            }
+            ALLOWED_MODULE_FUNCTIONS: ClassVar[Mapping[str, frozenset[str]]] = (
+                MappingProxyType({"cli.py": frozenset({"main"})})
+            )
+            DEFAULT_PROPERTIES: ClassVar[Mapping[str, Mapping[str, str]]] = (
+                MappingProxyType({"id": MappingProxyType({"type": "string"})})
+            )
             STREAM_NAMES: ClassVar[tuple[str, ...]] = (
                 "connections",
                 "integrations",
