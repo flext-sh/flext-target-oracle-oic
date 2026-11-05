@@ -10,8 +10,6 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import pytest
-
 from flext_target_oracle_oic import FlextTargetOracleOicService
 from tests import c, tm
 
@@ -20,7 +18,7 @@ class TestsFlextTargetOracleOicE2eSinks:
     """Tests for the Oracle OIC Singer sink through the service facade."""
 
     @staticmethod
-    @pytest.mark.parametrize("stream_name", c.TargetOracleOic.Tests.STREAM_NAMES)
+    @c.Tests.MARK.parametrize("stream_name", c.TargetOracleOic.Tests.STREAM_NAMES)
     def test_service_processes_records_per_stream(stream_name: str) -> None:
         """The service binds a sink per stream and drains its records."""
         service = FlextTargetOracleOicService()
