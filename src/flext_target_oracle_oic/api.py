@@ -13,7 +13,11 @@ from typing import Annotated, ClassVar
 
 from flext_meltano import FlextMeltanoTargetServiceBase
 
-from flext_target_oracle_oic import c, m, p, t, u
+from flext_target_oracle_oic.constants import c
+from flext_target_oracle_oic.models import m
+from flext_target_oracle_oic.protocols import p
+from flext_target_oracle_oic.typings import t
+from flext_target_oracle_oic.utilities import u
 
 
 class FlextTargetOracleOicService(FlextMeltanoTargetServiceBase):

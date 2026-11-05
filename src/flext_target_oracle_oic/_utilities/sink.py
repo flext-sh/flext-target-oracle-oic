@@ -8,7 +8,8 @@ from __future__ import annotations
 
 from typing import override
 
-from flext_target_oracle_oic import m, t
+from flext_target_oracle_oic.models import m
+from flext_target_oracle_oic.typings import t
 
 
 class FlextTargetOracleOicSink(m.Meltano.SingerSinkBase):
