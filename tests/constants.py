@@ -33,9 +33,9 @@ class TestsFlextTargetOracleOicConstants(
             ALLOWED_MODULE_FUNCTIONS: ClassVar[Mapping[str, frozenset[str]]] = (
                 MappingProxyType({"cli.py": frozenset({"main"})})
             )
-            DEFAULT_PROPERTIES: ClassVar[Mapping[str, Mapping[str, str]]] = (
-                MappingProxyType({"id": MappingProxyType({"type": "string"})})
-            )
+            DEFAULT_PROPERTIES: ClassVar[dict[str, dict[str, str]]] = {
+                "id": {"type": "string"},
+            }
             STREAM_NAMES: ClassVar[tuple[str, ...]] = (
                 "connections",
                 "integrations",
