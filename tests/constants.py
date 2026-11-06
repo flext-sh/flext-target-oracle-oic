@@ -14,7 +14,7 @@ from typing import ClassVar
 
 from flext_tests import FlextTestsConstants
 
-from flext_target_oracle_oic import FlextTargetOracleOicConstants
+from flext_target_oracle_oic import FlextTargetOracleOicConstants, t
 
 
 class TestsFlextTargetOracleOicConstants(
@@ -33,7 +33,7 @@ class TestsFlextTargetOracleOicConstants(
             ALLOWED_MODULE_FUNCTIONS: ClassVar[Mapping[str, frozenset[str]]] = (
                 MappingProxyType({"cli.py": frozenset({"main"})})
             )
-            DEFAULT_PROPERTIES: ClassVar[dict[str, dict[str, str]]] = {
+            DEFAULT_PROPERTIES: ClassVar[dict[str, t.JsonValue]] = {
                 "id": {"type": "string"},
             }
             STREAM_NAMES: ClassVar[tuple[str, ...]] = (
