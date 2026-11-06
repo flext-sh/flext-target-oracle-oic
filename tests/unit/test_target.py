@@ -11,9 +11,8 @@ from flext_target_oracle_oic import (
     FlextTargetOracleOic,
     FlextTargetOracleOicService,
     FlextTargetOracleOicSettings,
-    u,
 )
-from tests import c, tm
+from tests import c, tm, u
 
 
 class TestsFlextTargetOracleOicTarget:
@@ -44,7 +43,9 @@ class TestsFlextTargetOracleOicTarget:
                 key_properties=[],
             )
             tm.that(sink.stream_name, eq=stream_name)
-            tm.that(service.create_sink(stream_name, schema), is_=type(sink))
+            created = service.fetch_or_create_sink(stream_name, schema)
+            tm.ok(created)
+            tm.that(created.value, is_=type(sink))
 
     @staticmethod
     def test_config_schema() -> None:

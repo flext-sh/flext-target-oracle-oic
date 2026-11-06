@@ -6,15 +6,16 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_target_oracle_oic import t
-from flext_target_oracle_oic.api import FlextTargetOracleOicService
+from collections.abc import Sequence
+
+from flext_target_oracle_oic import FlextTargetOracleOicService
 
 
 class FlextTargetOracleOicCli:
     """Minimal CLI wrapper bound to the target service facade."""
 
     @classmethod
-    def run(cls, args: t.StrSequence | None = None) -> int:
+    def run(cls, args: Sequence[str] | None = None) -> int:
         """Execute the canonical target CLI entry point.
 
         Args:

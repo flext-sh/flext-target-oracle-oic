@@ -10,14 +10,11 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import pytest
-
-from flext_target_oracle_oic import FlextTargetOracleOicSettings
-from flext_target_oracle_oic.target import FlextTargetOracleOic
+from flext_target_oracle_oic import FlextTargetOracleOic, FlextTargetOracleOicSettings
 from tests import c, tm, u
 
 
-@pytest.fixture
+@u.Tests.fixture
 def target() -> FlextTargetOracleOic:
     """Provide ``target``.
 
@@ -43,11 +40,11 @@ class TestsFlextTargetOracleOicE2e:
         setup_result = target.setup()
         tm.ok(setup_result)
         tm.that(setup_result.value, none=False)
-        tm.that(setup_result.value, eq=True)
+        tm.ok(setup_result.value)
         teardown_result = target.teardown()
         tm.ok(teardown_result)
         tm.that(teardown_result.value, none=False)
-        tm.that(teardown_result.value, eq=True)
+        tm.ok(teardown_result.value)
 
     @staticmethod
     def test_conditional_config_generation() -> None:

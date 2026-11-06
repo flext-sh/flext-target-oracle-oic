@@ -11,8 +11,7 @@ from typing import override
 
 from flext_tests import FlextTestsServiceBase
 
-from flext_target_oracle_oic import m
-from tests.settings import TestsFlextTargetOracleOicSettings
+from tests import TestsFlextTargetOracleOicSettings, m, p
 
 
 class TestsFlextTargetOracleOicServiceBase(FlextTestsServiceBase):
@@ -22,7 +21,7 @@ class TestsFlextTargetOracleOicServiceBase(FlextTestsServiceBase):
     # declares only its more-specific bootstrap settings type.
     @classmethod
     @override
-    def runtime_bootstrap_options(cls) -> m.RuntimeBootstrapOptions:
+    def runtime_bootstrap_options(cls) -> p.RuntimeBootstrapOptions:
         return m.RuntimeBootstrapOptions(
             settings_type=TestsFlextTargetOracleOicSettings,
         )

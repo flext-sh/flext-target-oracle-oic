@@ -10,16 +10,13 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-import pytest
-from flext_tests import m, tm, u
-
-from tests import c
+from tests import c, m, tm, u
 
 
 class TestsFlextTargetOracleOicCliEntrypoint:
     """Behavior contract for test_cli_entrypoint."""
 
-    pytestmark = pytest.mark.slow
+    pytestmark = c.Tests.MARK.slow
 
     @staticmethod
     def test_console_drains_empty_stream_with_exit_zero() -> None:
