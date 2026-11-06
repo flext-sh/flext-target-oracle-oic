@@ -33,7 +33,7 @@ class TestsFlextTargetOracleOicTarget:
     def test_service_creates_sink_per_stream() -> None:
         """The service builds the target's sink bound to each stream name."""
         service = FlextTargetOracleOicService()
-        target = u.Target(config={}, validate_config=False)
+        target = u.FlextTargetOracleOic.Target(config={}, validate_config=False)
         for stream_name in c.TargetOracleOic.Tests.STREAM_NAMES:
             schema = {"properties": c.TargetOracleOic.Tests.DEFAULT_PROPERTIES}
             sink = FlextTargetOracleOic.default_sink_class(
