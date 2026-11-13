@@ -29,7 +29,7 @@
   `FlextTargetOracleOicModels`, `FlextTargetOracleOicProtocols`,
   `FlextTargetOracleOicService`, `FlextTargetOracleOicSettings`,
   `FlextTargetOracleOicTypes`, `FlextTargetOracleOicUtilities` (+5 more)
-- Exported module shortcuts: _none_
+- Exported module shortcuts: *none*
 - Generated module pages: `8`
 
 ## Next Pages
