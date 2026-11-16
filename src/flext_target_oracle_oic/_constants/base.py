@@ -8,13 +8,13 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from typing import Final
+from typing import ClassVar
 
 
 class FlextTargetOracleOicConstantsBase:
     """Base Oracle OIC target constants: target name."""
 
-    TARGET_NAME: Final[str] = "target-oracle-oic"
+    TARGET_NAME: ClassVar[str] = "target-oracle-oic"
 
 
 __all__: list[str] = ["FlextTargetOracleOicConstantsBase"]
