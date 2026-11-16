@@ -31,4 +31,10 @@ install_lazy_exports(
         "FlextTargetOracleOicSink": ".sink",
     },
     public_exports=__all__,
+    deferred_members={
+        "FlextTargetOracleOicServiceRuntime": (
+            "Target",
+            "create_sink",
+        ),
+    },
 )

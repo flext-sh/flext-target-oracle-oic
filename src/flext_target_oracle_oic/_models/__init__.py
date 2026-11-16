@@ -22,4 +22,7 @@ install_lazy_exports(
     globals(),
     {"FlextTargetOracleOicModelsConfig": ".config"},
     public_exports=__all__,
+    deferred_members={
+        "FlextTargetOracleOicModelsConfig": ("TargetOracleOicNamespace",),
+    },
 )

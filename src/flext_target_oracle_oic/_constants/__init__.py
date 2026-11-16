@@ -24,4 +24,7 @@ install_lazy_exports(
     globals(),
     {"FlextTargetOracleOicConstantsBase": ".base"},
     public_exports=__all__,
+    deferred_members={
+        "FlextTargetOracleOicConstantsBase": ("TARGET_NAME",),
+    },
 )
