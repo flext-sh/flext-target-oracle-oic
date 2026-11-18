@@ -13,13 +13,12 @@ from flext_oracle_oic import FlextOracleOicUtilities
 from flext_target_oracle_oic._utilities import FlextTargetOracleOicServiceRuntime
 
 
-class FlextTargetOracleOicUtilities(FlextMeltanoUtilities, FlextOracleOicUtilities):
+class FlextTargetOracleOicUtilities(
+    FlextMeltanoUtilities,
+    FlextOracleOicUtilities,
+    FlextTargetOracleOicServiceRuntime,
+):
     """Utilities composed from Meltano and Oracle OIC via MRO."""
-
-    class FlextTargetOracleOic(
-        FlextTargetOracleOicServiceRuntime,
-    ):
-        """Utilities from Target Oracle OIC via MRO."""
 
 
 u = FlextTargetOracleOicUtilities
