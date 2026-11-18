@@ -11,15 +11,15 @@ from typing import ClassVar
 from flext_meltano import FlextMeltanoTargetAbstractions
 
 from flext_target_oracle_oic import c, p, r
-from flext_target_oracle_oic._utilities import FlextTargetOracleOicSink
+from flext_target_oracle_oic._utilities import FlextTargetOracleOicUtilitiesSink
 
 
 class FlextTargetOracleOic(FlextMeltanoTargetAbstractions):
     """Singer target entry point for Oracle OIC."""
 
     name: ClassVar[str] = c.TargetOracleOic.TARGET_NAME
-    default_sink_class: ClassVar[type[FlextTargetOracleOicSink]] = (
-        FlextTargetOracleOicSink
+    default_sink_class: ClassVar[type[FlextTargetOracleOicUtilitiesSink]] = (
+        FlextTargetOracleOicUtilitiesSink
     )
 
     @staticmethod

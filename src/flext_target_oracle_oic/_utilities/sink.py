@@ -11,7 +11,7 @@ from typing import override
 from flext_target_oracle_oic import m, t
 
 
-class FlextTargetOracleOicSink(m.Meltano.SingerSinkBase):
+class FlextTargetOracleOicUtilitiesSink(m.Meltano.SingerSinkBase):
     """Sink for Oracle OIC streams; the stream identity is ``stream_name``."""
 
     @override
@@ -41,4 +41,4 @@ class FlextTargetOracleOicSink(m.Meltano.SingerSinkBase):
         self.logger.debug("Processing OIC record: %s", record.keys())
 
 
-__all__: list[str] = ["FlextTargetOracleOicSink"]
+__all__: list[str] = ["FlextTargetOracleOicUtilitiesSink"]

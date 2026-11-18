@@ -9,10 +9,10 @@ from __future__ import annotations
 from flext_meltano import u
 
 from flext_target_oracle_oic import FlextTargetOracleOic, c, m, t
-from flext_target_oracle_oic._utilities import FlextTargetOracleOicSink
+from flext_target_oracle_oic._utilities import FlextTargetOracleOicUtilitiesSink
 
 
-class FlextTargetOracleOicServiceRuntime:
+class FlextTargetOracleOicUtilitiesServiceRuntime:
     """Service-runtime adapters used by the target-oracle-oic facade."""
 
     class Target(m.Meltano.SingerTargetBase):
@@ -27,7 +27,7 @@ class FlextTargetOracleOicServiceRuntime:
         stream_name: str,
         schema: t.JsonMapping,
         target_config: t.JsonMapping,
-    ) -> FlextTargetOracleOicSink:
+    ) -> FlextTargetOracleOicUtilitiesSink:
         """Create the service-level Singer sink adapter.
 
         Args:
@@ -52,4 +52,4 @@ class FlextTargetOracleOicServiceRuntime:
         )
 
 
-__all__: list[str] = ["FlextTargetOracleOicServiceRuntime"]
+__all__: list[str] = ["FlextTargetOracleOicUtilitiesServiceRuntime"]

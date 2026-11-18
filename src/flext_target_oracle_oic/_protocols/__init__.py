@@ -24,4 +24,5 @@ install_lazy_exports(
     globals(),
     {"FlextTargetOracleOicProtocolsConfig": ".config"},
     public_exports=__all__,
+    deferred_members=("FlextTargetOracleOicProtocolsConfig",),
 )
