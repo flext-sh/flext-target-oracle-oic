@@ -16,9 +16,11 @@ from flext_target_oracle_oic._models import FlextTargetOracleOicModelsConfig
 class FlextTargetOracleOicModels(
     FlextMeltanoModels,
     FlextOracleOicModels,
-    FlextTargetOracleOicModelsConfig,
 ):
     """Models composed from Meltano and Oracle OIC via MRO."""
+
+    class TargetOracleOic(FlextTargetOracleOicModelsConfig):
+        """Domain namespace of the package parts."""
 
 
 m = FlextTargetOracleOicModels
