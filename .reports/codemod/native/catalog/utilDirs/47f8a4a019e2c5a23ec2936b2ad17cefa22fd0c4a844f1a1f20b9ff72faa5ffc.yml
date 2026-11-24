@@ -1,0 +1,1 @@
+{"id":"62f46c8aa89c6b113d552df3858fc20b893165db991c6fd119c51184c24ad090","language":"python","rule":{"kind":"call","has":{"field":"function","kind":"attribute","has":{"field":"attribute","regex":"^skip$"}}}}

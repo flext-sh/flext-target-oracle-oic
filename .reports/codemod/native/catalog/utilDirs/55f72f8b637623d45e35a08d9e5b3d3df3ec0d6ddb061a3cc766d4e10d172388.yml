@@ -1,0 +1,1 @@
+{"id":"a46054201ac2e2a0c13440d61a09d7e47152acb5f55cd12cf288318908dd9f45","language":"python","rule":{"kind":"function_definition","has":{"field":"name","regex":"^[A-Za-z]"},"any":[{"inside":{"kind":"block","inside":{"kind":"class_definition"}}},{"inside":{"kind":"decorated_definition","inside":{"kind":"block","inside":{"kind":"class_definition"}}}}]}}

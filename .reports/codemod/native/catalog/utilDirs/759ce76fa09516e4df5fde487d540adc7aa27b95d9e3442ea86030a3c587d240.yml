@@ -1,0 +1,1 @@
+{"id":"df42a53bf6b0555c94a863f8889dab0f1898b700d9cd0c945c856c80cc90d74c","language":"Python","rule":{"all":[{"kind":"assignment"},{"has":{"field":"left","kind":"identifier","regex":"^model_config$"}},{"has":{"field":"right","kind":"call","regex":"ConfigDict\\("}},{"inside":{"kind":"block","stopBy":"end","inside":{"kind":"class_definition"}}}]}}

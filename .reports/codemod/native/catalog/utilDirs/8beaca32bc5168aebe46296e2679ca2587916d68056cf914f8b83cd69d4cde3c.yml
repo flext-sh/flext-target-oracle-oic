@@ -1,0 +1,1 @@
+{"id":"cbc88577fdea9a3eabd66c6d580f90d918a0e1fe98c8ec3801c851102900e839","language":"python","rule":{"kind":"import_from_statement","all":[{"has":{"pattern":"cli","stopBy":"end"}},{"has":{"field":"module_name","regex":"^flext_cli$"}},{"not":{"has":{"kind":"aliased_import","stopBy":"end","has":{"pattern":"cli","stopBy":"end"}}}}]}}

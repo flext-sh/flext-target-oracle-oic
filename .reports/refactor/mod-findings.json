@@ -1,0 +1,2274 @@
+{
+  "entries": [
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/namespace-structure.yml",
+      "rule_id": "require-family-base-module",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "c2bcf6ffa90759228ee38209e71d32d7aff4d18a02d02808dd296bfd136322fb",
+      "message": "The family package holding this module has no base.py: the family begins with its base module.",
+      "module_absence": false,
+      "file": "src/flext_target_oracle_oic/_protocols/__init__.py",
+      "source_owner": "generator",
+      "range": {
+        "byteOffset": {
+          "start": 437,
+          "end": 444
+        },
+        "start": {
+          "line": 19,
+          "column": 0
+        },
+        "end": {
+          "line": 19,
+          "column": 7
+        }
+      },
+      "text": "__all__",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 0,
+        "length": 1880,
+        "sha256": "77c3ea54b740bfa1fffa15104892d4fc9568a4056e21e46cd0e8eb51d664c8a6"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/_protocols/__init__.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-target-oracle-oic/.reports/codemod/native/generated/039a54266674e22d14e30884d839e7e4641d04d01e187067c228a5deee8829a5/ruleDirs/declare-single-class-export--flext_target_oracle_oic--FlextTargetOracleOic.yml",
+      "rule_id": "declare-single-class-export--flext_target_oracle_oic--FlextTargetOracleOic",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "8cf3f6baef5bbc110d10242d6d611a1a9507e359301693baf7583fd5ea3fc97c",
+      "message": "Declare the canonical source class in __all__ before generating its lazy package export. Preserve the class and consume it through its owning package.",
+      "module_absence": false,
+      "file": "src/flext_target_oracle_oic/_models/base.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 168,
+          "end": 270
+        },
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 10,
+          "column": 64
+        }
+      },
+      "text": "class FlextTargetOracleOicModelsBase:\n    \"\"\"Base family holder for flext-target-oracle-oic models.\"\"\"",
+      "replacement": "class FlextTargetOracleOicModelsBase:\n    \"\"\"Base family holder for flext-target-oracle-oic models.\"\"\"\n\n\n__all__: list[str] = [\"FlextTargetOracleOicModelsBase\"]",
+      "actionable": true,
+      "classification": "actionable",
+      "replacement_offsets": {
+        "start": 168,
+        "end": 270
+      },
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 1881,
+        "length": 1992,
+        "sha256": "eaac17bcda3e246b8f0e6fe46503881d4e37c1dc33dc6af803e8772a2dcf4eac"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/_models/base.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/namespace-structure.yml",
+      "rule_id": "require-family-base-module",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "c2bcf6ffa90759228ee38209e71d32d7aff4d18a02d02808dd296bfd136322fb",
+      "message": "The family package holding this module has no base.py: the family begins with its base module.",
+      "module_absence": false,
+      "file": "src/flext_target_oracle_oic/_protocols/config.py",
+      "source_owner": "generator",
+      "range": {
+        "byteOffset": {
+          "start": 654,
+          "end": 661
+        },
+        "start": {
+          "line": 23,
+          "column": 0
+        },
+        "end": {
+          "line": 23,
+          "column": 7
+        }
+      },
+      "text": "__all__",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 3874,
+        "length": 1919,
+        "sha256": "2bfc63a1e63f1a21c440da09f0ca7f69cbc40b700c6406037b4fff68d975f709"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/_protocols/config.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/ban-relaxed-model-extra.yml",
+      "rule_id": "ban-relaxed-model-extra",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "9f843ea1e18d5f63d8278e2a6b2217b557f54b2062b69a1304d726a3768c3d44",
+      "message": "Relaxed model extra `\"allow\"` admits unvalidated keys: inherit a forbidding `m.*` preset, or a dynamic-payload preset when relaxed extra is the contract. Detection only: forbidding extra rejects payloads accepted today.",
+      "module_absence": false,
+      "file": "src/flext_target_oracle_oic/_models/config.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 521,
+          "end": 534
+        },
+        "start": {
+          "line": 17,
+          "column": 36
+        },
+        "end": {
+          "line": 17,
+          "column": 49
+        }
+      },
+      "text": "extra=\"allow\"",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 5794,
+        "length": 1538,
+        "sha256": "81cd047e50fd01412310c0aaaa307e28ef9ab7694ba2db85d78819b48c8fe3d2"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/_models/config.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/pydantic-model-config-classvar-import-new.yml",
+      "rule_id": "pydantic-model-config-classvar-import-new",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "89c93ef983d1644c7e111eac9f4e0ff6219fa88e768d2c134a5151cf7d5eaa5d",
+      "message": "Modules declaring unannotated model_config assignments bind ClassVar at module level.",
+      "module_absence": false,
+      "file": "src/flext_target_oracle_oic/_models/config.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 154,
+          "end": 188
+        },
+        "start": {
+          "line": 6,
+          "column": 0
+        },
+        "end": {
+          "line": 6,
+          "column": 34
+        }
+      },
+      "text": "from __future__ import annotations",
+      "replacement": "from __future__ import annotations\n\nfrom typing import ClassVar",
+      "actionable": true,
+      "classification": "actionable",
+      "replacement_offsets": {
+        "start": 154,
+        "end": 188
+      },
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 7333,
+        "length": 1642,
+        "sha256": "6dd71ee7366a0da811865ff403615e68d4fbc9dd9318e276b5f53b16b331f664"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/_models/config.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/pydantic-model-config-m-configdict-classvar.yml",
+      "rule_id": "pydantic-model-config-m-configdict-classvar",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "d2ae997cf528a3f99be08c03458cd9328c42f0ff449d62a302ecc23466847bab",
+      "message": "Declare model_config as ClassVar[t.ConfigDict] or ClassVar[t.SettingsConfigDict], retaining the matching m constructor.",
+      "module_absence": false,
+      "file": "src/flext_target_oracle_oic/_models/config.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 493,
+          "end": 548
+        },
+        "start": {
+          "line": 17,
+          "column": 8
+        },
+        "end": {
+          "line": 17,
+          "column": 63
+        }
+      },
+      "text": "model_config = m.ConfigDict(extra=\"allow\", frozen=True)",
+      "replacement": "model_config: ClassVar[t.ConfigDict] = m.ConfigDict(extra=\"allow\", frozen=True)",
+      "actionable": true,
+      "classification": "actionable",
+      "replacement_offsets": {
+        "start": 493,
+        "end": 548
+      },
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 8976,
+        "length": 1940,
+        "sha256": "1819acd8488d040137b3238c8d9eaeffe527373212fb4f576d5db30ec593b23d"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/_models/config.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/namespace-law.yml",
+      "rule_id": "ban-loose-module-object",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "f509f863eeb65d254429b995d5fdb62459c44e1595b8236b1545266c0fa90de4",
+      "message": "Loose object at module level: nest `main` inside the module's single facade class. Only that class, its canonical published bindings, __all__ and imports live at module level in every Python file of the repository; the sole exceptions are a guarded executable `main()`, generator-emitted dunders and, in conftest.py and tests/fixtures/** only, pytest fixtures and hooks.",
+      "module_absence": false,
+      "file": "src/flext_target_oracle_oic/cli.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 808,
+          "end": 971
+        },
+        "start": {
+          "line": 33,
+          "column": 0
+        },
+        "end": {
+          "line": 40,
+          "column": 40
+        }
+      },
+      "text": "def main() -> int:\n    \"\"\"Run the target Oracle OIC CLI entry point.\n\n    Returns:\n        The process exit code.\n\n    \"\"\"\n    return FlextTargetOracleOicCli.run()",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 10917,
+        "length": 2577,
+        "sha256": "637549d6fccec8e9e6404c28f9a9b59c82526e3e6ea6a4f5dca10ee56e028bde"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/cli.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/facade-base-by-class-name.yml",
+      "rule_id": "facade-base-by-class-name",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "f564075354c8248d993dea63fc6d80e140e972aa696106a9bcf3bf9e44c6cfc1",
+      "message": "Facade `FlextTargetOracleOicModels` extends the parent letter `flext_meltano_m` and rebinds `m`; extend the class the parent declares for `m` in its own `__all__` and rebind `m = FlextTargetOracleOicModels`.",
+      "module_absence": false,
+      "file": "src/flext_target_oracle_oic/models.py",
+      "source_owner": "generator",
+      "range": {
+        "byteOffset": {
+          "start": 580,
+          "end": 610
+        },
+        "start": {
+          "line": 23,
+          "column": 0
+        },
+        "end": {
+          "line": 23,
+          "column": 30
+        }
+      },
+      "text": "m = FlextTargetOracleOicModels",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 13495,
+        "length": 5556,
+        "sha256": "99b80d9e945b8b7aceb6f33718bd0d3e961984dca0635a93b703c74b617106ce"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/models.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-target-oracle-oic/.reports/codemod/native/generated/039a54266674e22d14e30884d839e7e4641d04d01e187067c228a5deee8829a5/ruleDirs/declare-single-class-export--flext_target_oracle_oic--FlextTargetOracleOic.yml",
+      "rule_id": "declare-single-class-export--flext_target_oracle_oic--FlextTargetOracleOic",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "8cf3f6baef5bbc110d10242d6d611a1a9507e359301693baf7583fd5ea3fc97c",
+      "message": "Declare the canonical source class in __all__ before generating its lazy package export. Preserve the class and consume it through its owning package.",
+      "module_absence": false,
+      "file": "src/flext_target_oracle_oic/_utilities/base.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 171,
+          "end": 265
+        },
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 10,
+          "column": 53
+        }
+      },
+      "text": "class FlextTargetOracleOicUtilitiesBase:\n    \"\"\"Base utilities for flext-target-oracle-oic.\"\"\"",
+      "replacement": "class FlextTargetOracleOicUtilitiesBase:\n    \"\"\"Base utilities for flext-target-oracle-oic.\"\"\"\n\n\n__all__: list[str] = [\"FlextTargetOracleOicUtilitiesBase\"]",
+      "actionable": true,
+      "classification": "actionable",
+      "replacement_offsets": {
+        "start": 171,
+        "end": 265
+      },
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 19052,
+        "length": 1967,
+        "sha256": "4061e1d8bcdbcbf4c3da9369ca19e682e6c693ad50afe9292f05079607dd56c6"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/_utilities/base.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/facade-base-by-class-name.yml",
+      "rule_id": "facade-base-by-class-name",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "f564075354c8248d993dea63fc6d80e140e972aa696106a9bcf3bf9e44c6cfc1",
+      "message": "Facade `FlextTargetOracleOicConstants` extends the parent letter `flext_meltano_c` and rebinds `c`; extend the class the parent declares for `c` in its own `__all__` and rebind `c = FlextTargetOracleOicConstants`.",
+      "module_absence": false,
+      "file": "src/flext_target_oracle_oic/constants.py",
+      "source_owner": "generator",
+      "range": {
+        "byteOffset": {
+          "start": 636,
+          "end": 669
+        },
+        "start": {
+          "line": 22,
+          "column": 0
+        },
+        "end": {
+          "line": 22,
+          "column": 33
+        }
+      },
+      "text": "c = FlextTargetOracleOicConstants",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 21020,
+        "length": 5848,
+        "sha256": "92d3b7701a77b6978625a690bbe98d6294dbbfb0857bb415fbf160612f7be1fe"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/constants.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/pydantic-model-config-m-configdict-classvar.yml",
+      "rule_id": "pydantic-model-config-m-configdict-classvar",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "d2ae997cf528a3f99be08c03458cd9328c42f0ff449d62a302ecc23466847bab",
+      "message": "Declare model_config as ClassVar[t.ConfigDict] or ClassVar[t.SettingsConfigDict], retaining the matching m constructor.",
+      "module_absence": false,
+      "file": "src/flext_target_oracle_oic/_settings.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 693,
+          "end": 841
+        },
+        "start": {
+          "line": 20,
+          "column": 4
+        },
+        "end": {
+          "line": 24,
+          "column": 5
+        }
+      },
+      "text": "model_config = m.SettingsConfigDict(\n        env_prefix=\"FLEXT_TARGET_ORACLE_OIC_\",\n        env_nested_delimiter=\"__\",\n        extra=\"ignore\",\n    )",
+      "replacement": "model_config: ClassVar[t.SettingsConfigDict] = m.SettingsConfigDict(env_prefix=\"FLEXT_TARGET_ORACLE_OIC_\",\n    env_nested_delimiter=\"__\",\n    extra=\"ignore\",)",
+      "actionable": true,
+      "classification": "actionable",
+      "replacement_offsets": {
+        "start": 693,
+        "end": 841
+      },
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 26869,
+        "length": 3996,
+        "sha256": "266f89a46bd1be6eb455cb301c76cf0f50ab1305e3afd812153579ecdc1aac3c"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/_settings.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/pydantic-model-config-classvar-import.yml",
+      "rule_id": "pydantic-model-config-classvar-import",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "8bcff35fad0d83b25b1c8d66e1ab156e611ea2792eb60daaa775bc3f8c04f89e",
+      "message": "Modules declaring unannotated model_config assignments bind ClassVar at module level.",
+      "module_absence": false,
+      "file": "src/flext_target_oracle_oic/_settings.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 450,
+          "end": 493
+        },
+        "start": {
+          "line": 12,
+          "column": 0
+        },
+        "end": {
+          "line": 12,
+          "column": 43
+        }
+      },
+      "text": "from typing import TYPE_CHECKING, Annotated",
+      "replacement": "from typing import ClassVar, TYPE_CHECKING, Annotated",
+      "actionable": true,
+      "classification": "actionable",
+      "replacement_offsets": {
+        "start": 450,
+        "end": 493
+      },
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 30866,
+        "length": 3228,
+        "sha256": "9b34273f818f7856fb1086ac095ab7c6d04ea223e50412711a670ea7edcbc41d"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/_settings.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-target-oracle-oic/.reports/codemod/native/generated/039a54266674e22d14e30884d839e7e4641d04d01e187067c228a5deee8829a5/ruleDirs/ban-own-family-internal-import--flext_target_oracle_oic--flext_target_oracle_oic._utilities.yml",
+      "rule_id": "ban-own-family-internal-import--flext_target_oracle_oic--flext_target_oracle_oic._utilities",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "8c683f86a271b4012e0278a43e8a52719bc3699f2c5555cdee1d93314d713e67",
+      "message": "Own-package import of a private family's internal module from outside that family. Internal modules are imported only by their family and its facade; bind the facade (its letter, under TYPE_CHECKING when it is a later layer).",
+      "module_absence": false,
+      "file": "src/flext_target_oracle_oic/target.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 298,
+          "end": 369
+        },
+        "start": {
+          "line": 13,
+          "column": 0
+        },
+        "end": {
+          "line": 13,
+          "column": 71
+        }
+      },
+      "text": "from flext_target_oracle_oic._utilities import FlextTargetOracleOicSink",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 34095,
+        "length": 1134,
+        "sha256": "d9d897249cf5a9851bcf0c0812ec4e40e2493f4d0412fb27fe3db2953ebb9024"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/target.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/ban-test-import-outside-test-namespace.yml",
+      "rule_id": "ban-test-import-outside-test-namespace",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "aab48116a624fe982c44bd993a9c8d08a804404fe04a584fbe461750afc11177",
+      "message": "Authored test imports a first-party namespace directly. Import the public name from the generated `tests` namespace instead; `tests/_<base>/*.py` is the only test-only implementation layer allowed to read first-party namespaces.",
+      "module_absence": false,
+      "file": "tests/settings.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 193,
+          "end": 235
+        },
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 9,
+          "column": 42
+        }
+      },
+      "text": "from flext_tests import FlextTestsSettings",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 35230,
+        "length": 820,
+        "sha256": "7492b3566fef42c1161d1d1d66e07002372a664d714e1798271c3b746540fd64"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/settings.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/ban-test-import-outside-test-namespace.yml",
+      "rule_id": "ban-test-import-outside-test-namespace",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "aab48116a624fe982c44bd993a9c8d08a804404fe04a584fbe461750afc11177",
+      "message": "Authored test imports a first-party namespace directly. Import the public name from the generated `tests` namespace instead; `tests/_<base>/*.py` is the only test-only implementation layer allowed to read first-party namespaces.",
+      "module_absence": false,
+      "file": "tests/settings.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 237,
+          "end": 301
+        },
+        "start": {
+          "line": 11,
+          "column": 0
+        },
+        "end": {
+          "line": 11,
+          "column": 64
+        }
+      },
+      "text": "from flext_target_oracle_oic import FlextTargetOracleOicSettings",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 36051,
+        "length": 880,
+        "sha256": "40b6e7bc031dbcc40c341b8c2fd4a9b85cdbd39a73881787d2a4cf7a891457f7"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/settings.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/ban-compat-alias.yml",
+      "rule_id": "ban-subdirectory-short-alias-export-last",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "00beef14cecfb91e46af35bfb1dacca9adee29bd843548f4f07177a14e7a158c",
+      "message": "A subdirectory module exports no short alias: its namespace root publishes the letter.",
+      "module_absence": false,
+      "file": "tests/base.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 931,
+          "end": 934
+        },
+        "start": {
+          "line": 31,
+          "column": 62
+        },
+        "end": {
+          "line": 31,
+          "column": 65
+        }
+      },
+      "text": "\"s\"",
+      "replacement": "",
+      "actionable": true,
+      "classification": "actionable",
+      "replacement_offsets": {
+        "start": 929,
+        "end": 934
+      },
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 36932,
+        "length": 2380,
+        "sha256": "05d255b4f0f177f06c2cd2e7bd35d39c81fc0783b31c0998a2897ed08fecc818"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/base.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/ban-compat-alias.yml",
+      "rule_id": "ban-subdirectory-short-alias",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "d49436618dc3bdf39cb527e9d4756a1e68a80eb445e5a0030ce426850aa07f9f",
+      "message": "A subdirectory module declares no short alias: the letter belongs to the namespace-root facade module that composes this class.",
+      "module_absence": false,
+      "file": "tests/base.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 827,
+          "end": 867
+        },
+        "start": {
+          "line": 29,
+          "column": 0
+        },
+        "end": {
+          "line": 29,
+          "column": 40
+        }
+      },
+      "text": "s = TestsFlextTargetOracleOicServiceBase",
+      "replacement": "",
+      "actionable": true,
+      "classification": "actionable",
+      "replacement_offsets": {
+        "start": 827,
+        "end": 867
+      },
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 39313,
+        "length": 2172,
+        "sha256": "6d6bd30f83bb912b233e8243060245296a0b61be71cd68db2273b6954aa58255"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/base.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/ban-test-import-outside-test-namespace.yml",
+      "rule_id": "ban-test-import-outside-test-namespace",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "aab48116a624fe982c44bd993a9c8d08a804404fe04a584fbe461750afc11177",
+      "message": "Authored test imports a first-party namespace directly. Import the public name from the generated `tests` namespace instead; `tests/_<base>/*.py` is the only test-only implementation layer allowed to read first-party namespaces.",
+      "module_absence": false,
+      "file": "tests/base.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 214,
+          "end": 259
+        },
+        "start": {
+          "line": 11,
+          "column": 0
+        },
+        "end": {
+          "line": 11,
+          "column": 45
+        }
+      },
+      "text": "from flext_tests import FlextTestsServiceBase",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 41486,
+        "length": 826,
+        "sha256": "5741f82b610340796311b44e06ec91d89210e03bfc9656d28486025504da93ae"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/base.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/facade-base-by-class-name.yml",
+      "rule_id": "facade-base-by-class-name",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "f564075354c8248d993dea63fc6d80e140e972aa696106a9bcf3bf9e44c6cfc1",
+      "message": "Facade `FlextTargetOracleOicUtilities` extends the parent letter `flext_meltano_u` and rebinds `u`; extend the class the parent declares for `u` in its own `__all__` and rebind `u = FlextTargetOracleOicUtilities`.",
+      "module_absence": false,
+      "file": "src/flext_target_oracle_oic/utilities.py",
+      "source_owner": "generator",
+      "range": {
+        "byteOffset": {
+          "start": 685,
+          "end": 718
+        },
+        "start": {
+          "line": 24,
+          "column": 0
+        },
+        "end": {
+          "line": 24,
+          "column": 33
+        }
+      },
+      "text": "u = FlextTargetOracleOicUtilities",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 42313,
+        "length": 6044,
+        "sha256": "8b3f38ea8b210a8270eada79721864166a627436ed01f8e83ba415a121ded7ff"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/utilities.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-target-oracle-oic/.reports/codemod/native/generated/039a54266674e22d14e30884d839e7e4641d04d01e187067c228a5deee8829a5/ruleDirs/require-facade-mro-completeness--flext_target_oracle_oic--FlextTargetOracleOic.yml",
+      "rule_id": "require-facade-mro-completeness--flext_target_oracle_oic--FlextTargetOracleOic",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "26e1fb3ec252a880be3259178d1cee5a25e65cdde4630957d4a1121d650f8234",
+      "message": "Facade namespace `FlextTargetOracleOic` does not compose every class its family package declares: add the missing mixins to its bases.",
+      "module_absence": false,
+      "file": "src/flext_target_oracle_oic/utilities.py",
+      "source_owner": "generator",
+      "range": {
+        "byteOffset": {
+          "start": 548,
+          "end": 682
+        },
+        "start": {
+          "line": 18,
+          "column": 4
+        },
+        "end": {
+          "line": 21,
+          "column": 55
+        }
+      },
+      "text": "class FlextTargetOracleOic(\n        FlextTargetOracleOicServiceRuntime,\n    ):\n        \"\"\"Utilities from Target Oracle OIC via MRO.\"\"\"",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 48358,
+        "length": 2854,
+        "sha256": "0282f9418871c01f78684d1bff5ba6a9e3fcc821626dd0fd625bb98db2852d59"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/utilities.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-target-oracle-oic/.reports/codemod/native/generated/039a54266674e22d14e30884d839e7e4641d04d01e187067c228a5deee8829a5/ruleDirs/declare-single-class-export--flext_target_oracle_oic--TestsFlextTargetOracleOic.yml",
+      "rule_id": "declare-single-class-export--flext_target_oracle_oic--TestsFlextTargetOracleOic",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "551234a4b65878c283e17d790621a3f20db5b9481c985a294618cd50b351f849",
+      "message": "Declare the canonical source class in __all__ before generating its lazy package export. Preserve the class and consume it through its owning package.",
+      "module_absence": false,
+      "file": "tests/unit/test_module_governance.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 233,
+          "end": 394
+        },
+        "start": {
+          "line": 12,
+          "column": 0
+        },
+        "end": {
+          "line": 15,
+          "column": 25
+        }
+      },
+      "text": "class TestsFlextTargetOracleOicModuleGovernance(u.FlextTestsModuleGovernance):\n    \"\"\"Behavior contract for test_module_governance.\"\"\"\n\n    _test_file = __file__",
+      "replacement": "class TestsFlextTargetOracleOicModuleGovernance(u.FlextTestsModuleGovernance):\n    \"\"\"Behavior contract for test_module_governance.\"\"\"\n\n    _test_file = __file__\n\n\n__all__: list[str] = [\"TestsFlextTargetOracleOicModuleGovernance\"]",
+      "actionable": true,
+      "classification": "actionable",
+      "replacement_offsets": {
+        "start": 233,
+        "end": 394
+      },
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 51213,
+        "length": 2402,
+        "sha256": "39319ee521125ec70c61a1a446da7ec7989edf086b9c2fe050cc9a86ffbe1d1d"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/unit/test_module_governance.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-target-oracle-oic/.reports/codemod/native/generated/039a54266674e22d14e30884d839e7e4641d04d01e187067c228a5deee8829a5/ruleDirs/import-header--own-letter--flext_target_oracle_oic--u--last.yml",
+      "rule_id": "import-header--own-letter--flext_target_oracle_oic--u--last",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "b67c87faf8eecdf2d9266196efa8623b81de4b5edc5c44eb127a617d7c86430b",
+      "message": "The `u` family of `flext_target_oracle_oic` binds `d|e|h|r|s|u|x` from the package it composes, never from `flext_target_oracle_oic`.",
+      "module_absence": false,
+      "file": "src/flext_target_oracle_oic/_utilities/service_runtime.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 261,
+          "end": 262
+        },
+        "start": {
+          "line": 8,
+          "column": 67
+        },
+        "end": {
+          "line": 8,
+          "column": 68
+        }
+      },
+      "text": "u",
+      "replacement": "",
+      "actionable": true,
+      "classification": "actionable",
+      "replacement_offsets": {
+        "start": 259,
+        "end": 262
+      },
+      "severity": "hint",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 53616,
+        "length": 1392,
+        "sha256": "fe39cd94f951189d0101dcdf872ad73000c571517ae09ea09ab9f78bd497b833"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/_utilities/service_runtime.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-target-oracle-oic/.reports/codemod/native/generated/039a54266674e22d14e30884d839e7e4641d04d01e187067c228a5deee8829a5/ruleDirs/ban-reverse-runtime-import--flext_target_oracle_oic--c.yml",
+      "rule_id": "ban-reverse-runtime-import--flext_target_oracle_oic--c",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "05e03c622fbac063cffb4eb24d38622ea54d2e539821c45104a3b9ff46e37575",
+      "message": "Reverse runtime import: lazy exports and compose modules do not change layer ownership. Move runtime behavior to its owning layer; TYPE_CHECKING is only valid when the dependency is exclusively an annotation.",
+      "module_absence": false,
+      "file": "tests/constants.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 439,
+          "end": 440
+        },
+        "start": {
+          "line": 16,
+          "column": 67
+        },
+        "end": {
+          "line": 16,
+          "column": 68
+        }
+      },
+      "text": "t",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 55009,
+        "length": 1008,
+        "sha256": "f07613616f6cb27d05a8acf014c1d347a74719a63539dd7c7c47094985f5cfee"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/constants.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/ban-dict-annotation.yml",
+      "rule_id": "dict-annotation-field-contract",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "43594bf6bdb8aa93e0b5c74ae726bca3f68029a885de2369daa5f02ce4e522b9",
+      "message": "`dict[K, V]` declared outside a function: a field or alias contract is Mapping[K, V] (MutableMapping when mutated) with a `u.empty` factory, never a dict origin.",
+      "module_absence": false,
+      "file": "tests/constants.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 1114,
+          "end": 1136
+        },
+        "start": {
+          "line": 35,
+          "column": 41
+        },
+        "end": {
+          "line": 35,
+          "column": 63
+        }
+      },
+      "text": "dict[str, t.JsonValue]",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 56018,
+        "length": 1154,
+        "sha256": "10841a1be34cb68e39d7d490ab4133185026040c32c0b9cdbf07c73d3d962b05"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/constants.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/ban-core-tests-namespace.yml",
+      "rule_id": "ban-core-tests-namespace-declaration",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "01e4d9c1a24aa8d19d070b9d66f86d22be01583613ba8b83b4c7e3e8083b56a0",
+      "message": "`class <Project>: class Tests` nests the test namespace under a second owner: declare `class Tests` directly in the facade class.",
+      "module_absence": false,
+      "file": "tests/constants.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 753,
+          "end": 1385
+        },
+        "start": {
+          "line": 28,
+          "column": 8
+        },
+        "end": {
+          "line": 43,
+          "column": 13
+        }
+      },
+      "text": "class Tests(FlextTestsConstants.Tests):\n            \"\"\"Target Oracle OIC-specific test constants.\"\"\"\n\n            PROJECT_ROOT_PARENT_DEPTH: ClassVar[int] = 1\n            ALLOWED_MODULE_FUNCTIONS: ClassVar[Mapping[str, frozenset[str]]] = (\n                MappingProxyType({\"cli.py\": frozenset({\"main\"})})\n            )\n            DEFAULT_PROPERTIES: ClassVar[dict[str, t.JsonValue]] = {\n                \"id\": {\"type\": \"string\"},\n            }\n            STREAM_NAMES: ClassVar[tuple[str, ...]] = (\n                \"connections\",\n                \"integrations\",\n                \"packages\",\n                \"lookups\",\n            )",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 57173,
+        "length": 4380,
+        "sha256": "d0e84e536bef9d2bb50ef52140171885f7c1aaa09cb06b395e8de2afe473fec5"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/constants.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/ban-mutable-constant-value.yml",
+      "rule_id": "ban-mutable-constant-value",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "38b97fc5eeda3a75248238aa617bfda0299fe7065ba9eb1565a6135c9b86c321",
+      "message": "Constant `DEFAULT_PROPERTIES` binds a mutable value: use a tuple, a frozenset or a MappingProxyType. Detection only: the annotation and every mutating consumer change with the value type.",
+      "module_absence": false,
+      "file": "tests/constants.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 1085,
+          "end": 1197
+        },
+        "start": {
+          "line": 35,
+          "column": 12
+        },
+        "end": {
+          "line": 37,
+          "column": 13
+        }
+      },
+      "text": "DEFAULT_PROPERTIES: ClassVar[dict[str, t.JsonValue]] = {\n                \"id\": {\"type\": \"string\"},\n            }",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 61554,
+        "length": 1289,
+        "sha256": "d97a431d983bf956c48fda8f69a534744141c712fae52bb6a54cbfa4bfe98145"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/constants.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/ban-core-tests-namespace.yml",
+      "rule_id": "ban-core-tests-namespace-reference",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "eec4471f052bd1c6268d8f878c320427beaf09f043b8d945da3b6d91d7b42c6d",
+      "message": "`c.TargetOracleOic.Tests` is the deprecated nested test namespace: read the flat `c.Tests` member.",
+      "module_absence": false,
+      "file": "tests/unit/test_e2e_sinks.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 566,
+          "end": 589
+        },
+        "start": {
+          "line": 20,
+          "column": 45
+        },
+        "end": {
+          "line": 20,
+          "column": 68
+        }
+      },
+      "text": "c.TargetOracleOic.Tests",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 62844,
+        "length": 1039,
+        "sha256": "14e156dc980e91f45dd2362646c9f678068ba92b7e33bdb61df1ee96783f54f3"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/unit/test_e2e_sinks.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/ban-core-tests-namespace.yml",
+      "rule_id": "ban-core-tests-namespace-reference",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "eec4471f052bd1c6268d8f878c320427beaf09f043b8d945da3b6d91d7b42c6d",
+      "message": "`c.TargetOracleOic.Tests` is the deprecated nested test namespace: read the flat `c.Tests` member.",
+      "module_absence": false,
+      "file": "tests/unit/test_e2e_sinks.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 835,
+          "end": 858
+        },
+        "start": {
+          "line": 24,
+          "column": 32
+        },
+        "end": {
+          "line": 24,
+          "column": 55
+        }
+      },
+      "text": "c.TargetOracleOic.Tests",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 63884,
+        "length": 1032,
+        "sha256": "43c1daf5e70d31f9a6820028ee98cda717f1e21eb4d93784bb28501929c7f706"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/unit/test_e2e_sinks.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/ban-core-tests-namespace.yml",
+      "rule_id": "ban-core-tests-namespace-reference",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "eec4471f052bd1c6268d8f878c320427beaf09f043b8d945da3b6d91d7b42c6d",
+      "message": "`c.TargetOracleOic.Tests` is the deprecated nested test namespace: read the flat `c.Tests` member.",
+      "module_absence": false,
+      "file": "tests/unit/test_e2e_sinks.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 1473,
+          "end": 1496
+        },
+        "start": {
+          "line": 40,
+          "column": 22
+        },
+        "end": {
+          "line": 40,
+          "column": 45
+        }
+      },
+      "text": "c.TargetOracleOic.Tests",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 64917,
+        "length": 1022,
+        "sha256": "cff0f6f71a9019a5faa001c695f5cc2ec62a6466f444f8846632ee5c3b5737f0"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/unit/test_e2e_sinks.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/ban-core-tests-namespace.yml",
+      "rule_id": "ban-core-tests-namespace-reference",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "eec4471f052bd1c6268d8f878c320427beaf09f043b8d945da3b6d91d7b42c6d",
+      "message": "`c.TargetOracleOic.Tests` is the deprecated nested test namespace: read the flat `c.Tests` member.",
+      "module_absence": false,
+      "file": "tests/unit/test_e2e_sinks.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 1545,
+          "end": 1568
+        },
+        "start": {
+          "line": 41,
+          "column": 32
+        },
+        "end": {
+          "line": 41,
+          "column": 55
+        }
+      },
+      "text": "c.TargetOracleOic.Tests",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 65940,
+        "length": 1038,
+        "sha256": "89d74b0244356d4d51138d8d90a30659f67b7462c0e2a2a45c96ed3c39e0cfdb"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/unit/test_e2e_sinks.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/ban-test-import-outside-test-namespace.yml",
+      "rule_id": "ban-test-import-outside-test-namespace",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "aab48116a624fe982c44bd993a9c8d08a804404fe04a584fbe461750afc11177",
+      "message": "Authored test imports a first-party namespace directly. Import the public name from the generated `tests` namespace instead; `tests/_<base>/*.py` is the only test-only implementation layer allowed to read first-party namespaces.",
+      "module_absence": false,
+      "file": "tests/unit/test_e2e_sinks.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 296,
+          "end": 359
+        },
+        "start": {
+          "line": 12,
+          "column": 0
+        },
+        "end": {
+          "line": 12,
+          "column": 63
+        }
+      },
+      "text": "from flext_target_oracle_oic import FlextTargetOracleOicService",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 66979,
+        "length": 889,
+        "sha256": "c862abaa7b0fe62b9744c2f4621ccddb79d3af3582244b7ac373d8a0e7d6a008"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/unit/test_e2e_sinks.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/ban-test-import-outside-test-namespace.yml",
+      "rule_id": "ban-test-import-outside-test-namespace",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "aab48116a624fe982c44bd993a9c8d08a804404fe04a584fbe461750afc11177",
+      "message": "Authored test imports a first-party namespace directly. Import the public name from the generated `tests` namespace instead; `tests/_<base>/*.py` is the only test-only implementation layer allowed to read first-party namespaces.",
+      "module_absence": false,
+      "file": "tests/unit/test_e2e.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 330,
+          "end": 416
+        },
+        "start": {
+          "line": 12,
+          "column": 0
+        },
+        "end": {
+          "line": 12,
+          "column": 86
+        }
+      },
+      "text": "from flext_target_oracle_oic import FlextTargetOracleOic, FlextTargetOracleOicSettings",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 67869,
+        "length": 929,
+        "sha256": "31ae1573b8288833ce127fb7bb4bad926f2280b9ca72fe9f96cb872e11b3e0a6"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/unit/test_e2e.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/namespace-law.yml",
+      "rule_id": "ban-loose-module-object",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "f509f863eeb65d254429b995d5fdb62459c44e1595b8236b1545266c0fa90de4",
+      "message": "Loose object at module level: nest `target` inside the module's single facade class. Only that class, its canonical published bindings, __all__ and imports live at module level in every Python file of the repository; the sole exceptions are a guarded executable `main()`, generator-emitted dunders and, in conftest.py and tests/fixtures/** only, pytest fixtures and hooks.",
+      "module_absence": false,
+      "file": "tests/unit/test_e2e.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 463,
+          "end": 632
+        },
+        "start": {
+          "line": 17,
+          "column": 0
+        },
+        "end": {
+          "line": 24,
+          "column": 33
+        }
+      },
+      "text": "def target() -> FlextTargetOracleOic:\n    \"\"\"Provide ``target``.\n\n    Returns:\n        The resulting ``FlextTargetOracleOic``.\n\n    \"\"\"\n    return FlextTargetOracleOic()",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 68799,
+        "length": 4237,
+        "sha256": "d62d28ed52ef46af23fc345d75f7b01397b15605b08e7b4e8184d3691d411d84"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/unit/test_e2e.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/ban-core-tests-namespace.yml",
+      "rule_id": "ban-core-tests-namespace-reference",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "eec4471f052bd1c6268d8f878c320427beaf09f043b8d945da3b6d91d7b42c6d",
+      "message": "`c.TargetOracleOic.Tests` is the deprecated nested test namespace: read the flat `c.Tests` member.",
+      "module_absence": false,
+      "file": "tests/unit/test_target.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 1168,
+          "end": 1191
+        },
+        "start": {
+          "line": 36,
+          "column": 27
+        },
+        "end": {
+          "line": 36,
+          "column": 50
+        }
+      },
+      "text": "c.TargetOracleOic.Tests",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 73037,
+        "length": 1022,
+        "sha256": "90520744592e1c2529190a8e87ddeea26f7e95cf93b2cec008f68202d2902972"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/unit/test_target.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/ban-core-tests-namespace.yml",
+      "rule_id": "ban-core-tests-namespace-reference",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "eec4471f052bd1c6268d8f878c320427beaf09f043b8d945da3b6d91d7b42c6d",
+      "message": "`c.TargetOracleOic.Tests` is the deprecated nested test namespace: read the flat `c.Tests` member.",
+      "module_absence": false,
+      "file": "tests/unit/test_target.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 1242,
+          "end": 1265
+        },
+        "start": {
+          "line": 37,
+          "column": 36
+        },
+        "end": {
+          "line": 37,
+          "column": 59
+        }
+      },
+      "text": "c.TargetOracleOic.Tests",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 74060,
+        "length": 1039,
+        "sha256": "d4e9ab92d26a29199146c49b72aff3eed5dbe3a808d18e71b4e0dd7f11b2059a"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/unit/test_target.py",
+      "native_artifact": 0
+    },
+    {
+      "rule_file": "/home/marlonsc/flext/flext-infra/src/flext_infra/config/rules/ast-grep/rules/ban-test-import-outside-test-namespace.yml",
+      "rule_id": "ban-test-import-outside-test-namespace",
+      "repository": "flext-target-oracle-oic",
+      "catalog_digest": "aab48116a624fe982c44bd993a9c8d08a804404fe04a584fbe461750afc11177",
+      "message": "Authored test imports a first-party namespace directly. Import the public name from the generated `tests` namespace instead; `tests/_<base>/*.py` is the only test-only implementation layer allowed to read first-party namespaces.",
+      "module_absence": false,
+      "file": "tests/unit/test_target.py",
+      "source_owner": "authored",
+      "range": {
+        "byteOffset": {
+          "start": 189,
+          "end": 321
+        },
+        "start": {
+          "line": 9,
+          "column": 0
+        },
+        "end": {
+          "line": 13,
+          "column": 1
+        }
+      },
+      "text": "from flext_target_oracle_oic import (\n    FlextTargetOracleOic,\n    FlextTargetOracleOicService,\n    FlextTargetOracleOicSettings,\n)",
+      "replacement": null,
+      "actionable": false,
+      "classification": "detection_only",
+      "replacement_offsets": null,
+      "severity": "error",
+      "origin": "ast-grep",
+      "native_record": {
+        "offset": 75100,
+        "length": 1028,
+        "sha256": "65ff429d8b14c3801b8fc2f091556f5603cccca7b1010a81a97d22b7f7cddea2"
+      },
+      "source_path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/unit/test_target.py",
+      "native_artifact": 0
+    }
+  ],
+  "schema_version": 5,
+  "inputs": {
+    "states": [
+      {
+        "path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/_protocols/__init__.py",
+        "parent_device": 68,
+        "parent_inode": 977229210,
+        "mode": 420,
+        "device": 68,
+        "inode": 977229224,
+        "link_count": 1,
+        "file_attributes": null,
+        "reparse_tag": null,
+        "content": "IyBBVVRPLUdFTkVSQVRFRCBGSUxFIOKAlCBSZWdlbmVyYXRlIHdpdGg6IG1ha2UgZ2VuCiIiIkZsZXh0IFRhcmdldCBPcmFjbGUgT2ljLiBQcm90b2NvbHMgcGFja2FnZS4KCkNvcHlyaWdodCAoYykgMjAyNiBGTEVYVCBUZWFtLiBBbGwgcmlnaHRzIHJlc2VydmVkLgpTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogTUlUCiIiIgoKZnJvbSBfX2Z1dHVyZV9fIGltcG9ydCBhbm5vdGF0aW9ucwoKZnJvbSB0eXBpbmcgaW1wb3J0IFRZUEVfQ0hFQ0tJTkcKCmZyb20gZmxleHRfY29yZS5sYXp5IGltcG9ydCBpbnN0YWxsX2xhenlfZXhwb3J0cwoKaWYgVFlQRV9DSEVDS0lORzoKICAgIGZyb20gZmxleHRfdGFyZ2V0X29yYWNsZV9vaWMuX3Byb3RvY29scy5jb25maWcgaW1wb3J0ICgKICAgICAgICBGbGV4dFRhcmdldE9yYWNsZU9pY1Byb3RvY29sc0NvbmZpZywKICAgICkKCgpfX2FsbF9fOiB0dXBsZVtzdHIsIC4uLl0gPSAoIkZsZXh0VGFyZ2V0T3JhY2xlT2ljUHJvdG9jb2xzQ29uZmlnIiwpCgppbnN0YWxsX2xhenlfZXhwb3J0cygKICAgIF9fbmFtZV9fLAogICAgZ2xvYmFscygpLAogICAgeyJGbGV4dFRhcmdldE9yYWNsZU9pY1Byb3RvY29sc0NvbmZpZyI6ICIuY29uZmlnIn0sCiAgICBwdWJsaWNfZXhwb3J0cz1fX2FsbF9fLAopCg=="
+      },
+      {
+        "path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/_models/base.py",
+        "parent_device": 68,
+        "parent_inode": 845374345,
+        "mode": 420,
+        "device": 68,
+        "inode": 845390004,
+        "link_count": 1,
+        "file_attributes": null,
+        "reparse_tag": null,
+        "content": "IiIiQmFzZSBtb2RlbHMgZm9yIGZsZXh0LXRhcmdldC1vcmFjbGUtb2ljLgoKQ29weXJpZ2h0IChjKSAyMDI2IEZMRVhUIFRlYW0uIEFsbCByaWdodHMgcmVzZXJ2ZWQuClNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBNSVQKIiIiCgpmcm9tIF9fZnV0dXJlX18gaW1wb3J0IGFubm90YXRpb25zCgoKY2xhc3MgRmxleHRUYXJnZXRPcmFjbGVPaWNNb2RlbHNCYXNlOgogICAgIiIiQmFzZSBmYW1pbHkgaG9sZGVyIGZvciBmbGV4dC10YXJnZXQtb3JhY2xlLW9pYyBtb2RlbHMuIiIiCg=="
+      },
+      {
+        "path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/_protocols/config.py",
+        "parent_device": 68,
+        "parent_inode": 977229210,
+        "mode": 420,
+        "device": 68,
+        "inode": 983623852,
+        "link_count": 1,
+        "file_attributes": null,
+        "reparse_tag": null,
+        "content": "IyBBVVRPLUdFTkVSQVRFRCBGSUxFIOKAlCBSZWdlbmVyYXRlIHdpdGg6IG1ha2UgZ2VuCiIiIlNvdXJjZS1kZXJpdmVkIHN0cnVjdHVyYWwgbW9kZWwgY29udHJhY3RzLgoKQ29weXJpZ2h0IChjKSAyMDI2IEZMRVhUIFRlYW0uIEFsbCByaWdodHMgcmVzZXJ2ZWQuCnNyYy9mbGV4dF90YXJnZXRfb3JhY2xlX29pYy9fcHJvdG9jb2xzL2NvbmZpZwpTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogTUlUCiIiIgoKZnJvbSBfX2Z1dHVyZV9fIGltcG9ydCBhbm5vdGF0aW9ucwoKZnJvbSB0eXBpbmcgaW1wb3J0IFByb3RvY29sLCBydW50aW1lX2NoZWNrYWJsZQoKZnJvbSBmbGV4dF9tZWx0YW5vIGltcG9ydCBGbGV4dE1lbHRhbm9Qcm90b2NvbHMKCgpjbGFzcyBGbGV4dFRhcmdldE9yYWNsZU9pY1Byb3RvY29sc0NvbmZpZzoKICAgICIiIk93biB0aGUgc3RydWN0dXJhbCBjb250cmFjdHMgZGVjbGFyZWQgYnkgaXRzIG1vZGVsIHNvdXJjZS4iIiIKCiAgICBAcnVudGltZV9jaGVja2FibGUKICAgIGNsYXNzIFRhcmdldE9yYWNsZU9pY05hbWVzcGFjZShGbGV4dE1lbHRhbm9Qcm90b2NvbHMuQmFzZU1vZGVsLCBQcm90b2NvbCk6CiAgICAgICAgIiIiU3RydWN0dXJhbCBkYXRhIGNvbnRyYWN0IHByb2plY3RlZCBmcm9tIHRoZSBvd25pbmcgbW9kZWwuIiIiCgoKX19hbGxfXzogbGlzdFtzdHJdID0gWwogICAgIkZsZXh0VGFyZ2V0T3JhY2xlT2ljUHJvdG9jb2xzQ29uZmlnIiwKXQo="
+      },
+      {
+        "path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/_models/config.py",
+        "parent_device": 68,
+        "parent_inode": 845374345,
+        "mode": 420,
+        "device": 68,
+        "inode": 845374347,
+        "link_count": 1,
+        "file_attributes": null,
+        "reparse_tag": null,
+        "content": "IiIiUHVyZSBjb25maWcgbmFtZXNwYWNlIGRlY2xhcmF0aW9ucyBmb3IgZmxleHQtdGFyZ2V0LW9yYWNsZS1vaWMuCgpDb3B5cmlnaHQgKGMpIDIwMjYgRkxFWFQgVGVhbS4gQWxsIHJpZ2h0cyByZXNlcnZlZC4KU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IE1JVAoiIiIKCmZyb20gX19mdXR1cmVfXyBpbXBvcnQgYW5ub3RhdGlvbnMKCmZyb20gZmxleHRfbWVsdGFubyBpbXBvcnQgbQoKCmNsYXNzIEZsZXh0VGFyZ2V0T3JhY2xlT2ljTW9kZWxzQ29uZmlnOgogICAgIiIiRmllbGQtb25seSBQeWRhbnRpYyBkZWNsYXJhdGlvbnMgZm9yIHRoZSBUYXJnZXRPcmFjbGVPaWMgY29uZmlnIHNpbmdsZXRvbi4iIiIKCiAgICBjbGFzcyBUYXJnZXRPcmFjbGVPaWNOYW1lc3BhY2UobS5CYXNlTW9kZWwpOgogICAgICAgICIiIk9wZW4sIGZyb3plbiBuYW1lc3BhY2UgZXhwb3NpbmcgZXZlcnkgYGBjb25maWcvKi55YW1sYGAgZG9tYWluIG1vZGVsLWxlc3MuIiIiCgogICAgICAgIG1vZGVsX2NvbmZpZyA9IG0uQ29uZmlnRGljdChleHRyYT0iYWxsb3ciLCBmcm96ZW49VHJ1ZSkKCgpfX2FsbF9fOiB0dXBsZVtzdHIsIC4uLl0gPSAoIkZsZXh0VGFyZ2V0T3JhY2xlT2ljTW9kZWxzQ29uZmlnIiwpCg=="
+      },
+      {
+        "path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/cli.py",
+        "parent_device": 68,
+        "parent_inode": 654342148,
+        "mode": 420,
+        "device": 68,
+        "inode": 940184112,
+        "link_count": 1,
+        "file_attributes": null,
+        "reparse_tag": null,
+        "content": "IiIiQ0xJIGZhY2FkZSBmb3IgdGFyZ2V0IE9yYWNsZSBPSUMgcGFja2FnZS4KCkNvcHlyaWdodCAoYykgMjAyNiBGTEVYVCBUZWFtLiBBbGwgcmlnaHRzIHJlc2VydmVkLgpTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogTUlUCiIiIgoKZnJvbSBfX2Z1dHVyZV9fIGltcG9ydCBhbm5vdGF0aW9ucwoKZnJvbSBjb2xsZWN0aW9ucy5hYmMgaW1wb3J0IFNlcXVlbmNlCgpmcm9tIGZsZXh0X3RhcmdldF9vcmFjbGVfb2ljIGltcG9ydCBGbGV4dFRhcmdldE9yYWNsZU9pY1NlcnZpY2UKCgpjbGFzcyBGbGV4dFRhcmdldE9yYWNsZU9pY0NsaToKICAgICIiIk1pbmltYWwgQ0xJIHdyYXBwZXIgYm91bmQgdG8gdGhlIHRhcmdldCBzZXJ2aWNlIGZhY2FkZS4iIiIKCiAgICBAY2xhc3NtZXRob2QKICAgIGRlZiBydW4oY2xzLCBhcmdzOiBTZXF1ZW5jZVtzdHJdIHwgTm9uZSA9IE5vbmUpIC0-IGludDoKICAgICAgICAiIiJFeGVjdXRlIHRoZSBjYW5vbmljYWwgdGFyZ2V0IENMSSBlbnRyeSBwb2ludC4KCiAgICAgICAgQXJnczoKICAgICAgICAgICAgYXJnczogT3B0aW9uYWwgY29tbWFuZC1saW5lIGFyZ3VtZW50czsgZGVmYXVsdHMgdG8gYGBzeXMuYXJndlsxOl1gYAogICAgICAgICAgICAgICAgd2hlbiBvbWl0dGVkLgoKICAgICAgICBSZXR1cm5zOgogICAgICAgICAgICBUaGUgcHJvY2VzcyBleGl0IGNvZGUuCgogICAgICAgICIiIgogICAgICAgIF8gPSBjbHMKICAgICAgICBleGl0X2NvZGU6IGludCA9IEZsZXh0VGFyZ2V0T3JhY2xlT2ljU2VydmljZSgpLmNsaV9tYWluKGFyZ3MpCiAgICAgICAgcmV0dXJuIGV4aXRfY29kZQoKCmRlZiBtYWluKCkgLT4gaW50OgogICAgIiIiUnVuIHRoZSB0YXJnZXQgT3JhY2xlIE9JQyBDTEkgZW50cnkgcG9pbnQuCgogICAgUmV0dXJuczoKICAgICAgICBUaGUgcHJvY2VzcyBleGl0IGNvZGUuCgogICAgIiIiCiAgICByZXR1cm4gRmxleHRUYXJnZXRPcmFjbGVPaWNDbGkucnVuKCkKCgpfX2FsbF9fOiBsaXN0W3N0cl0gPSBbIkZsZXh0VGFyZ2V0T3JhY2xlT2ljQ2xpIiwgIm1haW4iXQo="
+      },
+      {
+        "path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/models.py",
+        "parent_device": 68,
+        "parent_inode": 654342148,
+        "mode": 420,
+        "device": 68,
+        "inode": 980199553,
+        "link_count": 1,
+        "file_attributes": null,
+        "reparse_tag": null,
+        "content": "IyBBVVRPLUdFTkVSQVRFRCBGSUxFIOKAlCBSZWdlbmVyYXRlIHdpdGg6IG1ha2UgZ2VuCiIiIkRvbWFpbiBtb2RlbHMgZm9yIHRhcmdldCBPcmFjbGUgT0lDLgoKQ29weXJpZ2h0IChjKSAyMDI2IEZMRVhUIFRlYW0uIEFsbCByaWdodHMgcmVzZXJ2ZWQuClNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBNSVQKIiIiCgpmcm9tIF9fZnV0dXJlX18gaW1wb3J0IGFubm90YXRpb25zCgpmcm9tIGZsZXh0X21lbHRhbm8gaW1wb3J0IG0gYXMgZmxleHRfbWVsdGFub19tCmZyb20gZmxleHRfb3JhY2xlX29pYyBpbXBvcnQgbSBhcyBmbGV4dF9vcmFjbGVfb2ljX20KCmZyb20gZmxleHRfdGFyZ2V0X29yYWNsZV9vaWMuX21vZGVscyBpbXBvcnQgRmxleHRUYXJnZXRPcmFjbGVPaWNNb2RlbHNDb25maWcKCgpjbGFzcyBGbGV4dFRhcmdldE9yYWNsZU9pY01vZGVscygKICAgIGZsZXh0X21lbHRhbm9fbSwKICAgIGZsZXh0X29yYWNsZV9vaWNfbSwKICAgIEZsZXh0VGFyZ2V0T3JhY2xlT2ljTW9kZWxzQ29uZmlnLAopOgogICAgIiIiTW9kZWxzIGNvbXBvc2VkIGZyb20gTWVsdGFubyBhbmQgT3JhY2xlIE9JQyB2aWEgTVJPLiIiIgoKCm0gPSBGbGV4dFRhcmdldE9yYWNsZU9pY01vZGVscwpfX2FsbF9fOiBsaXN0W3N0cl0gPSBbIkZsZXh0VGFyZ2V0T3JhY2xlT2ljTW9kZWxzIiwgIm0iXQo="
+      },
+      {
+        "path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/_utilities/base.py",
+        "parent_device": 68,
+        "parent_inode": 654342156,
+        "mode": 420,
+        "device": 68,
+        "inode": 844576825,
+        "link_count": 1,
+        "file_attributes": null,
+        "reparse_tag": null,
+        "content": "IiIiQmFzZSB1dGlsaXRpZXMgZm9yIGZsZXh0LXRhcmdldC1vcmFjbGUtb2ljLgoKQ29weXJpZ2h0IChjKSAyMDI2IEZMRVhUIFRlYW0uIEFsbCByaWdodHMgcmVzZXJ2ZWQuClNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBNSVQKIiIiCgpmcm9tIF9fZnV0dXJlX18gaW1wb3J0IGFubm90YXRpb25zCgoKY2xhc3MgRmxleHRUYXJnZXRPcmFjbGVPaWNVdGlsaXRpZXNCYXNlOgogICAgIiIiQmFzZSB1dGlsaXRpZXMgZm9yIGZsZXh0LXRhcmdldC1vcmFjbGUtb2ljLiIiIgo="
+      },
+      {
+        "path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/constants.py",
+        "parent_device": 68,
+        "parent_inode": 654342148,
+        "mode": 420,
+        "device": 68,
+        "inode": 980199552,
+        "link_count": 1,
+        "file_attributes": null,
+        "reparse_tag": null,
+        "content": "IyBBVVRPLUdFTkVSQVRFRCBGSUxFIOKAlCBSZWdlbmVyYXRlIHdpdGg6IG1ha2UgZ2VuCiIiIkNvbnN0YW50cyBmb3IgdGFyZ2V0IE9yYWNsZSBPSUMuCgpDb3B5cmlnaHQgKGMpIDIwMjYgRkxFWFQgVGVhbS4gQWxsIHJpZ2h0cyByZXNlcnZlZC4KU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IE1JVAoiIiIKCmZyb20gX19mdXR1cmVfXyBpbXBvcnQgYW5ub3RhdGlvbnMKCmZyb20gZmxleHRfbWVsdGFubyBpbXBvcnQgYyBhcyBmbGV4dF9tZWx0YW5vX2MKZnJvbSBmbGV4dF9vcmFjbGVfb2ljIGltcG9ydCBjIGFzIGZsZXh0X29yYWNsZV9vaWNfYwoKZnJvbSBmbGV4dF90YXJnZXRfb3JhY2xlX29pYy5fY29uc3RhbnRzIGltcG9ydCBGbGV4dFRhcmdldE9yYWNsZU9pY0NvbnN0YW50c0Jhc2UKCgpjbGFzcyBGbGV4dFRhcmdldE9yYWNsZU9pY0NvbnN0YW50cyhmbGV4dF9tZWx0YW5vX2MsIGZsZXh0X29yYWNsZV9vaWNfYyk6CiAgICAiIiJOYW1lc3BhY2UgY2xhc3MgZm9yIE9JQyB0YXJnZXQgY29uc3RhbnRzLiIiIgoKICAgIGNsYXNzIFRhcmdldE9yYWNsZU9pYyhGbGV4dFRhcmdldE9yYWNsZU9pY0NvbnN0YW50c0Jhc2UpOgogICAgICAgICIiIlRhcmdldCBPcmFjbGUgT0lDIGRvbWFpbiBjb25zdGFudHMuIiIiCgoKYyA9IEZsZXh0VGFyZ2V0T3JhY2xlT2ljQ29uc3RhbnRzCl9fYWxsX186IGxpc3Rbc3RyXSA9IFsiRmxleHRUYXJnZXRPcmFjbGVPaWNDb25zdGFudHMiLCAiYyJdCg=="
+      },
+      {
+        "path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/_settings.py",
+        "parent_device": 68,
+        "parent_inode": 654342148,
+        "mode": 420,
+        "device": 68,
+        "inode": 835195095,
+        "link_count": 1,
+        "file_attributes": null,
+        "reparse_tag": null,
+        "content": "IiIiU2V0dGluZ3MgZm9yIGZsZXh0LXRhcmdldC1vcmFjbGUtb2ljIOKAlCBuYW1lc3BhY2VkIHVuZGVyIGBgc2V0dGluZ3MuVGFyZ2V0T3JhY2xlT2ljYGAuCgpVbml2ZXJzYWwgZmllbGRzIHZpYSBNUk87IHByb2plY3QgZmllbGRzIGluIHRoZSBgYFRhcmdldE9yYWNsZU9pY2BgIGdyb3VwIHdpdGgKc2ltcGxlIHNjYWxhciB0eXBlcyAoZW52LXNldHRhYmxlKS4gT0lDIGNvbm5lY3Rpb24gYW5kIE9BdXRoIGNyZWRlbnRpYWxzIGFyZQpvd25lZCBieSBgYHNldHRpbmdzLk9yYWNsZU9pY2BgIChmbGV4dC1vcmFjbGUtb2ljKSBhbmQgbmV2ZXIgcmUtZGVjbGFyZWQgaGVyZS4KCkNvcHlyaWdodCAoYykgMjAyNSBGTEVYVCBUZWFtLiBBbGwgcmlnaHRzIHJlc2VydmVkLgpTUERYLUxpY2Vuc2UtSWRlbnRpZmllcjogTUlUCiIiIgoKZnJvbSBfX2Z1dHVyZV9fIGltcG9ydCBhbm5vdGF0aW9ucwoKZnJvbSB0eXBpbmcgaW1wb3J0IFRZUEVfQ0hFQ0tJTkcsIEFubm90YXRlZAoKZnJvbSBmbGV4dF9tZWx0YW5vIGltcG9ydCBGbGV4dE1lbHRhbm9TZXR0aW5ncywgbQoKCmNsYXNzIEZsZXh0VGFyZ2V0T3JhY2xlT2ljU2V0dGluZ3MoRmxleHRNZWx0YW5vU2V0dGluZ3MpOgogICAgIiIiT3JhY2xlIE9JQyB0YXJnZXQgc2V0dGluZ3M7IGZpZWxkcyB1bmRlciBgYHNldHRpbmdzLlRhcmdldE9yYWNsZU9pYy4qYGAuIiIiCgogICAgbW9kZWxfY29uZmlnID0gbS5TZXR0aW5nc0NvbmZpZ0RpY3QoCiAgICAgICAgZW52X3ByZWZpeD0iRkxFWFRfVEFSR0VUX09SQUNMRV9PSUNfIiwKICAgICAgICBlbnZfbmVzdGVkX2RlbGltaXRlcj0iX18iLAogICAgICAgIGV4dHJhPSJpZ25vcmUiLAogICAgKQoKICAgIGNsYXNzIF9UYXJnZXRPcmFjbGVPaWMobS5TdHJpY3RNb2RlbCk6CiAgICAgICAgIiIiTmFtZXNwYWNlZCBPcmFjbGUgT0lDIHRhcmdldCBzZXR0aW5ncy4iIiIKCiAgICAgICAgdGltZW91dDogQW5ub3RhdGVkWwogICAgICAgICAgICBpbnQsIG0uRmllbGQoZ2U9MSwgZGVzY3JpcHRpb249IkhUVFAgdGltZW91dCBpbiBzZWNvbmRzIikKICAgICAgICBdID0gMzAKCiAgICAjIFdoeTogbXJvLTRwMHQg4oCUIG5lc3RlZCBuYW1lc3BhY2UgdXNlcyBkZWZhdWx0X2ZhY3Rvcnkgb25seTsgbm8gYnVpbGRfKiB3cmFwcGVyLgoKICAgIGlmIFRZUEVfQ0hFQ0tJTkc6CiAgICAgICAgVGFyZ2V0T3JhY2xlT2ljOiBfVGFyZ2V0T3JhY2xlT2ljCiAgICBlbHNlOgogICAgICAgIFRhcmdldE9yYWNsZU9pYzogX1RhcmdldE9yYWNsZU9pYyA9IG0uRmllbGQoCiAgICAgICAgICAgIGRlZmF1bHRfZmFjdG9yeT1fVGFyZ2V0T3JhY2xlT2ljLAogICAgICAgICAgICBkZXNjcmlwdGlvbj0iTmFtZXNwYWNlZCBPcmFjbGUgT0lDIHRhcmdldCBzZXR0aW5ncy4iLAogICAgICAgICkKCgpzZXR0aW5nczogRmxleHRUYXJnZXRPcmFjbGVPaWNTZXR0aW5ncyA9IEZsZXh0VGFyZ2V0T3JhY2xlT2ljU2V0dGluZ3MuZmV0Y2hfZ2xvYmFsKCkKIiIiUHJlLWluc3RhbnRpYXRlZCBwcm9qZWN0IHNldHRpbmdzIHNpbmdsZXRvbi4KCkV4cG9zZWQgYXMgYGBmcm9tIGZsZXh0X3RhcmdldF9vcmFjbGVfb2ljIGltcG9ydCBzZXR0aW5nc2BgLgoiIiIKCl9fYWxsX186IGxpc3Rbc3RyXSA9IFsiRmxleHRUYXJnZXRPcmFjbGVPaWNTZXR0aW5ncyIsICJzZXR0aW5ncyJdCg=="
+      },
+      {
+        "path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/target.py",
+        "parent_device": 68,
+        "parent_inode": 654342148,
+        "mode": 420,
+        "device": 68,
+        "inode": 1005890386,
+        "link_count": 1,
+        "file_attributes": null,
+        "reparse_tag": null,
+        "content": "IiIiU2luZ2VyIHRhcmdldCBkZWZpbml0aW9uIGZvciBPcmFjbGUgT0lDLgoKQ29weXJpZ2h0IChjKSAyMDI2IEZMRVhUIFRlYW0uIEFsbCByaWdodHMgcmVzZXJ2ZWQuClNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBNSVQKIiIiCgpmcm9tIF9fZnV0dXJlX18gaW1wb3J0IGFubm90YXRpb25zCgpmcm9tIHR5cGluZyBpbXBvcnQgQ2xhc3NWYXIKCmZyb20gZmxleHRfbWVsdGFubyBpbXBvcnQgRmxleHRNZWx0YW5vVGFyZ2V0QWJzdHJhY3Rpb25zCgpmcm9tIGZsZXh0X3RhcmdldF9vcmFjbGVfb2ljIGltcG9ydCBjLCBwLCByCmZyb20gZmxleHRfdGFyZ2V0X29yYWNsZV9vaWMuX3V0aWxpdGllcyBpbXBvcnQgRmxleHRUYXJnZXRPcmFjbGVPaWNTaW5rCgoKY2xhc3MgRmxleHRUYXJnZXRPcmFjbGVPaWMoRmxleHRNZWx0YW5vVGFyZ2V0QWJzdHJhY3Rpb25zKToKICAgICIiIlNpbmdlciB0YXJnZXQgZW50cnkgcG9pbnQgZm9yIE9yYWNsZSBPSUMuIiIiCgogICAgbmFtZTogQ2xhc3NWYXJbc3RyXSA9IGMuVGFyZ2V0T3JhY2xlT2ljLlRBUkdFVF9OQU1FCiAgICBkZWZhdWx0X3NpbmtfY2xhc3M6IENsYXNzVmFyW3R5cGVbRmxleHRUYXJnZXRPcmFjbGVPaWNTaW5rXV0gPSAoCiAgICAgICAgRmxleHRUYXJnZXRPcmFjbGVPaWNTaW5rCiAgICApCgogICAgQHN0YXRpY21ldGhvZAogICAgZGVmIHNldHVwKCkgLT4gcC5SZXN1bHRbYm9vbF06CiAgICAgICAgIiIiU2V0IHVwIHRhcmdldCByZXNvdXJjZXMuCgogICAgICAgIFJldHVybnM6CiAgICAgICAgICAgIFN1Y2Nlc3NmdWwgcmVzdWx0IGNvbmZpcm1pbmcgdGhlIHRhcmdldCBpcyByZWFkeS4KCiAgICAgICAgIiIiCiAgICAgICAgcmV0dXJuIHJbYm9vbF0ub2sodmFsdWU9VHJ1ZSkKCiAgICBAc3RhdGljbWV0aG9kCiAgICBkZWYgdGVhcmRvd24oKSAtPiBwLlJlc3VsdFtib29sXToKICAgICAgICAiIiJUZWFyZG93biB0YXJnZXQgcmVzb3VyY2VzLgoKICAgICAgICBSZXR1cm5zOgogICAgICAgICAgICBTdWNjZXNzZnVsIHJlc3VsdCBjb25maXJtaW5nIHRoZSB0YXJnZXQgaXMgcmVsZWFzZWQuCgogICAgICAgICIiIgogICAgICAgIHJldHVybiByW2Jvb2xdLm9rKHZhbHVlPVRydWUpCgoKX19hbGxfXzogbGlzdFtzdHJdID0gWyJGbGV4dFRhcmdldE9yYWNsZU9pYyJdCg=="
+      },
+      {
+        "path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/settings.py",
+        "parent_device": 68,
+        "parent_inode": 654342171,
+        "mode": 420,
+        "device": 68,
+        "inode": 792250955,
+        "link_count": 1,
+        "file_attributes": null,
+        "reparse_tag": null,
+        "content": "IiIiUnVudGltZSBzZXR0aW5ncyBmb3IgZmxleHQtdGFyZ2V0LW9yYWNsZS1vaWMgdGVzdHMuCgpDb3B5cmlnaHQgKGMpIDIwMjYgRkxFWFQgVGVhbS4gQWxsIHJpZ2h0cyByZXNlcnZlZC4KdGVzdHMvc2V0dGluZ3MKU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IE1JVAoiIiIKCmZyb20gX19mdXR1cmVfXyBpbXBvcnQgYW5ub3RhdGlvbnMKCmZyb20gZmxleHRfdGVzdHMgaW1wb3J0IEZsZXh0VGVzdHNTZXR0aW5ncwoKZnJvbSBmbGV4dF90YXJnZXRfb3JhY2xlX29pYyBpbXBvcnQgRmxleHRUYXJnZXRPcmFjbGVPaWNTZXR0aW5ncwoKCmNsYXNzIFRlc3RzRmxleHRUYXJnZXRPcmFjbGVPaWNTZXR0aW5ncygKICAgIEZsZXh0VGFyZ2V0T3JhY2xlT2ljU2V0dGluZ3MsCiAgICBGbGV4dFRlc3RzU2V0dGluZ3MsCik6CiAgICAiIiJUYXJnZXQgT3JhY2xlIE9JQyBzZXR0aW5ncyBleHRlbmRlZCB3aXRoIHRoZSBzaGFyZWQgdGVzdCBuYW1lc3BhY2UuCgogICAgU3VwcGxpZXMgdGVzdCBkZWZhdWx0cyBmb3IgdGhlIHByb2R1Y3Rpb24gT0F1dGggY3JlZGVudGlhbCBmaWVsZHMgc28gdGhlCiAgICBzdWl0ZSdzIGFyZ2xlc3MgYGBmZXRjaF9nbG9iYWwoKWBgIGNvbnN0cnVjdGlvbiBzdWNjZWVkcyB3aXRob3V0IHJlYWwgY3JlZHMuCiAgICAiIiIKCgpfX2FsbF9fOiBsaXN0W3N0cl0gPSBbIlRlc3RzRmxleHRUYXJnZXRPcmFjbGVPaWNTZXR0aW5ncyJdCg=="
+      },
+      {
+        "path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/base.py",
+        "parent_device": 68,
+        "parent_inode": 654342171,
+        "mode": 420,
+        "device": 68,
+        "inode": 973780712,
+        "link_count": 1,
+        "file_attributes": null,
+        "reparse_tag": null,
+        "content": "IiIiU2VydmljZSBiYXNlIGZvciBmbGV4dC10YXJnZXQtb3JhY2xlLW9pYyB0ZXN0cy4KCkNvcHlyaWdodCAoYykgMjAyNiBGTEVYVCBUZWFtLiBBbGwgcmlnaHRzIHJlc2VydmVkLgp0ZXN0cy9iYXNlClNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBNSVQKIiIiCgpmcm9tIF9fZnV0dXJlX18gaW1wb3J0IGFubm90YXRpb25zCgpmcm9tIHR5cGluZyBpbXBvcnQgb3ZlcnJpZGUKCmZyb20gZmxleHRfdGVzdHMgaW1wb3J0IEZsZXh0VGVzdHNTZXJ2aWNlQmFzZQoKZnJvbSB0ZXN0cyBpbXBvcnQgVGVzdHNGbGV4dFRhcmdldE9yYWNsZU9pY1NldHRpbmdzLCBtLCBwCgoKY2xhc3MgVGVzdHNGbGV4dFRhcmdldE9yYWNsZU9pY1NlcnZpY2VCYXNlKEZsZXh0VGVzdHNTZXJ2aWNlQmFzZSk6CiAgICAiIiJUYXJnZXQgT3JhY2xlIE9JQyB0ZXN0IHNlcnZpY2UgYmFzZSB3aXRoIHNvdXJjZSBhbmQgdGVzdCBzZXR0aW5ncyBuYW1lc3BhY2VzLiIiIgoKICAgICMgTk9URSAobXVsdGktYWdlbnQpOiBmbGV4dC10ZXN0cyBvd25zIGZldGNoX3NldHRpbmdzOyB0aGlzIHByb2plY3QKICAgICMgZGVjbGFyZXMgb25seSBpdHMgbW9yZS1zcGVjaWZpYyBib290c3RyYXAgc2V0dGluZ3MgdHlwZS4KICAgIEBjbGFzc21ldGhvZAogICAgQG92ZXJyaWRlCiAgICBkZWYgcnVudGltZV9ib290c3RyYXBfb3B0aW9ucyhjbHMpIC0-IHAuUnVudGltZUJvb3RzdHJhcE9wdGlvbnM6CiAgICAgICAgcmV0dXJuIG0uUnVudGltZUJvb3RzdHJhcE9wdGlvbnMoCiAgICAgICAgICAgIHNldHRpbmdzX3R5cGU9VGVzdHNGbGV4dFRhcmdldE9yYWNsZU9pY1NldHRpbmdzLAogICAgICAgICkKCgpzID0gVGVzdHNGbGV4dFRhcmdldE9yYWNsZU9pY1NlcnZpY2VCYXNlCgpfX2FsbF9fOiBsaXN0W3N0cl0gPSBbIlRlc3RzRmxleHRUYXJnZXRPcmFjbGVPaWNTZXJ2aWNlQmFzZSIsICJzIl0K"
+      },
+      {
+        "path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/utilities.py",
+        "parent_device": 68,
+        "parent_inode": 654342148,
+        "mode": 420,
+        "device": 68,
+        "inode": 980199554,
+        "link_count": 1,
+        "file_attributes": null,
+        "reparse_tag": null,
+        "content": "IyBBVVRPLUdFTkVSQVRFRCBGSUxFIOKAlCBSZWdlbmVyYXRlIHdpdGg6IG1ha2UgZ2VuCiIiIlV0aWxpdGllcyBmYWNhZGUgZm9yIHRhcmdldCBPcmFjbGUgT0lDLgoKQ29weXJpZ2h0IChjKSAyMDI2IEZMRVhUIFRlYW0uIEFsbCByaWdodHMgcmVzZXJ2ZWQuClNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBNSVQKIiIiCgpmcm9tIF9fZnV0dXJlX18gaW1wb3J0IGFubm90YXRpb25zCgpmcm9tIGZsZXh0X21lbHRhbm8gaW1wb3J0IHUgYXMgZmxleHRfbWVsdGFub191CmZyb20gZmxleHRfb3JhY2xlX29pYyBpbXBvcnQgdSBhcyBmbGV4dF9vcmFjbGVfb2ljX3UKCmZyb20gZmxleHRfdGFyZ2V0X29yYWNsZV9vaWMuX3V0aWxpdGllcyBpbXBvcnQgRmxleHRUYXJnZXRPcmFjbGVPaWNTZXJ2aWNlUnVudGltZQoKCmNsYXNzIEZsZXh0VGFyZ2V0T3JhY2xlT2ljVXRpbGl0aWVzKGZsZXh0X21lbHRhbm9fdSwgZmxleHRfb3JhY2xlX29pY191KToKICAgICIiIlV0aWxpdGllcyBjb21wb3NlZCBmcm9tIE1lbHRhbm8gYW5kIE9yYWNsZSBPSUMgdmlhIE1STy4iIiIKCiAgICBjbGFzcyBGbGV4dFRhcmdldE9yYWNsZU9pYygKICAgICAgICBGbGV4dFRhcmdldE9yYWNsZU9pY1NlcnZpY2VSdW50aW1lLAogICAgKToKICAgICAgICAiIiJVdGlsaXRpZXMgZnJvbSBUYXJnZXQgT3JhY2xlIE9JQyB2aWEgTVJPLiIiIgoKCnUgPSBGbGV4dFRhcmdldE9yYWNsZU9pY1V0aWxpdGllcwpfX2FsbF9fOiBsaXN0W3N0cl0gPSBbIkZsZXh0VGFyZ2V0T3JhY2xlT2ljVXRpbGl0aWVzIiwgInUiXQo="
+      },
+      {
+        "path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/unit/test_module_governance.py",
+        "parent_device": 68,
+        "parent_inode": 654342188,
+        "mode": 420,
+        "device": 68,
+        "inode": 940184117,
+        "link_count": 1,
+        "file_attributes": null,
+        "reparse_tag": null,
+        "content": "IiIiR292ZXJuYW5jZSBjaGVja3MgZm9yIE9yYWNsZSBPSUMgbW9kdWxlIHN0cnVjdHVyZS4KCkNvcHlyaWdodCAoYykgMjAyNiBGTEVYVCBUZWFtLiBBbGwgcmlnaHRzIHJlc2VydmVkLgp0ZXN0cy91bml0L3Rlc3RfbW9kdWxlX2dvdmVybmFuY2UKU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IE1JVAoiIiIKCmZyb20gX19mdXR1cmVfXyBpbXBvcnQgYW5ub3RhdGlvbnMKCmZyb20gdGVzdHMgaW1wb3J0IHUKCgpjbGFzcyBUZXN0c0ZsZXh0VGFyZ2V0T3JhY2xlT2ljTW9kdWxlR292ZXJuYW5jZSh1LkZsZXh0VGVzdHNNb2R1bGVHb3Zlcm5hbmNlKToKICAgICIiIkJlaGF2aW9yIGNvbnRyYWN0IGZvciB0ZXN0X21vZHVsZV9nb3Zlcm5hbmNlLiIiIgoKICAgIF90ZXN0X2ZpbGUgPSBfX2ZpbGVfXwo="
+      },
+      {
+        "path": "/home/marlonsc/flext/flext-target-oracle-oic/src/flext_target_oracle_oic/_utilities/service_runtime.py",
+        "parent_device": 68,
+        "parent_inode": 654342156,
+        "mode": 420,
+        "device": 68,
+        "inode": 940184111,
+        "link_count": 1,
+        "file_attributes": null,
+        "reparse_tag": null,
+        "content": "IiIiSW50ZXJuYWwgcnVudGltZSBhZGFwdGVycyBmb3IgdGhlIHRhcmdldC1vcmFjbGUtb2ljIHNlcnZpY2UgZmFjYWRlLgoKQ29weXJpZ2h0IChjKSAyMDI2IEZMRVhUIFRlYW0uIEFsbCByaWdodHMgcmVzZXJ2ZWQuClNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBNSVQKIiIiCgpmcm9tIF9fZnV0dXJlX18gaW1wb3J0IGFubm90YXRpb25zCgpmcm9tIGZsZXh0X3RhcmdldF9vcmFjbGVfb2ljIGltcG9ydCBGbGV4dFRhcmdldE9yYWNsZU9pYywgYywgbSwgdCwgdQpmcm9tIGZsZXh0X3RhcmdldF9vcmFjbGVfb2ljLl91dGlsaXRpZXMgaW1wb3J0IEZsZXh0VGFyZ2V0T3JhY2xlT2ljU2luawoKCmNsYXNzIEZsZXh0VGFyZ2V0T3JhY2xlT2ljU2VydmljZVJ1bnRpbWU6CiAgICAiIiJTZXJ2aWNlLXJ1bnRpbWUgYWRhcHRlcnMgdXNlZCBieSB0aGUgdGFyZ2V0LW9yYWNsZS1vaWMgZmFjYWRlLiIiIgoKICAgIGNsYXNzIFRhcmdldChtLk1lbHRhbm8uU2luZ2VyVGFyZ2V0QmFzZSk6CiAgICAgICAgIiIiTWluaW1hbCBTaW5nZXIgdGFyZ2V0IHVzZWQgYnkgdGhlIHNlcnZpY2UgZmFjYWRlLiIiIgoKICAgICAgICBuYW1lID0gYy5UYXJnZXRPcmFjbGVPaWMuVEFSR0VUX05BTUUKCiAgICBAY2xhc3NtZXRob2QKICAgIGRlZiBjcmVhdGVfc2luaygKICAgICAgICBjbHMsCiAgICAgICAgKiwKICAgICAgICBzdHJlYW1fbmFtZTogc3RyLAogICAgICAgIHNjaGVtYTogdC5Kc29uTWFwcGluZywKICAgICAgICB0YXJnZXRfY29uZmlnOiB0Lkpzb25NYXBwaW5nLAogICAgKSAtPiBGbGV4dFRhcmdldE9yYWNsZU9pY1Npbms6CiAgICAgICAgIiIiQ3JlYXRlIHRoZSBzZXJ2aWNlLWxldmVsIFNpbmdlciBzaW5rIGFkYXB0ZXIuCgogICAgICAgIEFyZ3M6CiAgICAgICAgICAgIHN0cmVhbV9uYW1lOiBOYW1lIG9mIHRoZSBTaW5nZXIgc3RyZWFtIHRoZSBzaW5rIHJlY2VpdmVzLgogICAgICAgICAgICBzY2hlbWE6IFNpbmdlciBzY2hlbWEgZGVzY3JpYmluZyB0aGUgc3RyZWFtJ3MgcmVjb3JkIHN0cnVjdHVyZS4KICAgICAgICAgICAgdGFyZ2V0X2NvbmZpZzogU2NhbGFyIHRhcmdldCBjb25maWd1cmF0aW9uIGFwcGxpZWQgdG8gdGhlIHNpbmsncwogICAgICAgICAgICAgICAgdGFyZ2V0IGluc3RhbmNlLgoKICAgICAgICBSZXR1cm5zOgogICAgICAgICAgICBUaGUgY3JlYXRlZCBPcmFjbGUgT0lDIHNpbmsgYWRhcHRlci4KCiAgICAgICAgIiIiCiAgICAgICAgbm9ybWFsaXplZF90YXJnZXRfY29uZmlnID0gdS5ub3JtYWxpemVfdG9fanNvbl9tYXBwaW5nKHRhcmdldF9jb25maWcpCiAgICAgICAgcmV0dXJuIEZsZXh0VGFyZ2V0T3JhY2xlT2ljLmRlZmF1bHRfc2lua19jbGFzcygKICAgICAgICAgICAgdGFyZ2V0PWNscy5UYXJnZXQoCiAgICAgICAgICAgICAgICBjb25maWc9dS5qc29uX2RpY3RfYWRhcHRlcigpLnZhbGlkYXRlX3B5dGhvbihub3JtYWxpemVkX3RhcmdldF9jb25maWcpLAogICAgICAgICAgICAgICAgdmFsaWRhdGVfY29uZmlnPUZhbHNlLAogICAgICAgICAgICApLAogICAgICAgICAgICBzdHJlYW1fbmFtZT1zdHJlYW1fbmFtZSwKICAgICAgICAgICAgc2NoZW1hPXUuanNvbl9kaWN0X2FkYXB0ZXIoKS52YWxpZGF0ZV9weXRob24oc2NoZW1hKSwKICAgICAgICAgICAga2V5X3Byb3BlcnRpZXM9W10sCiAgICAgICAgKQoKCl9fYWxsX186IGxpc3Rbc3RyXSA9IFsiRmxleHRUYXJnZXRPcmFjbGVPaWNTZXJ2aWNlUnVudGltZSJdCg=="
+      },
+      {
+        "path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/constants.py",
+        "parent_device": 68,
+        "parent_inode": 654342171,
+        "mode": 420,
+        "device": 68,
+        "inode": 992429133,
+        "link_count": 1,
+        "file_attributes": null,
+        "reparse_tag": null,
+        "content": "IiIiTW9kdWxlIHNrZWxldG9uIGZvciBUZXN0c0ZsZXh0VGFyZ2V0T3JhY2xlT2ljQ29uc3RhbnRzLgoKVGVzdCBjb25zdGFudHMgZm9yIGZsZXh0LXRhcmdldC1vcmFjbGUtb2ljLgoKQ29weXJpZ2h0IChjKSAyMDI1IEZMRVhUIFRlYW0uIEFsbCByaWdodHMgcmVzZXJ2ZWQuClNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBNSVQKIiIiCgpmcm9tIF9fZnV0dXJlX18gaW1wb3J0IGFubm90YXRpb25zCgpmcm9tIGNvbGxlY3Rpb25zLmFiYyBpbXBvcnQgTWFwcGluZwpmcm9tIHR5cGVzIGltcG9ydCBNYXBwaW5nUHJveHlUeXBlCmZyb20gdHlwaW5nIGltcG9ydCBDbGFzc1ZhcgoKZnJvbSBmbGV4dF90ZXN0cyBpbXBvcnQgRmxleHRUZXN0c0NvbnN0YW50cwoKZnJvbSBmbGV4dF90YXJnZXRfb3JhY2xlX29pYyBpbXBvcnQgRmxleHRUYXJnZXRPcmFjbGVPaWNDb25zdGFudHMsIHQKCgpjbGFzcyBUZXN0c0ZsZXh0VGFyZ2V0T3JhY2xlT2ljQ29uc3RhbnRzKAogICAgRmxleHRUZXN0c0NvbnN0YW50cywKICAgIEZsZXh0VGFyZ2V0T3JhY2xlT2ljQ29uc3RhbnRzLAopOgogICAgIiIiVGVzdCBjb25zdGFudHMgZm9yIGZsZXh0LXRhcmdldC1vcmFjbGUtb2ljLiIiIgoKICAgIGNsYXNzIFRhcmdldE9yYWNsZU9pYyhGbGV4dFRhcmdldE9yYWNsZU9pY0NvbnN0YW50cy5UYXJnZXRPcmFjbGVPaWMpOgogICAgICAgICIiIlRhcmdldCBPcmFjbGUgT0lDLXNwZWNpZmljIHRlc3QgY29uc3RhbnRzIG5hbWVzcGFjZS4iIiIKCiAgICAgICAgY2xhc3MgVGVzdHMoRmxleHRUZXN0c0NvbnN0YW50cy5UZXN0cyk6CiAgICAgICAgICAgICIiIlRhcmdldCBPcmFjbGUgT0lDLXNwZWNpZmljIHRlc3QgY29uc3RhbnRzLiIiIgoKICAgICAgICAgICAgUFJPSkVDVF9ST09UX1BBUkVOVF9ERVBUSDogQ2xhc3NWYXJbaW50XSA9IDEKICAgICAgICAgICAgQUxMT1dFRF9NT0RVTEVfRlVOQ1RJT05TOiBDbGFzc1ZhcltNYXBwaW5nW3N0ciwgZnJvemVuc2V0W3N0cl1dXSA9ICgKICAgICAgICAgICAgICAgIE1hcHBpbmdQcm94eVR5cGUoeyJjbGkucHkiOiBmcm96ZW5zZXQoeyJtYWluIn0pfSkKICAgICAgICAgICAgKQogICAgICAgICAgICBERUZBVUxUX1BST1BFUlRJRVM6IENsYXNzVmFyW2RpY3Rbc3RyLCB0Lkpzb25WYWx1ZV1dID0gewogICAgICAgICAgICAgICAgImlkIjogeyJ0eXBlIjogInN0cmluZyJ9LAogICAgICAgICAgICB9CiAgICAgICAgICAgIFNUUkVBTV9OQU1FUzogQ2xhc3NWYXJbdHVwbGVbc3RyLCAuLi5dXSA9ICgKICAgICAgICAgICAgICAgICJjb25uZWN0aW9ucyIsCiAgICAgICAgICAgICAgICAiaW50ZWdyYXRpb25zIiwKICAgICAgICAgICAgICAgICJwYWNrYWdlcyIsCiAgICAgICAgICAgICAgICAibG9va3VwcyIsCiAgICAgICAgICAgICkKCgpjID0gVGVzdHNGbGV4dFRhcmdldE9yYWNsZU9pY0NvbnN0YW50cwpfX2FsbF9fOiBsaXN0W3N0cl0gPSBbIlRlc3RzRmxleHRUYXJnZXRPcmFjbGVPaWNDb25zdGFudHMiLCAiYyJdCg=="
+      },
+      {
+        "path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/unit/test_e2e_sinks.py",
+        "parent_device": 68,
+        "parent_inode": 654342188,
+        "mode": 420,
+        "device": 68,
+        "inode": 1005890392,
+        "link_count": 1,
+        "file_attributes": null,
+        "reparse_tag": null,
+        "content": "IiIiRW5kLXRvLWVuZCBzaW5rIHRlc3RzIGZvciB0YXJnZXQtb3JhY2xlLW9pYy4KCkV4ZXJjaXNlcyB0aGUgcmVhbCBTaW5nZXIgc2luayBjb25zdHJ1Y3Rpb24gYW5kIHJlY29yZCBwcm9jZXNzaW5nIHBhdGhzCnRocm91Z2ggdGhlIHB1YmxpYyBzZXJ2aWNlIHN1cmZhY2UsIHdpdGhvdXQgbW9ja3MuCgpDb3B5cmlnaHQgKGMpIDIwMjUgRkxFWFQgVGVhbS4gQWxsIHJpZ2h0cyByZXNlcnZlZC4KU1BEWC1MaWNlbnNlLUlkZW50aWZpZXI6IE1JVAoKIiIiCgpmcm9tIF9fZnV0dXJlX18gaW1wb3J0IGFubm90YXRpb25zCgpmcm9tIGZsZXh0X3RhcmdldF9vcmFjbGVfb2ljIGltcG9ydCBGbGV4dFRhcmdldE9yYWNsZU9pY1NlcnZpY2UKZnJvbSB0ZXN0cyBpbXBvcnQgYywgdG0KCgpjbGFzcyBUZXN0c0ZsZXh0VGFyZ2V0T3JhY2xlT2ljRTJlU2lua3M6CiAgICAiIiJUZXN0cyBmb3IgdGhlIE9yYWNsZSBPSUMgU2luZ2VyIHNpbmsgdGhyb3VnaCB0aGUgc2VydmljZSBmYWNhZGUuIiIiCgogICAgQHN0YXRpY21ldGhvZAogICAgQGMuVGVzdHMuTUFSSy5wYXJhbWV0cml6ZSgic3RyZWFtX25hbWUiLCBjLlRhcmdldE9yYWNsZU9pYy5UZXN0cy5TVFJFQU1fTkFNRVMpCiAgICBkZWYgdGVzdF9zZXJ2aWNlX3Byb2Nlc3Nlc19yZWNvcmRzX3Blcl9zdHJlYW0oc3RyZWFtX25hbWU6IHN0cikgLT4gTm9uZToKICAgICAgICAiIiJUaGUgc2VydmljZSBiaW5kcyBhIHNpbmsgcGVyIHN0cmVhbSBhbmQgZHJhaW5zIGl0cyByZWNvcmRzLiIiIgogICAgICAgIHNlcnZpY2UgPSBGbGV4dFRhcmdldE9yYWNsZU9pY1NlcnZpY2UoKQogICAgICAgIHNjaGVtYSA9IHsicHJvcGVydGllcyI6IGMuVGFyZ2V0T3JhY2xlT2ljLlRlc3RzLkRFRkFVTFRfUFJPUEVSVElFU30KICAgICAgICBmb3IgaW5kZXggaW4gcmFuZ2UoMyk6CiAgICAgICAgICAgIHJlY29yZCA9IHsKICAgICAgICAgICAgICAgICJpZCI6IGYie3N0cmVhbV9uYW1lfS17aW5kZXh9IiwKICAgICAgICAgICAgICAgICJuYW1lIjogZiJSZWNvcmQge2luZGV4fSIsCiAgICAgICAgICAgIH0KICAgICAgICAgICAgdG0ub2soc2VydmljZS5wcm9jZXNzX3JlY29yZChzdHJlYW1fbmFtZSwgcmVjb3JkLCBzY2hlbWEpKQogICAgICAgIHRtLm9rKAogICAgICAgICAgICBzZXJ2aWNlLnByb2Nlc3NfcmVjb3JkKHN0cmVhbV9uYW1lLCB7ImlkIjogYy5Qcm9jZXNzaW5nTW9kZS5CQVRDSH0sIHNjaGVtYSkKICAgICAgICApCiAgICAgICAgdG0ub2soc2VydmljZS5mbHVzaChzdHJlYW1fbmFtZSkpCgogICAgQHN0YXRpY21ldGhvZAogICAgZGVmIHRlc3Rfc2VydmljZV9hY2NlcHRzX2VtcHR5X3JlY29yZCgpIC0-IE5vbmU6CiAgICAgICAgIiIiQW4gZW1wdHkgcmVjb3JkIHBhc3NlcyB0aHJvdWdoIHRoZSBzaW5rIHJlY29yZCBob29rLiIiIgogICAgICAgIHNlcnZpY2UgPSBGbGV4dFRhcmdldE9yYWNsZU9pY1NlcnZpY2UoKQogICAgICAgIHN0cmVhbV9uYW1lID0gYy5UYXJnZXRPcmFjbGVPaWMuVGVzdHMuU1RSRUFNX05BTUVTWzBdCiAgICAgICAgc2NoZW1hID0geyJwcm9wZXJ0aWVzIjogYy5UYXJnZXRPcmFjbGVPaWMuVGVzdHMuREVGQVVMVF9QUk9QRVJUSUVTfQogICAgICAgIHRtLm9rKHNlcnZpY2UucHJvY2Vzc19yZWNvcmQoc3RyZWFtX25hbWUsIHt9LCBzY2hlbWEpKQo="
+      },
+      {
+        "path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/unit/test_e2e.py",
+        "parent_device": 68,
+        "parent_inode": 654342188,
+        "mode": 420,
+        "device": 68,
+        "inode": 1005890391,
+        "link_count": 1,
+        "file_attributes": null,
+        "reparse_tag": null,
+        "content": "IiIiRW5kLXRvLWVuZCB0ZXN0cyBmb3IgdGFyZ2V0LW9yYWNsZS1vaWMuCgpUZXN0cyB0YXJnZXQgaW5pdGlhbGl6YXRpb24sIHNpbmsgcmVzb2x1dGlvbiwgc2V0dXAvdGVhcmRvd24sIGFuZCB0aGUgc2V0dGluZ3MKc2NoZW1hIHRocm91Z2ggdGhlIHB1YmxpYyB0YXJnZXQgc3VyZmFjZS4gTk8gTU9DS1MgLSByZWFsIGZ1bmN0aW9uYWwgdGVzdGluZyBvbmx5LgoKQ29weXJpZ2h0IChjKSAyMDI1IEZMRVhUIFRlYW0uIEFsbCByaWdodHMgcmVzZXJ2ZWQuClNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBNSVQKCiIiIgoKZnJvbSBfX2Z1dHVyZV9fIGltcG9ydCBhbm5vdGF0aW9ucwoKZnJvbSBmbGV4dF90YXJnZXRfb3JhY2xlX29pYyBpbXBvcnQgRmxleHRUYXJnZXRPcmFjbGVPaWMsIEZsZXh0VGFyZ2V0T3JhY2xlT2ljU2V0dGluZ3MKZnJvbSB0ZXN0cyBpbXBvcnQgYywgdG0sIHUKCgpAdS5UZXN0cy5maXh0dXJlCmRlZiB0YXJnZXQoKSAtPiBGbGV4dFRhcmdldE9yYWNsZU9pYzoKICAgICIiIlByb3ZpZGUgYGB0YXJnZXRgYC4KCiAgICBSZXR1cm5zOgogICAgICAgIFRoZSByZXN1bHRpbmcgYGBGbGV4dFRhcmdldE9yYWNsZU9pY2BgLgoKICAgICIiIgogICAgcmV0dXJuIEZsZXh0VGFyZ2V0T3JhY2xlT2ljKCkKCgpjbGFzcyBUZXN0c0ZsZXh0VGFyZ2V0T3JhY2xlT2ljRTJlOgogICAgIiIiVGVzdHMgZm9yIGBgRmxleHRUYXJnZXRPcmFjbGVPaWNFMmVgYC4iIiIKCiAgICBAc3RhdGljbWV0aG9kCiAgICBkZWYgdGVzdF90YXJnZXRfaW5pdGlhbGl6YXRpb24odGFyZ2V0OiBGbGV4dFRhcmdldE9yYWNsZU9pYykgLT4gTm9uZToKICAgICAgICAiIiJUaGUgdGFyZ2V0IGNhcnJpZXMgaXRzIGRlY2xhcmVkIG5hbWUgYW5kIGEgc2luayBjbGFzcy4iIiIKICAgICAgICB0bS50aGF0KHRhcmdldC5uYW1lLCBlcT1jLlRhcmdldE9yYWNsZU9pYy5UQVJHRVRfTkFNRSkKICAgICAgICB0bS50aGF0KHRhcmdldC5kZWZhdWx0X3NpbmtfY2xhc3MsIGlzXz10eXBlKQoKICAgIEBzdGF0aWNtZXRob2QKICAgIGRlZiB0ZXN0X2NvbmZpZ192YWxpZGF0aW9uKHRhcmdldDogRmxleHRUYXJnZXRPcmFjbGVPaWMpIC0-IE5vbmU6CiAgICAgICAgIiIiVGVzdCBzZXR1cC90ZWFyZG93biByZXN1bHQgY29udHJhY3QuIiIiCiAgICAgICAgc2V0dXBfcmVzdWx0ID0gdGFyZ2V0LnNldHVwKCkKICAgICAgICB0bS5vayhzZXR1cF9yZXN1bHQpCiAgICAgICAgdG0udGhhdChzZXR1cF9yZXN1bHQudmFsdWUsIG5vbmU9RmFsc2UpCiAgICAgICAgdG0ub2soc2V0dXBfcmVzdWx0LnZhbHVlKQogICAgICAgIHRlYXJkb3duX3Jlc3VsdCA9IHRhcmdldC50ZWFyZG93bigpCiAgICAgICAgdG0ub2sodGVhcmRvd25fcmVzdWx0KQogICAgICAgIHRtLnRoYXQodGVhcmRvd25fcmVzdWx0LnZhbHVlLCBub25lPUZhbHNlKQogICAgICAgIHRtLm9rKHRlYXJkb3duX3Jlc3VsdC52YWx1ZSkKCiAgICBAc3RhdGljbWV0aG9kCiAgICBkZWYgdGVzdF9jb25kaXRpb25hbF9jb25maWdfZ2VuZXJhdGlvbigpIC0-IE5vbmU6CiAgICAgICAgIiIiVGVzdCBzY2hlbWEgZ2VuZXJhdGlvbiBmcm9tIHB5ZGFudGljIGNvbmZpZ3VyYXRpb24gbW9kZWwuCgogICAgICAgIFJhaXNlczoKICAgICAgICAgICAgVHlwZUVycm9yOiBJZiB0aGUgc2NoZW1hIGNhcnJpZXMgbm8gcHJvcGVydGllcyBtYXBwaW5nLgoKICAgICAgICAiIiIKICAgICAgICBzY2hlbWFfcmF3ID0gdS5qc29uX21hcHBpbmdfYWRhcHRlcigpLnZhbGlkYXRlX3B5dGhvbigKICAgICAgICAgICAgRmxleHRUYXJnZXRPcmFjbGVPaWNTZXR0aW5ncy5tb2RlbF9qc29uX3NjaGVtYSgpLAogICAgICAgICkKICAgICAgICBwcm9wZXJ0aWVzX3JhdyA9IHNjaGVtYV9yYXcuZ2V0KCJwcm9wZXJ0aWVzIikKICAgICAgICBpZiBub3QgaXNpbnN0YW5jZShwcm9wZXJ0aWVzX3JhdywgZGljdCk6CiAgICAgICAgICAgIG1zZyA9IGYiRXhwZWN0ZWQgeydwcm9wZXJ0aWVzJ30gaW4ge3NjaGVtYV9yYXd9IgogICAgICAgICAgICByYWlzZSBUeXBlRXJyb3IobXNnKQogICAgICAgIHRtLnRoYXQocHJvcGVydGllc19yYXcsIGhhcz0iVGFyZ2V0T3JhY2xlT2ljIikKICAgICAgICB0bS50aGF0KHByb3BlcnRpZXNfcmF3WyJUYXJnZXRPcmFjbGVPaWMiXSwgaXNfPWRpY3QpCgogICAgQHN0YXRpY21ldGhvZAogICAgZGVmIHRlc3RfdGFyZ2V0X3Ntb2tlX2NsYXNzKCkgLT4gTm9uZToKICAgICAgICAiIiJUZXN0IHRhcmdldCBzbW9rZSBjbGFzcy4iIiIKICAgICAgICB0bS50aGF0KEZsZXh0VGFyZ2V0T3JhY2xlT2ljLm5hbWUsIGVxPWMuVGFyZ2V0T3JhY2xlT2ljLlRBUkdFVF9OQU1FKQo="
+      },
+      {
+        "path": "/home/marlonsc/flext/flext-target-oracle-oic/tests/unit/test_target.py",
+        "parent_device": 68,
+        "parent_inode": 654342188,
+        "mode": 420,
+        "device": 68,
+        "inode": 940184118,
+        "link_count": 1,
+        "file_attributes": null,
+        "reparse_tag": null,
+        "content": "IiIiVGVzdHMgZm9yIHRhcmdldC1vcmFjbGUtb2ljIHdpdGggZW50ZXJwcmlzZS1ncmFkZSB2YWxpZGF0aW9uLgoKQ29weXJpZ2h0IChjKSAyMDI1IEZMRVhUIFRlYW0uIEFsbCByaWdodHMgcmVzZXJ2ZWQuClNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBNSVQKCiIiIgoKZnJvbSBfX2Z1dHVyZV9fIGltcG9ydCBhbm5vdGF0aW9ucwoKZnJvbSBmbGV4dF90YXJnZXRfb3JhY2xlX29pYyBpbXBvcnQgKAogICAgRmxleHRUYXJnZXRPcmFjbGVPaWMsCiAgICBGbGV4dFRhcmdldE9yYWNsZU9pY1NlcnZpY2UsCiAgICBGbGV4dFRhcmdldE9yYWNsZU9pY1NldHRpbmdzLAopCmZyb20gdGVzdHMgaW1wb3J0IGMsIHRtLCB1CgoKY2xhc3MgVGVzdHNGbGV4dFRhcmdldE9yYWNsZU9pY1RhcmdldDoKICAgICIiIlRlc3RzIGZvciBgYEZsZXh0VGFyZ2V0T3JhY2xlT2ljYGAuIiIiCgogICAgQHN0YXRpY21ldGhvZAogICAgZGVmIHRlc3RfdGFyZ2V0X25hbWUoKSAtPiBOb25lOgogICAgICAgICIiIlRoZSB0YXJnZXQgZXhwb3NlcyBpdHMgZGVjbGFyZWQgU2luZ2VyIG5hbWUuIiIiCiAgICAgICAgdGFyZ2V0ID0gRmxleHRUYXJnZXRPcmFjbGVPaWMoKQogICAgICAgIHRtLnRoYXQodGFyZ2V0Lm5hbWUsIGVxPWMuVGFyZ2V0T3JhY2xlT2ljLlRBUkdFVF9OQU1FKQoKICAgIEBzdGF0aWNtZXRob2QKICAgIGRlZiB0ZXN0X2RlZmF1bHRfc2lua19jbGFzc19pc19hX3R5cGUoKSAtPiBOb25lOgogICAgICAgICIiIlRoZSB0YXJnZXQgZGVjbGFyZXMgb25lIHNpbmsgY2xhc3MgZm9yIGV2ZXJ5IHN0cmVhbS4iIiIKICAgICAgICB0bS50aGF0KEZsZXh0VGFyZ2V0T3JhY2xlT2ljLmRlZmF1bHRfc2lua19jbGFzcywgaXNfPXR5cGUpCgogICAgQHN0YXRpY21ldGhvZAogICAgZGVmIHRlc3Rfc2VydmljZV9jcmVhdGVzX3NpbmtfcGVyX3N0cmVhbSgpIC0-IE5vbmU6CiAgICAgICAgIiIiVGhlIHNlcnZpY2UgYnVpbGRzIHRoZSB0YXJnZXQncyBzaW5rIGJvdW5kIHRvIGVhY2ggc3RyZWFtIG5hbWUuIiIiCiAgICAgICAgc2VydmljZSA9IEZsZXh0VGFyZ2V0T3JhY2xlT2ljU2VydmljZSgpCiAgICAgICAgdGFyZ2V0ID0gdS5GbGV4dFRhcmdldE9yYWNsZU9pYy5UYXJnZXQoY29uZmlnPXt9LCB2YWxpZGF0ZV9jb25maWc9RmFsc2UpCiAgICAgICAgZm9yIHN0cmVhbV9uYW1lIGluIGMuVGFyZ2V0T3JhY2xlT2ljLlRlc3RzLlNUUkVBTV9OQU1FUzoKICAgICAgICAgICAgc2NoZW1hID0geyJwcm9wZXJ0aWVzIjogYy5UYXJnZXRPcmFjbGVPaWMuVGVzdHMuREVGQVVMVF9QUk9QRVJUSUVTfQogICAgICAgICAgICBzaW5rID0gRmxleHRUYXJnZXRPcmFjbGVPaWMuZGVmYXVsdF9zaW5rX2NsYXNzKAogICAgICAgICAgICAgICAgdGFyZ2V0PXRhcmdldCwKICAgICAgICAgICAgICAgIHN0cmVhbV9uYW1lPXN0cmVhbV9uYW1lLAogICAgICAgICAgICAgICAgc2NoZW1hPXNjaGVtYSwKICAgICAgICAgICAgICAgIGtleV9wcm9wZXJ0aWVzPVtdLAogICAgICAgICAgICApCiAgICAgICAgICAgIHRtLnRoYXQoc2luay5zdHJlYW1fbmFtZSwgZXE9c3RyZWFtX25hbWUpCiAgICAgICAgICAgIGNyZWF0ZWQgPSBzZXJ2aWNlLmZldGNoX29yX2NyZWF0ZV9zaW5rKHN0cmVhbV9uYW1lLCBzY2hlbWEpCiAgICAgICAgICAgIHRtLm9rKGNyZWF0ZWQpCiAgICAgICAgICAgIHRtLnRoYXQoY3JlYXRlZC52YWx1ZSwgaXNfPXR5cGUoc2luaykpCgogICAgQHN0YXRpY21ldGhvZAogICAgZGVmIHRlc3RfY29uZmlnX3NjaGVtYSgpIC0-IE5vbmU6CiAgICAgICAgIiIiVGhlIHNldHRpbmdzIHNjaGVtYSBuZXN0cyB0aGUgVGFyZ2V0T3JhY2xlT2ljIG5hbWVzcGFjZS4iIiIKICAgICAgICBzY2hlbWEgPSBGbGV4dFRhcmdldE9yYWNsZU9pY1NldHRpbmdzLm1vZGVsX2pzb25fc2NoZW1hKCkKICAgICAgICB0bS50aGF0KHNjaGVtYSwgaXNfPWRpY3QpCiAgICAgICAgdG0udGhhdChzY2hlbWEsIGhhcz0icHJvcGVydGllcyIpCiAgICAgICAgcHJvcGVydGllcyA9IHNjaGVtYVsicHJvcGVydGllcyJdCiAgICAgICAgdG0udGhhdChwcm9wZXJ0aWVzLCBpc189ZGljdCkKICAgICAgICB0bS50aGF0KHByb3BlcnRpZXMsIGhhcz0iVGFyZ2V0T3JhY2xlT2ljIikK"
+      }
+    ]
+  },
+  "native_artifacts": [
+    {
+      "path": "/home/marlonsc/flext/flext-target-oracle-oic/.reports/refactor/native/a28b50da201ebfa66f58dc3fbd5fe09491897d35f3fbe6be258f7f8f456ae030",
+      "parent_device": 68,
+      "parent_inode": 1080445334,
+      "mode": 420,
+      "device": 68,
+      "inode": 1080695248,
+      "link_count": 1,
+      "file_attributes": null,
+      "reparse_tag": null,
+      "size": 76129,
+      "sha256": "a28b50da201ebfa66f58dc3fbd5fe09491897d35f3fbe6be258f7f8f456ae030",
+      "version_key": [
+        68,
+        1080695248,
+        33188,
+        1,
+        1000,
+        1000,
+        76129,
+        1794349777844810943,
+        1794349777891810740,
+        0,
+        0
+      ]
+    },
+    {
+      "path": "/home/marlonsc/flext/flext-target-oracle-oic/.reports/refactor/native/e3969534dd0828b1014b9103ab1e3e1f5a74169e540928e86147f2d481437d27",
+      "parent_device": 68,
+      "parent_inode": 1080445334,
+      "mode": 420,
+      "device": 68,
+      "inode": 1080445309,
+      "link_count": 1,
+      "file_attributes": null,
+      "reparse_tag": null,
+      "size": 107,
+      "sha256": "e3969534dd0828b1014b9103ab1e3e1f5a74169e540928e86147f2d481437d27",
+      "version_key": [
+        68,
+        1080445309,
+        33188,
+        1,
+        1000,
+        1000,
+        107,
+        1794347053551223553,
+        1794347064291183318,
+        0,
+        0
+      ]
+    }
+  ],
+  "command": "scan",
+  "root": "/home/marlonsc/flext/flext-target-oracle-oic",
+  "scope": [
+    "conftest.py",
+    "src/flext_target_oracle_oic/__init__.py",
+    "src/flext_target_oracle_oic/__version__.py",
+    "src/flext_target_oracle_oic/_config.py",
+    "src/flext_target_oracle_oic/_constants/__init__.py",
+    "src/flext_target_oracle_oic/_constants/base.py",
+    "src/flext_target_oracle_oic/_models/__init__.py",
+    "src/flext_target_oracle_oic/_models/base.py",
+    "src/flext_target_oracle_oic/_models/config.py",
+    "src/flext_target_oracle_oic/_protocols/__init__.py",
+    "src/flext_target_oracle_oic/_protocols/config.py",
+    "src/flext_target_oracle_oic/_protocols/model_conformance.py",
+    "src/flext_target_oracle_oic/_settings.py",
+    "src/flext_target_oracle_oic/_utilities/__init__.py",
+    "src/flext_target_oracle_oic/_utilities/base.py",
+    "src/flext_target_oracle_oic/_utilities/service_runtime.py",
+    "src/flext_target_oracle_oic/_utilities/sink.py",
+    "src/flext_target_oracle_oic/api.py",
+    "src/flext_target_oracle_oic/cli.py",
+    "src/flext_target_oracle_oic/constants.py",
+    "src/flext_target_oracle_oic/models.py",
+    "src/flext_target_oracle_oic/protocols.py",
+    "src/flext_target_oracle_oic/target.py",
+    "src/flext_target_oracle_oic/typings.py",
+    "src/flext_target_oracle_oic/utilities.py",
+    "tests/__init__.py",
+    "tests/base.py",
+    "tests/conftest.py",
+    "tests/constants.py",
+    "tests/models.py",
+    "tests/protocols.py",
+    "tests/settings.py",
+    "tests/typings.py",
+    "tests/unit/__init__.py",
+    "tests/unit/test_cli_entrypoint.py",
+    "tests/unit/test_e2e.py",
+    "tests/unit/test_e2e_sinks.py",
+    "tests/unit/test_module_governance.py",
+    "tests/unit/test_target.py",
+    "tests/utilities.py"
+  ],
+  "totals_by_class": {
+    "actionable": 10,
+    "detection_only": 26,
+    "non_actionable_with_fix": 0,
+    "deferred_source_drift": 0
+  },
+  "totals_by_repository": {
+    "flext-target-oracle-oic": 36
+  },
+  "totals_by_rule": {
+    "add-facade-module-constants-alias": 0,
+    "add-facade-module-models-alias": 0,
+    "add-facade-module-protocols-alias": 0,
+    "add-facade-module-typings-alias": 0,
+    "add-facade-module-utilities-alias": 0,
+    "add-open-builtin-default-mode-encoding": 0,
+    "add-open-builtin-text-mode-encoding": 0,
+    "add-path-open-default-mode-encoding": 0,
+    "add-path-open-text-mode-encoding": 0,
+    "ban-accessor-method-name": 0,
+    "ban-ambient-environ-read--flext_target_oracle_oic": 0,
+    "ban-any-type": 0,
+    "ban-api-local-methods": 0,
+    "ban-arbitrary-types-allowed": 0,
+    "ban-artifact-execution": 0,
+    "ban-bare-collection-field-annotation": 0,
+    "ban-behavior-in-declaration-layer": 0,
+    "ban-broad-annotation": 0,
+    "ban-cast-outside-core": 0,
+    "ban-class-namespace-mutation": 0,
+    "ban-class-wrong-facade-layer--flext_target_oracle_oic": 0,
+    "ban-class-wrong-facade-layer--flext_target_oracle_oic--c": 0,
+    "ban-class-wrong-facade-layer--flext_target_oracle_oic--m": 0,
+    "ban-class-wrong-facade-layer--flext_target_oracle_oic--u": 0,
+    "ban-cli-command-output-exit-code-constructor": 0,
+    "ban-cli-command-output-exit-code-reader": 0,
+    "ban-cli-domain-library-import": 0,
+    "ban-compat-alias": 0,
+    "ban-concrete-family-class-import--flext_target_oracle_oic--021bb1ecdf45": 0,
+    "ban-concrete-family-class-import--flext_target_oracle_oic--0395bf21733e": 0,
+    "ban-concrete-family-class-import--flext_target_oracle_oic--0ef12f314643": 0,
+    "ban-concrete-family-class-import--flext_target_oracle_oic--480718e1a3f3": 0,
+    "ban-concrete-family-class-import--flext_target_oracle_oic--64a67fcb6e65": 0,
+    "ban-concrete-family-class-import--flext_target_oracle_oic--83e931238a7f": 0,
+    "ban-concrete-family-class-import--flext_target_oracle_oic--a5704acc4221": 0,
+    "ban-concrete-family-class-import--flext_target_oracle_oic--abbdd9f12568": 0,
+    "ban-concrete-family-class-import--flext_target_oracle_oic--b5bc23b14c89": 0,
+    "ban-concrete-family-class-import--flext_target_oracle_oic--c12e895e18c8": 0,
+    "ban-concrete-family-class-import--flext_target_oracle_oic--d98ebfabb5be": 0,
+    "ban-concrete-flext-cli-import": 0,
+    "ban-concrete-service-dependency": 0,
+    "ban-consumer-submodule-import": 0,
+    "ban-core-tests-namespace-declaration": 1,
+    "ban-core-tests-namespace-reference": 6,
+    "ban-dead-init-module": 0,
+    "ban-deep-namespace-nesting": 0,
+    "ban-deferred-self-reference": 0,
+    "ban-direct-gitpython": 0,
+    "ban-direct-ldap3-import": 0,
+    "ban-direct-pydantic-import": 0,
+    "ban-direct-serialization-call": 0,
+    "ban-direct-structlog-import": 0,
+    "ban-dynamic-import": 0,
+    "ban-embedded-source-literal": 0,
+    "ban-empty-all-with-public-classes": 0,
+    "ban-enclosing-family-field-reference": 0,
+    "ban-engine-libcst": 0,
+    "ban-engine-python-ast": 0,
+    "ban-engine-regex-code-rewrite": 0,
+    "ban-external-import-outside-facade-family--flext_target_oracle_oic": 0,
+    "ban-external-import-outside-facade-family--flext_target_oracle_oic--tests-tier": 0,
+    "ban-facade-letter-local-binding": 0,
+    "ban-facade-second-namespace": 0,
+    "ban-family-base-own-import": 0,
+    "ban-flext-api-library-import": 0,
+    "ban-flext-cli-library-import": 0,
+    "ban-flext-core-library-import": 0,
+    "ban-flext-db-oracle-library-import": 0,
+    "ban-flext-grpc-library-import": 0,
+    "ban-flext-infra-library-import": 0,
+    "ban-flext-meltano-library-import": 0,
+    "ban-flext-web-library-import": 0,
+    "ban-frozen-dataclass-contract": 0,
+    "ban-getattr-private-probe": 0,
+    "ban-git-ancestry-scope-walk": 0,
+    "ban-hardcoded-config": 0,
+    "ban-hardcoded-dunder-version": 0,
+    "ban-hardcoded-error-code-literal": 0,
+    "ban-import-error-fallback": 0,
+    "ban-import-module-cycle-escape": 0,
+    "ban-infra-runtime-flext-tests-import": 0,
+    "ban-init-name-assignment": 0,
+    "ban-inline-type-set-outside-constants": 0,
+    "ban-inline-union-field-annotation": 0,
+    "ban-json-loads-paired-validate": 0,
+    "ban-library-named-facade-member--flext_target_oracle_oic": 0,
+    "ban-library-type-reference-outside-typings--flext_target_oracle_oic": 0,
+    "ban-library-type-reference-outside-typings--flext_target_oracle_oic--protocols": 0,
+    "ban-library-type-reference-outside-typings--flext_target_oracle_oic--tests-tier": 0,
+    "ban-local-import-alias": 0,
+    "ban-local-typeadapter": 0,
+    "ban-long-facade-name-import": 0,
+    "ban-loose-module-object": 2,
+    "ban-loose-test-function": 0,
+    "ban-make-serialization": 0,
+    "ban-manual-ast-walk-beside-library": 0,
+    "ban-manual-protocol-outside-protocols": 0,
+    "ban-manual-typing-alias-outside-typings": 0,
+    "ban-model-construct": 0,
+    "ban-model-rebuild": 0,
+    "ban-model-typing-in-protocol-projection": 0,
+    "ban-mutable-constant-value": 1,
+    "ban-mutable-field-default": 0,
+    "ban-noncanonical-alias-import": 0,
+    "ban-noqa-comment": 0,
+    "ban-object-type": 0,
+    "ban-octal-mode-literal": 0,
+    "ban-own-family-internal-import--flext_target_oracle_oic": 0,
+    "ban-own-family-internal-import--flext_target_oracle_oic--flext_target_oracle_oic._config": 0,
+    "ban-own-family-internal-import--flext_target_oracle_oic--flext_target_oracle_oic._constants": 0,
+    "ban-own-family-internal-import--flext_target_oracle_oic--flext_target_oracle_oic._models": 0,
+    "ban-own-family-internal-import--flext_target_oracle_oic--flext_target_oracle_oic._protocols": 0,
+    "ban-own-family-internal-import--flext_target_oracle_oic--flext_target_oracle_oic._settings": 0,
+    "ban-own-family-internal-import--flext_target_oracle_oic--flext_target_oracle_oic._utilities": 1,
+    "ban-parallel-contract-decl": 0,
+    "ban-pass-through-wrapper": 0,
+    "ban-pragma-no-cover": 0,
+    "ban-pragma-no-cover-mixed-comment": 0,
+    "ban-private-import": 0,
+    "ban-protocol-constructor": 0,
+    "ban-protocol-validation-target": 0,
+    "ban-pydantic-v1-api": 0,
+    "ban-pydantic-v1-config-class": 0,
+    "ban-pydantic-v1-model-methods": 0,
+    "ban-pytest-hook-outside-conftest": 0,
+    "ban-raw-collection-default-factory": 0,
+    "ban-recursive-model": 0,
+    "ban-relaxed-model-extra": 1,
+    "ban-reverse-runtime-import--flext_target_oracle_oic--api": 0,
+    "ban-reverse-runtime-import--flext_target_oracle_oic--base": 0,
+    "ban-reverse-runtime-import--flext_target_oracle_oic--c": 1,
+    "ban-reverse-runtime-import--flext_target_oracle_oic--m": 0,
+    "ban-reverse-runtime-import--flext_target_oracle_oic--other": 0,
+    "ban-reverse-runtime-import--flext_target_oracle_oic--p": 0,
+    "ban-reverse-runtime-import--flext_target_oracle_oic--settings": 0,
+    "ban-reverse-runtime-import--flext_target_oracle_oic--t": 0,
+    "ban-reverse-runtime-import--flext_target_oracle_oic--u": 0,
+    "ban-reverse-runtime-import-settings--flext_target_oracle_oic": 0,
+    "ban-runtime-alias-rebind": 0,
+    "ban-runtime-environment-skip": 0,
+    "ban-runtime-protocols-in-settings--flext_target_oracle_oic": 0,
+    "ban-serialize-as-any-flag": 0,
+    "ban-service-locator-call": 0,
+    "ban-settings-config-own-facade-import--flext_target_oracle_oic": 0,
+    "ban-settings-config-own-module-import--flext_target_oracle_oic": 0,
+    "ban-silent-except-swallow": 0,
+    "ban-silent-failure-sentinel": 0,
+    "ban-silent-suppress": 0,
+    "ban-skip-validation": 0,
+    "ban-ssot-registry-literal": 0,
+    "ban-star-import-src": 0,
+    "ban-str-none-empty-default": 0,
+    "ban-stub-file": 0,
+    "ban-subdirectory-short-alias": 1,
+    "ban-subdirectory-short-alias-export": 0,
+    "ban-subdirectory-short-alias-export-last": 1,
+    "ban-subprocess-outside-run-owner": 0,
+    "ban-sys-exit-call": 0,
+    "ban-sys-exit-call-without-cli-binding": 0,
+    "ban-sys-path-mutation": 0,
+    "ban-test-assert": 0,
+    "ban-test-deep-module-import": 0,
+    "ban-test-direct-tests-submodule": 0,
+    "ban-test-double-infix-name": 0,
+    "ban-test-doubles": 0,
+    "ban-test-fakes": 0,
+    "ban-test-http-doubles": 0,
+    "ban-test-implementation-shape": 0,
+    "ban-test-import-outside-test-namespace": 6,
+    "ban-test-namespace-alias": 0,
+    "ban-test-own-private-import": 0,
+    "ban-test-private-access": 0,
+    "ban-test-production-ast": 0,
+    "ban-test-recorder-assertions": 0,
+    "ban-test-relative-import": 0,
+    "ban-test-source-introspection-assertion": 0,
+    "ban-test-source-text-assertion": 0,
+    "ban-test-tautology": 0,
+    "ban-testing-ops-in-production-protocol": 0,
+    "ban-toml-library-import": 0,
+    "ban-type-cast": 0,
+    "ban-type-ignore-comment": 0,
+    "ban-type-ignore-hint": 0,
+    "ban-type-narrowing-guard": 0,
+    "ban-typeform-alias-call": 0,
+    "ban-validation-error-catch": 0,
+    "bind-direct-registration-specialization": 0,
+    "bind-registration-specialization": 0,
+    "bind-typing-adapter-utilities": 0,
+    "caught-exception-string-failure": 0,
+    "class-alias-generic-bound": 0,
+    "cli-repository-root-option": 0,
+    "cli-result-finalize": 0,
+    "codegen-templates-root-owner": 0,
+    "codegen-test-public-utility-binding-required": 0,
+    "codegen-test-public-utility-import-semantic-required": 0,
+    "codegen-test-public-utility-namespace": 0,
+    "collapse-empty-annotated": 0,
+    "compat-read--flext_target_oracle_oic": 0,
+    "concrete-mixin-runtime-ellipsis": 0,
+    "config-dict-from-constants": 0,
+    "config-dict-type-from-typings": 0,
+    "consumer-annotation-names-protocol": 0,
+    "core-factories-to-owner-classes": 0,
+    "core-factories-to-owner-classes-import-container": 0,
+    "core-factories-to-owner-classes-import-dispatcher": 0,
+    "core-factories-to-owner-classes-import-registry": 0,
+    "declare-empty-all-single-class": 0,
+    "declare-empty-all-single-class-alias": 0,
+    "declare-single-class-export--flext_target_oracle_oic--FlextTargetOracleOic": 2,
+    "declare-single-class-export--flext_target_oracle_oic--TestsFlextTargetOracleOic": 1,
+    "dict-annotation-field-contract": 1,
+    "docs-strict-text-decoding": 0,
+    "facade-alias-first-base--flext_target_oracle_oic--c": 0,
+    "facade-alias-first-base--flext_target_oracle_oic--config": 0,
+    "facade-alias-first-base--flext_target_oracle_oic--m": 0,
+    "facade-alias-first-base--flext_target_oracle_oic--p": 0,
+    "facade-alias-first-base--flext_target_oracle_oic--settings": 0,
+    "facade-alias-first-base--flext_target_oracle_oic--t": 0,
+    "facade-alias-first-base--flext_target_oracle_oic--u": 0,
+    "facade-base-by-class-name": 3,
+    "facade-first-base-alias-or-peer--flext_target_oracle_oic--021bb1ecdf45": 0,
+    "facade-first-base-alias-or-peer--flext_target_oracle_oic--0395bf21733e": 0,
+    "facade-first-base-alias-or-peer--flext_target_oracle_oic--0ef12f314643": 0,
+    "facade-first-base-alias-or-peer--flext_target_oracle_oic--480718e1a3f3": 0,
+    "facade-first-base-alias-or-peer--flext_target_oracle_oic--64a67fcb6e65": 0,
+    "facade-first-base-alias-or-peer--flext_target_oracle_oic--83e931238a7f": 0,
+    "facade-first-base-alias-or-peer--flext_target_oracle_oic--a5704acc4221": 0,
+    "facade-first-base-alias-or-peer--flext_target_oracle_oic--abbdd9f12568": 0,
+    "facade-first-base-alias-or-peer--flext_target_oracle_oic--b5bc23b14c89": 0,
+    "facade-first-base-alias-or-peer--flext_target_oracle_oic--c12e895e18c8": 0,
+    "facade-first-base-alias-or-peer--flext_target_oracle_oic--d98ebfabb5be": 0,
+    "facade-member-wrong-layer--flext_target_oracle_oic--c": 0,
+    "facade-member-wrong-layer--flext_target_oracle_oic--u": 0,
+    "field-default-keyword": 0,
+    "fix-except-sentinel-return": 0,
+    "fix-forbid-config-to-enforced-model": 0,
+    "fix-frozen-dataclass-to-model": 0,
+    "fix-frozen-dataclass-with-bases-to-model": 0,
+    "fix-frozen-forbid-config-to-immutable-value-model": 0,
+    "fix-result-guard-sentinel-return": 0,
+    "fstring-fail-missing-exception": 0,
+    "fstring-fail-missing-exception-positional-review": 0,
+    "fstring-fail-missing-exception-review": 0,
+    "gate-tool-error-typed-binding-required": 0,
+    "gate-tool-error-typed-code": 0,
+    "git-public-argv-facade-call": 0,
+    "hoist-optional-out-of-port": 0,
+    "import-header--dead-letter-alias": 0,
+    "import-header--dead-module-load--flext_target_oracle_oic": 0,
+    "import-header--dead-module-load--tests": 0,
+    "import-header--duplicate-origin--flext_target_oracle_oic--comma": 0,
+    "import-header--duplicate-origin--flext_target_oracle_oic--guard": 0,
+    "import-header--duplicate-origin--flext_target_oracle_oic--last": 0,
+    "import-header--duplicate-origin--flext_target_oracle_oic--statement": 0,
+    "import-header--duplicate-origin--tests--comma": 0,
+    "import-header--duplicate-origin--tests--guard": 0,
+    "import-header--duplicate-origin--tests--last": 0,
+    "import-header--duplicate-origin--tests--statement": 0,
+    "import-header--family--flext_target_oracle_oic--c--flext_meltano": 0,
+    "import-header--family--flext_target_oracle_oic--m--flext_meltano": 0,
+    "import-header--family--flext_target_oracle_oic--p--flext_meltano": 0,
+    "import-header--family--flext_target_oracle_oic--t--flext_meltano": 0,
+    "import-header--family--flext_target_oracle_oic--u--flext_meltano": 0,
+    "import-header--family--tests--c--flext_target_oracle_oic": 0,
+    "import-header--family--tests--m--flext_target_oracle_oic": 0,
+    "import-header--family--tests--p--flext_target_oracle_oic": 0,
+    "import-header--family--tests--s--flext_target_oracle_oic": 0,
+    "import-header--family--tests--t--flext_target_oracle_oic": 0,
+    "import-header--family--tests--u--flext_target_oracle_oic": 0,
+    "import-header--flext_target_oracle_oic--312e4a73a7aa": 0,
+    "import-header--flext_target_oracle_oic--333fc1d3e54d": 0,
+    "import-header--flext_target_oracle_oic--9a001e42d170": 0,
+    "import-header--flext_target_oracle_oic--a699cc8cb1a5": 0,
+    "import-header--flext_target_oracle_oic--d8b721bd5906": 0,
+    "import-header--flext_target_oracle_oic--f3b2898d77a0": 0,
+    "import-header--flext_target_oracle_oic._constants": 0,
+    "import-header--flext_target_oracle_oic._models": 0,
+    "import-header--flext_target_oracle_oic._protocols": 0,
+    "import-header--flext_target_oracle_oic._utilities": 0,
+    "import-header--foreign-origin--flext_target_oracle_oic--comma": 0,
+    "import-header--foreign-origin--flext_target_oracle_oic--guard": 0,
+    "import-header--foreign-origin--flext_target_oracle_oic--last": 0,
+    "import-header--foreign-origin--flext_target_oracle_oic--statement": 0,
+    "import-header--foreign-origin--tests--comma": 0,
+    "import-header--foreign-origin--tests--guard": 0,
+    "import-header--foreign-origin--tests--last": 0,
+    "import-header--foreign-origin--tests--statement": 0,
+    "import-header--letter-alias--flext_core": 0,
+    "import-header--letter-alias--flext_meltano": 0,
+    "import-header--letter-alias--flext_oracle_oic": 0,
+    "import-header--letter-alias--flext_target_oracle_oic": 0,
+    "import-header--letter-alias--flext_tests": 0,
+    "import-header--letter-alias--tests": 0,
+    "import-header--letter-local-alias": 0,
+    "import-header--letter-module-alias--flext_core": 0,
+    "import-header--letter-module-alias--flext_meltano": 0,
+    "import-header--letter-module-alias--flext_oracle_oic": 0,
+    "import-header--letter-module-alias--flext_target_oracle_oic": 0,
+    "import-header--letter-module-alias--flext_tests": 0,
+    "import-header--letter-module-alias--tests": 0,
+    "import-header--letter-module-object": 0,
+    "import-header--module-path--comma": 0,
+    "import-header--module-path--guard": 0,
+    "import-header--module-path--last": 0,
+    "import-header--module-path--statement": 0,
+    "import-header--name-module-load": 0,
+    "import-header--name-module-object--flext_target_oracle_oic": 0,
+    "import-header--name-module-object--tests": 0,
+    "import-header--own-letter--flext_target_oracle_oic--c--comma": 0,
+    "import-header--own-letter--flext_target_oracle_oic--c--guard": 0,
+    "import-header--own-letter--flext_target_oracle_oic--c--last": 0,
+    "import-header--own-letter--flext_target_oracle_oic--c--statement": 0,
+    "import-header--own-letter--flext_target_oracle_oic--m--comma": 0,
+    "import-header--own-letter--flext_target_oracle_oic--m--guard": 0,
+    "import-header--own-letter--flext_target_oracle_oic--m--last": 0,
+    "import-header--own-letter--flext_target_oracle_oic--m--statement": 0,
+    "import-header--own-letter--flext_target_oracle_oic--p--comma": 0,
+    "import-header--own-letter--flext_target_oracle_oic--p--guard": 0,
+    "import-header--own-letter--flext_target_oracle_oic--p--last": 0,
+    "import-header--own-letter--flext_target_oracle_oic--p--statement": 0,
+    "import-header--own-letter--flext_target_oracle_oic--t--comma": 0,
+    "import-header--own-letter--flext_target_oracle_oic--t--guard": 0,
+    "import-header--own-letter--flext_target_oracle_oic--t--last": 0,
+    "import-header--own-letter--flext_target_oracle_oic--t--statement": 0,
+    "import-header--own-letter--flext_target_oracle_oic--u--comma": 0,
+    "import-header--own-letter--flext_target_oracle_oic--u--guard": 0,
+    "import-header--own-letter--flext_target_oracle_oic--u--last": 1,
+    "import-header--own-letter--flext_target_oracle_oic--u--statement": 0,
+    "import-header--own-letter--tests--c--comma": 0,
+    "import-header--own-letter--tests--c--guard": 0,
+    "import-header--own-letter--tests--c--last": 0,
+    "import-header--own-letter--tests--c--statement": 0,
+    "import-header--own-letter--tests--m--comma": 0,
+    "import-header--own-letter--tests--m--guard": 0,
+    "import-header--own-letter--tests--m--last": 0,
+    "import-header--own-letter--tests--m--statement": 0,
+    "import-header--own-letter--tests--p--comma": 0,
+    "import-header--own-letter--tests--p--guard": 0,
+    "import-header--own-letter--tests--p--last": 0,
+    "import-header--own-letter--tests--p--statement": 0,
+    "import-header--own-letter--tests--s--comma": 0,
+    "import-header--own-letter--tests--s--guard": 0,
+    "import-header--own-letter--tests--s--last": 0,
+    "import-header--own-letter--tests--s--statement": 0,
+    "import-header--own-letter--tests--t--comma": 0,
+    "import-header--own-letter--tests--t--guard": 0,
+    "import-header--own-letter--tests--t--last": 0,
+    "import-header--own-letter--tests--t--statement": 0,
+    "import-header--own-letter--tests--u--comma": 0,
+    "import-header--own-letter--tests--u--guard": 0,
+    "import-header--own-letter--tests--u--last": 0,
+    "import-header--own-letter--tests--u--statement": 0,
+    "import-header--own-root--flext_target_oracle_oic": 0,
+    "import-header--own-root--tests": 0,
+    "import-header--tests": 0,
+    "import-header--tests--116b36a151e0": 0,
+    "import-header--tests--5c617b491fdb": 0,
+    "import-header--tests--784c0d8070ec": 0,
+    "import-header--tests--9932304d9bb4": 0,
+    "import-header--tests--cdb26decaf84": 0,
+    "import-header--tests--dc13d16de238": 0,
+    "import-header--tests--ed5e977b0c59": 0,
+    "import-header--typing-duplicate--comma": 0,
+    "import-header--typing-duplicate--guard": 0,
+    "import-header--typing-duplicate--last": 0,
+    "import-header--typing-duplicate--statement": 0,
+    "infer-literal-facade-exports": 0,
+    "infra-models-class-to-facade": 0,
+    "mod-scan-selection-conflict": 0,
+    "model-annotation-to-protocol": 0,
+    "model-field-schema-owner": 0,
+    "model-signature-names-protocol": 0,
+    "model-type-not-protocol": 0,
+    "module-member--flext_target_oracle_oic": 0,
+    "namespace-constant-annotation-to-classvar": 0,
+    "namespace-constant-classvar-import": 0,
+    "namespace-constant-classvar-import-new": 0,
+    "namespace-constant-final-to-classvar": 0,
+    "namespace-fixability-bool-boundary": 0,
+    "overload-unused-parameter-read": 0,
+    "packaged-resource-not-atomic-state": 0,
+    "path-depth-call-to-facade": 0,
+    "path-depth-import-to-facade": 0,
+    "path-depth-sort-key-to-facade": 0,
+    "plugin-model-create-to-constructor": 0,
+    "presult-construct-to-r-fail": 0,
+    "presult-construct-to-r-ok": 0,
+    "presult-construction-without-r-import": 0,
+    "private-infra-utility-alias-attribute-to-facade": 0,
+    "private-infra-utility-alias-call-to-facade": 0,
+    "private-infra-utility-call-to-facade": 0,
+    "private-infra-utility-import-to-facade": 0,
+    "property-docstring-check-to-whether": 0,
+    "property-docstring-imperative-to-noun": 0,
+    "pure-propagation-ladder": 0,
+    "pydantic-adapter-typeform": 0,
+    "pydantic-adapter-typeform-annotated-none": 0,
+    "pydantic-annotated-field-assignment-metadata": 0,
+    "pydantic-annotated-field-default-assignment": 0,
+    "pydantic-annotated-field-default-factory-assignment": 0,
+    "pydantic-annotated-field-sole-default-assignment": 0,
+    "pydantic-annotated-field-sole-default-factory-assignment": 0,
+    "pydantic-field-positional-default": 0,
+    "pydantic-mappingproxy-default-factory": 0,
+    "pydantic-model-config-classvar-import": 1,
+    "pydantic-model-config-classvar-import-new": 1,
+    "pydantic-model-config-configdict-classvar": 0,
+    "pydantic-model-config-m-configdict-classvar": 2,
+    "pydantic-typeform-import": 0,
+    "pydantic-unset-private-attribute": 0,
+    "pytest-run-context-receiver-port": 0,
+    "qlty-render-context-from-toolchain": 0,
+    "railroad-guard-identity-passthrough": 0,
+    "railroad-guard-to-flat-map-callable": 0,
+    "railroad-guard-to-map-callable": 0,
+    "railroad-ifelse-flat-map-callable": 0,
+    "railroad-ifelse-identity-passthrough": 0,
+    "railroad-ifelse-map-callable": 0,
+    "railroad-ternary-unwrap-or": 0,
+    "railroad-try-model-validate": 0,
+    "recursive-type-alias": 0,
+    "redundant-rope-resource-type-guard": 0,
+    "release-family-owner-is-release-module": 0,
+    "release-family-owner-missing-import": 0,
+    "release-materialize-tar-tree": 0,
+    "remove-breakpoint-debugger-statement": 0,
+    "remove-identity-model-schema-hook": 0,
+    "remove-model-config-restated-by-preset": 0,
+    "remove-orphan-keyword-separator": 0,
+    "remove-pdb-set-trace-statement": 0,
+    "remove-redundant-inner-namespace": 0,
+    "remove-test-own-literal-tautology": 0,
+    "repository-provider-takes-only-the-repository": 0,
+    "require-all-last": 0,
+    "require-canonical-facade-family": 0,
+    "require-facade-base": 0,
+    "require-facade-mro-completeness--flext_target_oracle_oic--FlextTargetOracleOic": 1,
+    "require-family-base-module": 2,
+    "require-field-description": 0,
+    "require-frozen-value-object": 0,
+    "require-future-annotations": 0,
+    "require-model-extra-forbid": 0,
+    "require-module-class": 0,
+    "require-notice-last": 0,
+    "require-project-class-stem--flext_target_oracle_oic--FlextTargetOracleOic": 0,
+    "require-project-class-stem--flext_target_oracle_oic--TestsFlextTargetOracleOic": 0,
+    "require-protocol-inner-kind": 0,
+    "require-runtime-checkable-protocol": 0,
+    "require-runtime-checkable-protocol-missing-import": 0,
+    "require-service-facade-layers": 0,
+    "require-settings-base": 0,
+    "require-static-utility-method": 0,
+    "require-uppercase-constant-name": 0,
+    "result-failure-rebind": 0,
+    "rewire-cli-command-output-success-assertion-message": 0,
+    "rewire-cli-decoded-command-outcome-model": 0,
+    "rewire-cli-json-list-adapter": 0,
+    "rewire-cli-json-mapping-adapter": 0,
+    "rewire-collapsed-family-package": 0,
+    "rewire-computed-field-exclude-to-native": 0,
+    "rewire-deep-import-to-package--flext_target_oracle_oic": 0,
+    "rewire-deep-import-to-package--flext_target_oracle_oic--flext_target_oracle_oic": 0,
+    "rewire-deep-import-to-package--flext_target_oracle_oic--tests": 0,
+    "rewire-facade-matcher-to-tm": 0,
+    "rewire-getattr-model-fields-to-direct-access": 0,
+    "rewire-libcst-annotation-to-typings": 0,
+    "rewire-libcst-runtime-operand-to-constants": 0,
+    "rewire-model-protocol-field-to-port": 0,
+    "rewire-mro-membership-to-issubclass": 0,
+    "rewire-mutated-json-mapping-to-dict-adapter": 0,
+    "rewire-print-to-cli-display-text": 0,
+    "rewire-pydantic-surface-to-models-facade": 0,
+    "rewire-pytest-class-constant-to-tests-constants": 0,
+    "rewire-pytest-constant-to-tests-constants": 0,
+    "rewire-pytest-function-to-tests-utilities": 0,
+    "rewire-pytest-type-to-tests-typings": 0,
+    "rewire-raw-model-config-dict": 0,
+    "rewire-raw-model-config-dict-in-foundation": 0,
+    "rewire-relaxed-configured-contract-to-external-contract": 0,
+    "rewire-relaxed-contract-to-external-contract": 0,
+    "rewire-relaxed-frozen-contract-to-external-contract": 0,
+    "rewire-subscripted-default-factory": 0,
+    "rewire-test-assert-contains": 0,
+    "rewire-test-assert-equal": 0,
+    "rewire-test-assert-excludes": 0,
+    "rewire-test-assert-falsity": 0,
+    "rewire-test-assert-guard": 0,
+    "rewire-test-assert-instance": 0,
+    "rewire-test-assert-instance-message": 0,
+    "rewire-test-assert-message": 0,
+    "rewire-test-assert-message-observation": 0,
+    "rewire-test-assert-not-none": 0,
+    "rewire-test-assert-not-none-message": 0,
+    "rewire-test-assert-truth": 0,
+    "rewire-test-assert-type-guard": 0,
+    "rewire-test-assert-unequal": 0,
+    "rewire-test-monkeypatch-cwd-generator-import": 0,
+    "rewire-test-monkeypatch-cwd-public-utility-import": 0,
+    "rewire-test-monkeypatch-environment": 0,
+    "rewire-test-monkeypatch-working-directory": 0,
+    "rewire-transformer-header-private-call": 0,
+    "rewire-transformer-header-private-call-missing-u-import": 0,
+    "rewire-type-adapter-construction": 0,
+    "rewire-type-adapter-construction-missing-u-import": 0,
+    "rewire-typing-adapter-factories": 0,
+    "rewire-typings-cst-runtime-operand-to-constants": 0,
+    "rewire-yaml-text-read-to-path-reader": 0,
+    "rewrite-bare-except-to-exception": 0,
+    "rope-logical-statement-preserve-newlines": 0,
+    "runtime-abc-needs-runtime-import": 0,
+    "specialize-registration-algebra": 0,
+    "specialize-settings-class-algebra": 0,
+    "target-ldap-test-public-sink-constructor": 0,
+    "target-ldap-test-public-sink-contract": 0,
+    "target-ldap-test-public-sink-facades": 0,
+    "target-ldap-test-public-target-import": 0,
+    "target-ldap-test-public-target-type": 0,
+    "test-secret-literal": 0,
+    "test-secret-literal-bind": 0,
+    "test-secret-literal-import": 0,
+    "test-secret-literal-reuse": 0,
+    "test-utilities-tier-facade": 0,
+    "tests-fixture-method-missing-staticmethod": 0,
+    "tests-governance-mixin-public-base": 0,
+    "tests-governance-mixin-public-name": 0,
+    "tests-method-without-self-is-static": 0,
+    "tests-staticmethod-decorator-order": 0,
+    "type-set--flext_target_oracle_oic": 0,
+    "unbind-lazy-alias-generic-bound": 0
+  }
+}

@@ -1,0 +1,21 @@
+# Workspace Check Report
+
+Generated: 2026-11-22 16:04:20 UTC
+Check phase: complete
+Execution: COMPLETE
+Projects reached: 1/1
+
+## Summary
+
+| Project | Status | Findings |
+| --- |---:|---:|
+| flext-target-oracle-oic | PASS | 0 |
+
+## Details
+
+### flext-target-oracle-oic
+Root: `/home/marlonsc/flext/flext-target-oracle-oic`
+- lint: PASS (0 issues)
+  - Native output receipt: [lint.raw.log](file:///home/marlonsc/flext/flext-target-oracle-oic/.reports/check/e5845459-7765-4187-b284-6699a9b2ba88/flext-target-oracle-oic/lint.raw.log)
+- format: PASS (0 issues)
+  - Native output receipt: [format.raw.log](file:///home/marlonsc/flext/flext-target-oracle-oic/.reports/check/e5845459-7765-4187-b284-6699a9b2ba88/flext-target-oracle-oic/format.raw.log)

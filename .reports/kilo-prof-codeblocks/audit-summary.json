@@ -1,0 +1,11 @@
+{
+  "summary": {
+    "scope": "flext-target-oracle-oic",
+    "issues": 0,
+    "checks": [
+      "python-codeblocks"
+    ],
+    "report_dir": "/home/marlonsc/flext/flext-target-oracle-oic/.reports/kilo-prof-codeblocks"
+  },
+  "issues": []
+}
