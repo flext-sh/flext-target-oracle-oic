@@ -14,9 +14,7 @@ from flext_oracle_oic import FlextOracleOicProtocols
 from flext_target_oracle_oic._protocols import FlextTargetOracleOicProtocolsConfig
 
 
-class FlextTargetOracleOicProtocols(
-    FlextMeltanoProtocols, FlextOracleOicProtocols, FlextTargetOracleOicProtocolsConfig
-):
+class FlextTargetOracleOicProtocols(FlextMeltanoProtocols, FlextOracleOicProtocols):
     """Singer Target Oracle OIC protocols extending OracleOic and Meltano protocols.
 
     Extends both FlextOracleOicProtocols and FlextMeltanoProtocols via
@@ -45,6 +43,9 @@ class FlextTargetOracleOicProtocols(
     # Target Oracle OIC-specific protocols
     oic_integration: p.TargetOracleOic.OracleOic.OicIntegration
     """
+
+    class TargetOracleOic(FlextTargetOracleOicProtocolsConfig):
+        """Domain namespace of the package parts."""
 
 
 p = FlextTargetOracleOicProtocols
