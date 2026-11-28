@@ -1,0 +1,1 @@
+{"id":"748322d64931ef741209b6f6d3bea772c68a01d28c8927284f2856d3fb71ab41","language":"python","rule":{"any":[{"all":[{"pattern":"$_"},{"matches":"63faa6ff69371231124f585388aa1da81efb26fe6cfc9368d15706a6ac096beb"}]},{"all":[{"any":[{"kind":"tuple"},{"kind":"parenthesized_expression"}]},{"has":{"matches":"63faa6ff69371231124f585388aa1da81efb26fe6cfc9368d15706a6ac096beb"}}]}]}}

@@ -1,0 +1,1 @@
+{"id":"28285c78567c97fc134a697c262e21b955129b0119bbf2360bb9d6786cec0efd","language":"python","rule":{"inside":{"kind":"if_statement","stopBy":"end","has":{"field":"condition","regex":"^(?:typing\\.)?TYPE_CHECKING$"}}}}
