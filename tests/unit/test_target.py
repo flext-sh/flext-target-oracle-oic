@@ -7,12 +7,14 @@ SPDX-License-Identifier: MIT
 
 from __future__ import annotations
 
-from flext_target_oracle_oic import (
+from tests import (
     FlextTargetOracleOic,
     FlextTargetOracleOicService,
     FlextTargetOracleOicSettings,
+    c,
+    tm,
+    u,
 )
-from tests import c, tm, u
 
 
 class TestsFlextTargetOracleOicTarget:
@@ -34,8 +36,8 @@ class TestsFlextTargetOracleOicTarget:
         """The service builds the target's sink bound to each stream name."""
         service = FlextTargetOracleOicService()
         target = u.TargetOracleOic.Target(config={}, validate_config=False)
-        for stream_name in c.TargetOracleOic.Tests.STREAM_NAMES:
-            schema = {"properties": c.TargetOracleOic.Tests.DEFAULT_PROPERTIES}
+        for stream_name in c.Tests.STREAM_NAMES:
+            schema = {"properties": c.Tests.DEFAULT_PROPERTIES}
             sink = FlextTargetOracleOic.default_sink_class(
                 target=target,
                 stream_name=stream_name,

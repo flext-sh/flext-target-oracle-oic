@@ -14,7 +14,8 @@ from typing import ClassVar
 
 from flext_tests import FlextTestsConstants
 
-from flext_target_oracle_oic import FlextTargetOracleOicConstants, t
+from flext_target_oracle_oic import t
+from tests import FlextTargetOracleOicConstants
 
 
 class TestsFlextTargetOracleOicConstants(
@@ -23,25 +24,22 @@ class TestsFlextTargetOracleOicConstants(
 ):
     """Test constants for flext-target-oracle-oic."""
 
-    class TargetOracleOic(FlextTargetOracleOicConstants.TargetOracleOic):
-        """Target Oracle OIC-specific test constants namespace."""
+    class Tests(FlextTestsConstants.Tests):
+        """Target Oracle OIC-specific test constants."""
 
-        class Tests(FlextTestsConstants.Tests):
-            """Target Oracle OIC-specific test constants."""
-
-            PROJECT_ROOT_PARENT_DEPTH: ClassVar[int] = 1
-            ALLOWED_MODULE_FUNCTIONS: ClassVar[Mapping[str, frozenset[str]]] = (
-                MappingProxyType({"cli.py": frozenset({"main"})})
-            )
-            DEFAULT_PROPERTIES: ClassVar[dict[str, t.JsonValue]] = {
-                "id": {"type": "string"},
-            }
-            STREAM_NAMES: ClassVar[tuple[str, ...]] = (
-                "connections",
-                "integrations",
-                "packages",
-                "lookups",
-            )
+        PROJECT_ROOT_PARENT_DEPTH: ClassVar[int] = 1
+        ALLOWED_MODULE_FUNCTIONS: ClassVar[Mapping[str, frozenset[str]]] = (
+            MappingProxyType({"cli.py": frozenset({"main"})})
+        )
+        DEFAULT_PROPERTIES: ClassVar[dict[str, t.JsonValue]] = {
+            "id": {"type": "string"},
+        }
+        STREAM_NAMES: ClassVar[tuple[str, ...]] = (
+            "connections",
+            "integrations",
+            "packages",
+            "lookups",
+        )
 
 
 c = TestsFlextTargetOracleOicConstants
